@@ -48,4 +48,9 @@ public class SettingManager : IInput
     {
         throw new NotImplementedException();
     }
+
+    public void KeyDown(int key)
+    {
+        throw new NotImplementedException();
+    }
 }

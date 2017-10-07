@@ -12,46 +12,53 @@ public enum EnumInputType
     /// <summary>
     /// 手柄上键
     /// </summary>
-    Up = 0,
+    Up = 1,
     /// <summary>
     /// 手柄左键
     /// </summary>
-    Left = 1,
+    Left = 2,
     /// <summary>
     /// 手柄右键
     /// </summary>
-    Right = 2,
+    Right = 3,
     /// <summary>
     /// 手柄下键
     /// </summary>
-    Down = 3,
+    Down = 4,
     /*这四个键用于一些基础只能，也可以组合操作*/
     /// <summary>
     /// 手柄A键
     /// </summary>
-    RA = 4,
+    RA = 5,
     /// <summary>
     /// 手柄B键
     /// </summary>
-    RB = 5,
+    RB = 6,
     /// <summary>
     /// 手柄X键
     /// </summary>
-    RX  = 6,
+    RX  = 7,
     /// <summary>
     /// 手柄Y键
     /// </summary>
-    RY = 7,
+    RY = 8,
     /*手柄的左右摇杆按下键位，可以组合也可以基础操作*/
     /// <summary>
     /// 手柄左侧摇杆按下
     /// </summary>
-    L3 = 8,
+    L3 = 9,
     /// <summary>
     /// 手柄右侧摇杆按下
     /// </summary>
-    R4 = 9,
-    /*这四个按键用于和上面的键进行组合*/
+    R3 = 10,
+    /*
+     * 这四个按键用于和上面的键进行组合
+     * 这四个按键必须是下面的数值
+     * L1=16
+     * R1=32
+     * L2=64
+     * R2=128
+     */
     /// <summary>
     /// L1键
     /// </summary>

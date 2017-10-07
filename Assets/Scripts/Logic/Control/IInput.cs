@@ -11,6 +11,11 @@ public interface IInput
     /// 按下指定键
     /// </summary>
     /// <param name="key">键的数值</param>
+    void KeyDown(int key);
+    /// <summary>
+    /// 按住指定键
+    /// </summary>
+    /// <param name="key">键的数值</param>
     void KeyPress(int key);
     /// <summary>
     /// 释放指定键
