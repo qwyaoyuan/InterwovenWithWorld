@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 
 /// <summary>
 /// 用于解释字段或有限长度数组字段中每个元素的含义

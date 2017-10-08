@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 /// <summary>
 /// 魔法震荡的释放结构
 /// </summary>

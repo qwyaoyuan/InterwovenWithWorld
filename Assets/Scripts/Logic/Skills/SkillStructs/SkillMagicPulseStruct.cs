@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 /// <summary>
 /// 脉冲魔法释放结构
 /// </summary>

@@ -224,7 +224,7 @@ public class SkillManager : IInput
                     }
                     break;
                 case EnumReleaseMode.Physics_Buff:
-                case EnumReleaseMode.Physics_Action:
+                case EnumReleaseMode.Physics_Attack:
                     break;
             }
         }

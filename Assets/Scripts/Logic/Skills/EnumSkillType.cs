@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// 技能类型枚举
 /// </summary>
 public enum EnumSkillType
@@ -38,6 +34,11 @@ public enum EnumSkillType
     #region 常规直接释放技能
     MagicNormalStart = 1000,
     MagicNormalEnd = 10000,
+    #endregion
+
+    #region 被动技能
+    MagicPassiveStart = 10000,
+    MagicPassiveEnd = 20000,
     #endregion
 
     #region 组合后直接释放技能
