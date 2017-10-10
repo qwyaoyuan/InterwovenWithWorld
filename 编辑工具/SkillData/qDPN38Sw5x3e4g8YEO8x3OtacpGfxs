@@ -1,3 +1,11 @@
 ﻿1
 skillID^^^[1]
 skillName^^^[Skill1]
+SkillTest^^^[Magic_Bullet]
+skillType^^^[MagicCombinedLevel1End]
+releaseType^^^[Combination]
+releaseMode^^^[Magic_Point]
+combinSkillTypes^^^[4???[MagicStart]|||[None]|||[None]|||[None]|||]
+powerRate^^^[1.2]
+particleName^^^[LiZi1]
+skillLevel^^^[0]

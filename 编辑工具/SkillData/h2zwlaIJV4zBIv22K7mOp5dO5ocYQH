@@ -1,3 +1,11 @@
 ﻿3
 skillID^^^[3]
 skillName^^^[Skill3]
+SkillTest^^^[]
+skillType^^^[MagicStart]
+releaseType^^^[Direct]
+releaseMode^^^[Magic_Bullet]
+combinSkillTypes^^^[4???[None]|||[None]|||[None]|||[None]|||]
+powerRate^^^[1.2]
+particleNames^^^[2???[123]|||[qwe]|||]
+skillLevel^^^[1]

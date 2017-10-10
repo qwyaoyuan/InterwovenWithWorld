@@ -40,7 +40,7 @@
             this.ComboBox_Main.FormattingEnabled = true;
             this.ComboBox_Main.Location = new System.Drawing.Point(3, 3);
             this.ComboBox_Main.Name = "ComboBox_Main";
-            this.ComboBox_Main.Size = new System.Drawing.Size(121, 23);
+            this.ComboBox_Main.Size = new System.Drawing.Size(261, 23);
             this.ComboBox_Main.TabIndex = 0;
             this.ComboBox_Main.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Main_SelectedIndexChanged);
             // 
@@ -49,7 +49,7 @@
             this.Label_Message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Label_Message.AutoSize = true;
-            this.Label_Message.Location = new System.Drawing.Point(130, 6);
+            this.Label_Message.Location = new System.Drawing.Point(270, 6);
             this.Label_Message.Name = "Label_Message";
             this.Label_Message.Size = new System.Drawing.Size(0, 15);
             this.Label_Message.TabIndex = 1;
@@ -61,7 +61,8 @@
             this.Controls.Add(this.Label_Message);
             this.Controls.Add(this.ComboBox_Main);
             this.Name = "EnumTypeComboBox";
-            this.Size = new System.Drawing.Size(244, 32);
+            this.Size = new System.Drawing.Size(305, 32);
+            this.ParentChanged += new System.EventHandler(this.EnumTypeComboBox_ParentChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

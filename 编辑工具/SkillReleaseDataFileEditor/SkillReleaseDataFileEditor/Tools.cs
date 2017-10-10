@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
 
 namespace SkillDataFileEditor
 {
-    class Tools
+    static class  Tools
     {
         ///<summary>
         ///生成随机字符串 
@@ -32,6 +35,41 @@ namespace SkillDataFileEditor
                 s += str.Substring(r.Next(0, str.Length - 1), 1);
             }
             return s;
+        }
+
+        /// <summary>
+        /// 合并数组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Combine<T>(this IEnumerable<IEnumerable<T>> values)
+        {
+            List<T> result = new List<T>();
+            foreach (IEnumerable<T> item in values)
+            {
+                result.AddRange(item);
+            }
+            return result;
+        }
+
+        public static Delegate[] GetObjectEventList(Control p_Control, string p_EventName)
+        {
+            PropertyInfo _PropertyInfo = p_Control.GetType().GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (_PropertyInfo != null)
+            {
+                object _EventList = _PropertyInfo.GetValue(p_Control, null);
+                if (_EventList != null && _EventList is EventHandlerList)
+                {
+                    EventHandlerList _List = (EventHandlerList)_EventList;
+                    FieldInfo _FieldInfo = (typeof(Control)).GetField(p_EventName, BindingFlags.Static | BindingFlags.NonPublic);
+                    if (_FieldInfo == null) return null;
+                    Delegate _ObjectDelegate = _List[_FieldInfo.GetValue(p_Control)];
+                    if (_ObjectDelegate == null) return null;
+                    return _ObjectDelegate.GetInvocationList();
+                }
+            }
+            return null;
         }
     }
 }

@@ -294,15 +294,23 @@ public class SkillAnalysisData
         string value = skillDatasDic[id][fieldName];
         try
         {
-            string[] arrayDatas = value.Split(split_arrayLength, StringSplitOptions.RemoveEmptyEntries);
+            string[] arrayDatas = value.Split(split_arrayLength.Concat(split_arrayValue).ToArray(), StringSplitOptions.RemoveEmptyEntries);
             int length = 0;
             if (arrayDatas.Length > 0)
                 int.TryParse(arrayDatas[0], out length);
             T[] datas = (T[])Array.CreateInstance(typeof(T), length);
             for (int i = 0; i < length; i++)
             {
-                T data = (T)Convert.ChangeType(arrayDatas[i + 1], typeof(T));
-                datas[i] = data;
+                string dataStr = arrayDatas[i + 1];
+                dataStr = dataStr.Remove(0, 1);
+                dataStr = dataStr.Remove(dataStr.Length - 1, 1);
+                if (string.IsNullOrEmpty(dataStr))
+                    datas[i] = default(T);
+                else
+                {
+                    T data = (T)Convert.ChangeType(dataStr, typeof(T));
+                    datas[i] = data;
+                }
             }
             return datas;
         }
@@ -322,10 +330,22 @@ public class SkillAnalysisData
     public void SetValues<T>(string id, string fieldName, T[] values)
     {
         Check(id, fieldName, "0");
+        if (values == null)
+        {
+            skillDatasDic[id][fieldName] = "0";
+            return;
+        }
         string data = values.Length + split_arrayLength[0];
         foreach (T value in values)
         {
-            data += value.ToString() + split_arrayValue[0];
+            data += "[";
+            try
+            {
+                data += value.ToString();
+            }
+            catch { }
+            data += "]";
+            data += split_arrayValue[0];
         }
         skillDatasDic[id][fieldName] = data;
     }
@@ -343,15 +363,23 @@ public class SkillAnalysisData
         string value = skillDatasDic[id][fieldName];
         try
         {
-            string[] arrayDatas = value.Split(split_arrayLength, StringSplitOptions.RemoveEmptyEntries);
+            string[] arrayDatas = value.Split(split_arrayLength.Concat(split_arrayValue).ToArray(), StringSplitOptions.RemoveEmptyEntries);
             int length = 0;
             if (arrayDatas.Length > 0)
                 int.TryParse(arrayDatas[0], out length);
             object[] datas = new object[length];
             for (int i = 0; i < length; i++)
             {
-                object data = Convert.ChangeType(arrayDatas[i + 1], type);
-                datas[i] = data;
+                string dataStr = arrayDatas[i + 1];
+                dataStr = dataStr.Remove(0, 1);
+                dataStr = dataStr.Remove(dataStr.Length - 1, 1);
+                if (string.IsNullOrEmpty(dataStr))
+                    datas[i] = null;
+                else
+                {
+                    object data = Convert.ChangeType(dataStr, type);
+                    datas[i] = data;
+                }
             }
             return datas;
         }
@@ -370,10 +398,22 @@ public class SkillAnalysisData
     public void SetValues(string id, string fieldName, Array values)
     {
         Check(id, fieldName, "0");
+        if (values == null)
+        {
+            skillDatasDic[id][fieldName] = "0";
+            return;
+        }
         string data = values.Length + split_arrayLength[0];
         foreach (object value in values)
         {
-            data += value.ToString() + split_arrayValue[0];
+            data += "[";
+            try
+            {
+                data += value.ToString();
+            }
+            catch { }
+            data += "]";
+            data += split_arrayValue[0];
         }
         skillDatasDic[id][fieldName] = data;
     }

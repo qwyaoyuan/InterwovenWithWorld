@@ -56,7 +56,7 @@ public class SkillManager : IInput
                             if (_skillMagicBaseStruct != null && _skillMagicBaseStruct.combinSkillTypes.Length > 0)
                             {
 
-                                int min = _skillMagicBaseStruct.combinSkillTypes.Length;
+                                int min = SkillMagicBaseStruct.GetCombinSkillTypesLength( _skillMagicBaseStruct);
                                 int nullIndex = SkillRuntime.Instance.GetNullIndexByCombineSkills();
                                 //检测该技能的组合技能元素和当前的组合技能长度是否一致
                                 if (min == nullIndex)
@@ -195,7 +195,7 @@ public class SkillManager : IInput
                                 SkillMagicBaseStruct _skillMagicBaseStruct = temp as SkillMagicBaseStruct;
                                 if (_skillMagicBaseStruct != null && _skillMagicBaseStruct.combinSkillTypes.Length > 0)
                                 {
-                                    int min = _skillMagicBaseStruct.combinSkillTypes.Length;
+                                    int min = SkillMagicBaseStruct.GetCombinSkillTypesLength(_skillMagicBaseStruct);
                                     min = SkillRuntime.SkillLevelMax < min ? SkillRuntime.SkillLevelMax : min;
                                     //便利最小长度的元素，如果有不同的元素则返回false，如果一样则范围true
                                     for (int i = 0; i < min; i++)
