@@ -46,11 +46,17 @@
     <Compile Include="..\..\..\Assets\Scripts\Data\Skill\SkillAnalysisData.cs">
       <Link>Reflect\SkillAnalysisData.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Data\StatusEffect\EnumStatusEffect.cs">
+      <Link>Reflect\EnumStatusEffect.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseMode.cs">
       <Link>Reflect\EnumReleaseMode.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseType.cs">
       <Link>Reflect\EnumReleaseType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillBelief.cs">
+      <Link>Reflect\EnumSkillBelief.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillType.cs">
       <Link>Reflect\EnumSkillType.cs</Link>

@@ -1,3 +1,6 @@
-﻿ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::HP^^^Label:::HP^^^
-ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::MP^^^Label:::MP^^^
-ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::STR^^^Label:::STR^^^
+﻿ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::DMG^^^Label:::法伤（DMG）^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::ERST^^^Label:::特殊效果(ERST)^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::RETI^^^Label:::驻留时间(RETI)^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::PHYAD^^^Label:::物理+(PHYAD)^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::MPAD^^^Label:::魔法+(MPAD)^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::PEDMG^^^Label:::伤害穿透(PEDMG)^^^

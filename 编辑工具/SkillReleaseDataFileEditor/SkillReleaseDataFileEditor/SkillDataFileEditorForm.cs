@@ -223,7 +223,7 @@ namespace SkillDataFileEditor
             selectNode = null;
             TreeView_Skills.Nodes.Clear();
             skillAnalysisData.Clear();
-            TextBox_Release_Mode.Text = "Magic_Bullet";
+            TextBox_Base_Mode.Text = "Magic_Bullet";
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace SkillDataFileEditor
 
             Button_SaveProject.Enabled = true;
             Button_AddSkill.Enabled = true;
-            Button_DeleteSkill.Enabled = false;
+            Button_DeleteSkill.Enabled = true;
             Button_SaveSkillToMemory.Enabled = true;
             IsChangedValue = false;
         }
@@ -477,9 +477,6 @@ namespace SkillDataFileEditor
             if (selectNode == null || string.IsNullOrEmpty(projectFilePath))
                 return;
             string id = selectNode.Name;
-            AutoItemControl_Release_Other.Tag = id;
-            AutoItemControl_Release_Other.SkillAnalysisData = skillAnalysisData;
-            AutoItemControl_Release_Other.Clear();
             FlowLayoutPanel_Other.Controls.Clear();
 
             IEnumerable<TabPage> allTabPage = TabControl_Setting.TabPages.OfType<TabPage>();
@@ -592,8 +589,6 @@ namespace SkillDataFileEditor
             if (selectNode == null || string.IsNullOrEmpty(projectFilePath))
                 return;
             string id = selectNode.Name;
-            AutoItemControl_Release_Other.Tag = id;
-            AutoItemControl_Release_Other.SkillAnalysisData = skillAnalysisData;
 
             IEnumerable<TabPage> allTabPage = TabControl_Setting.TabPages.OfType<TabPage>();
             TextBox[] textBoxs = allTabPage.Select(temp => temp.Controls.OfType<TextBox>()).Combine().ToArray();
@@ -644,74 +639,6 @@ namespace SkillDataFileEditor
                 attributeOtherControl.Tag = id;
                 attributeOtherControl.SaveData();
             }
-        }
-
-        /// <summary>
-        /// 技能的释放方式发生变化时触发
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBox_Release_Mode_TextChanged(object sender, EventArgs e)
-        {
-            AutoItemControl_Release_Other.Clear();
-            EnumReleaseMode releaseMode = EnumReleaseMode.None;
-            if (!string.IsNullOrEmpty(TextBox_Release_Mode.Text))
-            {
-                try
-                {
-                    releaseMode = (EnumReleaseMode)Enum.Parse(typeof(EnumReleaseMode), TextBox_Release_Mode.Text.Trim());
-                }
-                catch { }
-            }
-            //定义注册函数
-            Func<EnumReleaseMode, AutoItemControl.ItemStruct> GetPowerRate = (type) => //添加注入魔法倍率
-            {
-                return new AutoItemControl.ItemStruct() { Label = "魔力注入倍率", ControlType = typeof(TypeTextBox), TypeTag = "System.Single", Tag = "powerRate" };
-            };
-            Func<EnumReleaseMode, AutoItemControl.ItemStruct> GetParticleName = (type) => //添加魔法的粒子
-            {
-                return new AutoItemControl.ItemStruct() { Label = "魔法粒子资源名", ControlType = typeof(TypeTextBox), TypeTag = "System.String", Tag = "particleName" };
-            };
-            Func<EnumReleaseMode, AutoItemControl.ItemStruct> GetParticleNames = (temp) => //添加多个魔法粒子
-            {
-                int count = temp == EnumReleaseMode.Magic_Bullet ? 2 : (temp == EnumReleaseMode.Magic_Pulse ? 2 : (temp == EnumReleaseMode.Magic_Vibrate ? 2 : 1));
-                return new AutoItemControl.ItemStruct() { Label = "魔法粒子资源名列表", ControlType = typeof(AutoArrayControl), TypeTag = "System.String", Tag = "particleNames", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = count };
-            };
-            //定义添加函数
-            Action<AutoItemControl, AutoItemControl.ItemStruct> AddItem = (control, data) =>
-            {
-                AutoItemControl.ItemStruct resultData = control.CreateItem();
-                resultData.Label = data.Label;
-                resultData.Tag = data.Tag;
-                resultData.TypeTag = data.TypeTag;
-                resultData.ControlType = data.ControlType;
-                resultData.IsArray = data.IsArray;
-                resultData.ChildControlType = data.ChildControlType;
-                resultData.ChildCount = data.ChildCount;
-            };
-            //注册
-            Dictionary<EnumReleaseMode, Func<EnumReleaseMode, AutoItemControl.ItemStruct>[]> releaseModeToControls = new Dictionary<EnumReleaseMode, Func<EnumReleaseMode, AutoItemControl.ItemStruct>[]>();
-            releaseModeToControls.Add(EnumReleaseMode.None, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Bullet, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleNames });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Vibrate, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleNames });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Barrier, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleName });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Point, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleName });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Pulse, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleNames });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Buff, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleName });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Call, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { GetPowerRate, GetParticleName });
-            releaseModeToControls.Add(EnumReleaseMode.Magic_Action, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { });
-            releaseModeToControls.Add(EnumReleaseMode.Physics_Buff, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { });
-            releaseModeToControls.Add(EnumReleaseMode.Physics_Attack, new Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] { });
-            //调用
-            Func<EnumReleaseMode, AutoItemControl.ItemStruct>[] result = releaseModeToControls[releaseMode];
-            if (result != null)
-            {
-                foreach (Func<EnumReleaseMode, AutoItemControl.ItemStruct> item in result)
-                {
-                    AddItem(AutoItemControl_Release_Other, item(releaseMode));
-                }
-            }
-            AutoItemControl_Release_Other.UpdateItems();
         }
 
         /// <summary>

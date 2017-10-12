@@ -6,67 +6,73 @@
 public enum EnumReleaseMode
 {
     /// <summary>
-    /// 不用释放的技能
-    /// 大多是被动技能
+    /// 没有技能
     /// </summary>
-    [FieldExplan("非释放技能")]
+    [FieldExplan("没有技能")]
     None,
-    /// <summary>
-    /// 魔法弹的释放方式
-    /// 前方一条直线
-    /// </summary>
-    [FieldExplan("魔法弹类技能")]
-    Magic_Bullet,
-    /// <summary>
-    /// 魔法震荡的释放方式
-    /// 指定中心位置（锁定后默认锁定目标，正面法术默认自身中心，伤害魔法默认自身前方向）
-    /// </summary>
-    [FieldExplan("魔法震荡类技能")]
-	Magic_Vibrate,
-    /// <summary>
-    /// 魔法屏障的释放方式
-    /// 默认正前方，按住释放后改变释放方向
-    /// </summary>
-    [FieldExplan("魔法屏障类技能")]
-    Magic_Barrier,
-    /// <summary>
-    /// 魔力导向的释放方式
-    /// 锁定目标释放，如果未锁定则寻找最近目标
-    /// </summary>
-    [FieldExplan("魔力导向类技能")]
-    Magic_Point,
-    /// <summary>
-    /// 魔力脉冲的释放方式
-    /// 前方一条直线发射
-    /// </summary>
-    [FieldExplan("魔力脉冲类技能")]
-    Magic_Pulse,
-    /// <summary>
-    /// 魔法buff
-    /// 给自身加buff
-    /// </summary>
-    [FieldExplan("魔力Buff类技能")]
-    Magic_Buff,
-    /// <summary>
-    /// 魔法召唤
-    /// </summary>
-    [FieldExplan("魔法召唤类技能")]
-    Magic_Call,
     /// <summary>
     /// 魔法指令动作
     /// </summary>
     [FieldExplan("魔法指令类技能")]
     Magic_Action,
+    /// <summary>
+    /// 魔法1
+    /// 所有魔法的基本表现形式
+    /// </summary>
+    [FieldExplan("魔法1,所有魔法的基本表现形式")]
+    Magic1,
+    /// <summary>
+    /// 魔法2
+    /// 所有魔法附加的元素属性
+    /// </summary>
+    [FieldExplan("魔法2,所有魔法附加的元素属性")]
+    Magic2,
+    /// <summary>
+    /// 魔法3
+    /// 魔法表现的进阶
+    /// </summary>
+    [FieldExplan("魔法3,魔法表现的进阶")]
+    Magic3,
+    /// <summary>
+    /// 魔法4
+    /// 魔法效果的进阶
+    /// </summary>
+    [FieldExplan("魔法4,魔法效果的进阶")]
+    Magic4,
+    /// <summary>
+    /// 信仰1
+    /// 具体的信仰类型
+    /// </summary>
+    [FieldExplan("信仰1,具体的信仰类型")]
+    Belief1,
+    /// <summary>
+    /// 信仰2
+    /// 信仰魔法的具体效果与表现
+    /// </summary>
+    [FieldExplan("信仰2,信仰魔法的具体效果与表现")]
+    Belief2,
+    /// <summary>
+    /// 信仰3
+    /// 信仰魔法效果的进阶和功能拓展
+    /// </summary>
+    [FieldExplan("信仰3，信仰魔法效果的进阶和功能拓展")]
+    Belief3,
+    /// <summary>
+    /// 特殊技能
+    /// 需要主动释放
+    /// </summary>
+    [FieldExplan("特殊技能，需要主动释放")]
+    Special_Release,
+    /// <summary>
+    /// 被动技能 
+    /// </summary>
+    [FieldExplan("被动技能")]
+    Passive,
+    /// <summary>
+    /// 光环技能
+    /// 需要主动开关的被动技能
+    /// </summary>
+    [FieldExplan("光环技能,需要主动开关的被动技能")]
+    Special_Circle,
 
-    /// <summary>
-    /// 物理buff
-    /// 给自身加buff
-    /// </summary>
-    [FieldExplan("物理Buff类技能")]
-    Physics_Buff,
-    /// <summary>
-    /// 物理攻击动作
-    /// </summary>
-    [FieldExplan("物理攻击动作")]
-    Physics_Attack,
 }
