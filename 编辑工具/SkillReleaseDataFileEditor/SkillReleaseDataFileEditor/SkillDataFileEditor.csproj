@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{10BB79A9-94A4-4FEE-82A5-0A7F4EBA8970}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SkillDataFileEditor</RootNamespace>
+    <AssemblyName>SkillDataFileEditor</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Assets\Scripts\Data\Skill\SkillAnalysisData.cs">
+      <Link>Reflect\SkillAnalysisData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseMode.cs">
+      <Link>Reflect\EnumReleaseMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseType.cs">
+      <Link>Reflect\EnumReleaseType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillType.cs">
+      <Link>Reflect\EnumSkillType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\EnumSkillMagicBarrierShowType.cs">
+      <Link>Reflect\EnumSkillMagicBarrierShowType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillBaseStruct.cs">
+      <Link>Reflect\SkillBaseStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBarrierStruct.cs">
+      <Link>Reflect\SkillMagicBarrierStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBaseStruct.cs">
+      <Link>Reflect\SkillMagicBaseStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBuffStruct.cs">
+      <Link>Reflect\SkillMagicBuffStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBulletStruct.cs">
+      <Link>Reflect\SkillMagicBulletStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicCallStruct.cs">
+      <Link>Reflect\SkillMagicCallStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicPointStruct.cs">
+      <Link>Reflect\SkillMagicPointStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicPulseStruct.cs">
+      <Link>Reflect\SkillMagicPulseStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicVibrateStruct.cs">
+      <Link>Reflect\SkillMagicVibrateStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Tools\FieldExplanAttribute.cs">
+      <Link>Reflect\FieldExplanAttribute.cs</Link>
+    </Compile>
+    <Compile Include="AddOtherAttributeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOtherAttributeForm.Designer.cs">
+      <DependentUpon>AddOtherAttributeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddSkillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddSkillForm.Designer.cs">
+      <DependentUpon>AddSkillForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AutoItemControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AutoItemControl.Designer.cs">
+      <DependentUpon>AutoItemControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AutoArrayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AutoArrayControl.Designer.cs">
+      <DependentUpon>AutoArrayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\EnumTypeComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EnumTypeComboBox.Designer.cs">
+      <DependentUpon>EnumTypeComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ITextValue.cs" />
+    <Compile Include="Controls\ITypeTag.cs" />
+    <Compile Include="Controls\IChildControlType.cs" />
+    <Compile Include="Controls\IChanged.cs" />
+    <Compile Include="NewProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewProjectForm.Designer.cs">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SetAttributeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SetAttributeControl.Designer.cs">
+      <DependentUpon>SetAttributeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SetAttributeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetAttributeForm.Designer.cs">
+      <DependentUpon>SetAttributeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillDataFileEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillDataFileEditorForm.Designer.cs">
+      <DependentUpon>SkillDataFileEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="Controls\TypeTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TypeTextBox.Designer.cs">
+      <DependentUpon>TypeTextBox.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AddOtherAttributeForm.resx">
+      <DependentUpon>AddOtherAttributeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddSkillForm.resx">
+      <DependentUpon>AddSkillForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AutoItemControl.resx">
+      <DependentUpon>AutoItemControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\AutoArrayControl.resx">
+      <DependentUpon>AutoArrayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EnumTypeComboBox.resx">
+      <DependentUpon>EnumTypeComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewProjectForm.resx">
+      <DependentUpon>NewProjectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="SetAttributeControl.resx">
+      <DependentUpon>SetAttributeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetAttributeForm.resx">
+      <DependentUpon>SetAttributeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillDataFileEditorForm.resx">
+      <DependentUpon>SkillDataFileEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TypeTextBox.resx">
+      <DependentUpon>TypeTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
