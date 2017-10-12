@@ -1,0 +1,3 @@
+﻿ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::HP^^^Label:::HP^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::MP^^^Label:::MP^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Int32^^^Tag:::STR^^^Label:::STR^^^

@@ -49,10 +49,17 @@
             this.TextBox_Release_Mode = new System.Windows.Forms.TextBox();
             this.Label_Release_Mode = new System.Windows.Forms.Label();
             this.TabPage_Attribute = new System.Windows.Forms.TabPage();
+            this.Button_SetAttributePanel = new System.Windows.Forms.Button();
             this.TypeTextBox_Attribute_SkillMaxLevel = new SkillDataFileEditor.TypeTextBox();
             this.Panel_Attribute = new System.Windows.Forms.Panel();
             this.FlowLayoutPanel_Attribute = new System.Windows.Forms.FlowLayoutPanel();
             this.Label_Attribute_SkillMaxLevel = new System.Windows.Forms.Label();
+            this.TabPage_Other = new System.Windows.Forms.TabPage();
+            this.ComboBox_Other_Item = new System.Windows.Forms.ComboBox();
+            this.Button_Other_Add = new System.Windows.Forms.Button();
+            this.Button_Other_Delete = new System.Windows.Forms.Button();
+            this.Panel_Other = new System.Windows.Forms.Panel();
+            this.FlowLayoutPanel_Other = new System.Windows.Forms.FlowLayoutPanel();
             this.Panel_Skill = new System.Windows.Forms.Panel();
             this.Button_SaveSkillToMemory = new System.Windows.Forms.Button();
             this.Button_DeleteSkill = new System.Windows.Forms.Button();
@@ -65,6 +72,8 @@
             this.TabPage_SkillRelease.SuspendLayout();
             this.TabPage_Attribute.SuspendLayout();
             this.Panel_Attribute.SuspendLayout();
+            this.TabPage_Other.SuspendLayout();
+            this.Panel_Other.SuspendLayout();
             this.Panel_Skill.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +95,7 @@
             this.TabControl_Setting.Controls.Add(this.TabPage_Base);
             this.TabControl_Setting.Controls.Add(this.TabPage_SkillRelease);
             this.TabControl_Setting.Controls.Add(this.TabPage_Attribute);
+            this.TabControl_Setting.Controls.Add(this.TabPage_Other);
             this.TabControl_Setting.Location = new System.Drawing.Point(315, 51);
             this.TabControl_Setting.Name = "TabControl_Setting";
             this.TabControl_Setting.SelectedIndex = 0;
@@ -292,6 +302,7 @@
             // 
             // TabPage_Attribute
             // 
+            this.TabPage_Attribute.Controls.Add(this.Button_SetAttributePanel);
             this.TabPage_Attribute.Controls.Add(this.TypeTextBox_Attribute_SkillMaxLevel);
             this.TabPage_Attribute.Controls.Add(this.Panel_Attribute);
             this.TabPage_Attribute.Controls.Add(this.Label_Attribute_SkillMaxLevel);
@@ -302,6 +313,17 @@
             this.TabPage_Attribute.TabIndex = 2;
             this.TabPage_Attribute.Text = "属性";
             this.TabPage_Attribute.UseVisualStyleBackColor = true;
+            // 
+            // Button_SetAttributePanel
+            // 
+            this.Button_SetAttributePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_SetAttributePanel.Location = new System.Drawing.Point(762, 11);
+            this.Button_SetAttributePanel.Name = "Button_SetAttributePanel";
+            this.Button_SetAttributePanel.Size = new System.Drawing.Size(75, 32);
+            this.Button_SetAttributePanel.TabIndex = 5;
+            this.Button_SetAttributePanel.Text = "配置";
+            this.Button_SetAttributePanel.UseVisualStyleBackColor = true;
+            this.Button_SetAttributePanel.Click += new System.EventHandler(this.Button_SetAttributePanel_Click);
             // 
             // TypeTextBox_Attribute_SkillMaxLevel
             // 
@@ -343,6 +365,73 @@
             this.Label_Attribute_SkillMaxLevel.TabIndex = 0;
             this.Label_Attribute_SkillMaxLevel.Text = "最高等级";
             // 
+            // TabPage_Other
+            // 
+            this.TabPage_Other.Controls.Add(this.ComboBox_Other_Item);
+            this.TabPage_Other.Controls.Add(this.Button_Other_Add);
+            this.TabPage_Other.Controls.Add(this.Button_Other_Delete);
+            this.TabPage_Other.Controls.Add(this.Panel_Other);
+            this.TabPage_Other.Location = new System.Drawing.Point(4, 25);
+            this.TabPage_Other.Name = "TabPage_Other";
+            this.TabPage_Other.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPage_Other.Size = new System.Drawing.Size(846, 589);
+            this.TabPage_Other.TabIndex = 3;
+            this.TabPage_Other.Text = "其他";
+            this.TabPage_Other.UseVisualStyleBackColor = true;
+            // 
+            // ComboBox_Other_Item
+            // 
+            this.ComboBox_Other_Item.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_Other_Item.FormattingEnabled = true;
+            this.ComboBox_Other_Item.Location = new System.Drawing.Point(502, 19);
+            this.ComboBox_Other_Item.Name = "ComboBox_Other_Item";
+            this.ComboBox_Other_Item.Size = new System.Drawing.Size(160, 23);
+            this.ComboBox_Other_Item.TabIndex = 3;
+            // 
+            // Button_Other_Add
+            // 
+            this.Button_Other_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Other_Add.Location = new System.Drawing.Point(684, 15);
+            this.Button_Other_Add.Name = "Button_Other_Add";
+            this.Button_Other_Add.Size = new System.Drawing.Size(75, 33);
+            this.Button_Other_Add.TabIndex = 2;
+            this.Button_Other_Add.Text = "添加";
+            this.Button_Other_Add.UseVisualStyleBackColor = true;
+            this.Button_Other_Add.Click += new System.EventHandler(this.Button_Other_Add_Click);
+            // 
+            // Button_Other_Delete
+            // 
+            this.Button_Other_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Button_Other_Delete.Location = new System.Drawing.Point(765, 15);
+            this.Button_Other_Delete.Name = "Button_Other_Delete";
+            this.Button_Other_Delete.Size = new System.Drawing.Size(75, 33);
+            this.Button_Other_Delete.TabIndex = 1;
+            this.Button_Other_Delete.Text = "移除";
+            this.Button_Other_Delete.UseVisualStyleBackColor = true;
+            this.Button_Other_Delete.Click += new System.EventHandler(this.Button_Other_Delete_Click);
+            // 
+            // Panel_Other
+            // 
+            this.Panel_Other.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Other.AutoScroll = true;
+            this.Panel_Other.Controls.Add(this.FlowLayoutPanel_Other);
+            this.Panel_Other.Location = new System.Drawing.Point(6, 54);
+            this.Panel_Other.Name = "Panel_Other";
+            this.Panel_Other.Size = new System.Drawing.Size(834, 528);
+            this.Panel_Other.TabIndex = 0;
+            // 
+            // FlowLayoutPanel_Other
+            // 
+            this.FlowLayoutPanel_Other.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FlowLayoutPanel_Other.AutoSize = true;
+            this.FlowLayoutPanel_Other.Location = new System.Drawing.Point(3, 3);
+            this.FlowLayoutPanel_Other.Name = "FlowLayoutPanel_Other";
+            this.FlowLayoutPanel_Other.Size = new System.Drawing.Size(828, 494);
+            this.FlowLayoutPanel_Other.TabIndex = 0;
+            // 
             // Panel_Skill
             // 
             this.Panel_Skill.Controls.Add(this.Button_SaveSkillToMemory);
@@ -358,6 +447,7 @@
             // 
             // Button_SaveSkillToMemory
             // 
+            this.Button_SaveSkillToMemory.Enabled = false;
             this.Button_SaveSkillToMemory.Location = new System.Drawing.Point(553, 6);
             this.Button_SaveSkillToMemory.Name = "Button_SaveSkillToMemory";
             this.Button_SaveSkillToMemory.Size = new System.Drawing.Size(130, 34);
@@ -438,6 +528,9 @@
             this.TabPage_Attribute.PerformLayout();
             this.Panel_Attribute.ResumeLayout(false);
             this.Panel_Attribute.PerformLayout();
+            this.TabPage_Other.ResumeLayout(false);
+            this.Panel_Other.ResumeLayout(false);
+            this.Panel_Other.PerformLayout();
             this.Panel_Skill.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -477,6 +570,13 @@
         private System.Windows.Forms.Panel Panel_Attribute;
         private System.Windows.Forms.FlowLayoutPanel FlowLayoutPanel_Attribute;
         private TypeTextBox TypeTextBox_Attribute_SkillMaxLevel;
+        private System.Windows.Forms.Button Button_SetAttributePanel;
+        private System.Windows.Forms.TabPage TabPage_Other;
+        private System.Windows.Forms.Panel Panel_Other;
+        private System.Windows.Forms.Button Button_Other_Add;
+        private System.Windows.Forms.Button Button_Other_Delete;
+        private System.Windows.Forms.FlowLayoutPanel FlowLayoutPanel_Other;
+        private System.Windows.Forms.ComboBox ComboBox_Other_Item;
     }
 }
 

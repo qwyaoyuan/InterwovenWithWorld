@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace SkillDataFileEditor
 {
-    public partial class AutoItemControl : UserControl,IChanged
+    public partial class AutoItemControl : UserControl, IChanged
     {
         public AutoItemControl()
         {
@@ -172,7 +172,7 @@ namespace SkillDataFileEditor
             foreach (Panel panel in panels)
             {
                 ItemStruct itemStruct = panel.Tag as ItemStruct;
-                if (itemStruct == null|| string.IsNullOrEmpty(itemStruct.Tag))
+                if (itemStruct == null || string.IsNullOrEmpty(itemStruct.Tag))
                     continue;
                 //判断条件
                 Control control = panel.Controls.Find("ItemControl", false).FirstOrDefault();
@@ -215,7 +215,8 @@ namespace SkillDataFileEditor
         /// <summary>
         /// 更新Item
         /// </summary>
-        public void UpdateItems()
+        /// <param name="mustUpdateData">必须更新数据</param>
+        public void UpdateItems(bool mustUpdateData = false)
         {
             Panel[] panels = FlowLayoutPanel_Release_Other.Controls.OfType<Panel>().ToArray();
             int outHeight = panels.Length * 3 * 2;
@@ -231,7 +232,7 @@ namespace SkillDataFileEditor
                     {
                         int maxHeight = 1;
                         //设置控件的说明
-                        Label tempLabelControl = panel.Controls.OfType<Label>().Where(temp => string.Equals(temp, "Label_Show")).FirstOrDefault();
+                        Label tempLabelControl = panel.Controls.OfType<Label>().Where(temp => string.Equals(temp.Name, "Label_Show")).FirstOrDefault();
                         if (tempLabelControl == null)
                         {
                             tempLabelControl = new Label();
@@ -262,7 +263,7 @@ namespace SkillDataFileEditor
                             ITypeTag iTypeTag = control as ITypeTag;
                             if (iTypeTag != null)
                             {
-                                if (!string.Equals(iTypeTag.TypeTag, itemStruct.TypeTag))
+                                if (!string.Equals(iTypeTag.TypeTag, itemStruct.TypeTag) || mustUpdateData)
                                 {
                                     iTypeTag.TypeTag = itemStruct.TypeTag;
                                     //是否不是数组
@@ -280,6 +281,7 @@ namespace SkillDataFileEditor
                                             {
                                                 control.Text = tempValue;
                                             }
+                                            mustUpdateData = false;
                                         }
                                     }
                                 }
@@ -288,7 +290,7 @@ namespace SkillDataFileEditor
                             if (iChildControlType != null)
                             {
                                 controlHeight *= itemStruct.ChildCount;
-                                if (!string.Equals(iChildControlType.ChildControlType, itemStruct.ChildControlType))
+                                if (!string.Equals(iChildControlType.ChildControlType, itemStruct.ChildControlType) || mustUpdateData)
                                 {
                                     iChildControlType.TextValues = new string[itemStruct.ChildCount];
                                     iChildControlType.ChildControlType = itemStruct.ChildControlType;
@@ -308,12 +310,17 @@ namespace SkillDataFileEditor
                                                 index++;
                                             }
                                             iChildControlType.TextValues = resultValues;
+                                            mustUpdateData = false;
                                         }
                                     }
                                 }
-                                else if (iChildControlType.TextValues.Length != itemStruct.ChildCount)
+                                else if (iChildControlType.TextValues.Length != itemStruct.ChildCount || mustUpdateData)
                                 {
-                                    string[] tempValues = skillAnalysisData.GetValues<string>(this.Tag.ToString(), itemStruct.Tag);
+                                    string[] tempValues = null;
+                                    if (this.Tag != null)
+                                    {
+                                        tempValues = skillAnalysisData.GetValues<string>(this.Tag.ToString(), itemStruct.Tag);
+                                    }
                                     if (tempValues == null)
                                         tempValues = new string[0];
                                     string[] resultValues = new string[itemStruct.ChildCount];
@@ -331,6 +338,7 @@ namespace SkillDataFileEditor
                                         }
                                     }
                                     iChildControlType.TextValues = resultValues;
+                                    mustUpdateData = false;
                                 }
                             }
                             maxHeight = maxHeight > controlHeight ? maxHeight : controlHeight;

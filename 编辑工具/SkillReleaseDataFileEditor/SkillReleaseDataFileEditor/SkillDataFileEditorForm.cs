@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace SkillDataFileEditor
         public SkillDataFileEditorForm()
         {
             InitializeComponent();
+            otherTabPage = TabPage_Other;
             projectFilePath = "";
             skillAnalysisData = new SkillAnalysisData();
-            Init();
+            InitSkillAttributePanel();
         }
+
 
         /// <summary>
         /// 工程文件路径
@@ -33,12 +36,85 @@ namespace SkillDataFileEditor
         /// 选择的树节点
         /// </summary>
         TreeNode selectNode;
-
         /// <summary>
-        /// 初始化
+        /// 属性面板所使用的Tag（字段名）
         /// </summary>
-        void Init()
+        static string[] attributeTags;
+        /// <summary>
+        /// 其他的设置面板
+        /// </summary>
+        static TabPage otherTabPage;
+        /// <summary>
+        /// 初始化技能属性面板
+        /// </summary>
+        void InitSkillAttributePanel()
         {
+            List<AutoItemControl.ItemStruct> skillAttributeItemStructs = new List<AutoItemControl.ItemStruct>();
+            string exePath = Process.GetCurrentProcess().MainModule.FileName;
+            string directoryPath = Path.GetDirectoryName(exePath);
+            string attributeSettingPath = directoryPath + "\\SkillAttribute.Setting";
+            if (File.Exists(attributeSettingPath))
+            {
+                using (StreamReader sr = new StreamReader(attributeSettingPath, Encoding.UTF8))
+                {
+                    string readLine = null;
+                    string[] itemsSplit = new string[] { "^^^" };
+                    string[] valueSplit = new string[] { ":::" };
+                    while ((readLine = sr.ReadLine()) != null)
+                    {
+                        string[] Items = readLine.Split(itemsSplit, StringSplitOptions.RemoveEmptyEntries);
+                        if (Items.Length == 7)
+                        {
+                            AutoItemControl.ItemStruct skillAttributeItemStruct = new AutoItemControl.ItemStruct();
+                            foreach (string item in Items)
+                            {
+                                string[] values = item.Split(valueSplit, StringSplitOptions.RemoveEmptyEntries);
+                                if (values.Length != 2)
+                                {
+                                    string[] tempValues = new string[2];
+                                    for (int i = 0; i < 2; i++)
+                                    {
+                                        tempValues[i] = "";
+                                    }
+                                    int index = 0;
+                                    while (index < tempValues.Length && index < values.Length)
+                                    {
+                                        tempValues[index] = values[index];
+                                        index++;
+                                    }
+                                }
+                                switch (values[0].Trim())
+                                {
+                                    case "Label":
+                                        skillAttributeItemStruct.Label = values[1].Trim();
+                                        break;
+                                    case "Tag":
+                                        skillAttributeItemStruct.Tag = values[1].Trim();
+                                        break;
+                                    case "TypeTag":
+                                        skillAttributeItemStruct.TypeTag = values[1].Trim();
+                                        break;
+                                    case "ControlType":
+                                        try { skillAttributeItemStruct.ControlType = Type.GetType(values[1].Trim()); } catch { }
+                                        break;
+                                    case "IsArray":
+                                        try { skillAttributeItemStruct.IsArray = bool.Parse(values[1].Trim()); } catch { }
+                                        break;
+                                    case "ChildControlType":
+                                        skillAttributeItemStruct.ChildControlType = values[1].Trim();
+                                        break;
+                                    case "ChildCount":
+                                        try { skillAttributeItemStruct.ChildCount = int.Parse(values[1].Trim()); } catch { }
+                                        break;
+                                }
+                            }
+                            skillAttributeItemStructs.Add(skillAttributeItemStruct);
+                        }
+                    }
+                }
+            }
+
+            FlowLayoutPanel_Attribute.Controls.Clear();
             //在技能属性（根据技能等级设置属性）面板添加控件
             Func<AutoItemControl.ItemStruct, AutoItemControl> GetAutoItemControl_SkillAttribute = (_itemStruct) =>
             {
@@ -62,14 +138,47 @@ namespace SkillDataFileEditor
                 flowLayoutPanel.Controls.Add(autoItemControl);
                 autoItemControl.UpdateItems();
             };
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "HP", Label = "HP", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 5 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "MP", Label = "MP", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 7 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "STR", Label = "STR", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 8 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "SE", Label = "SE", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 9 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "HP", Label = "HP", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 10 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "MP", Label = "MP", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 11 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "STR", Label = "STR", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 12 }), FlowLayoutPanel_Attribute);
-            AddItemToPanel(GetAutoItemControl_SkillAttribute(new AutoItemControl.ItemStruct() { Tag = "SE", Label = "SE", ControlType = typeof(AutoArrayControl), TypeTag = "System.Int32", IsArray = true, ChildControlType = "SkillDataFileEditor.TypeTextBox", ChildCount = 13 }), FlowLayoutPanel_Attribute);
+
+            foreach (AutoItemControl.ItemStruct itemStruct in skillAttributeItemStructs)
+            {
+                AddItemToPanel(GetAutoItemControl_SkillAttribute(itemStruct), FlowLayoutPanel_Attribute);
+            }
+            TreeView_Skills.SelectedNode = selectNode = null;
+            attributeTags = skillAttributeItemStructs.Select(temp => temp.Tag).ToArray();
+        }
+
+        /// <summary>
+        /// 是否可以使用这个Tag
+        /// </summary>
+        /// <param name="tag">目标Tag</param>
+        /// <returns></returns>
+        public static bool CanUseThisTag(string tag)
+        {
+            tag = tag?.Trim();
+            switch (tag)
+            {
+                case "OtherFieldSet"://该字段用于保存Other面板中设置的属性
+                case "skillID":
+                case "skillName":
+                case "skillType":
+                case "releaseType":
+                case "releaseMode":
+                case "combinSkillTypes":
+                case "powerRate":
+                case "particleName":
+                case "skillLevel":
+                    return false;
+            }
+            if (attributeTags.Contains(tag))
+                return false;
+            try
+            {
+                string[] ids = otherTabPage.Controls.OfType<Panel>().First().Controls.OfType<FlowLayoutPanel>().First().Controls.OfType<AutoItemControl>().Select(temp => temp.Items[0].Tag).ToArray();
+                if (ids.Contains(tag))
+                    return false;
+            }
+            catch { }
+            return true;
         }
 
         /// <summary>
@@ -156,8 +265,9 @@ namespace SkillDataFileEditor
             skillAnalysisData.AnalysisData(values.ToArray());
 
             Button_SaveProject.Enabled = true;
-            Button_AddSkill.Enabled = false;
+            Button_AddSkill.Enabled = true;
             Button_DeleteSkill.Enabled = false;
+            Button_SaveSkillToMemory.Enabled = true;
             IsChangedValue = false;
         }
 
@@ -313,12 +423,24 @@ namespace SkillDataFileEditor
                             return false;
                         return temp.IsChangedValue;
                     }).Count();
-                return changedCount > 0;
+                int changedCount_Attribute = FlowLayoutPanel_Attribute.Controls.OfType<AutoItemControl>().Where(temp => temp.IsChangedValue).Count();
+                int changedCount_Other = FlowLayoutPanel_Other.Controls.OfType<AutoItemControl>().Where(temp => temp.IsChangedValue).Count();
+                return changedCount > 0 || changedCount_Attribute > 0 || changedCount_Other > 0;
             }
             set
             {
                 IChanged[] iChangeds = TabControl_Setting.TabPages.OfType<TabPage>().Select(temp => temp.Controls.OfType<Control>()).Combine().Select(temp => temp as IChanged).Where(temp => temp != null).ToArray();
                 foreach (IChanged iChanged in iChangeds)
+                {
+                    iChanged.IsChangedValue = value;
+                }
+                IChanged[] iChangeds_Attribute = FlowLayoutPanel_Attribute.Controls.OfType<AutoItemControl>().Select(temp => temp as IChanged).Where(temp => temp != null).ToArray();
+                foreach (IChanged iChanged in iChangeds_Attribute)
+                {
+                    iChanged.IsChangedValue = value;
+                }
+                IChanged[] iChangeds_Other = FlowLayoutPanel_Other.Controls.OfType<AutoItemControl>().Select(temp => temp as IChanged).Where(temp => temp != null).ToArray();
+                foreach (IChanged iChanged in iChangeds_Other)
                 {
                     iChanged.IsChangedValue = value;
                 }
@@ -358,6 +480,7 @@ namespace SkillDataFileEditor
             AutoItemControl_Release_Other.Tag = id;
             AutoItemControl_Release_Other.SkillAnalysisData = skillAnalysisData;
             AutoItemControl_Release_Other.Clear();
+            FlowLayoutPanel_Other.Controls.Clear();
 
             IEnumerable<TabPage> allTabPage = TabControl_Setting.TabPages.OfType<TabPage>();
             EnumTypeComboBox[] enumTypeComboBoxs = allTabPage.Select(temp => temp.Controls.OfType<EnumTypeComboBox>()).Combine().ToArray();
@@ -409,6 +532,56 @@ namespace SkillDataFileEditor
                 autoItemControl.UpdateItems();
             }
             //处理技能属性（根据等级附加属性）
+            AutoItemControl[] attributeSkillLevelControls = FlowLayoutPanel_Attribute.Controls.OfType<AutoItemControl>().ToArray();
+            foreach (AutoItemControl attributeSkillLevelControl in attributeSkillLevelControls)
+            {
+                attributeSkillLevelControl.SkillAnalysisData = skillAnalysisData;
+                attributeSkillLevelControl.Tag = id;
+                attributeSkillLevelControl.UpdateItems(true);
+            }
+            //处理其他属性
+            string[] oldOtherSettings = skillAnalysisData.GetValues<string>(id, "OtherFieldSet");
+            string[] otherSplit = new string[] { "***" };
+            ComboBox_Other_Item.Items.Clear();
+            Func<string, string> JCFZFunc = (target) => //解除封装
+            {
+                if (target.Length < 2)
+                    return "";
+                target = target.Remove(0, 1);
+                target = target.Remove(target.Length - 1, 1);
+                return target;
+            };
+            foreach (string oldOtherSetting in oldOtherSettings)
+            {
+                string[] otherFieldSets = oldOtherSetting.Split(otherSplit, StringSplitOptions.RemoveEmptyEntries);
+                if (otherFieldSets.Length == 7)
+                {
+                    AutoItemControl autoItemContorl = new AutoItemControl();
+                    autoItemContorl.SkillAnalysisData = skillAnalysisData;
+                    autoItemContorl.Tag = id;
+                    AutoItemControl.ItemStruct itemStruct = autoItemContorl.CreateItem();
+                    itemStruct.Label = JCFZFunc(otherFieldSets[0]);
+                    itemStruct.Tag = JCFZFunc(otherFieldSets[1]);
+                    Type controlType = null;
+                    try { controlType = Type.GetType(JCFZFunc(otherFieldSets[2])); } catch { }
+                    itemStruct.ControlType = controlType;
+                    itemStruct.TypeTag = JCFZFunc(otherFieldSets[3]);
+                    bool isArray = false;
+                    try { isArray = bool.Parse(JCFZFunc(otherFieldSets[4])); } catch { }
+                    itemStruct.IsArray = isArray;
+                    int childCount = 0;
+                    try { childCount = int.Parse(JCFZFunc(otherFieldSets[5])); } catch { }
+                    itemStruct.ChildCount = childCount;
+                    itemStruct.ChildControlType = JCFZFunc(otherFieldSets[6]);
+
+                    autoItemContorl.Size = new Size(Panel_Other.Size.Width / 2 - 7, Panel_Other.Size.Height / 3);
+                    FlowLayoutPanel_Other.Controls.Add(autoItemContorl);
+                    autoItemContorl.UpdateItems(true);
+                    autoItemContorl.IsChangedValue = false;
+
+                    ComboBox_Other_Item.Items.Add(itemStruct.Tag);
+                }
+            }
         }
 
         /// <summary>
@@ -456,6 +629,21 @@ namespace SkillDataFileEditor
                 autoItemControl.SaveData();
             }
             //处理技能属性（根据等级附加属性）
+            AutoItemControl[] attributeSkillLevelControls = FlowLayoutPanel_Attribute.Controls.OfType<AutoItemControl>().ToArray();
+            foreach (AutoItemControl attributeSkillLevelControl in attributeSkillLevelControls)
+            {
+                attributeSkillLevelControl.SkillAnalysisData = skillAnalysisData;
+                attributeSkillLevelControl.Tag = id;
+                attributeSkillLevelControl.SaveData();
+            }
+            //处理其他属性
+            AutoItemControl[] attributeOtherControls = FlowLayoutPanel_Other.Controls.OfType<AutoItemControl>().ToArray();
+            foreach (AutoItemControl attributeOtherControl in attributeOtherControls)
+            {
+                attributeOtherControl.SkillAnalysisData = skillAnalysisData;
+                attributeOtherControl.Tag = id;
+                attributeOtherControl.SaveData();
+            }
         }
 
         /// <summary>
@@ -533,7 +721,178 @@ namespace SkillDataFileEditor
         /// <param name="e"></param>
         private void TypeTextBox_Attribute_SkillMaxLevel_TypeTextChanged(object sender, TypeTextBoxEventArgs e)
         {
+            int count = 0;
+            int.TryParse(e.text, out count);
+            AutoItemControl[] attributeSkillLevelControls = FlowLayoutPanel_Attribute.Controls.OfType<AutoItemControl>().ToArray();
+            foreach (AutoItemControl attributeSkillLevelControl in attributeSkillLevelControls)
+            {
+                if (attributeSkillLevelControl.Count > 0)
+                {
+                    attributeSkillLevelControl[0].ChildCount = count;
+                    attributeSkillLevelControl.UpdateItems();
+                }
+            }
+        }
 
+        /// <summary>
+        /// 配置技能属性面板
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_SetAttributePanel_Click(object sender, EventArgs e)
+        {
+            SetAttributeForm setAttributeForm = new SetAttributeForm();
+            setAttributeForm.ShowDialog();
+            InitSkillAttributePanel();
+        }
+
+        /// <summary>
+        /// 添加一个Item到Other选项卡
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Other_Add_Click(object sender, EventArgs e)
+        {
+            if (selectNode == null || string.IsNullOrEmpty(projectFilePath))
+                return;
+
+            AddOtherAttributeForm addOtherAttributeForm = new AddOtherAttributeForm();
+            DialogResult dr = addOtherAttributeForm.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                AutoItemControl autoItemContorl = new AutoItemControl();
+                autoItemContorl.SkillAnalysisData = skillAnalysisData;
+                TreeNode selectNode = TreeView_Skills.SelectedNode;
+                if (selectNode != null)
+                {
+                    try
+                    {
+                        string[] values = selectNode.Tag as string[];
+                        autoItemContorl.Tag = values[0];
+                    }
+                    catch { }
+                }
+                AutoItemControl.ItemStruct itemStruct = autoItemContorl.CreateItem();
+                itemStruct.Label = addOtherAttributeForm.attributeItemStruct.Label;
+                itemStruct.Tag = addOtherAttributeForm.attributeItemStruct.Tag;
+                itemStruct.ControlType = addOtherAttributeForm.attributeItemStruct.ControlType;
+                itemStruct.TypeTag = addOtherAttributeForm.attributeItemStruct.TypeTag;
+                itemStruct.IsArray = addOtherAttributeForm.attributeItemStruct.IsArray;
+                itemStruct.ChildCount = addOtherAttributeForm.attributeItemStruct.ChildCount;
+                itemStruct.ChildControlType = addOtherAttributeForm.attributeItemStruct.ChildControlType;
+                autoItemContorl.Size = new Size(Panel_Other.Size.Width / 2 - 7, Panel_Other.Size.Height / 3);
+                FlowLayoutPanel_Other.Controls.Add(autoItemContorl);
+                autoItemContorl.UpdateItems();
+                autoItemContorl.IsChangedValue = true;
+                if (skillAnalysisData != null && selectNode != null)//将本次设置的内容保存到OtherFieldSet字段中
+                {
+                    string[] tagValues = selectNode.Tag as string[];
+                    if (tagValues != null && tagValues.Length > 0)
+                    {
+                        string[] oldOtherSettings = skillAnalysisData.GetValues<string>(tagValues[0], "OtherFieldSet");
+                        if (oldOtherSettings == null)
+                            oldOtherSettings = new string[0];
+                        string[] newOtherSettings = new string[oldOtherSettings.Length + 1];
+                        Array.Copy(oldOtherSettings, newOtherSettings, oldOtherSettings.Length);
+                        string split = "***";
+                        Func<object, string> FZFunc = (target) =>//封装[]
+                        {
+                            if (target == null)
+                                return "[]";
+                            if (object.Equals(target.GetType(), typeof(Type)))
+                            {
+                                Type t = target as Type;
+                                return "[" + t.FullName + "]";
+                            }
+                            return "[" + target.ToString() + "]";
+                        };
+                        string otherFieldSet =
+                            FZFunc(itemStruct.Label) + split +
+                            FZFunc(itemStruct.Tag) + split +
+                            FZFunc(itemStruct.ControlType) + split +
+                            FZFunc(itemStruct.TypeTag) + split +
+                            FZFunc(itemStruct.IsArray) + split +
+                            FZFunc(itemStruct.ChildCount) + split +
+                            FZFunc(itemStruct.ChildControlType);
+                        newOtherSettings[newOtherSettings.Length - 1] = otherFieldSet;
+                        skillAnalysisData.SetValues<string>(tagValues[0], "OtherFieldSet", newOtherSettings);
+                    }
+                }
+                //添加到下拉列表中
+                ComboBox_Other_Item.Items.Add(itemStruct.Tag);
+            }
+        }
+
+        /// <summary>
+        /// 从Other选项卡中移除一个Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Other_Delete_Click(object sender, EventArgs e)
+        {
+            if (selectNode == null || string.IsNullOrEmpty(projectFilePath))
+                return;
+
+            int selectIndex = ComboBox_Other_Item.SelectedIndex;
+            if (selectIndex < 0)
+                return;
+            //选择的关联对象
+            string selectTag = ComboBox_Other_Item.Items[selectIndex].ToString();
+            try
+            {
+                AutoItemControl autoItemControl = FlowLayoutPanel_Other.Controls.OfType<AutoItemControl>().
+                    Select(temp => new { control = temp, tag = temp.Items[0].Tag }).
+                    Where(temp => string.Equals(temp.tag, selectTag)).
+                    Select(temp => temp.control).FirstOrDefault();
+                if (autoItemControl != null)
+                {
+                    FlowLayoutPanel_Other.Controls.Remove(autoItemControl);
+                    ComboBox_Other_Item.Items.RemoveAt(selectIndex);
+                    if (selectNode != null)
+                    {
+                        string[] selectNodeValues = selectNode.Tag as string[];
+                        if (selectNodeValues != null && selectNodeValues.Length > 0)
+                            skillAnalysisData.RemoveValue(selectNodeValues[0], selectTag);
+                        if (skillAnalysisData != null && selectNode != null)//将本次删除更改后的内容保存到OtherFieldSet字段中
+                        {
+                            string[] tagValues = selectNode.Tag as string[];
+                            if (tagValues != null && tagValues.Length > 0)
+                            {
+                                string[] oldOtherSettings = skillAnalysisData.GetValues<string>(tagValues[0], "OtherFieldSet");
+                                if (oldOtherSettings == null)
+                                    oldOtherSettings = new string[0];
+                                List<string> newOtherSettings = new List<string>();
+                                string[] split = new string[] { "***" };
+                                Func<string, string> JCFZFunc = (target) => //解除封装
+                                {
+                                    if (target.Length < 2)
+                                        return "";
+                                    target = target.Remove(0, 1);
+                                    target = target.Remove(target.Length - 1, 1);
+                                    return target;
+                                };
+                                foreach (string oldOtherSetting in oldOtherSettings)
+                                {
+                                    string[] otherFieldSets = oldOtherSetting.Split(split, StringSplitOptions.RemoveEmptyEntries);
+                                    if (otherFieldSets.Length == 7)
+                                    {
+                                        string thisID = JCFZFunc(otherFieldSets[1]);
+                                        if (!string.Equals(thisID, selectTag))
+                                        {
+                                            newOtherSettings.Add(oldOtherSetting);
+                                        }
+                                    }
+                                }
+                                skillAnalysisData.SetValues<string>(tagValues[0], "OtherFieldSet", newOtherSettings.ToArray());
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("移除失败");
+            }
         }
     }
 }

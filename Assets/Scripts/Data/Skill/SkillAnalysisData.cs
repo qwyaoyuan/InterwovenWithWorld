@@ -148,6 +148,26 @@ public class SkillAnalysisData
     }
 
     /// <summary>
+    /// 移除指定id的指定字段数据
+    /// </summary>
+    /// <param name="id">技能id</param>
+    /// <param name="fieldName">字段名</param>
+    public void RemoveValue(string id, string fieldName)
+    {
+        if (string.IsNullOrEmpty(id))
+            return;
+        if (string.IsNullOrEmpty(fieldName))
+            return;
+        if (skillDatasDic.ContainsKey(id))
+        {
+            if (skillDatasDic[id].ContainsKey(fieldName))
+            {
+                skillDatasDic[id].Remove(fieldName);
+            }
+        }
+    }
+
+    /// <summary>
     /// 获取枚举值
     /// </summary>
     /// <typeparam name="T">枚举的类型</typeparam>
