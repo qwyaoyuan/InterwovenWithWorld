@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 /// <summary>
 /// 魔法技能释放结构
 /// </summary>
@@ -29,5 +26,22 @@ public class SkillMagicBaseStruct : SkillBaseStruct
         temp.skillType = skillType;
         temp.combinSkillTypes = (EnumSkillType[])combinSkillTypes.Clone();
         return base.Clone(target);
+    }
+
+    /// <summary>
+    /// 获取组合技能的长度 
+    /// </summary>
+    /// <param name="skillMagicBaseStruct"></param>
+    /// <returns></returns>
+    public static int GetCombinSkillTypesLength(SkillMagicBaseStruct skillMagicBaseStruct)
+    {
+        int length = 0;
+        foreach (EnumSkillType enumSkillType in skillMagicBaseStruct.combinSkillTypes)
+        {
+            if (enumSkillType == EnumSkillType.None)
+                break;
+            length++;
+        }
+        return length;
     }
 }

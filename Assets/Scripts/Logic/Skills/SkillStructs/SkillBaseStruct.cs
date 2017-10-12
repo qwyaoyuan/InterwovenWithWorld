@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 
 /// <summary>
 /// 技能的基础结构
@@ -23,6 +20,13 @@ public class SkillBaseStruct : ICloneable
     /// </summary>
     [FieldExplan("技能的释放方式")]
     public EnumReleaseMode releaseMode;
+
+    /// <summary>
+    /// 技能的释放组合技能
+    /// 表示技能是组合技能还是单独的技能
+    /// </summary>
+    [FieldExplan("技能的释放组合类型")]
+    public EnumReleaseType releaseType;
 
     /// <summary>
     /// 克隆

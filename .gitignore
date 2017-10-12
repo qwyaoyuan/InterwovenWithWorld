@@ -32,3 +32,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+!编辑工具/SkillReleaseDataFileEditor/SkillReleaseDataFileEditor.sln
+!编辑工具/SkillReleaseDataFileEditor/SkillReleaseDataFileEditor/SkillDataFileEditor.csproj
