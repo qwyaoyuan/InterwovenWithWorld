@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.IO;
+using System.Text;
 
 /// <summary>
 /// 解析技能数据类
@@ -37,6 +39,20 @@ public class SkillAnalysisData
     }
 
     /// <summary>
+    /// 将字符串转换成流
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="encoding"></param>
+    /// <returns></returns>
+    private Stream GetStream(string target, Encoding encoding)
+    {
+        if (target == null)
+            return new MemoryStream();
+        byte[] bt = encoding.GetBytes(target);
+        return new MemoryStream(bt);
+    }
+
+    /// <summary>
     /// 解析数据
     /// </summary>
     /// <param name="values">每个对象的值</param>
@@ -44,7 +60,17 @@ public class SkillAnalysisData
     {
         foreach (string value in values)
         {
-            string[] lines = value.Split(split_line, StringSplitOptions.RemoveEmptyEntries);
+            List<string> lineList = new List<string>();
+            using (StreamReader sr = new StreamReader(GetStream(value, Encoding.UTF8)))
+            {
+                string line = null;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    lineList.Add(line);
+                }
+            }
+            //string[] lines = value.Split(split_line, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = lineList.ToArray();
             if (lines.Length > 0)
             {
                 string id = lines[0].Trim();//第一行存储的是id

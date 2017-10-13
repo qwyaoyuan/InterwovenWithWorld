@@ -64,8 +64,6 @@ public class SkillManager : IInput
         {
             //只处理其中的一个
             KeyContactStruct keyContactStruct = keyContactStructs[0];
-            //通过对象中的技能id在技能结构对象中获取技能结构对象
-            SkillBaseStruct skillBaseStruct = SkillStructData.Instance.GetSkillBaseStruct(keyContactStruct.id);
 
         }
     }
