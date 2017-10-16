@@ -264,6 +264,12 @@ namespace SkillDataFileEditor
             }
             skillAnalysisData.AnalysisData(values.ToArray());
 
+            foreach (TreeNode treeNode in TreeView_Skills.Nodes)
+            {
+                string[] idToDatas = treeNode.Tag as string[];
+                treeNode.Text = idToDatas[0] + "~" + idToDatas[1] + "~" + skillAnalysisData.GetValue<string>(idToDatas[0], "releaseMode");
+            }
+
             Button_SaveProject.Enabled = true;
             Button_AddSkill.Enabled = true;
             Button_DeleteSkill.Enabled = true;
@@ -588,7 +594,8 @@ namespace SkillDataFileEditor
         {
             if (selectNode == null || string.IsNullOrEmpty(projectFilePath))
                 return;
-            string id = selectNode.Name;
+            string[] idToDatas = selectNode.Tag as string[];
+            string id = idToDatas[0];
 
             IEnumerable<TabPage> allTabPage = TabControl_Setting.TabPages.OfType<TabPage>();
             TextBox[] textBoxs = allTabPage.Select(temp => temp.Controls.OfType<TextBox>()).Combine().ToArray();
@@ -639,6 +646,7 @@ namespace SkillDataFileEditor
                 attributeOtherControl.Tag = id;
                 attributeOtherControl.SaveData();
             }
+            selectNode .Text = idToDatas[0] + "~" + idToDatas[1] + "~" + skillAnalysisData.GetValue<string>(idToDatas[0], "releaseMode");
         }
 
         /// <summary>

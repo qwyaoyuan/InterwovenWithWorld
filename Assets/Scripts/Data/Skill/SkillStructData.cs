@@ -24,10 +24,11 @@ public class SkillStructData
             return instance;
         }
     }
+
     /// <summary>
-    /// 技能结构字典
+    /// 技能结构对象数组 
     /// </summary>
-    private Dictionary<int, SkillBaseStruct> skillStructDatas;
+    private SkillBaseStruct[] skillBaseStructs;
 
     /// <summary>
     /// 技能结构数据
@@ -43,33 +44,18 @@ public class SkillStructData
     /// <param name="must">是否必须读取</param>
     public void ReadSkillStructData(bool must)
     {
-        //如果此时还未读取或者必须读取
-        if (must || skillStructDatas == null)
-        {
-            skillStructDatas = new Dictionary<int, SkillBaseStruct>();
-            //从文件中读取
-        }
+        skillBaseStructs = new SkillBaseStruct[0];
     }
 
     /// <summary>
-    /// 通过技能id查找数据结构
+    /// 使用指定的选择器获取技能数据
     /// </summary>
-    /// <param name="id">技能id</param>
+    /// <param name="selector">选择器</param>
     /// <returns></returns>
-    public SkillBaseStruct GetSkillBaseStruct(int id)
+    public SkillBaseStruct[] GetSkillDatas(Func<SkillBaseStruct, bool> selector)
     {
-        if (skillStructDatas != null && skillStructDatas.ContainsKey(id))
-            return skillStructDatas[id];
-        return null;
-    }
-
-    /// <summary>
-    /// 通过筛选器查找数据结构
-    /// </summary>
-    /// <param name="selecter"></param>
-    /// <returns></returns>
-    public SkillBaseStruct GetSkillBaseStruct(Func<SkillBaseStruct, bool> selecter)
-    {
-        return skillStructDatas.Where(temp => selecter(temp.Value)).Select(temp=>temp.Value).FirstOrDefault();
+        if (selector == null)
+            return skillBaseStructs;
+        return skillBaseStructs.Where(selector).ToArray();
     }
 }

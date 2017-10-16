@@ -52,44 +52,11 @@
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseMode.cs">
       <Link>Reflect\EnumReleaseMode.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumReleaseType.cs">
-      <Link>Reflect\EnumReleaseType.cs</Link>
-    </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillBelief.cs">
       <Link>Reflect\EnumSkillBelief.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillType.cs">
       <Link>Reflect\EnumSkillType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\EnumSkillMagicBarrierShowType.cs">
-      <Link>Reflect\EnumSkillMagicBarrierShowType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillBaseStruct.cs">
-      <Link>Reflect\SkillBaseStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBarrierStruct.cs">
-      <Link>Reflect\SkillMagicBarrierStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBaseStruct.cs">
-      <Link>Reflect\SkillMagicBaseStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBuffStruct.cs">
-      <Link>Reflect\SkillMagicBuffStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicBulletStruct.cs">
-      <Link>Reflect\SkillMagicBulletStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicCallStruct.cs">
-      <Link>Reflect\SkillMagicCallStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicPointStruct.cs">
-      <Link>Reflect\SkillMagicPointStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicPulseStruct.cs">
-      <Link>Reflect\SkillMagicPulseStruct.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillMagicVibrateStruct.cs">
-      <Link>Reflect\SkillMagicVibrateStruct.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Tools\FieldExplanAttribute.cs">
       <Link>Reflect\FieldExplanAttribute.cs</Link>

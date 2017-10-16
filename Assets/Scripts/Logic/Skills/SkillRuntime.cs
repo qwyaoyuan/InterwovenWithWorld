@@ -1,12 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 /// <summary>
 /// 技能运行时数据
 /// </summary>
 public class SkillRuntime
 {
+    /// <summary>
+    /// 组合技能的基础值
+    /// </summary>
+    const int combineBaseNum = 100000000;
+
     /// <summary>
     /// 技能运行时数据静态私有对象
     /// </summary>
@@ -19,61 +26,79 @@ public class SkillRuntime
             return instance;
         }
     }
-    public const int SkillLevelMax = 4;
     private SkillRuntime()
     {
-        combineSkills = new SkillBaseStruct[SkillLevelMax];
+        skillBaseStructList = new List<SkillBaseStruct>();
     }
 
     /// <summary>
-    /// 组合的最终技能
-    /// 如果技能释放完成则该项置空
-    /// 当按住释放键时，将增加储魔
+    /// 技能临时集合
     /// </summary>
-    public SkillBaseStruct combineSkill_End;
+    List<SkillBaseStruct> skillBaseStructList;
     /// <summary>
-    /// 正在组合的技能数组
-    /// 当松开技能键时，将如果技能可以添加则添加到数组中
-    /// 当按下释放键时，将技能组合后存放到combineSkill_End中
+    /// 储蓄魔力时间
     /// </summary>
-    public SkillBaseStruct[] combineSkills;
-
+    float savingMagicPowerTime;
 
     /// <summary>
-    /// 从组合技能数组中获取空对象下标
+    /// 添加一个技能到运行时栏位
+    /// </summary>
+    /// <param name="skillEnum">技能</param>
+    /// <returns></returns>
+    public bool SetSkill(int skillEnum)
+    {
+        if (skillEnum > combineBaseNum)
+        {
+            int skill1Num = skillEnum % 100+1000;skillEnum /= 100;
+            int skill2Num = skillEnum % 100+1100;skillEnum /= 100;
+            int skill3Num = skillEnum & 100+1200;skillEnum /= 100;
+            int skill4Num = skillEnum % 100+1300;skillEnum /= 100;
+            SkillBaseStruct[] addSkillBaseStructArray = (new[] { skill1Num, skill2Num, skill3Num, skill4Num })
+                .Select(temp => (EnumSkillType)temp)
+                .Select(temp => SkillStructData.Instance.GetSkillDatas(temp1 => temp1.skillType == temp).FirstOrDefault())
+                .Where(temp => temp != null)
+                .ToArray();
+            List<SkillBaseStruct> tempSkillBaseStruct = new List<SkillBaseStruct>(skillBaseStructList.ToArray());
+            tempSkillBaseStruct.AddRange(addSkillBaseStructArray);
+            bool result = SkillCombinDisk.Intance.GetCanCombinSkill(tempSkillBaseStruct.ToArray());
+            skillBaseStructList.AddRange(addSkillBaseStructArray);
+            return result;
+        }
+        else if(skillEnum> (int)EnumSkillType.MagicCombinedLevel1Start && skillEnum<(int)EnumSkillType.MagicCombinedLevel4End)
+        {
+            List<SkillBaseStruct> tempSkillBaseStruct = new List<SkillBaseStruct>(skillBaseStructList.ToArray());
+            SkillBaseStruct skillBaseStruct = SkillStructData.Instance.GetSkillDatas(temp => temp.skillType == (EnumSkillType)skillEnum).FirstOrDefault();
+            tempSkillBaseStruct.Add(skillBaseStruct);
+            bool result = SkillCombinDisk.Intance.GetCanCombinSkill(tempSkillBaseStruct.ToArray());
+            skillBaseStructList.Add(skillBaseStruct);
+            return result;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 清理当前的技能临时集合以及储蓄魔力时间
+    /// </summary>
+    public void ClearSkillsData()
+    {
+        skillBaseStructList.Clear();
+    }
+
+    /// <summary>
+    /// 获取当前技能
     /// </summary>
     /// <returns></returns>
-    public int GetNullIndexByCombineSkills()
+    public SkillBaseStruct[] GetSkills()
     {
-        for (int i = 0; i < SkillLevelMax; i++)
-        {
-            if (combineSkills[i] == null)
-                return i ;
-        }
-        return 4;
+        return skillBaseStructList.ToArray();
     }
 
     /// <summary>
-    /// 将技能设置到最后一个空位
+    /// 储蓄魔力时间
     /// </summary>
-    /// <param name="target"></param>
-    public void SetToCombineSkill(SkillBaseStruct target)
+    public float SavingMagicPowerTime
     {
-        int index = GetNullIndexByCombineSkills();
-        if (index < 4)
-        {
-            combineSkills[index] = target;
-        }
-    }
-
-    /// <summary>
-    /// 清空组合技能数组
-    /// </summary>
-    public void ClearCombineSkills()
-    {
-        for (int i = 0; i < SkillLevelMax; i++)
-        {
-            combineSkills[i] = null;
-        }
+        get { return savingMagicPowerTime; }
+        set { savingMagicPowerTime = value; }
     }
 }
