@@ -10,6 +10,10 @@ public enum EnumSkillType
 
     #region 特殊技能
     SpecialReleaseStart = 1,
+    /// <summary>
+    /// 释放魔法
+    /// </summary>
+    MagicRelease =199,
     SpecialReleaseEnd = 200,
     #endregion
 
@@ -25,10 +29,6 @@ public enum EnumSkillType
 
     #region 魔法技能
     MagicStart = 1000,
-    /// <summary>
-    /// 释放魔法
-    /// </summary>
-    MagicRelease,
     #region 需要结合的技能(1阶段)
     MagicCombinedLevel1Start = 1000,
     MagicCombinedLevel1End = 1100,
@@ -42,7 +42,7 @@ public enum EnumSkillType
     MagicCombinedLevel3End = 1300,
     #endregion
     #region 需要结合的技能(4阶段)
-    MagicCombinedLevel4Start = 1200,
+    MagicCombinedLevel4Start = 1300,
     MagicCombinedLevel4End = 1400,
     #endregion
 

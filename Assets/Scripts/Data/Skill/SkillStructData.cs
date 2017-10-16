@@ -25,6 +25,10 @@ public class SkillStructData
         }
     }
 
+    /// <summary>
+    /// 技能结构对象数组 
+    /// </summary>
+    private SkillBaseStruct[] skillBaseStructs;
 
     /// <summary>
     /// 技能结构数据
@@ -40,7 +44,18 @@ public class SkillStructData
     /// <param name="must">是否必须读取</param>
     public void ReadSkillStructData(bool must)
     {
-       
+        skillBaseStructs = new SkillBaseStruct[0];
     }
 
+    /// <summary>
+    /// 使用指定的选择器获取技能数据
+    /// </summary>
+    /// <param name="selector">选择器</param>
+    /// <returns></returns>
+    public SkillBaseStruct[] GetSkillDatas(Func<SkillBaseStruct, bool> selector)
+    {
+        if (selector == null)
+            return skillBaseStructs;
+        return skillBaseStructs.Where(selector).ToArray();
+    }
 }

@@ -34,11 +34,17 @@ public class SkillManager : IInput
         //从按键对应数据对象中获取该键位对应的按键数组（选取条件为选择技能）
         KeyContactStruct[] keyContactStructs =
           KeyContactData.Instance.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
-        if (keyContactStructs.Length > 0)
+        if (keyContactStructs.Length > 0 && SkillDealHandle.Instance.CanDealSkill)
         {
             //只处理其中的一个
             KeyContactStruct keyContactStruct = keyContactStructs[0];
-            
+            //释放魔法
+            if (keyContactStruct.id == (int)EnumSkillType.MagicRelease && SkillRuntime.Instance.GetSkills().Length > 0)
+            {
+                //给魔法技能处理模块
+                SkillDealHandle.Instance.BeginCombineSkill(SkillRuntime.Instance.GetSkills());
+                SkillRuntime.Instance.SavingMagicPowerTime = 0;
+            }
         }
     }
 
@@ -51,7 +57,11 @@ public class SkillManager : IInput
         {
             //只处理其中的一个
             KeyContactStruct keyContactStruct = keyContactStructs[0];
-            
+            //释放魔法  蓄力
+            if (keyContactStruct.id == (int)EnumSkillType.MagicRelease && SkillRuntime.Instance.GetSkills().Length > 0)
+            {
+                SkillRuntime.Instance.SavingMagicPowerTime += Time.deltaTime;
+            }
         }
     }
 
@@ -64,7 +74,18 @@ public class SkillManager : IInput
         {
             //只处理其中的一个
             KeyContactStruct keyContactStruct = keyContactStructs[0];
-
+            if (keyContactStruct.id > (int)EnumSkillType.EndMagic && keyContactStruct.id < (int)EnumSkillType.EndMagic)
+            {
+                bool addResult = SkillRuntime.Instance.SetSkill(keyContactStruct.id);
+                if (!addResult)
+                    Debug.Log("无法使用的组合");
+            }
+            //释放魔法  如果读条完成则可以释放
+            if (keyContactStruct.id == (int)EnumSkillType.MagicRelease)
+            {
+                //通知魔法技能处理模块可以释放魔法了
+                SkillDealHandle.Instance.EndCombineSkill(SkillRuntime.Instance.SavingMagicPowerTime);
+            }
         }
     }
 

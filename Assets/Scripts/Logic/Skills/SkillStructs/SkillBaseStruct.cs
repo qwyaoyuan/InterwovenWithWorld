@@ -53,11 +53,15 @@ public class SkillBaseStruct
 public class SkillAttributeStruct
 {
     /// <summary>
+    /// 基础耗魔单位
+    /// </summary>
+    public int MP;
+    /// <summary>
     /// 法伤
     /// </summary>
     public int DMG;
     /// <summary>
-    /// 特殊效果 
+    /// 特效影响力
     /// </summary>
     public int ERST;
     /// <summary>
@@ -79,9 +83,9 @@ public class SkillAttributeStruct
     /// <summary>
     /// HP附加
     /// </summary>
-    public int HP;
+    public int ADDHP;
     /// <summary>
     /// MP附加
     /// </summary>
-    public int MP;
+    public int ADDMP;
 }

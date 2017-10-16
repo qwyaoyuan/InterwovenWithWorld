@@ -42,6 +42,13 @@
             this.Label_Base_SKillName = new System.Windows.Forms.Label();
             this.Label_Base_SkillID = new System.Windows.Forms.Label();
             this.TabPage_SkillRelease = new System.Windows.Forms.TabPage();
+            this.AutoArrayControl_SkillRelease_Effect = new SkillDataFileEditor.AutoArrayControl();
+            this.Label_SkillRelease_Effect = new System.Windows.Forms.Label();
+            this.TextBox_SkillRelease_Explan = new System.Windows.Forms.TextBox();
+            this.Label_SkillRelease_Explan = new System.Windows.Forms.Label();
+            this.TextBox_SkillRelease_Belief = new System.Windows.Forms.TextBox();
+            this.EnumTypeComboBox_SkillRelease_Belief = new SkillDataFileEditor.EnumTypeComboBox();
+            this.Label_SkillRelease_Belief = new System.Windows.Forms.Label();
             this.Label_SkillRelease_Particle = new System.Windows.Forms.Label();
             this.AutoArrayControl_SkillRelease_Particle = new SkillDataFileEditor.AutoArrayControl();
             this.TabPage_Attribute = new System.Windows.Forms.TabPage();
@@ -63,13 +70,6 @@
             this.Button_NewProject = new System.Windows.Forms.Button();
             this.Button_SaveProject = new System.Windows.Forms.Button();
             this.Button_LoadProject = new System.Windows.Forms.Button();
-            this.Label_SkillRelease_Belief = new System.Windows.Forms.Label();
-            this.EnumTypeComboBox_SkillRelease_Belief = new SkillDataFileEditor.EnumTypeComboBox();
-            this.TextBox_SkillRelease_Belief = new System.Windows.Forms.TextBox();
-            this.Label_SkillRelease_Explan = new System.Windows.Forms.Label();
-            this.TextBox_SkillRelease_Explan = new System.Windows.Forms.TextBox();
-            this.Label_SkillRelease_Effect = new System.Windows.Forms.Label();
-            this.AutoArrayControl_SkillRelease_Effect = new SkillDataFileEditor.AutoArrayControl();
             this.TabControl_Setting.SuspendLayout();
             this.TabPage_Base.SuspendLayout();
             this.TabPage_SkillRelease.SuspendLayout();
@@ -197,6 +197,7 @@
             // 
             this.TextBox_Base_SkillID.Location = new System.Drawing.Point(124, 14);
             this.TextBox_Base_SkillID.Name = "TextBox_Base_SkillID";
+            this.TextBox_Base_SkillID.ReadOnly = true;
             this.TextBox_Base_SkillID.Size = new System.Drawing.Size(151, 25);
             this.TextBox_Base_SkillID.TabIndex = 2;
             this.TextBox_Base_SkillID.Tag = "skillID";
@@ -237,6 +238,81 @@
             this.TabPage_SkillRelease.TabIndex = 0;
             this.TabPage_SkillRelease.Text = "技能效果";
             this.TabPage_SkillRelease.UseVisualStyleBackColor = true;
+            // 
+            // AutoArrayControl_SkillRelease_Effect
+            // 
+            this.AutoArrayControl_SkillRelease_Effect.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
+            this.AutoArrayControl_SkillRelease_Effect.Count = 5;
+            this.AutoArrayControl_SkillRelease_Effect.IsChangedValue = true;
+            this.AutoArrayControl_SkillRelease_Effect.Location = new System.Drawing.Point(122, 218);
+            this.AutoArrayControl_SkillRelease_Effect.Name = "AutoArrayControl_SkillRelease_Effect";
+            this.AutoArrayControl_SkillRelease_Effect.Size = new System.Drawing.Size(704, 167);
+            this.AutoArrayControl_SkillRelease_Effect.TabIndex = 8;
+            this.AutoArrayControl_SkillRelease_Effect.Tag = "skillStatusEffect";
+            this.AutoArrayControl_SkillRelease_Effect.TextValues = new string[] {
+        "None",
+        "None",
+        "None",
+        "None",
+        "None"};
+            this.AutoArrayControl_SkillRelease_Effect.TypeTag = "EnumStatusEffect";
+            // 
+            // Label_SkillRelease_Effect
+            // 
+            this.Label_SkillRelease_Effect.AutoSize = true;
+            this.Label_SkillRelease_Effect.Location = new System.Drawing.Point(21, 228);
+            this.Label_SkillRelease_Effect.Name = "Label_SkillRelease_Effect";
+            this.Label_SkillRelease_Effect.Size = new System.Drawing.Size(67, 15);
+            this.Label_SkillRelease_Effect.TabIndex = 7;
+            this.Label_SkillRelease_Effect.Text = "技能效果";
+            // 
+            // TextBox_SkillRelease_Explan
+            // 
+            this.TextBox_SkillRelease_Explan.Location = new System.Drawing.Point(122, 391);
+            this.TextBox_SkillRelease_Explan.Multiline = true;
+            this.TextBox_SkillRelease_Explan.Name = "TextBox_SkillRelease_Explan";
+            this.TextBox_SkillRelease_Explan.Size = new System.Drawing.Size(704, 191);
+            this.TextBox_SkillRelease_Explan.TabIndex = 6;
+            this.TextBox_SkillRelease_Explan.Tag = "skillExplan";
+            // 
+            // Label_SkillRelease_Explan
+            // 
+            this.Label_SkillRelease_Explan.AutoSize = true;
+            this.Label_SkillRelease_Explan.Location = new System.Drawing.Point(21, 394);
+            this.Label_SkillRelease_Explan.Name = "Label_SkillRelease_Explan";
+            this.Label_SkillRelease_Explan.Size = new System.Drawing.Size(67, 15);
+            this.Label_SkillRelease_Explan.TabIndex = 5;
+            this.Label_SkillRelease_Explan.Text = "效果说明";
+            // 
+            // TextBox_SkillRelease_Belief
+            // 
+            this.TextBox_SkillRelease_Belief.Location = new System.Drawing.Point(122, 180);
+            this.TextBox_SkillRelease_Belief.Name = "TextBox_SkillRelease_Belief";
+            this.TextBox_SkillRelease_Belief.ReadOnly = true;
+            this.TextBox_SkillRelease_Belief.Size = new System.Drawing.Size(225, 25);
+            this.TextBox_SkillRelease_Belief.TabIndex = 4;
+            // 
+            // EnumTypeComboBox_SkillRelease_Belief
+            // 
+            this.EnumTypeComboBox_SkillRelease_Belief.IsChangedValue = true;
+            this.EnumTypeComboBox_SkillRelease_Belief.ListenControl = "TextBox_SkillRelease_Belief";
+            this.EnumTypeComboBox_SkillRelease_Belief.Location = new System.Drawing.Point(362, 180);
+            this.EnumTypeComboBox_SkillRelease_Belief.Name = "EnumTypeComboBox_SkillRelease_Belief";
+            this.EnumTypeComboBox_SkillRelease_Belief.Size = new System.Drawing.Size(422, 32);
+            this.EnumTypeComboBox_SkillRelease_Belief.TabIndex = 3;
+            this.EnumTypeComboBox_SkillRelease_Belief.Tag = "";
+            this.EnumTypeComboBox_SkillRelease_Belief.TextValue = "None";
+            this.EnumTypeComboBox_SkillRelease_Belief.TypeTag = "EnumSkillBelief";
+            this.EnumTypeComboBox_SkillRelease_Belief.SelectedChanged += new System.EventHandler<SkillDataFileEditor.EnumTypeCBOSelectedChangedEventArgs>(this.EnumTypeComboBox_SelectedChanged);
+            // 
+            // Label_SkillRelease_Belief
+            // 
+            this.Label_SkillRelease_Belief.AutoSize = true;
+            this.Label_SkillRelease_Belief.Location = new System.Drawing.Point(21, 180);
+            this.Label_SkillRelease_Belief.Name = "Label_SkillRelease_Belief";
+            this.Label_SkillRelease_Belief.Size = new System.Drawing.Size(67, 15);
+            this.Label_SkillRelease_Belief.TabIndex = 2;
+            this.Label_SkillRelease_Belief.Text = "信仰类型";
             // 
             // Label_SkillRelease_Particle
             // 
@@ -473,81 +549,6 @@
             this.Button_LoadProject.Text = "加载项目";
             this.Button_LoadProject.UseVisualStyleBackColor = true;
             this.Button_LoadProject.Click += new System.EventHandler(this.Button_LoadProject_Click);
-            // 
-            // Label_SkillRelease_Belief
-            // 
-            this.Label_SkillRelease_Belief.AutoSize = true;
-            this.Label_SkillRelease_Belief.Location = new System.Drawing.Point(21, 180);
-            this.Label_SkillRelease_Belief.Name = "Label_SkillRelease_Belief";
-            this.Label_SkillRelease_Belief.Size = new System.Drawing.Size(67, 15);
-            this.Label_SkillRelease_Belief.TabIndex = 2;
-            this.Label_SkillRelease_Belief.Text = "信仰类型";
-            // 
-            // EnumTypeComboBox_SkillRelease_Belief
-            // 
-            this.EnumTypeComboBox_SkillRelease_Belief.IsChangedValue = true;
-            this.EnumTypeComboBox_SkillRelease_Belief.ListenControl = "TextBox_SkillRelease_Belief";
-            this.EnumTypeComboBox_SkillRelease_Belief.Location = new System.Drawing.Point(362, 180);
-            this.EnumTypeComboBox_SkillRelease_Belief.Name = "EnumTypeComboBox_SkillRelease_Belief";
-            this.EnumTypeComboBox_SkillRelease_Belief.Size = new System.Drawing.Size(422, 32);
-            this.EnumTypeComboBox_SkillRelease_Belief.TabIndex = 3;
-            this.EnumTypeComboBox_SkillRelease_Belief.Tag = "";
-            this.EnumTypeComboBox_SkillRelease_Belief.TextValue = null;
-            this.EnumTypeComboBox_SkillRelease_Belief.TypeTag = "EnumSkillBelief";
-            this.EnumTypeComboBox_SkillRelease_Belief.SelectedChanged += new System.EventHandler<SkillDataFileEditor.EnumTypeCBOSelectedChangedEventArgs>(this.EnumTypeComboBox_SelectedChanged);
-            // 
-            // TextBox_SkillRelease_Belief
-            // 
-            this.TextBox_SkillRelease_Belief.Location = new System.Drawing.Point(122, 180);
-            this.TextBox_SkillRelease_Belief.Name = "TextBox_SkillRelease_Belief";
-            this.TextBox_SkillRelease_Belief.ReadOnly = true;
-            this.TextBox_SkillRelease_Belief.Size = new System.Drawing.Size(225, 25);
-            this.TextBox_SkillRelease_Belief.TabIndex = 4;
-            // 
-            // Label_SkillRelease_Explan
-            // 
-            this.Label_SkillRelease_Explan.AutoSize = true;
-            this.Label_SkillRelease_Explan.Location = new System.Drawing.Point(21, 394);
-            this.Label_SkillRelease_Explan.Name = "Label_SkillRelease_Explan";
-            this.Label_SkillRelease_Explan.Size = new System.Drawing.Size(67, 15);
-            this.Label_SkillRelease_Explan.TabIndex = 5;
-            this.Label_SkillRelease_Explan.Text = "效果说明";
-            // 
-            // TextBox_SkillRelease_Explan
-            // 
-            this.TextBox_SkillRelease_Explan.Location = new System.Drawing.Point(122, 391);
-            this.TextBox_SkillRelease_Explan.Multiline = true;
-            this.TextBox_SkillRelease_Explan.Name = "TextBox_SkillRelease_Explan";
-            this.TextBox_SkillRelease_Explan.Size = new System.Drawing.Size(704, 191);
-            this.TextBox_SkillRelease_Explan.TabIndex = 6;
-            this.TextBox_SkillRelease_Explan.Tag = "skillExplan";
-            // 
-            // Label_SkillRelease_Effect
-            // 
-            this.Label_SkillRelease_Effect.AutoSize = true;
-            this.Label_SkillRelease_Effect.Location = new System.Drawing.Point(21, 228);
-            this.Label_SkillRelease_Effect.Name = "Label_SkillRelease_Effect";
-            this.Label_SkillRelease_Effect.Size = new System.Drawing.Size(67, 15);
-            this.Label_SkillRelease_Effect.TabIndex = 7;
-            this.Label_SkillRelease_Effect.Text = "技能效果";
-            // 
-            // AutoArrayControl_SkillRelease_Effect
-            // 
-            this.AutoArrayControl_SkillRelease_Effect.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
-            this.AutoArrayControl_SkillRelease_Effect.Count = 5;
-            this.AutoArrayControl_SkillRelease_Effect.IsChangedValue = false;
-            this.AutoArrayControl_SkillRelease_Effect.Location = new System.Drawing.Point(122, 218);
-            this.AutoArrayControl_SkillRelease_Effect.Name = "AutoArrayControl_SkillRelease_Effect";
-            this.AutoArrayControl_SkillRelease_Effect.Size = new System.Drawing.Size(704, 167);
-            this.AutoArrayControl_SkillRelease_Effect.TabIndex = 8;
-            this.AutoArrayControl_SkillRelease_Effect.Tag = "skillStatusEffect";
-            this.AutoArrayControl_SkillRelease_Effect.TextValues = new string[] {
-        null,
-        null,
-        null,
-        null,
-        null};
-            this.AutoArrayControl_SkillRelease_Effect.TypeTag = "EnumStatusEffect";
             // 
             // SkillDataFileEditorForm
             // 
