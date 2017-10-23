@@ -15,7 +15,7 @@ namespace SynthesisDataFileEditor
         /// <summary>
         /// 上次选择的路径
         /// </summary>
-        public static string lastPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillData";
+        public static string lastPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisData";
 
         /// <summary>
         /// 新建文件的路径

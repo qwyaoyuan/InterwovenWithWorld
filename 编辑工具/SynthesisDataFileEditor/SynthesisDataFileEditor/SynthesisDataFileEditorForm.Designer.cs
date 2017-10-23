@@ -33,10 +33,10 @@
             this.打开方案ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.新建方案ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.保存方案ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TreeView_Main = new System.Windows.Forms.TreeView();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.添加节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除节点ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeView_Main = new System.Windows.Forms.TreeView();
             this.MenuStrip_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,31 +67,24 @@
             // 打开方案ToolStripMenuItem
             // 
             this.打开方案ToolStripMenuItem.Name = "打开方案ToolStripMenuItem";
-            this.打开方案ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.打开方案ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.打开方案ToolStripMenuItem.Text = "打开方案";
             this.打开方案ToolStripMenuItem.Click += new System.EventHandler(this.打开方案ToolStripMenuItem_Click);
             // 
             // 新建方案ToolStripMenuItem
             // 
             this.新建方案ToolStripMenuItem.Name = "新建方案ToolStripMenuItem";
-            this.新建方案ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.新建方案ToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.新建方案ToolStripMenuItem.Text = "新建方案";
             this.新建方案ToolStripMenuItem.Click += new System.EventHandler(this.新建方案ToolStripMenuItem_Click);
             // 
             // 保存方案ToolStripMenuItem
             // 
+            this.保存方案ToolStripMenuItem.Enabled = false;
             this.保存方案ToolStripMenuItem.Name = "保存方案ToolStripMenuItem";
             this.保存方案ToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.保存方案ToolStripMenuItem.Text = "保存方案";
             this.保存方案ToolStripMenuItem.Click += new System.EventHandler(this.保存方案ToolStripMenuItem_Click);
-            // 
-            // TreeView_Main
-            // 
-            this.TreeView_Main.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TreeView_Main.Location = new System.Drawing.Point(0, 28);
-            this.TreeView_Main.Name = "TreeView_Main";
-            this.TreeView_Main.Size = new System.Drawing.Size(995, 602);
-            this.TreeView_Main.TabIndex = 1;
             // 
             // toolStripMenuItem1
             // 
@@ -101,15 +94,28 @@
             // 
             // 添加节点ToolStripMenuItem
             // 
+            this.添加节点ToolStripMenuItem.Enabled = false;
             this.添加节点ToolStripMenuItem.Name = "添加节点ToolStripMenuItem";
             this.添加节点ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
             this.添加节点ToolStripMenuItem.Text = "添加节点";
+            this.添加节点ToolStripMenuItem.Click += new System.EventHandler(this.添加节点ToolStripMenuItem_Click);
             // 
             // 删除节点ToolStripMenuItem
             // 
+            this.删除节点ToolStripMenuItem.Enabled = false;
             this.删除节点ToolStripMenuItem.Name = "删除节点ToolStripMenuItem";
             this.删除节点ToolStripMenuItem.Size = new System.Drawing.Size(81, 24);
             this.删除节点ToolStripMenuItem.Text = "删除节点";
+            this.删除节点ToolStripMenuItem.Click += new System.EventHandler(this.删除节点ToolStripMenuItem_Click);
+            // 
+            // TreeView_Main
+            // 
+            this.TreeView_Main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TreeView_Main.Location = new System.Drawing.Point(0, 28);
+            this.TreeView_Main.Name = "TreeView_Main";
+            this.TreeView_Main.Size = new System.Drawing.Size(995, 602);
+            this.TreeView_Main.TabIndex = 1;
+            this.TreeView_Main.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TreeView_Main_NodeMouseDoubleClick);
             // 
             // SynthesisDataFileEditorForm
             // 

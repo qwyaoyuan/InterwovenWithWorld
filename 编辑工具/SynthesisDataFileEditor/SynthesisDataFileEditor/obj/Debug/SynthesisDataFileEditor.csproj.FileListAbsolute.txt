@@ -6,3 +6,5 @@ E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\Synthesi
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisDataFileEditor\SynthesisDataFileEditor\obj\Debug\SynthesisDataFileEditor.exe
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisDataFileEditor\SynthesisDataFileEditor\obj\Debug\SynthesisDataFileEditor.pdb
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisDataFileEditor\SynthesisDataFileEditor\obj\Debug\SynthesisDataFileEditor.SynthesisDataFileEditorForm.resources
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisDataFileEditor\SynthesisDataFileEditor\obj\Debug\SynthesisDataFileEditor.DataEditorForm.resources
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SynthesisDataFileEditor\SynthesisDataFileEditor\obj\Debug\SynthesisDataFileEditor.SynthesisItemControl.resources

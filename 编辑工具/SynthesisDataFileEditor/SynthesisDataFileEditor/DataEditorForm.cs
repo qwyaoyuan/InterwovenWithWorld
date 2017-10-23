@@ -87,7 +87,7 @@ namespace SynthesisDataFileEditor
                         layer3TreeNode.Tag = layer3TempDataStruct[0].type;
                         layer2TreeNode.Nodes.Add(layer3TreeNode);
                         #endregion
-                        for (int l = 1;  l < layer3TempDataStruct.Length;  l++)
+                        for (int l = 1; l < layer3TempDataStruct.Length; l++)
                         {
                             TreeNode layer4TreeNode = new TreeNode();
                             layer4TreeNode.Text = layer3TempDataStruct[l].name;
@@ -106,13 +106,323 @@ namespace SynthesisDataFileEditor
         /// </summary>
         TreeNode treeNode;
 
+        /// <summary>
+        /// 合成数据对象
+        /// </summary>
+        SynthesisDataStruct synthesisDataStruct;
 
         public DataEditorForm(TreeNode treeNode)
         {
             InitializeComponent();
             this.treeNode = treeNode;
+            this.synthesisDataStruct = treeNode.Tag as SynthesisDataStruct;
             if (itemTreeNodeArray == null)
                 itemTreeNodeArray = GetItemTypeTreeNodes();
+            TreeView_ItemType.Nodes.AddRange(itemTreeNodeArray);
+            Init();
+
+            GroupBox_From.AllowDrop = true;
+            GroupBox_To.AllowDrop = true;
         }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        private void Init()
+        {
+            TextBox_ID.Text = synthesisDataStruct.id.ToString();
+            TextBox_Name.Text = synthesisDataStruct.name == null ? "" : synthesisDataStruct.name;
+            TextBox_Name.TextChanged += (sender, e) => { synthesisDataStruct.name = TextBox_Name.Text.Trim(); };
+            TextBox_SynthesisType.Text = treeNode.Parent.Parent.Text;
+            TextBox_SynthesisItem.Text = treeNode.Parent.Text;
+            NumericUpDown_Time.Value = synthesisDataStruct.time;
+            NumericUpDown_Time.ValueChanged += (sender, e) => { synthesisDataStruct.time = (int)NumericUpDown_Time.Value; };
+            if (synthesisDataStruct.inputStruct == null)
+                synthesisDataStruct.inputStruct = new SynthesisDataStruct.SynthesisItemStruct[0];
+            if (synthesisDataStruct.inputStruct.Length > 0)
+            {
+                foreach (SynthesisDataStruct.SynthesisItemStruct itemStruct in synthesisDataStruct.inputStruct)
+                {
+                    AddDataToGroupBox_From(itemStruct);
+                }
+            }
+            if (synthesisDataStruct.outputStruct != null)
+                ChangedDataToGroupBox_To(synthesisDataStruct.outputStruct);
+        }
+
+        /// <summary>
+        /// 给GroupBox_To控件更换一条数据
+        /// </summary>
+        /// <param name="itemStruct"></param>
+        private void ChangedDataToGroupBox_To(SynthesisDataStruct.SynthesisItemStruct itemStruct)
+        {
+            GroupBox_To.Controls.Clear();
+            SynthesisItemControl synthesisItemControl = new SynthesisItemControl(itemStruct);
+            GroupBox_To.Controls.Add(synthesisItemControl);
+            synthesisItemControl.Location = new Point(3, 23);
+            synthesisItemControl.Size = new Size(GroupBox_From.Size.Width - 6, 30);
+            synthesisItemControl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+        }
+
+        /// <summary>
+        /// 给GroupBox_From控件添加一条数据
+        /// </summary>
+        /// <param name="itemStruct"></param>
+        private void AddDataToGroupBox_From(SynthesisDataStruct.SynthesisItemStruct itemStruct)
+        {
+            SynthesisDataStruct.SynthesisItemStruct _itemStruct = itemStruct;
+            SynthesisItemControl synthesisItemControl = new SynthesisItemControl(_itemStruct);
+            Button closeBtn = new Button();
+            closeBtn.Text = "×";
+            closeBtn.Click += (sender, e) =>
+            {
+                GroupBox_From.Controls.Remove(synthesisItemControl);
+                GroupBox_From.Controls.Remove(closeBtn);
+                synthesisDataStruct.inputStruct = synthesisDataStruct.inputStruct.Where(temp => !temp.Equals(_itemStruct)).ToArray();
+                UpdateGroupBox_From();
+            };
+            synthesisItemControl.Tag = closeBtn;
+            closeBtn.Tag = synthesisItemControl;
+            GroupBox_From.Controls.Add(synthesisItemControl);
+            GroupBox_From.Controls.Add(closeBtn);
+            UpdateGroupBox_From();
+        }
+
+        /// <summary>
+        /// 刷新GroupBox_From界面
+        /// </summary>
+        private void UpdateGroupBox_From()
+        {
+            SynthesisItemControl[] synthesisItemControls = GroupBox_From.Controls.OfType<SynthesisItemControl>().ToArray();
+            int height = 20;
+            foreach (SynthesisItemControl synthesisItemControl in synthesisItemControls)
+            {
+                height += 3;
+                synthesisItemControl.Location = new Point(3, height);
+                synthesisItemControl.Size = new Size(GroupBox_From.Size.Width - (9 + 30), 30);
+                synthesisItemControl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                Button btn = synthesisItemControl.Tag as Button;
+                btn.Location = new Point(GroupBox_From.Size.Width - (3 + 30), height);
+                btn.Size = new Size(30, 30);
+                btn.Anchor = AnchorStyles.Right | AnchorStyles.Top;
+                height += 30;
+            }
+        }
+
+        /// <summary>
+        /// 关闭窗口
+        /// 清空树并刷新节点的显示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataEditorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            TreeView_ItemType.Nodes.Clear();
+            treeNode.Text = synthesisDataStruct.ToStringSimple();
+        }
+
+        /// <summary>
+        /// 点击给From控件添加一条数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_GiveFrom_Click(object sender, EventArgs e)
+        {
+            TreeNode selectItemTypeNode = TreeView_ItemType.SelectedNode;
+            AddNewItemStructToGirveFromByTreeNode(selectItemTypeNode);
+        }
+
+        /// <summary>
+        /// 通过一个选中节点添加一个输入结构
+        /// </summary>
+        /// <param name="selectItemTypeNode">选中节点</param>
+        private void AddNewItemStructToGirveFromByTreeNode(TreeNode selectItemTypeNode)
+        {
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            {
+                SynthesisDataStruct.SynthesisItemStruct itemStruct = new SynthesisDataStruct.SynthesisItemStruct();
+                itemStruct.itemType = (EnumItemType)selectItemTypeNode.Tag;
+                itemStruct.num = 1;
+                itemStruct.minQuality = EnumQualityType.White;
+                itemStruct.maxQuality = EnumQualityType.White;
+                if (synthesisDataStruct.inputStruct == null)
+                {
+                    synthesisDataStruct.inputStruct = new SynthesisDataStruct.SynthesisItemStruct[1];
+                    synthesisDataStruct.inputStruct[0] = itemStruct;
+                }
+                else
+                {
+                    //如果已经存在相同的材料则直接返回
+                    if (synthesisDataStruct.inputStruct.Count(temp => temp.itemType == itemStruct.itemType) > 0)
+                    {
+                        MessageBox.Show("已经存在该材料");
+                        return;
+                    }
+                    else
+                    {
+                        SynthesisDataStruct.SynthesisItemStruct[] tempArray = new SynthesisDataStruct.SynthesisItemStruct[synthesisDataStruct.inputStruct.Length + 1];
+                        Array.Copy(synthesisDataStruct.inputStruct, tempArray, synthesisDataStruct.inputStruct.Length);
+                        tempArray[tempArray.Length - 1] = itemStruct;
+                        synthesisDataStruct.inputStruct = tempArray;
+                    }
+                }
+                AddDataToGroupBox_From(itemStruct);
+            }
+        }
+
+        /// <summary>
+        /// 点击给To控件替换或者添加一条数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_GiveTo_Click(object sender, EventArgs e)
+        {
+            TreeNode selectItemTypeNode = TreeView_ItemType.SelectedNode;
+            ChangedItemStructToGirveToByTreeNode(selectItemTypeNode);
+        }
+
+        /// <summary>
+        /// 通过一个选中节点替换或添加一个输出结构
+        /// </summary>
+        /// <param name="selectItemTypeNode"></param>
+        private void ChangedItemStructToGirveToByTreeNode(TreeNode selectItemTypeNode)
+        {
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            {
+                SynthesisDataStruct.SynthesisItemStruct itemStruct = new SynthesisDataStruct.SynthesisItemStruct();
+                itemStruct.itemType = (EnumItemType)selectItemTypeNode.Tag;
+                itemStruct.num = 1;
+                itemStruct.minQuality = EnumQualityType.White;
+                itemStruct.maxQuality = EnumQualityType.White;
+                if (synthesisDataStruct.outputStruct == null)
+                    synthesisDataStruct.outputStruct = itemStruct;
+                else
+                {
+                    if (synthesisDataStruct.outputStruct.itemType == itemStruct.itemType)
+                    {
+                        MessageBox.Show("已经存在该材料");
+                        return;
+                    }
+                    else
+                    {
+                        DialogResult dr = MessageBox.Show("是否替换材料？", "警告！", MessageBoxButtons.YesNo);
+                        if (dr == DialogResult.No)
+                            return;
+                        synthesisDataStruct.outputStruct = itemStruct;
+                    }
+                }
+                ChangedDataToGroupBox_To(itemStruct);
+            }
+        }
+
+
+        #region 拖拽操作
+        /// <summary>
+        /// 开始拖拽
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TreeView_ItemType_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            TreeNode selectItemTypeNode = TreeView_ItemType.SelectedNode;
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            {
+                TreeView_ItemType.DoDragDrop(selectItemTypeNode, DragDropEffects.Copy);
+            }
+        }
+
+        /// <summary>
+        /// 数据拖拽进输入数据控件中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupBox_From_DragEnter(object sender, DragEventArgs e)
+        {
+            try
+            {
+                DataObject dataObject = e.Data as DataObject;
+                if (dataObject != null)
+                {
+                    object value = dataObject.GetData(typeof(TreeNode));
+                    if (value != null)
+                    {
+                        e.Effect = DragDropEffects.Copy;
+                    }
+                }
+            }
+            catch { }
+        }
+
+
+        /// <summary>
+        /// 拖拽操作在输入控件中完成时
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupBox_From_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                DataObject dataObject = e.Data as DataObject;
+                if (dataObject != null)
+                {
+                    object value = dataObject.GetData(typeof(TreeNode));
+                    if (value != null)
+                    {
+                        TreeNode treeNode = value as TreeNode;
+                        AddNewItemStructToGirveFromByTreeNode(treeNode);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 数据拖拽进输入数据控件中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupBox_To_DragEnter(object sender, DragEventArgs e)
+        {
+            try
+            {
+                DataObject dataObject = e.Data as DataObject;
+                if (dataObject != null)
+                {
+                    object value = dataObject.GetData(typeof(TreeNode));
+                    if (value != null)
+                    {
+                        e.Effect = DragDropEffects.Copy;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 拖拽操作在输入控件中完成时
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GroupBox_To_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                DataObject dataObject = e.Data as DataObject;
+                if (dataObject != null)
+                {
+                    object value = dataObject.GetData(typeof(TreeNode));
+                    if (value != null)
+                    {
+                        TreeNode treeNode = value as TreeNode;
+                        ChangedItemStructToGirveToByTreeNode(treeNode);
+                    }
+                }
+            }
+            catch { }
+        }
+        #endregion
+
+
     }
 }

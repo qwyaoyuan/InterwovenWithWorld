@@ -27,8 +27,20 @@ public enum EnumItemType
     /// </summary>
     [FieldExplan("Ìú¿óÊ¯")]
     TieKuangShi= 1101001,
+    /// <summary>
+    /// Ã«Åß
+    /// </summary>
+    [FieldExplan("Ã«Åß")]
+    MaoPei = 1101002,
+    /// <summary>
+    /// Ìú½£
+    /// </summary>
+    [FieldExplan("Ìú½£")]
+    TieJian = 1101003,
     #endregion
     #endregion
     #endregion
     #endregion
+
+
 }

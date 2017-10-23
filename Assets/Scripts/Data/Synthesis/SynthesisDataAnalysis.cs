@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 /// <summary>
@@ -10,24 +11,9 @@ using System.Text;
 public class SynthesisDataAnalysis
 {
     /// <summary>
-    /// 私有静态对象
-    /// </summary>
-    private static SynthesisDataAnalysis instance;
-    /// <summary>
-    /// 合成数据解析的单例对象
-    /// </summary>
-    public static SynthesisDataAnalysis Instance
-    {
-        get
-        {
-            if (instance == null) instance = new SynthesisDataAnalysis();
-            return instance;
-        }
-    }
-    /// <summary>
     /// 合成数据解析的私有构造函数
     /// </summary>
-    private SynthesisDataAnalysis()
+    public SynthesisDataAnalysis()
     {
         synthesisDataStructList = new List<SynthesisDataStruct>();
     }
@@ -89,7 +75,7 @@ public class SynthesisDataAnalysis
         foreach (SynthesisDataStruct synthesisDataStruct in synthesisDataStructList)
         {
             result += StartFlag + "\r\n";
-            result += synthesisDataStruct.ToString();
+            result += synthesisDataStruct.ToString() + "\r\n";
             result += EndFlag + "\r\n";
         }
         return result;
@@ -159,7 +145,7 @@ public class SynthesisDataStruct
     /// </summary>
     public string name;
     /// <summary>
-    /// 合成时间
+    /// 合成时间（单位分钟）
     /// </summary>
     public int time;
     /// <summary>
@@ -196,7 +182,7 @@ public class SynthesisDataStruct
         /// <summary>
         /// 材料或成品类型
         /// </summary>
-        public EnumSynthesisItem synthesisItem;
+        public EnumItemType itemType;
         /// <summary>
         /// 材料或成品数量
         /// </summary>
@@ -217,7 +203,7 @@ public class SynthesisDataStruct
         public override string ToString()
         {
             string result = "";
-            result += "synthesisItem" + dataValueSplit[0] + synthesisItem + dataLineSplit[0];
+            result += "itemType" + dataValueSplit[0] + itemType + dataLineSplit[0];
             result += "num" + dataValueSplit[0] + num + dataLineSplit[0];
             result += "minQuality" + dataValueSplit[0] + minQuality + dataLineSplit[0];
             result += "maxQuality" + dataValueSplit[0] + maxQuality + dataLineSplit[0];
@@ -238,8 +224,8 @@ public class SynthesisDataStruct
                 {
                     switch (datas[0])
                     {
-                        case "synthesisItem":
-                            try { synthesisItem = (EnumSynthesisItem)Enum.Parse(typeof(EnumSynthesisItem), datas[1].Trim()); } catch { }
+                        case "itemType":
+                            try { itemType = (EnumItemType)Enum.Parse(typeof(EnumItemType), datas[1].Trim()); } catch { }
                             break;
                         case "num":
                             int.TryParse(datas[1].Trim(), out num);
@@ -279,7 +265,7 @@ public class SynthesisDataStruct
             }
         }
         result += dataLineSplit[0];
-        result += "outputStruct" + dataValueSplit[0] + outputStruct.ToString() + dataLineSplit[0];
+        result += "outputStruct" + dataValueSplit[0] + (outputStruct == null ? "" : outputStruct.ToString()) + dataLineSplit[0];
         return result;
     }
 
@@ -346,12 +332,12 @@ public class SynthesisDataStruct
             foreach (SynthesisItemStruct synthesisItemStruct in inputStruct)
             {
                 if (synthesisItemStruct != null)
-                    result += GetEnumExplan(synthesisItemStruct.synthesisItem) + " ";
+                    result += GetEnumExplan(synthesisItemStruct.itemType) + " ";
                 else result += "空 ";
             }
         }
         result += "   ";
-        result += "合成物品:" + (outputStruct != null ? GetEnumExplan(outputStruct.synthesisItem) : "");
+        result += "合成物品:" + (outputStruct != null ? GetEnumExplan(outputStruct.itemType) : "");
         return result;
     }
 
@@ -360,9 +346,17 @@ public class SynthesisDataStruct
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    private string GetEnumExplan(Enum target)
+    public static string GetEnumExplan(Enum target)
     {
-        return "";
+        Type type = target.GetType();
+        FieldInfo fieldInfo = type.GetFields().Where(temp => temp.Name.Equals(target.ToString())).FirstOrDefault();
+        if (fieldInfo != null)
+        {
+            FieldExplanAttribute attr = fieldInfo.GetCustomAttributes(typeof(FieldExplanAttribute), false).Select(temp => temp as FieldExplanAttribute).FirstOrDefault();
+            if (attr != null)
+                return attr.GetExplan();
+        }
+        return target.ToString();
     }
 
     /// <summary>
