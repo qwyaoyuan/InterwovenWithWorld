@@ -1,3 +1,6 @@
 ﻿[Start]
-idP==>0!@#$%^&*nameP==>铁剑!@#$%^&*timeP==>1!@#$%^&*synthesisTypeP==>Alchemy!@#$%^&*synthesisItemP==>Weapon!@#$%^&*inputStructP==>{itemTypeC==>TieKuangShi*&^%$#@!numC==>3*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>White*&^%$#@!}{itemTypeC==>MaoPei*&^%$#@!numC==>1*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>White*&^%$#@!}!@#$%^&*outputStructP==>itemTypeC==>TieJian*&^%$#@!numC==>1*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>White*&^%$#@!!@#$%^&*
+idP==>0!@#$%^&*nameP==>铸锭!@#$%^&*timeP==>1!@#$%^&*levelP==>0!@#$%^&*synthesisTypeP==>Forge!@#$%^&*synthesisItemP==>Make!@#$%^&*inputStructP==>{itemTypeC==>TieKuangShi*&^%$#@!numC==>3*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>Yellow*&^%$#@!}!@#$%^&*outputStructP==>itemTypeC==>MaoPei*&^%$#@!numC==>1*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>Yellow*&^%$#@!!@#$%^&*
+[End]
+[Start]
+idP==>2!@#$%^&*nameP==>铁剑!@#$%^&*timeP==>1!@#$%^&*levelP==>0!@#$%^&*synthesisTypeP==>Forge!@#$%^&*synthesisItemP==>Weapon!@#$%^&*inputStructP==>{itemTypeC==>TieKuangShi*&^%$#@!numC==>3*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>Blue*&^%$#@!}{itemTypeC==>MaoPei*&^%$#@!numC==>1*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>Blue*&^%$#@!}!@#$%^&*outputStructP==>itemTypeC==>TieJian*&^%$#@!numC==>1*&^%$#@!minQualityC==>White*&^%$#@!maxQualityC==>Blue*&^%$#@!!@#$%^&*
 [End]

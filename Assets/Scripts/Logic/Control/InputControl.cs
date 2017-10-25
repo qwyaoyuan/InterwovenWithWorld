@@ -5,14 +5,14 @@ using UnityEngine;
 /// <summary>
 /// 输入管理器
 /// </summary>
-public class InputControl : MonoBehaviour
+public class InputControl : IEntrance
 {
     /// <summary>
     /// 输入对象集合
     /// </summary>
     List<IInput> inputList;
 
-    void Start()
+    public void Start()
     {
         inputList.Add(SettingManager.Instance);
         inputList.Add(MoveManager.Instance);
@@ -20,10 +20,11 @@ public class InputControl : MonoBehaviour
         inputList.Add(SkillManager.Instance);
     }
 
-    void Update()
+    public void Update()
     {
 
     }
 
+    public void OnDestroy() { }
     
 }

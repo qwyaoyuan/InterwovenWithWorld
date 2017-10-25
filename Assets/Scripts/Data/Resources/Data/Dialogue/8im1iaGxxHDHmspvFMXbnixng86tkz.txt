@@ -1,0 +1,15 @@
+﻿[Start]
+dialogueID==>0!@#$%^&*npcID==>1!@#$%^&*voiceID==>1!@#$%^&*titleValue==>向你问好!@#$%^&*showValue==>你好冒险家!@#$%^&*otherValue==>7!@#$%^&*
+[End]
+[Start]
+dialogueID==>1!@#$%^&*npcID==>-1!@#$%^&*voiceID==>2!@#$%^&*titleValue==>粗暴的回复!@#$%^&*showValue==>你麻痹!@#$%^&*otherValue==>12!@#$%^&*
+[End]
+[Start]
+dialogueID==>2!@#$%^&*npcID==>-1!@#$%^&*voiceID==>3!@#$%^&*titleValue==>友好的问好!@#$%^&*showValue==>你好!@#$%^&*otherValue==>17!@#$%^&*
+[End]
+[Start]
+dialogueID==>3!@#$%^&*npcID==>1!@#$%^&*voiceID==>4!@#$%^&*titleValue==>回复!@#$%^&*showValue==>请你。。。!@#$%^&*otherValue==>22!@#$%^&*
+[End]
+[Start]
+dialogueID==>5!@#$%^&*npcID==>1!@#$%^&*voiceID==>2!@#$%^&*titleValue==>你是个好人!@#$%^&*showValue==>你真是个好人啊!@#$%^&*otherValue==>!@#$%^&*
+[End]

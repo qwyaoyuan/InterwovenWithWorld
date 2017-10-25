@@ -100,6 +100,15 @@ public class SynthesisDataAnalysis
     }
 
     /// <summary>
+    /// 获取所有合成数据
+    /// </summary>
+    /// <returns></returns>
+    public SynthesisDataStruct[] GetAllData()
+    {
+        return synthesisDataStructList.ToArray();
+    }
+
+    /// <summary>
     /// 添加一个合成结构对象
     /// </summary>
     /// <param name="synthesisDataStruct"></param>
@@ -148,6 +157,10 @@ public class SynthesisDataStruct
     /// 合成时间（单位分钟）
     /// </summary>
     public int time;
+    /// <summary>
+    /// 可合成等级
+    /// </summary>
+    public int level;
     /// <summary>
     /// 合成的类别，是炼金还是打造
     /// </summary>
@@ -252,6 +265,7 @@ public class SynthesisDataStruct
         result += "id" + dataValueSplit[0] + id + dataLineSplit[0];
         result += "name" + dataValueSplit[0] + name + dataLineSplit[0];
         result += "time" + dataValueSplit[0] + time + dataLineSplit[0];
+        result += "level" + dataValueSplit[0] + level + dataLineSplit[0];
         result += "synthesisType" + dataValueSplit[0] + synthesisType + dataLineSplit[0];
         result += "synthesisItem" + dataValueSplit[0] + synthesisItem + dataLineSplit[0];
         result += "inputStruct" + dataValueSplit[0];
@@ -292,6 +306,9 @@ public class SynthesisDataStruct
                     case "time":
                         int.TryParse(datas[1].Trim(), out time);
                         break;
+                    case "level":
+                        int.TryParse(datas[1].Trim(), out level);
+                        break;
                     case "synthesisType":
                         try { synthesisType = (EnumSynthesisType)Enum.Parse(typeof(EnumSynthesisType), datas[1].Trim()); } catch { }
                         break;
@@ -326,6 +343,7 @@ public class SynthesisDataStruct
         result += "ID:" + id + "    ";
         result += "合成名:" + name + "    ";
         result += "合成时间:" + time + "    ";
+        result += "可合成等级:" + level + "    ";
         result += "合成材料:种类[" + (inputStruct == null ? 0 : inputStruct.Length) + "] ";
         if (inputStruct != null)
         {

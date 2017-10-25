@@ -137,6 +137,8 @@ namespace SynthesisDataFileEditor
             TextBox_SynthesisItem.Text = treeNode.Parent.Text;
             NumericUpDown_Time.Value = synthesisDataStruct.time;
             NumericUpDown_Time.ValueChanged += (sender, e) => { synthesisDataStruct.time = (int)NumericUpDown_Time.Value; };
+            NumericUpDown_Level.Value = synthesisDataStruct.level;
+            NumericUpDown_Level.ValueChanged += (sender, e) => { synthesisDataStruct.level = (int)NumericUpDown_Level.Value; };
             if (synthesisDataStruct.inputStruct == null)
                 synthesisDataStruct.inputStruct = new SynthesisDataStruct.SynthesisItemStruct[0];
             if (synthesisDataStruct.inputStruct.Length > 0)

@@ -36,11 +36,11 @@ public class SkillCombinDisk
     public SkillBaseStruct[] GetNextSkill(params SkillBaseStruct[] fromSkill)
     {
         if (fromSkill.Length == 0)
-            return SkillStructData.Instance.GetSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel1Start && temp.skillType < EnumSkillType.MagicCombinedLevel1End);
+            return SkillStructData.Instance.SearchSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel1Start && temp.skillType < EnumSkillType.MagicCombinedLevel1End);
         if (fromSkill.Length == 1)
         {
             SkillBaseStruct skill1 = fromSkill[0];
-            SkillBaseStruct[] skills2 = SkillStructData.Instance.GetSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
+            SkillBaseStruct[] skills2 = SkillStructData.Instance.SearchSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
             skills2 = skills2.Where(temp => GetCanCombinSkill(skill1, temp)).ToArray();
             return skills2;
         }
@@ -48,7 +48,7 @@ public class SkillCombinDisk
         {
             SkillBaseStruct skill1 = fromSkill[0];
             SkillBaseStruct skill2 = fromSkill[1];
-            SkillBaseStruct[] skills3 = SkillStructData.Instance.GetSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel3Start && temp.skillType < EnumSkillType.MagicCombinedLevel3End);
+            SkillBaseStruct[] skills3 = SkillStructData.Instance.SearchSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel3Start && temp.skillType < EnumSkillType.MagicCombinedLevel3End);
             skills3 = skills3.Where(temp => GetCanCombinSkill(skill1, skill2, temp)).ToArray();
             return skills3;
         }
@@ -57,7 +57,7 @@ public class SkillCombinDisk
             SkillBaseStruct skill1 = fromSkill[0];
             SkillBaseStruct skill2 = fromSkill[1];
             SkillBaseStruct skill3 = fromSkill[2];
-            SkillBaseStruct[] skills4 = SkillStructData.Instance.GetSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel4Start && temp.skillType < EnumSkillType.MagicCombinedLevel4End);
+            SkillBaseStruct[] skills4 = SkillStructData.Instance.SearchSkillDatas(temp => temp.skillType > EnumSkillType.MagicCombinedLevel4Start && temp.skillType < EnumSkillType.MagicCombinedLevel4End);
             skills4 = skills4.Where(temp => GetCanCombinSkill(skill1, skill2, skill3, temp)).ToArray();
             return skills4;
         }

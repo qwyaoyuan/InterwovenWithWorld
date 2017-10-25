@@ -291,6 +291,7 @@
             this.TextBox_SkillRelease_Belief.ReadOnly = true;
             this.TextBox_SkillRelease_Belief.Size = new System.Drawing.Size(225, 25);
             this.TextBox_SkillRelease_Belief.TabIndex = 4;
+            this.TextBox_SkillRelease_Belief.Tag = "skillBelief";
             // 
             // EnumTypeComboBox_SkillRelease_Belief
             // 

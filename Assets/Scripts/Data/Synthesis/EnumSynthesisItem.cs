@@ -14,4 +14,9 @@ public enum EnumSynthesisItem
     /// </summary>
     [FieldExplan("防具")]
     Armor,
+    /// <summary>
+    /// 打造材料
+    /// </summary>
+    [FieldExplan("打造材料")]
+    Make,
 }
