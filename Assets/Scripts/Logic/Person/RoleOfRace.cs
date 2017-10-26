@@ -247,9 +247,9 @@ public class RoleOfRaceHelper
         //========精灵===========
         var elven = roleOfRaceTree.TopNode.AddChild(RoleOfRace.Elven);
         //精灵-->半精灵、木精灵、光精灵、黑精灵
-        elven.AddChilds(RoleOfRace.Halfelven,RoleOfRace.WoodElven,RoleOfRace.LightElven,RoleOfRace.BlackElven);
+        elven.AddChilds(RoleOfRace.Halfelven, RoleOfRace.WoodElven, RoleOfRace.LightElven, RoleOfRace.BlackElven);
         //半精灵-->唤兽者、聆听者
-        elven.Children[0].AddChilds(RoleOfRace.CallTheBeastor,RoleOfRace.Listener);
+        elven.Children[0].AddChilds(RoleOfRace.CallTheBeastor, RoleOfRace.Listener);
         //唤兽者-->自然之声
         elven.Children[0].Children[0].AddChild(RoleOfRace.NatureSound);
         //聆听者-->自然之声
@@ -257,10 +257,10 @@ public class RoleOfRaceHelper
         //木精灵-->自然精灵、洞穴精灵
         elven.Children[1].AddChilds(RoleOfRace.NatureElven, RoleOfRace.CaveElven);
         //自然精灵-->自然之声、精灵王
-        elven.Children[1].Children[0].AddChilds(RoleOfRace.NatureSound,RoleOfRace.ElvenKing);
+        elven.Children[1].Children[0].AddChilds(RoleOfRace.NatureSound, RoleOfRace.ElvenKing);
         elven.Children[1].Children[1].AddChild(RoleOfRace.ElvenKing);
         //光精灵-->太阳精灵、彩虹精灵
-        elven.Children[2].AddChilds(RoleOfRace.SunElven,RoleOfRace.RainbowElven);
+        elven.Children[2].AddChilds(RoleOfRace.SunElven, RoleOfRace.RainbowElven);
         //太阳精灵-->精灵王
         elven.Children[2].Children[0].AddChild(RoleOfRace.ElvenKing);
         //彩虹精灵-->精灵王、灵体
@@ -277,7 +277,7 @@ public class RoleOfRaceHelper
         //不死者-->黑精灵、死灵、骷髅、遗忘者
         athanasy.AddChilds(RoleOfRace.BlackElven, RoleOfRace.SoulsOfTheDead, RoleOfRace.Skeleton, RoleOfRace.Amnesiac);
         //黑精灵-->月精灵、暗夜精灵
-        athanasy.Children[0].AddChilds(RoleOfRace.MoonElven,RoleOfRace.DarkNightElven);
+        athanasy.Children[0].AddChilds(RoleOfRace.MoonElven, RoleOfRace.DarkNightElven);
         //月精灵-->灵体
         athanasy.Children[0].Children[0].AddChild(RoleOfRace.Souler);
         //暗夜精灵-->灵体
@@ -286,15 +286,15 @@ public class RoleOfRaceHelper
         //死灵-->死灵法师、食尸鬼
         athanasy.Children[1].AddChilds(RoleOfRace.SoulsOfTheDeadWizard, RoleOfRace.Ghoul);
         //死灵法师-->灵体、魔王
-        athanasy.Children[1].Children[0].AddChilds(RoleOfRace.Souler,RoleOfRace.Devil);
+        athanasy.Children[1].Children[0].AddChilds(RoleOfRace.Souler, RoleOfRace.Devil);
         //食尸鬼-->魔王
         athanasy.Children[1].Children[1].AddChild(RoleOfRace.Devil);
         //骷髅-->死亡骑士、骷髅王
-        athanasy.Children[2].AddChilds(RoleOfRace.DeathKnight,RoleOfRace.SkeletonKing);
+        athanasy.Children[2].AddChilds(RoleOfRace.DeathKnight, RoleOfRace.SkeletonKing);
         //死亡骑士-->魔王
         athanasy.Children[2].Children[0].AddChild(RoleOfRace.Devil);
         //骷髅王-->魔王、暗影
-        athanasy.Children[2].Children[1].AddChilds(RoleOfRace.Devil,RoleOfRace.Shadow);
+        athanasy.Children[2].Children[1].AddChilds(RoleOfRace.Devil, RoleOfRace.Shadow);
         //遗忘者-->吸血鬼
         athanasy.Children[3].AddChild(RoleOfRace.Vampire);
         //吸血鬼-->暗影
@@ -469,6 +469,13 @@ public class TreeNode<T>
         if (other.Tag != null && this.Tag == null)
             return false;
         return false;
+    }
+
+    public override int GetHashCode()
+    {
+        if (Tag != null)
+            return Tag.GetHashCode() ^ Data.GetHashCode();
+        return Data.GetHashCode();
     }
 }
 
