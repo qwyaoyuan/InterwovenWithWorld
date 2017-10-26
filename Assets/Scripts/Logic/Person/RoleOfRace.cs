@@ -3,27 +3,35 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+#if UNTIY_EDITOR
 using Debug = UnityEngine.Debug;
+#endif
 
 /// <summary>
 /// 角色种族
 /// </summary>
 public enum RoleOfRace
 {
+
+    [FieldExplan("无")]
+    None,
+
     /// <summary>
     /// 人类
     /// </summary>
+    [FieldExplan("人类")]
     Human,
-
 
     /// <summary>
     /// 精灵
     /// </summary>
+    [FieldExplan("精灵")]
     Elven,
 
     /// <summary>
     /// 不死者
     /// </summary>
+    [FieldExplan("不死者")]
     Athanasy,
 
 
@@ -32,47 +40,56 @@ public enum RoleOfRace
     /// <summary>
     /// 混血人
     /// </summary>
+    [FieldExplan("混血人")]
     Hybrid,
 
     /// <summary>
     /// 勇士
     /// </summary>
+    [FieldExplan("勇士")]
     Warrior,
 
     /// <summary>
     /// 半精灵
     /// </summary>
+    [FieldExplan("半精灵")]
     Halfelven,
 
     /// <summary>
     /// 木精灵
     /// </summary>
+    [FieldExplan("木精灵")]
     WoodElven,
 
     /// <summary>
     /// 光精灵
     /// </summary>
+    [FieldExplan("光精灵")]
     LightElven,
 
     /// <summary>
     /// 黑精灵
     /// </summary>
+    [FieldExplan("黑精灵")]
     BlackElven,
 
     /// <summary>
     /// 死灵
     /// </summary>
+    [FieldExplan("死灵")]
     SoulsOfTheDead,
 
     /// <summary>
     /// 骷颅
     /// </summary>
+    [FieldExplan("骷颅")]
     Skeleton,
 
 
     /// <summary>
     /// 遗忘者
     /// </summary>
+    [FieldExplan("遗忘者")]
     Amnesiac,
 
 
@@ -81,125 +98,147 @@ public enum RoleOfRace
     /// <summary>
     /// 逐光者
     /// </summary>
+    [FieldExplan("逐光者")]
     ByTheLight,
 
     /// <summary>
     /// 狂人
     /// </summary>
+    [FieldExplan("狂人")]
     Madman,
 
     /// <summary>
     /// 龙人
     /// </summary>
+    [FieldExplan("龙人")]
     Draconian,
 
     /// <summary>
     /// 勇者
     /// </summary>
+    [FieldExplan("勇者")]
     Brave,
 
     /// <summary>
     /// 侠客
     /// </summary>
+    [FieldExplan("侠客")]
     ChivalrousMan,
 
     /// <summary>
     /// 唤兽者
     /// </summary>
+    [FieldExplan("唤兽者")]
     CallTheBeastor,
 
     /// <summary>
     /// 聆听者
     /// </summary>
+    [FieldExplan("聆听者")]
     Listener,
 
     /// <summary>
     /// 自然精灵
     /// </summary>
+    [FieldExplan("自然精灵")]
     NatureElven,
 
     /// <summary>
     /// 洞穴精灵
     /// </summary>
+    [FieldExplan("洞穴精灵")]
     CaveElven,
 
     /// <summary>
     /// 太阳精灵
     /// </summary>
+    [FieldExplan("太阳精灵")]
     SunElven,
 
     /// <summary>
     /// 彩虹精灵
     /// </summary>
+    [FieldExplan("彩虹精灵")]
     RainbowElven,
 
 
     /// <summary>
     /// 月精灵
     /// </summary>
+    [FieldExplan("月精灵")]
     MoonElven,
 
     /// <summary>
     /// 暗夜精灵
     /// </summary>
+    [FieldExplan("暗夜精灵")]
     DarkNightElven,
 
     /// <summary>
     /// 死灵法师
     /// </summary>
+    [FieldExplan("死灵法师")]
     SoulsOfTheDeadWizard,
 
     /// <summary>
     /// 食尸鬼
     /// </summary>
+    [FieldExplan("食尸鬼")]
     Ghoul,
 
     /// <summary>
     /// 死亡骑士
     /// </summary>
+    [FieldExplan("死亡骑士")]
     DeathKnight,
 
     /// <summary>
     /// 骷髅王
     /// </summary>
+    [FieldExplan("骷髅王")]
     SkeletonKing,
 
     /// <summary>
     /// 吸血鬼
     /// </summary>
+    [FieldExplan("吸血鬼")]
     Vampire,
 
     /// <summary>
     /// 暗影
     /// </summary>
+    [FieldExplan("暗影")]
     Shadow,
 
     /// <summary>
     /// 英雄
     /// </summary>
+    [FieldExplan("英雄")]
     Hero,
 
     /// <summary>
     /// 自然之声
     /// </summary>
+    [FieldExplan("自然之声")]
     NatureSound,
 
     /// <summary>
     /// 精灵王
     /// </summary>
+    [FieldExplan("精灵王")]
     ElvenKing,
 
     /// <summary>
     /// 灵体
     /// </summary>
+    [FieldExplan("灵体")]
     Souler,
 
     /// <summary>
     /// 魔王
     /// </summary>
+    [FieldExplan("魔王")]
     Devil,
-
-    None,
 
 }
 
@@ -351,7 +390,9 @@ public class RoleOfRaceHelper
             {
                 log += r + "\t";
             }
+#if UNTIY_EDITOR
             Debug.Log(log);
+#endif
         }
     }
 }

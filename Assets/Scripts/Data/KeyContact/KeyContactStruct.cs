@@ -17,6 +17,7 @@ public struct KeyContactStruct
 
     /// <summary>
     /// 对应的id
+    /// 如果是技能则对应的是技能的枚举值
     /// </summary>
     public int id;
 

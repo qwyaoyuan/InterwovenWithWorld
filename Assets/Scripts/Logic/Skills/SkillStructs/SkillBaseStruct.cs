@@ -1,47 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 /// <summary>
-/// 技能的基础结构
+/// 技能基础数据（只包含最基础的技能，组合技能拆开计算）
 /// </summary>
-public class SkillBaseStruct : ICloneable
+public class SkillBaseStruct
 {
+    /// <summary>
+    /// 技能id（唯一标识）
+    /// </summary>
+    public string id;
     /// <summary>
     /// 技能名
     /// </summary>
-    [FieldExplan("技能名")]
-    public string skillName;
+    public string name;
     /// <summary>
-    /// 技能id
+    /// 技能类型，具体的每个技能
     /// </summary>
-    [FieldExplan("技能ID")]
-    public int id;
+    public EnumSkillType skillType;
     /// <summary>
-    /// 技能的释放方式
+    /// 技能的释放模式，标识这是魔法1 还是魔法2 或者是信仰1之类的
     /// </summary>
-    [FieldExplan("技能的释放方式")]
-    public EnumReleaseMode releaseMode;
+    public EnumReleaseMode skillMode;
+    /// <summary>
+    /// 该技能包含的粒子
+    /// </summary>
+    public GameObject[] particals;
+    /// <summary>
+    /// 技能的信仰类型(如果非信仰的技能释放模式，则忽略该字段 )
+    /// </summary>
+    public EnumSkillBelief skillBelief;
+    /// <summary>
+    /// 技能的特殊效果
+    /// </summary>
+    public EnumStatusEffect[] skillStatusEffect;
+    /// <summary>
+    /// 技能的最高等级 
+    /// </summary>
+    public int maxLevel;
+    /// <summary>
+    /// 技能的属性结构数组
+    /// 数据长度与技能的最高等级一致
+    /// </summary>
+    public SkillAttributeStruct[] skillAttributeStructs;
 
-    /// <summary>
-    /// 克隆
-    /// </summary>
-    /// <param name="target">对象</param>
-    protected virtual T Clone<T>(T target) where T : SkillBaseStruct
-    {
-        target.skillName = skillName;
-        target.id = id;
-        target.releaseMode = releaseMode;
-        return target;
-    }
+}
 
+/// <summary>
+/// 技能的属性结构
+/// </summary>
+public class SkillAttributeStruct
+{
     /// <summary>
-    /// 克隆
+    /// 基础耗魔单位
     /// </summary>
-    /// <returns></returns>
-    public object Clone()
-    {
-        return Clone((SkillBaseStruct)Activator.CreateInstance(GetType()));
-    }
+    public int MP;
+    /// <summary>
+    /// 法伤
+    /// </summary>
+    public int DMG;
+    /// <summary>
+    /// 特效影响力
+    /// </summary>
+    public int ERST;
+    /// <summary>
+    /// 驻留时间
+    /// </summary>
+    public int RETI;
+    /// <summary>
+    /// 物理伤害附加
+    /// </summary>
+    public int PHYAD;
+    /// <summary>
+    /// 魔法伤害附加
+    /// </summary>
+    public int MPAD;
+    /// <summary>
+    /// 伤害穿透
+    /// </summary>
+    public int PEDMG;
+    /// <summary>
+    /// HP附加
+    /// </summary>
+    public int ADDHP;
+    /// <summary>
+    /// MP附加
+    /// </summary>
+    public int ADDMP;
 }
