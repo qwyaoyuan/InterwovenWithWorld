@@ -23,17 +23,21 @@ public class Tasks
 
     private Grapic<TaskInfo> Data;
 
+    public Tasks()
+    {
+        LoadTasks(Resources.Load<TextAsset>("Data/Task/Tasks").text.Split(new string[]{ "\r\n" },StringSplitOptions.None));
+    }
 
     private NameValueCollection exlucsionTaskDic = new NameValueCollection();
     /// <summary>
     /// 通过配置文件加载任务
     /// </summary>
     /// <param name="path"></param>
-    public void LoadTasks(string path)
+    private void LoadTasks(string[] allLines)
     {
-        if (!File.Exists(path)) return;
+
         Data = new Grapic<TaskInfo>();
-        string[] allLines = File.ReadAllLines(path);
+
         for (int i = 0; i < allLines.Length; i += 4)
         {
             TaskInfo taskInfo = new TaskInfo();
@@ -71,7 +75,8 @@ public class Tasks
         Data.AllNodes.Where(t => t.ID != Data.RootNode.ID).ToList().ForEach(t => t.CanVisit = tt => false);
 
         //获取所有互斥任务
-        string[] allExclusiveTasks = File.ReadAllLines("ExclusiveTasks.txt");
+        string[] allExclusiveTasks =
+            Resources.Load<TextAsset>("Data/Task/ExclusiveTasks").text.Split(new string[] { "\r\n" }, StringSplitOptions.None); 
         foreach (var exclusiveTaskPair in allExclusiveTasks)
         {
             string[] taskpair = exclusiveTaskPair.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -388,7 +393,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
             this.Parents = null;
         else
         {
-            string[] parents = strs[2].Split(new char[] { ',' });
+            string[] parents = strs[2].Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var p in parents)
             {
@@ -402,7 +407,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
             this.Children = null;
         else
         {
-            string[] childs = strs[3].Split(new char[] { ',' });
+            string[] childs = strs[3].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var c in childs)
             {
                 TaskInfo t = new TaskInfo();
