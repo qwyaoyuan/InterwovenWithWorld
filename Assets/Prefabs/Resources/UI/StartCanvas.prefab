@@ -122,9 +122,11 @@ MonoBehaviour:
   - sprites:
     - {fileID: 21300000, guid: 4d382c515a1496149b21c2e650928ea5, type: 3}
     playTime: 5
+    audioClip: {fileID: 0}
   - sprites:
     - {fileID: 21300000, guid: aafeb1e7975eab04abcc32984cea3291, type: 3}
     playTime: 5
+    audioClip: {fileID: 0}
   nextUIPrefab: {fileID: 1522437460683714, guid: 7c415721450b4ea4792aa9685de6fc9f,
     type: 2}
   playImage: {fileID: 114983831496721518}
@@ -207,7 +209,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!224 &224452227170681318
 RectTransform:

@@ -30,6 +30,7 @@ public class MainEntrance : MonoBehaviour
     {
         Registor(new TaskTools());
         Registor(new SkillDealHandle());
+        Registor(new GameState());
         Registor(new InputControl());
     }
 

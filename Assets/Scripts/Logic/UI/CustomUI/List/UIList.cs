@@ -153,7 +153,7 @@ public class UIList : MonoBehaviour
             int allHeigth = itemHeight * itemsList.Count;
             if (allHeigth > backRect.rect.height)
             {
-                float every = 1f / (allHeigth-backRect.rect.height);//每个像素的占比
+                float every = 1f / (allHeigth - backRect.rect.height);//每个像素的占比
                 float end = every * value;//最终的移动占比
                 float nowValue = scrollbar.value;
                 nowValue += end;
@@ -190,6 +190,8 @@ public class UIList : MonoBehaviour
     /// <returns></returns>
     public UIListItem LastShowItem()
     {
+        if (itemsList.Count == 0)
+            return null;
         float showUp = Mathf.Abs(showRect.offsetMax.y);
         float showDown = showUp + backRect.rect.height;
         int index = (int)showDown % itemHeight;
@@ -208,6 +210,8 @@ public class UIList : MonoBehaviour
     /// <returns></returns>
     public UIListItem FirstShowItem()
     {
+        if (itemsList.Count == 0)
+            return null;
         float showUp = Mathf.Abs(showRect.offsetMax.y);
         float showDown = showUp + backRect.rect.height;
         int index = (int)showUp % itemHeight;
@@ -253,9 +257,10 @@ public class UIList : MonoBehaviour
     /// </summary>
     public void Init()
     {
-        foreach (GameObject item in itemsList)
-            if (item != null)
-                try { GameObject.DestroyImmediate(item); } catch { }
+        if (itemsList != null)
+            foreach (GameObject item in itemsList)
+                if (item != null)
+                    try { GameObject.DestroyImmediate(item); } catch { }
         itemsList = new List<GameObject>();
         UpdateUI();
     }
@@ -312,7 +317,7 @@ public class UIList : MonoBehaviour
         {
             if (pe.pointerCurrentRaycast.gameObject != null)
             {
-                UIListItem currentItem = UITools.FindTargetPopup<UIListItem>(pe.pointerCurrentRaycast.gameObject.transform); 
+                UIListItem currentItem = UITools.FindTargetPopup<UIListItem>(pe.pointerCurrentRaycast.gameObject.transform);
                 if (currentItem)
                 {
                     switch (pe.button)
@@ -354,7 +359,13 @@ public class UIList : MonoBehaviour
     public void UpdateUI()
     {
         float allHeight = itemsList.Count * itemHeight;
+        if (!showRect)
+            return;
         float showHieght = showRect.rect.height;
+        if(!backRect)
+            backRect = showRect.parent.GetComponent<RectTransform>();
+        if (!backRect)
+            return;
         float backHeight = backRect.rect.height;
         if (allHeight > backHeight)
         {

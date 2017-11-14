@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,6 +34,12 @@ public class UIEntrance : MonoBehaviour
     public float crossoverTime;
 
     /// <summary>
+    /// 设置面板预设体
+    /// </summary>
+    [SerializeField]
+    private GameObject settingCanvasPrefab;
+
+    /// <summary>
     /// 设置面板
     /// </summary>
     private Canvas settingCanvas;
@@ -63,10 +70,11 @@ public class UIEntrance : MonoBehaviour
     void Start()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
-        GameObject settingCanvasObj = GameObject.Find("SettingCanvas");
-        if (settingCanvasObj)
+        if (settingCanvasPrefab)
         {
-            settingCanvas = settingCanvas.GetComponent<Canvas>();
+            GameObject settingGameObject = Instantiate(settingCanvasPrefab);
+            settingCanvas = settingGameObject.GetComponent<Canvas>();
+            settingGameObject.SetActive(false);
         }
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         StartCoroutine(CrossoverMaskImageAlpha(1));

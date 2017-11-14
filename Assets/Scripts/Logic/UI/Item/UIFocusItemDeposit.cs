@@ -119,6 +119,8 @@ public class UIFocusItemDeposit : UIFocus
     public override void MoveChild(UIFocusPath.MoveType moveType)
     {
         UIListItem[] tempArrays = uiDepostiList.GetAllImtes();
+        if (tempArrays.Length == 0)
+            return;
         int index = 0;
         if (focusUIListItem)
             index = tempArrays.ToList().IndexOf(focusUIListItem);
