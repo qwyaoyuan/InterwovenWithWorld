@@ -1,0 +1,8 @@
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\bin\Debug\FormatToolsProject.exe
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\bin\Debug\FormatToolsProject.pdb
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.csprojResolveAssemblyReference.cache
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.FormatToolsForm.resources
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.Properties.Resources.resources
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.csproj.GenerateResource.Cache
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.exe
+c:\users\hasee\documents\visual studio 2017\Projects\FormatToolsProject\FormatToolsProject\obj\Debug\FormatToolsProject.pdb

@@ -26,13 +26,13 @@ namespace SynthesisDataFileEditor
             int layer1 = 1000000;
             int layer2 = 100000;
             int layer3 = 1000;
-            Type itemTypeType = typeof(EnumItemType);
-            Dictionary<EnumItemType, FieldExplanAttribute> tempExplanDic = itemTypeType.GetFields().Where(temp => !temp.Name.Equals("value__"))
-                .ToDictionary(temp => (EnumItemType)Enum.Parse(typeof(EnumItemType), temp.Name), temp => temp.GetCustomAttributes(typeof(FieldExplanAttribute), false).FirstOrDefault())
+            Type itemTypeType = typeof(EnumGoodsType);
+            Dictionary<EnumGoodsType, FieldExplanAttribute> tempExplanDic = itemTypeType.GetFields().Where(temp => !temp.Name.Equals("value__"))
+                .ToDictionary(temp => (EnumGoodsType)Enum.Parse(typeof(EnumGoodsType), temp.Name), temp => temp.GetCustomAttributes(typeof(FieldExplanAttribute), false).FirstOrDefault())
                 .Where(temp => temp.Value != null)
                 .ToDictionary(temp => temp.Key, temp => temp.Value as FieldExplanAttribute);
 
-            var tempDataStruct = Enum.GetValues(typeof(EnumItemType)).OfType<EnumItemType>()
+            var tempDataStruct = Enum.GetValues(typeof(EnumGoodsType)).OfType<EnumGoodsType>()
                 .Select(temp => new
                 {
                     type = temp,
@@ -240,10 +240,10 @@ namespace SynthesisDataFileEditor
         /// <param name="selectItemTypeNode">选中节点</param>
         private void AddNewItemStructToGirveFromByTreeNode(TreeNode selectItemTypeNode)
         {
-            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumGoodsType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
             {
                 SynthesisDataStruct.SynthesisItemStruct itemStruct = new SynthesisDataStruct.SynthesisItemStruct();
-                itemStruct.itemType = (EnumItemType)selectItemTypeNode.Tag;
+                itemStruct.itemType = (EnumGoodsType)selectItemTypeNode.Tag;
                 itemStruct.num = 1;
                 itemStruct.minQuality = EnumQualityType.White;
                 itemStruct.maxQuality = EnumQualityType.White;
@@ -289,10 +289,10 @@ namespace SynthesisDataFileEditor
         /// <param name="selectItemTypeNode"></param>
         private void ChangedItemStructToGirveToByTreeNode(TreeNode selectItemTypeNode)
         {
-            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumGoodsType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
             {
                 SynthesisDataStruct.SynthesisItemStruct itemStruct = new SynthesisDataStruct.SynthesisItemStruct();
-                itemStruct.itemType = (EnumItemType)selectItemTypeNode.Tag;
+                itemStruct.itemType = (EnumGoodsType)selectItemTypeNode.Tag;
                 itemStruct.num = 1;
                 itemStruct.minQuality = EnumQualityType.White;
                 itemStruct.maxQuality = EnumQualityType.White;
@@ -327,7 +327,7 @@ namespace SynthesisDataFileEditor
         private void TreeView_ItemType_ItemDrag(object sender, ItemDragEventArgs e)
         {
             TreeNode selectItemTypeNode = TreeView_ItemType.SelectedNode;
-            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumItemType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
+            if (selectItemTypeNode != null && selectItemTypeNode.Tag.GetType().Equals(typeof(EnumGoodsType)) && Color.Equals(selectItemTypeNode.ForeColor, Color.Red))
             {
                 TreeView_ItemType.DoDragDrop(selectItemTypeNode, DragDropEffects.Copy);
             }
