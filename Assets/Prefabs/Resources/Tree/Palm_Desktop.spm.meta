@@ -1,13 +1,11 @@
 fileFormatVersion: 2
-guid: 5c2ecb53217ee6d47845944d5e81b5a6
+guid: 088710a58b3a65f41b3ee5342e3491c3
 timeCreated: 1452616717
 licenseType: Store
 SpeedTreeImporter:
   serializedVersion: 4
   mainColor: {r: 1, g: 1, b: 1, a: 1}
-  specColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
   hueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
-  shininess: 0.125
   alphaTestRef: 0.33
   bestWindQuality: 5
   hasBillboard: 1
