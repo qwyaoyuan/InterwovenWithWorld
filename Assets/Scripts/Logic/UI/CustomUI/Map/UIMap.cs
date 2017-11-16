@@ -72,7 +72,7 @@ public class UIMap : MonoBehaviour
     /// </summary>
     private GameObject touchIconObj;
     /// <summary>
-    /// 在地图上点击了图标
+    /// 在地图上点击了鼠标
     /// </summary>
     public event Action<Vector2> ClickOnMap;
 
@@ -564,6 +564,7 @@ public class UIMap : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// 移除一个Icon
     /// </summary>
@@ -742,6 +743,27 @@ public class UIMap : MonoBehaviour
     }
 
     /// <summary>
+    /// 获取地图显示的区域(返回的是场景坐标)
+    /// </summary>
+    /// <returns></returns>
+    public Rect GetShowRectInTerrain()
+    {
+        if (mapImage)
+        {
+            RectTransform mapRectTrans = GetComponent<RectTransform>();//地图控件
+            float mapWidth = mapRectTrans.rect.width;// 地图控件的宽度
+            float mapHeight = mapRectTrans.rect.height;//地图控件的高度
+            Vector2 mapPos = mapRectTrans.position;//地图控件的位置
+            Vector2 leftDownScenePos = new Vector2(mapPos.x - mapWidth / 2, mapPos.y - mapHeight / 2);
+            Vector3 rightUpScenePos = new Vector3(mapPos.x + mapWidth / 2, mapPos.y + mapHeight / 2);
+            Vector2 leftDownTerrainPos = TranslatePosSceneToTerrain(leftDownScenePos);
+            Vector2 rightUpTerrainPos = TranslatePosSceneToTerrain(rightUpScenePos);
+            return new Rect(leftDownTerrainPos, rightUpTerrainPos - leftDownTerrainPos);
+        }
+        return new Rect(1,1,1,1);
+    }
+
+    /// <summary>
     /// 获取距离手柄最近的图标
     /// 只有在使用手柄式才会有效
     /// </summary>
@@ -761,6 +783,20 @@ public class UIMap : MonoBehaviour
             return uiMapIconStruct;
         }
         else return null;
+    }
+
+    /// <summary>
+    /// 获取图标在场景中位置
+    /// </summary>
+    /// <param name="uiMapIconStruct">图标对象</param>
+    /// <returns></returns>
+    public Vector2 GetIconPosInTerrain(UIMapIconStruct uiMapIconStruct)
+    {
+        if (uiMapIconStruct)
+        {
+            return TranslatePosSceneToTerrain(uiMapIconStruct.GetComponent<RectTransform>().position);
+        }
+        return new Vector2(-10000, -10000);
     }
 }
 

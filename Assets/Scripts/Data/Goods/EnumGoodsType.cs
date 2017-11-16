@@ -1,7 +1,7 @@
 /// <summary>
 /// 道具类型
 /// </summary>
-public enum EnumItemType
+public enum EnumGoodsType
 {
     #region 素材类
     /// <summary>

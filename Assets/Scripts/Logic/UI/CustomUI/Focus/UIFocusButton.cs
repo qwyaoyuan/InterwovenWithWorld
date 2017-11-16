@@ -22,4 +22,13 @@ public class UIFocusButton : UIFocus
             button.Select();
         }
     }
+
+    /// <summary>
+    /// 激活点击事件
+    /// </summary>
+    public void ClickThisButton()
+    {
+        if (button)
+            button.onClick.Invoke();
+    }
 }

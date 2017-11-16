@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Assets\Scripts\Data\Goods\EnumItemType.cs">
-      <Link>Reflect\EnumItemType.cs</Link>
+    <Compile Include="..\..\..\Assets\Scripts\Data\Goods\EnumGoodsType.cs">
+      <Link>Reflect\EnumGoodsType.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Data\Goods\EnumQualityType.cs">
       <Link>Reflect\EnumQualityType.cs</Link>

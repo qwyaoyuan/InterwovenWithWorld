@@ -1763,7 +1763,33 @@ public class GameState : IEntrance,
         }
     }
 
-
+    /// <summary>
+    /// 流血
+    /// </summary>
+    BuffState? _LiuXue;
+    /// <summary>
+    /// 流血
+    /// </summary>
+    public BuffState LiuXue
+    {
+        get
+        {
+            if (_LiuXue == null)
+                _LiuXue = new BuffState(EnumStatusEffect.lx1, 0);
+            return _LiuXue.Value;
+        }
+        set
+        {
+            if (_LiuXue == null)
+                _LiuXue = LiuXue;
+            if (_LiuXue.Value.statusEffect != value.statusEffect)
+                return;
+            BuffState tempLiuXue = _LiuXue.Value;
+            _LiuXue = value;
+            if (!tempLiuXue.Equals(value))
+                Call<IDebuffState, BuffState>(temp => temp.LiuXue);
+        }
+    }
     #endregion
     #region IAnimatorState 动画状态
     /// <summary>

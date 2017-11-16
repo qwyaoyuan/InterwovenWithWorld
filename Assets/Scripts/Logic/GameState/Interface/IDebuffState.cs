@@ -47,4 +47,8 @@ public interface IDebuffState : IBaseState
     /// 诅咒
     /// </summary>
     BuffState Zuzhou { get; }
+    /// <summary>
+    /// 流血
+    /// </summary>
+    BuffState LiuXue { get; }
 }

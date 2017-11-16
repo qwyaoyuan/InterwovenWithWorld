@@ -95,6 +95,12 @@ public enum EnumStatusEffect
         EnumStatusAction.PhysicsFinalDamage,
         EnumStatusAction.AttributeChange)]
     zz3,
+    /// <summary>
+    /// 流血
+    /// </summary>
+    [FieldExplan("流血")]
+    [StatusAction(EnumStatusAction.Life)]
+    lx1,
     #endregion
     #region Buff 9个
     /// <summary>

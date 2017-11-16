@@ -52,20 +52,6 @@ public class UIFocusToggle : UIFocus
     }
 
     /// <summary>
-    /// 在输入OK(A)键时不可以移动
-    /// </summary>
-    /// <param name="moveType"></param>
-    /// <returns></returns>
-    public override bool CanMoveNext(UIFocusPath.MoveType moveType)
-    {
-        if (moveType == UIFocusPath.MoveType.OK)
-        {
-            return false;
-        }
-        return base.CanMoveNext(moveType);
-    }
-
-    /// <summary>
     /// 在输入OK键时更改选中状态
     /// </summary>
     /// <param name="moveType"></param>
