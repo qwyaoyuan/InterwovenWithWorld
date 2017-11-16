@@ -10,10 +10,10 @@ public class Tasks : ILoadable<Tasks>
 {
     //提供父任务、子任务、检索任务是否互斥、提供当前所有可以做的任务
 
-   
+
     private Grapic<TaskInfo> Data;
 
-  
+
 
     private NameValueCollection exlucsionTaskDic = new NameValueCollection();
     /// <summary>
@@ -63,7 +63,7 @@ public class Tasks : ILoadable<Tasks>
 
         //获取所有互斥任务
         string[] allExclusiveTasks =
-            Resources.Load<TextAsset>("Data/Task/ExclusiveTasks").text.Split(new string[] { "\r\n" }, StringSplitOptions.None); 
+            Resources.Load<TextAsset>("Data/Task/ExclusiveTasks").text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
         foreach (var exclusiveTaskPair in allExclusiveTasks)
         {
             string[] taskpair = exclusiveTaskPair.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -138,10 +138,54 @@ public class Tasks : ILoadable<Tasks>
         return Data.GetLastFrameNodes().ToList();
     }
 
+    /// <summary>
+    /// 获取任务状态
+    /// </summary>
+    /// <param name="taskId">任务id</param>
+    /// <returns></returns>
+    public TaskProgress GetTaskStatus(int taskId)
+    {
+
+        return EnumTaskProgress.Failed;
+    }
+
+    /// <summary>
+    /// 根据npcId获取任务列表
+    /// </summary>
+    /// <param name="npcId"></param>
+    /// <returns></returns>
+    public List<TaskInfo> GetTasksWithNPC(int npcId)
+    {
+
+        return null;
+    }
+
+
     public void Load()
     {
         LoadTasks(Resources.Load<TextAsset>("Data/Task/Tasks").text.Split(new string[] { "\r\n" }, StringSplitOptions.None));
     }
+}
+
+/// <summary>
+/// 任务进度枚举
+/// </summary>
+public enum EnumTaskProgress
+{
+    /// <summary>
+    /// 失败
+    /// </summary>
+    Failed,
+    /// <summary>
+    /// 已成功
+    /// </summary>
+    Sucessed,
+    /// <summary>
+    /// 已开始
+    /// </summary>
+    Started
+
+
 }
 
 public class Grapic<T> where T : IGraphicNode<T>
@@ -266,6 +310,11 @@ public class TaskInfo : IGraphicNode<TaskInfo>
     /// </summary>
     public int ID { get; set; }
 
+    /// <summary>
+    /// 任务进度
+    /// </summary>
+    public EnumTaskProgress TaskProgress { get; set; }
+
     private bool isStart;
 
 
@@ -385,7 +434,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
             this.Parents = null;
         else
         {
-            string[] parents = strs[2].Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
+            string[] parents = strs[2].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var p in parents)
             {
@@ -460,7 +509,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
     /// 增加父亲节点
     /// </summary>
     /// <param name="parents"></param>
-    public void AddParents(params  TaskInfo[] parents)
+    public void AddParents(params TaskInfo[] parents)
     {
         foreach (var taskNode in parents)
         {

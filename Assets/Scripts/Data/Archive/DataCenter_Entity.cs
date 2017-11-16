@@ -4,10 +4,21 @@ using UnityEngine;
 
 public partial class DataCenter
 {
+    /// <summary>
+    /// 玩家状态
+    /// </summary>
     private PlayerState playerState;
 
+    /// <summary>
+    /// 任务进度
+    /// </summary>
     private TaskProgress taskProgress;
 
+
+
+    /// <summary>
+    /// 按键映射数据
+    /// </summary>
     private KeyContactData keyConatactData;
 }
 
@@ -32,6 +43,8 @@ public class PlayerState
     /// </summary>
     public Dictionary<EnumSkillType, int> SkillPoint;
 
+    //  A
+    //b c
 
     /// <summary>
     /// 种族路线
