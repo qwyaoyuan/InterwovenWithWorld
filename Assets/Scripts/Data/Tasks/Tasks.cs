@@ -6,27 +6,14 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Tasks
+public class Tasks : ILoadable<Tasks>
 {
     //提供父任务、子任务、检索任务是否互斥、提供当前所有可以做的任务
 
-    private static Tasks _instance;
-
-    public static Tasks Instance
-    {
-        get
-        {
-
-            return _instance ?? (_instance = new Tasks());
-        }
-    }
-
+   
     private Grapic<TaskInfo> Data;
 
-    public Tasks()
-    {
-        LoadTasks(Resources.Load<TextAsset>("Data/Task/Tasks").text.Split(new string[]{ "\r\n" },StringSplitOptions.None));
-    }
+  
 
     private NameValueCollection exlucsionTaskDic = new NameValueCollection();
     /// <summary>
@@ -149,6 +136,11 @@ public class Tasks
     public List<TaskInfo> GetAllToDoList()
     {
         return Data.GetLastFrameNodes().ToList();
+    }
+
+    public void Load()
+    {
+        LoadTasks(Resources.Load<TextAsset>("Data/Task/Tasks").text.Split(new string[] { "\r\n" }, StringSplitOptions.None));
     }
 }
 
