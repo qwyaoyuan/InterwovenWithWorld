@@ -129,6 +129,7 @@ public class Tasks : ILoadable<Tasks>
         return false;
     }
 
+
     /// <summary>
     /// 获取当前所有可做任务
     /// </summary>
@@ -138,15 +139,15 @@ public class Tasks : ILoadable<Tasks>
         return Data.GetLastFrameNodes().ToList();
     }
 
+
     /// <summary>
     /// 获取任务状态
     /// </summary>
     /// <param name="taskId">任务id</param>
     /// <returns></returns>
-    public TaskProgress GetTaskStatus(int taskId)
+    public TaskInfo GetTaskWithId(int taskId)
     {
-
-        return EnumTaskProgress.Failed;
+        return null;
     }
 
     /// <summary>
@@ -156,7 +157,6 @@ public class Tasks : ILoadable<Tasks>
     /// <returns></returns>
     public List<TaskInfo> GetTasksWithNPC(int npcId)
     {
-
         return null;
     }
 
@@ -176,14 +176,23 @@ public enum EnumTaskProgress
     /// 失败
     /// </summary>
     Failed,
+
     /// <summary>
     /// 已成功
     /// </summary>
     Sucessed,
+
     /// <summary>
     /// 已开始
     /// </summary>
-    Started
+    Started,
+
+
+    /// <summary>
+    /// 未接取
+    /// </summary>
+    NoTake,
+
 
 
 }
@@ -313,7 +322,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
     /// <summary>
     /// 任务进度
     /// </summary>
-    public EnumTaskProgress TaskProgress { get; set; }
+    public EnumTaskProgress TaskProgress { get; private set; }
 
     private bool isStart;
 
@@ -329,11 +338,14 @@ public class TaskInfo : IGraphicNode<TaskInfo>
         {
             if (value)
             {
+                TaskProgress =  EnumTaskProgress.Started;
                 if (Stated != null)
                     Stated(this);
             }
         }
     }
+
+
 
     private bool isOver;
 
@@ -348,6 +360,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
         {
             if (value)
             {
+                TaskProgress = EnumTaskProgress.Sucessed;
                 if (this.Children != null)
                     this.Children.ForEach(t => t.CanVisit = tt => true);
             }
@@ -356,6 +369,15 @@ public class TaskInfo : IGraphicNode<TaskInfo>
     }
 
 
+
+    /// <summary>
+    /// 放弃任务,主线任务不可放弃,支线任务可以放弃
+    /// </summary>
+    /// <returns></returns>
+    public bool GiveUpTask()
+    {
+        return false;
+    }
 
     public TaskInfo()
     {
@@ -571,6 +593,15 @@ public class TaskInfo : IGraphicNode<TaskInfo>
 /// </summary>
 public class TaskNode
 {
+    /// <summary>
+    /// 任务地点
+    /// </summary>
+    public TaskLocation TaskLocation { get; set; }
+
+    /// <summary>
+    /// 任务标题
+    /// </summary>
+    public string TaskTitile { get; set; }
 
     /// <summary>
     /// 任务类型
@@ -642,6 +673,7 @@ public class TaskNode
     /// </summary>
     public Vector3 ArriveAssignPosition { get; set; }
 
+   
 
     /// <summary>
     /// 时间限制
@@ -743,6 +775,28 @@ public class TaskNode
         TimeLimit = int.Parse(nodeStr[14]);
     }
 
+}
+
+/// <summary>
+/// 任务地点
+/// </summary>
+public class TaskLocation
+{
+    /// <summary>
+    /// 场景名
+    /// </summary>
+    public string SceneName { get; set; }
+    
+    /// <summary>
+    /// 到达的中心位置
+    /// </summary>
+    public Vector3 ArrivedCenterPos { get; set; }
+
+
+    /// <summary>
+    /// 半径
+    /// </summary>
+    public int Radius { get; set; }
 }
 
 
