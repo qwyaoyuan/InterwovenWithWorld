@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public enum EnumInputType
 {
+    None = 0,
     #region 手柄按键
     /* 这四个按键用于组合释放技能*/
     /// <summary>
@@ -29,19 +30,19 @@ public enum EnumInputType
     /// <summary>
     /// 手柄A键
     /// </summary>
-    RA = 5,
+    A = 5,
     /// <summary>
     /// 手柄B键
     /// </summary>
-    RB = 6,
+    B = 6,
     /// <summary>
     /// 手柄X键
     /// </summary>
-    RX  = 7,
+    X = 7,
     /// <summary>
     /// 手柄Y键
     /// </summary>
-    RY = 8,
+    Y = 8,
     /*手柄的左右摇杆按下键位，可以组合也可以基础操作*/
     /// <summary>
     /// 手柄左侧摇杆按下
@@ -62,19 +63,19 @@ public enum EnumInputType
     /// <summary>
     /// L1键
     /// </summary>
-    L1 = 16,
+    LB = 16,
     /// <summary>
     /// R1键
     /// </summary>
-    R1 = 32,
+    RB = 32,
     /// <summary>
     /// L2键
     /// </summary>
-    L2 = 64,
+    LT = 64,
     /// <summary>
     /// R2键
     /// </summary>
-    R2 = 128,
+    RT = 128,
     #endregion
 
     #region 键盘按键,计算出的数值是上面的复合数值

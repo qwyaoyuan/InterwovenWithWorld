@@ -195,7 +195,7 @@ public class SynthesisDataStruct
         /// <summary>
         /// 材料或成品类型
         /// </summary>
-        public EnumItemType itemType;
+        public EnumGoodsType itemType;
         /// <summary>
         /// 材料或成品数量
         /// </summary>
@@ -238,7 +238,7 @@ public class SynthesisDataStruct
                     switch (datas[0])
                     {
                         case "itemType":
-                            try { itemType = (EnumItemType)Enum.Parse(typeof(EnumItemType), datas[1].Trim()); } catch { }
+                            try { itemType = (EnumGoodsType)Enum.Parse(typeof(EnumGoodsType), datas[1].Trim()); } catch { }
                             break;
                         case "num":
                             int.TryParse(datas[1].Trim(), out num);
