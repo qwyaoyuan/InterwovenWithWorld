@@ -8,21 +8,6 @@ using UnityEngine;
 /// </summary>
 public class KeyContactData
 {
-    /// <summary>
-    /// 按键与技能物品之间对应关系的静态私有对象
-    /// </summary>
-    private static KeyContactData instance;
-    /// <summary>
-    /// 按键与技能物品之间对应关系的单例对象
-    /// </summary>
-    public static KeyContactData Instance
-    {
-        get
-        {
-            if (instance == null) instance = new KeyContactData();
-            return instance;
-        }
-    }
 
     /// <summary>
     /// 按键与技能物品之间对应关系的对象字典（key表示按键组合后的数字）
@@ -40,29 +25,7 @@ public class KeyContactData
     /// </summary>
     private KeyContactData()
     {
-        ReadKeyContactData(true);
-    }
 
-    /// <summary>
-    /// 从文件读取按键与技能物品之间对应关系
-    /// </summary>
-    /// <param name="must">是否必须读取</param>
-    public void ReadKeyContactData(bool must)
-    {
-        //如果此时还未读取或者必须读取
-        if (must || keyContactStructs == null)
-        {
-            keyContactStructs = new Dictionary<int, KeyContactStruct>();
-            //从文件中读取
-        }
-    }
-
-    /// <summary>
-    /// 保存按键与技能物品之间对应关系到文件
-    /// </summary>
-    public void SaveKeyContactData()
-    {
-        //从keyContactStructs中将数据保存到文件
     }
 
     /// <summary>
@@ -83,7 +46,7 @@ public class KeyContactData
     /// <param name="key">组合后的按键数字</param>
     /// <param name="selecter">选择器</param>
     /// <returns></returns>
-    public KeyContactStruct[] GetKeyContactStruct(int key,Func<KeyContactStruct,bool> selecter = null)
+    public KeyContactStruct[] GetKeyContactStruct(int key, Func<KeyContactStruct, bool> selecter = null)
     {
         List<KeyContactStruct> tempKeyContactStructs = new List<KeyContactStruct>();
         //表示本功能键 除了L1 L2 R1 R2 左右摇杆外的其他键

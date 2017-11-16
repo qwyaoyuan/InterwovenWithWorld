@@ -42,6 +42,8 @@ public class TestDataCenter : MonoBehaviour
         //playState.Level = 20;
         //playState.RoleOfRace = RoleOfRace.Amnesiac;
 
+
+
         //写入数据
         DataCenter.Instance.Save("1号存档");
     }

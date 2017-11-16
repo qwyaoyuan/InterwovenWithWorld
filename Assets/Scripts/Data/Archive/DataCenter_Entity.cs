@@ -8,6 +8,7 @@ public partial class DataCenter
 
     private TaskProgress taskProgress;
 
+    private KeyContactData keyConatactData;
 }
 
 /// <summary>
@@ -97,3 +98,6 @@ public class TaskProgress
     /// </summary>
     public int TimeElasped;
 }
+
+
+
