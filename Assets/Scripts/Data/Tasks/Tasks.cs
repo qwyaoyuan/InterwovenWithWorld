@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -16,7 +17,7 @@ public class Tasks : ILoadable<Tasks>
 
 
     private NameValueCollection exlucsionTaskDic = new NameValueCollection();
-    /// <summary>
+    /// <summary
     /// 通过配置文件加载任务
     /// </summary>
     /// <param name="path"></param>
@@ -25,33 +26,7 @@ public class Tasks : ILoadable<Tasks>
 
         Data = new Grapic<TaskInfo>();
 
-        for (int i = 0; i < allLines.Length; i += 4)
-        {
-            TaskInfo taskInfo = new TaskInfo();
-            taskInfo.Deserialze(new string[] { allLines[i], allLines[i + 1], allLines[i + 2], allLines[i + 3] });
-            Data.AllNodes.Add(taskInfo);
-        }
-        //填充
-
-        for (int i = 0; i < Data.AllNodes.Count; i++)
-        {
-            if (Data.AllNodes[i].Children != null)
-            {
-                for (int j = 0; j < Data.AllNodes[i].Children.Count; j++)
-                {
-                    Data.AllNodes[i].Children[j] =
-                        Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Children[j].ID));
-                }
-            }
-            if (Data.AllNodes[i].Parents != null)
-            {
-                for (int j = 0; j < Data.AllNodes[i].Parents.Count; j++)
-                {
-                    Data.AllNodes[i].Parents[j] =
-                        Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Parents[j].ID));
-                }
-            }
-        }
+        Data.AllNodes = JsonConvert.DeserializeObject<List<TaskInfo>>(Resources.Load<TextAsset>("Data/Task/Tasks").text);
         //设置头结点
 
         Data.RootNode = Data.AllNodes.Single(t => t.Parents == null);
@@ -71,7 +46,7 @@ public class Tasks : ILoadable<Tasks>
         }
 
         //触发互斥任务不可达
-        Data.AllNodes.ForEach(n => n.Stated += t =>
+        Data.AllNodes.ForEach(n => n.Overd += t =>
         {
             if (t.Parents == null || t.Parents.Count != 1) return;
             var sibling = t.Parents[0].Children.Where(c => c.ID != n.ID);
@@ -140,15 +115,7 @@ public class Tasks : ILoadable<Tasks>
     }
 
 
-    /// <summary>
-    /// 获取任务状态
-    /// </summary>
-    /// <param name="taskId">任务id</param>
-    /// <returns></returns>
-    public TaskInfo GetTaskWithId(int taskId)
-    {
-        return null;
-    }
+
 
     /// <summary>
     /// 根据npcId获取任务列表
@@ -157,7 +124,7 @@ public class Tasks : ILoadable<Tasks>
     /// <returns></returns>
     public List<TaskInfo> GetTasksWithNPC(int npcId)
     {
-        return null;
+        return GetAllToDoList().Where(t => t.TaskNode.ReceiveTaskNpcId == npcId).ToList();
     }
 
 
@@ -338,7 +305,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
         {
             if (value)
             {
-                TaskProgress =  EnumTaskProgress.Started;
+                TaskProgress = EnumTaskProgress.Started;
                 if (Stated != null)
                     Stated(this);
             }
@@ -349,7 +316,7 @@ public class TaskInfo : IGraphicNode<TaskInfo>
 
     private bool isOver;
 
-
+    public event Action<TaskInfo> Overd;
     /// <summary>
     /// 当前任务是否完成
     /// </summary>
@@ -363,6 +330,8 @@ public class TaskInfo : IGraphicNode<TaskInfo>
                 TaskProgress = EnumTaskProgress.Sucessed;
                 if (this.Children != null)
                     this.Children.ForEach(t => t.CanVisit = tt => true);
+                if (Overd != null)
+                    Overd(this);
             }
             isOver = value;
         }
@@ -376,7 +345,10 @@ public class TaskInfo : IGraphicNode<TaskInfo>
     /// <returns></returns>
     public bool GiveUpTask()
     {
-        return false;
+        if (TaskNode.TaskType == TaskType.PrincipalLine)
+            return false;
+        else
+            return true;
     }
 
     public TaskInfo()
@@ -673,7 +645,7 @@ public class TaskNode
     /// </summary>
     public Vector3 ArriveAssignPosition { get; set; }
 
-   
+
 
     /// <summary>
     /// 时间限制
@@ -786,7 +758,7 @@ public class TaskLocation
     /// 场景名
     /// </summary>
     public string SceneName { get; set; }
-    
+
     /// <summary>
     /// 到达的中心位置
     /// </summary>

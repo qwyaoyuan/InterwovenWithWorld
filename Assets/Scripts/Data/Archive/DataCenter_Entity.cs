@@ -15,11 +15,20 @@ public partial class DataCenter
     private TaskProgress taskProgress;
 
 
-
     /// <summary>
     /// 按键映射数据
     /// </summary>
     private KeyContactData keyConatactData;
+
+
+    public DataCenter()
+    {
+        playerState = new PlayerState();
+        taskProgress = new TaskProgress();
+        keyConatactData = new KeyContactData();
+    }
+
+
 }
 
 /// <summary>
@@ -43,8 +52,6 @@ public class PlayerState
     /// </summary>
     public Dictionary<EnumSkillType, int> SkillPoint;
 
-    //  A
-    //b c
 
     /// <summary>
     /// 种族路线
@@ -87,15 +94,92 @@ public class PlayerState
     public TaskProgress TaskProgress;
 
 
-   
+    /// <summary>
+    /// 玩家所有物品
+    /// </summary>
+    public List<PlayGoods> PlayerAllGoods;
 
+
+    public PlayerState()
+    {
+        SkillPoint = new Dictionary<EnumSkillType, int>();
+        RoleOfRaceRoute = new List<RoleOfRace>();
+        TaskProgress = new TaskProgress();
+        PlayerAllGoods = new List<PlayGoods>();
+    }
 
 
 }
 
+/// <summary>
+/// 玩家的物品
+/// </summary>
+public class PlayGoods
+{
+    /// <summary>
+    /// 物品信息
+    /// </summary>
+    public Goods GoodsInfo { get; set; }
+    /// <summary>
+    /// 物品所在位置
+    /// </summary>
+    GoodsLocation GoodsLocation { get; set; }
+
+    public PlayGoods()
+    {
+        GoodsInfo = new Goods();
+        GoodsLocation = GoodsLocation.None;
+    }
+    public PlayGoods(Goods goodsInfo, GoodsLocation location)
+    {
+        this.GoodsInfo = goodsInfo;
+        this.GoodsLocation = location;
+    }
+}
+
+/// <summary>
+/// 物品位置
+/// </summary>
+public enum GoodsLocation
+{
+    /// <summary>
+    /// 穿戴中
+    /// </summary>
+    Wearing,
+    /// <summary>
+    /// 包裹
+    /// </summary>
+    Package,
+    /// <summary>
+    /// 仓库
+    /// </summary>
+    warehouse,
+
+    None,
+}
+
+
+/// <summary>
+/// 任务进度
+/// </summary>
 public class TaskProgress
 {
+    public List<TaskItem> allDoingTasks;
+    public TaskProgress()
+    {
+        allDoingTasks = new List<TaskItem>();
+    }
 
+}
+/// <summary>
+/// 任务项
+/// </summary>
+public class TaskItem
+{
+    /// <summary>
+    /// 进行的任务id
+    /// </summary>
+    public int TaskId;
     /// <summary>
     /// 已经杀死的怪物数量
     /// </summary>
@@ -110,6 +194,14 @@ public class TaskProgress
     /// 此任务已经经过的时间
     /// </summary>
     public int TimeElasped;
+
+    public TaskItem()
+    {
+        TaskId = -1;
+        HaveKillMonsterCount = new Dictionary<int, int>();
+        HaveGoodsAssignCount = new Dictionary<int, int>();
+    }
+
 }
 
 

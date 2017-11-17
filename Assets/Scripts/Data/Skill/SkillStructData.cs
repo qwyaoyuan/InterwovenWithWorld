@@ -8,24 +8,9 @@ using System.Reflection;
 /// <summary>
 /// 技能结构数据
 /// </summary>
-public class SkillStructData
+public class SkillStructData:ILoadable<SkillStructData>
 {
-    /// <summary>
-    /// 技能结构数据的静态私有对象
-    /// </summary>
-    private static SkillStructData instance;
-    /// <summary>
-    /// 技能结构数据的单例对象
-    /// </summary>
-    public static SkillStructData Instance
-    {
-        get
-        {
-            if (instance == null) instance = new SkillStructData();
-            return instance;
-        }
-    }
-
+ 
     /// <summary>
     /// 技能结构对象数组 
     /// </summary>
@@ -38,9 +23,16 @@ public class SkillStructData
     /// <summary>
     /// 技能结构数据
     /// </summary>
-    private SkillStructData()
+    public SkillStructData()
     {
         skillAnalysisData = new SkillAnalysisData();
+    }
+
+    /// <summary>
+    /// 实现Iloadable接口
+    /// </summary>
+    public void Load()
+    {
         ReadSkillStructData(true);
     }
 

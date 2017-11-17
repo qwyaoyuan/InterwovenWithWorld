@@ -23,7 +23,7 @@ public class KeyContactData
     /// <summary>
     /// 按键与技能
     /// </summary>
-    private KeyContactData()
+    public KeyContactData()
     {
 
     }

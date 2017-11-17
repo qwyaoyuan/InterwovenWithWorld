@@ -8,7 +8,7 @@ public class TestDataCenter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        List<string> allArchives = DataCenter.Instance.GetAllArchive();
+        List<Archive> allArchives = DataCenter.Instance.GetAllArchive();
         Debug.Log("所有存档为：");
         if (allArchives.Count == 0)
         {
@@ -21,7 +21,7 @@ public class TestDataCenter : MonoBehaviour
             {
                 Debug.Log(item);
                 if (i == 0)
-                    DataCenter.Instance.LoadArchive(item);
+                    DataCenter.Instance.LoadArchive(item.ID);
                 i++;
             }
         }
@@ -45,7 +45,7 @@ public class TestDataCenter : MonoBehaviour
 
 
         //写入数据
-        DataCenter.Instance.Save("1号存档");
+        DataCenter.Instance.Save(1);
     }
 
     // Update is called once per frame

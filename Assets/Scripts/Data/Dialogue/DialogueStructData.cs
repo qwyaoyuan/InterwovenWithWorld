@@ -7,29 +7,21 @@ using System.Linq;
 /// <summary>
 /// 对话结构数据
 /// </summary>
-public class DialogueStructData
+public class DialogueStructData:ILoadable<DialogueStructData>
 {
-    /// <summary>
-    /// 对话结构数据的私有静态对象
-    /// </summary>
-    private static DialogueStructData instance;
-    /// <summary>
-    /// 对话结构数据的单利对象
-    /// </summary>
-    public static DialogueStructData Instance
-    {
-        get
-        {
-            if (instance == null) instance = new DialogueStructData();
-            return instance;
-        }
-    }
     /// <summary>
     /// 对话结构数据的私有构造函数
     /// </summary>
-    private DialogueStructData()
+    public DialogueStructData()
     {
         dialogueAnalysisData = new DialogueAnalysisData();
+    }
+
+    /// <summary>
+    /// 实现ILoadable接口
+    /// </summary>
+    public void Load()
+    {
         ReadDialogueStructData(true);
     }
 
