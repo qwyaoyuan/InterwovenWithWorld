@@ -565,3 +565,40 @@ public enum EnumSkillType
     /*物理技能*/
     PhysicsStart = 200000002,
 }
+
+
+/// <summary>
+/// 技能融合工具类
+/// </summary>
+public static class SkillCombineStaticTools
+{
+    /// <summary>
+    /// 获取技能的组合值
+    /// </summary>
+    /// <param name="skills"></param>
+    /// <returns></returns>
+    public static int GetCombineSkillKey(params EnumSkillType[] skills)
+    {
+        throw new System.Exception();
+    }
+
+    /// <summary>
+    /// 获取组合值组合的技能
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static EnumSkillType[] GetCombineSkills(int key)
+    {
+        throw new System.Exception();
+    }
+
+    /// <summary>
+    /// 获取是否可以组合技能
+    /// </summary>
+    /// <param name="skills"></param>
+    /// <returns></returns>
+    public static bool GetCanCombineSkills(params EnumSkillType[] skills)
+    {
+        throw new System.Exception();
+    }
+}

@@ -34,8 +34,6 @@ public class UIItem : MonoBehaviour
             if (nowUIFocus)
                 nowUIFocus.SetForcus();
         }
-        //重新载入数据
-        //throw new NotImplementedException();
     }
 
     private void OnDisable()

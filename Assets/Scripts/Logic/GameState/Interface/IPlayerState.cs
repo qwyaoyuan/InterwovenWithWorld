@@ -29,4 +29,8 @@ public interface IPlayerState : IBaseState,
     /// 装备发生变化
     /// </summary>
     bool EquipmentChanged { get; set; }
+    /// <summary>
+    /// 物品发生变化
+    /// </summary>
+    bool GoodsChanged { get; set; }
 }

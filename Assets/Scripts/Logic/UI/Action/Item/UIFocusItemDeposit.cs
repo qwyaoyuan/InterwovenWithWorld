@@ -57,6 +57,7 @@ public class UIFocusItemDeposit : UIFocus
         //读取数据并初始化控件
         //给List控件重新填充数据
         //需要读取数据因此这里未实现
+        uiDepostiList.Init();
         //UIListItem uiListItem = uiDepostiList.NewItem();
         //uiDepostiList.UpdateUI();
         focusUIListItem = uiDepostiList.GetAllImtes().FirstOrDefault();

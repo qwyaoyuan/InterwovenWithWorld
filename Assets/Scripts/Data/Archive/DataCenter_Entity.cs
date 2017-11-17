@@ -54,6 +54,12 @@ public class PlayerState
 
 
     /// <summary>
+    /// 组合技能的数据
+    /// </summary>
+    public List<EnumSkillType[]> CombineSkills;
+
+
+    /// <summary>
     /// 种族路线
     /// </summary>
     public List<RoleOfRace> RoleOfRaceRoute;
@@ -106,6 +112,7 @@ public class PlayerState
         RoleOfRaceRoute = new List<RoleOfRace>();
         TaskProgress = new TaskProgress();
         PlayerAllGoods = new List<PlayGoods>();
+        CombineSkills = new List<EnumSkillType[]>();
     }
 
 

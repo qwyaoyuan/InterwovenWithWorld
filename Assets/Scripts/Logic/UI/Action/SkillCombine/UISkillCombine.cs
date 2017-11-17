@@ -43,10 +43,23 @@ public class UISkillCombine : MonoBehaviour
     /// 当前选择技能集合的选中条目
     /// </summary>
     UIListItem nowSelectSkillItem;
+    /// <summary>
+    /// 技能对象
+    /// </summary>
+    SkillStructData skillStructData_Base;
+    /// <summary>
+    /// 玩家状态
+    /// </summary>
+    PlayerState playerState;
+    /// <summary>
+    /// 组合技能对应图片的缓存字典
+    /// </summary>
+    public Dictionary<int, Texture> combineTextDic;
 
     private void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
+        combineTextDic = new Dictionary<int, Texture>();
         uiCombineSkillList.ItemClickHandle += CombineSkillList_ItemClickHandle;
         uiSelectSkillList.ItemClickHandle += SelectSkillList_ItemClickHandle;
     }
@@ -55,13 +68,50 @@ public class UISkillCombine : MonoBehaviour
     {
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         //重新载入数据
+        skillStructData_Base = DataCenter.Instance.GetMetaData<SkillStructData>();//元数据
+        playerState = DataCenter.Instance.GetEntity<PlayerState>();//玩家状态
         uiCombineSkillList.Init();
-
+        foreach (EnumSkillType[] skillTypes in playerState.CombineSkills)
+        {
+            SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => skillTypes.Contains(temp.skillType));
+            int combineSkillKey = SkillCombineStaticTools.GetCombineSkillKey(thisUsedSkills.Select(temp => temp.skillType).ToArray());
+            Sprite combineSkillSprite = CombineSprite(thisUsedSkills.Select(temp => temp.skillSprite).ToArray(), combineSkillKey);
+            UIListItem thisUIListItem = uiCombineSkillList.NewItem();
+            thisUIListItem.childImage.sprite = combineSkillSprite;
+            thisUIListItem.value = thisUsedSkills.Select(temp => temp.skillType).ToArray();
+        }
+        if (playerState.CombineSkills.Count < 30)
+        {
+            for (int i = 0; i < 30 - playerState.CombineSkills.Count; i++)
+            {
+                UIListItem thisUIListItem = uiCombineSkillList.NewItem();
+                thisUIListItem.childImage.sprite = null;
+                thisUIListItem.value = new EnumSkillType[4];
+            }
+        }
         uiCombineSkillList.UpdateUI();
         //重设状态
         enumUISkillCombine = EnumUISkillCombine.CombineSkillItem;
         nowCombineSkillItem = uiCombineSkillList.FirstShowItem();
         uiCombineSkillList.ShowItem(nowCombineSkillItem);
+    }
+
+    /// <summary>
+    /// 组合技能的技能图片
+    /// </summary>
+    /// <param name="sprites">分技能的精灵</param>
+    /// <param name="key">该技能的组合值</param>
+    /// <returns></returns>
+    private Sprite CombineSprite(Sprite[] sprites, int key)
+    {
+        if (sprites == null || sprites.Length == 0)
+            return null;
+        var sizes = sprites.Select(temp => new { width = temp.bounds.size.x, height = temp.bounds.size.y });
+        float width = sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
+        float height = sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
+        if (width == 0 || height == 0)
+            return null;
+        return null;
     }
 
     private void OnDisable()
@@ -260,7 +310,7 @@ public class UISkillCombine : MonoBehaviour
     public void CombineSkillLatticeClick(BaseEventData e)
     {
         PointerEventData pe = e as PointerEventData;
-        if (pe==null)
+        if (pe == null)
             return;
         UIFocusSkillCombineLattice target = UITools.FindTargetPopup<UIFocusSkillCombineLattice>(pe.pointerCurrentRaycast.gameObject.transform);
         if (enumUISkillCombine == EnumUISkillCombine.CombineSkillItem || enumUISkillCombine == EnumUISkillCombine.CombineSkillLattice)
@@ -286,6 +336,10 @@ public class UISkillCombine : MonoBehaviour
         uiSelectSkillList.Init();
         //需要选中的技能框以及已经存放的技能显示可以放入的技能
         //-----------------------//
+        int index = uiFocusPath.UIFocuesArray.ToList().IndexOf(nowUISkilCombineLattice);
+        //判断是否可以组合技能
+        //-----------------------//
+
 
         //设置第一个技能高亮
         nowSelectSkillItem = uiSelectSkillList.FirstShowItem();

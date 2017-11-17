@@ -279,6 +279,28 @@ public class GameState : IEntrance,
         }
     }
 
+    /// <summary>
+    /// 物品发生变化
+    /// </summary>
+    bool _GoodsChanged;
+    /// <summary>
+    /// 物品发生变化
+    /// </summary>
+    public bool GoodsChanged
+    {
+        get { return _GoodsChanged; }
+        set
+        {
+            if (value)
+            {
+                _GoodsChanged = value;
+                //回掉
+                Call<IPlayerState, bool>(temp => temp.GoodsChanged);
+                _GoodsChanged = false;
+            }
+        }
+    }
+
     #endregion
     #region IAttributeState 属性状态
     #region 基础属性
