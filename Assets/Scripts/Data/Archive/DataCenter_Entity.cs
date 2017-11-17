@@ -43,6 +43,11 @@ public class PlayerState
     /// </summary>
     public Dictionary<EnumSkillType, int> SkillPoint;
 
+    /// <summary>
+    /// 组合技能的数据
+    /// </summary>
+    public List<EnumSkillType[]> CombineSkills;
+
     //  A
     //b c
 

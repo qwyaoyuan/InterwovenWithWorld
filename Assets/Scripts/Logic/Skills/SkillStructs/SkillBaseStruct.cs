@@ -45,6 +45,13 @@ public class SkillBaseStruct
     /// </summary>
     public SkillAttributeStruct[] skillAttributeStructs;
 
+
+    //运行时生成的数据↓↓↓
+    /// <summary>
+    /// 技能的图标
+    /// </summary>
+    public Sprite skillSprite;
+
 }
 
 /// <summary>
