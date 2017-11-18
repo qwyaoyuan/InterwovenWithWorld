@@ -1,4 +1,8 @@
-﻿/// <summary>
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+/// <summary>
 /// 技能类型枚举
 /// </summary>
 public enum EnumSkillType
@@ -577,9 +581,9 @@ public static class SkillCombineStaticTools
     /// </summary>
     /// <param name="skills"></param>
     /// <returns></returns>
-    public static int GetCombineSkillKey(params EnumSkillType[] skills)
+    public static int GetCombineSkillKey(IEnumerable<EnumSkillType> skills)
     {
-        throw new System.Exception();
+        throw new Exception("未实现");
     }
 
     /// <summary>
@@ -589,7 +593,7 @@ public static class SkillCombineStaticTools
     /// <returns></returns>
     public static EnumSkillType[] GetCombineSkills(int key)
     {
-        throw new System.Exception();
+        throw new Exception("未实现");
     }
 
     /// <summary>
@@ -599,6 +603,26 @@ public static class SkillCombineStaticTools
     /// <returns></returns>
     public static bool GetCanCombineSkills(params EnumSkillType[] skills)
     {
-        throw new System.Exception();
+        throw new Exception("未实现");
+    }
+
+    /// <summary>
+    /// 通过组合技能的阶段来获取所有该阶段的技能
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static EnumSkillType[] GetBaseSkillBackCombineSkillIndex(int index)
+    {
+        throw new Exception("未实现");
+    }
+
+    /// <summary>
+    /// 通过组合技能数组来获取该组合的技能名
+    /// </summary>
+    /// <param name="skillBaseStructs"></param>
+    /// <returns></returns>
+    public static string GetCombineSkillsName(IEnumerable<SkillBaseStruct> skillBaseStructs)
+    {
+        throw new Exception("未实现");
     }
 }

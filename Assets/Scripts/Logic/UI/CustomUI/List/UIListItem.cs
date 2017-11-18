@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UIListItem : MonoBehaviour {
 
     /// <summary>
-    /// 子节点
+    /// 子节点图片(主要用于是否选中)
     /// </summary>
     public Image childImage;
 
@@ -17,4 +17,9 @@ public class UIListItem : MonoBehaviour {
     /// 存储的数据
     /// </summary>
     public object value;
+
+    /// <summary>
+    /// 子节点文字
+    /// </summary>
+    public Text childText;
 }

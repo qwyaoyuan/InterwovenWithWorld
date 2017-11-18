@@ -51,7 +51,10 @@ public class SkillBaseStruct
     /// 技能的图标
     /// </summary>
     public Sprite skillSprite;
-
+    /// <summary>
+    /// 技能显示的名字(根据语言进行翻译)
+    /// </summary>
+    public string skillName;
 }
 
 /// <summary>

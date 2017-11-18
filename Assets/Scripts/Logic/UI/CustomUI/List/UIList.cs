@@ -55,6 +55,11 @@ public class UIList : MonoBehaviour
     /// </summary>
     public event Action<ItemClickMouseType, UIListItem> ItemClickHandle;
 
+    /// <summary>
+    /// 是否可以点击集合
+    /// </summary>
+    public bool CanClickListItem = true;
+
     private void Awake()
     {
         if (showRect)
@@ -312,6 +317,8 @@ public class UIList : MonoBehaviour
     /// <param name="e"></param>
     private void ItemMouseUp(BaseEventData e)
     {
+        if (!CanClickListItem)
+            return;
         PointerEventData pe = e as PointerEventData;
         if (ItemClickHandle != null)
         {
