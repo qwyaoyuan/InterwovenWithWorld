@@ -1,5 +1,5 @@
 /// <summary>
-/// 道具类型
+/// 道具类型 (具体类型先不要用,等编辑好了用)
 /// </summary>
 public enum EnumGoodsType
 {

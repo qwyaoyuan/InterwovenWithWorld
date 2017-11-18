@@ -6,8 +6,8 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"  Background="White">
-   <UserControl.Resources>
-       <SolidColorBrush   x:Key="SetColumnBackColor" Color="White"></SolidColorBrush>
+    <UserControl.Resources>
+        <SolidColorBrush   x:Key="SetColumnBackColor" Color="White"></SolidColorBrush>
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
@@ -16,160 +16,180 @@
     </UserControl.ContextMenu>
     <Expander Name="TitleExpander"  RenderTransformOrigin="0.5,0.5">
         <Grid Name="ContainerGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition  Height="*"/>
-            <RowDefinition  Height="10"/>
-        </Grid.RowDefinitions>
-        <Grid Name="PropertyGrid" Grid.Row="0" ShowGridLines="False" >
-            <Grid.Resources>
-                <SolidColorBrush   x:Key="GridBorderColor" Color="Black"></SolidColorBrush>
-            </Grid.Resources>
             <Grid.RowDefinitions>
-                <!--14-->
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition  Height="*"/>
+                <RowDefinition  Height="10"/>
+            </Grid.RowDefinitions>
+            <Grid Name="PropertyGrid" Grid.Row="0" ShowGridLines="False" >
+                <Grid.Resources>
+                    <SolidColorBrush   x:Key="GridBorderColor" Color="Black"></SolidColorBrush>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <!--14-->
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <!--边框-->
-            <Border Grid.Column="0" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="1" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="2" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="3" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="4" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="5" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="6" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="7" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="8" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="9" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="10" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="11" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="12" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="13" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="0" Grid.Row="14" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="1" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="2" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="3" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="4" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="5" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="6" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="7" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="8" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="9" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="10" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="11" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="12" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="13" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="14" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
-            <Border Grid.Column="1" Grid.Row="15" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--边框-->
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="2" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="3" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="4" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="5" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="6" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="7" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="8" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="9" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="10" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="11" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="12" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="13" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="14" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="15" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="16" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="17" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="18" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="19" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="2" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="3" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="4" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="5" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="6" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="7" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="8" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="9" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="10" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="11" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="12" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="13" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="14" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="15" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="16" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="17" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="18" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="19" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <!--属性-->
-            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务ID：</TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务类型：</TextBlock>
-            <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">等级限制：</TextBlock>
-            <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">性格倾向：</TextBlock>
-            <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">种族类型：</TextBlock>
-            <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">需要的声望：</TextBlock>
-            <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励物品：</TextBlock>
-            <TextBlock Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励经验：</TextBlock>
-            <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励技能点：</TextBlock>
-            <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励的声望：</TextBlock>
-            <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务NPCID：</TextBlock>
-            <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">杀死某怪物指定数量：</TextBlock>
-            <TextBlock Grid.Row="12" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">获取物品指定数量：</TextBlock>
-            <TextBlock Grid.Row="13" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">到达指定区域：</TextBlock>
-            <TextBlock Grid.Row="14" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">交付任务的NPCID：</TextBlock>
-            <TextBlock Grid.Row="15" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">时间限制：</TextBlock>
-
+                <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务ID：</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务类型：</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">等级限制：</TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">性格倾向：</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">种族类型：</TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">需要的声望：</TextBlock>
+                <TextBlock Grid.Row="6" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励物品：</TextBlock>
+                <TextBlock Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励经验：</TextBlock>
+                <TextBlock Grid.Row="8" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励技能点：</TextBlock>
+                <TextBlock Grid.Row="9" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">奖励的声望：</TextBlock>
+                <TextBlock Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务NPCID：</TextBlock>
+                <TextBlock Grid.Row="11" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">杀死某怪物指定数量：</TextBlock>
+                <TextBlock Grid.Row="12" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">获取物品指定数量：</TextBlock>
+                <TextBlock Grid.Row="13" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">到达指定区域：</TextBlock>
+                <TextBlock Grid.Row="14" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">交付任务的NPCID：</TextBlock>
+                <TextBlock Grid.Row="15" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">时间限制：</TextBlock>
+                <TextBlock Grid.Row="16" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务场景名：</TextBlock>
+                <TextBlock Grid.Row="17" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务场景内坐标：</TextBlock>
+                <TextBlock Grid.Row="18" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务场景内坐标浮动范围：</TextBlock>
+                <TextBlock Grid.Row="19" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务标题：</TextBlock>
                 <!--Set列-->
-            <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Background="{Binding ElementName=ContainerGrid,Path=Background}">任务ID：</TextBlock>
-            <ComboBox Name="TaskType"  SelectedIndex="0" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-                <ComboBox.Items>
-                    <ComboBoxItem>主线任务</ComboBoxItem>
-                    <ComboBoxItem>支线任务</ComboBoxItem>
-                    <ComboBoxItem>重复性任务</ComboBoxItem>
-                    <ComboBoxItem>随机任务</ComboBoxItem>
-                </ComboBox.Items>
-            </ComboBox>
-            <TextBox  Name="LvlLimit"  Text="0" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <ComboBox Name="CharaTendency" SelectedIndex="0" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-                <ComboBox.Items>
-                    <ComboBoxItem>好杀戮的</ComboBoxItem>
-                    <ComboBoxItem>和平的</ComboBoxItem>
-                </ComboBox.Items>
-            </ComboBox>
-            <ComboBox Name="RoleOfRace" SelectedIndex="0" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-                <ComboBox.Items>
-                    <ComboBoxItem>人类</ComboBoxItem>
-                    <ComboBoxItem>精灵</ComboBoxItem>
-                    <ComboBoxItem>不死者</ComboBoxItem>
-                    <ComboBoxItem>混血人</ComboBoxItem>
-                    <ComboBoxItem>勇士</ComboBoxItem>
-                    <ComboBoxItem>半精灵</ComboBoxItem>
-                    <ComboBoxItem>木精灵</ComboBoxItem>
-                    <ComboBoxItem>光精灵</ComboBoxItem>
-                    <ComboBoxItem>黑精灵</ComboBoxItem>
-                    <ComboBoxItem>死灵</ComboBoxItem>
-                    <ComboBoxItem>骷颅</ComboBoxItem>
-                    <ComboBoxItem>遗忘者</ComboBoxItem>
-                    <ComboBoxItem>逐光者</ComboBoxItem>
-                    <ComboBoxItem>狂人</ComboBoxItem>
-                    <ComboBoxItem>龙人</ComboBoxItem>
-                    <ComboBoxItem>勇者</ComboBoxItem>
-                    <ComboBoxItem>侠客</ComboBoxItem>
-                    <ComboBoxItem>唤兽者</ComboBoxItem>
-                    <ComboBoxItem>聆听者</ComboBoxItem>
-                    <ComboBoxItem>自然精灵</ComboBoxItem>
-                    <ComboBoxItem>聆听者</ComboBoxItem>
-                    <ComboBoxItem>洞穴精灵</ComboBoxItem>
-                    <ComboBoxItem>太阳精灵</ComboBoxItem>
-                    <ComboBoxItem>彩虹精灵</ComboBoxItem>
-                    <ComboBoxItem>月精灵</ComboBoxItem>
-                    <ComboBoxItem>彩虹精灵</ComboBoxItem>
-                    <ComboBoxItem>月精灵</ComboBoxItem>
-                    <ComboBoxItem>暗夜精灵</ComboBoxItem>
-                    <ComboBoxItem>死灵法师</ComboBoxItem>
-                    <ComboBoxItem>食尸鬼</ComboBoxItem>
-                    <ComboBoxItem>死亡骑士</ComboBoxItem>
-                    <ComboBoxItem>骷髅王</ComboBoxItem>
-                    <ComboBoxItem>吸血鬼</ComboBoxItem>
-                    <ComboBoxItem>暗影</ComboBoxItem>
-                    <ComboBoxItem>英雄</ComboBoxItem>
-                    <ComboBoxItem>自然之声</ComboBoxItem>
-                    <ComboBoxItem>精灵王</ComboBoxItem>
-                    <ComboBoxItem>灵体</ComboBoxItem>
-                    <ComboBoxItem>魔王</ComboBoxItem>
-                </ComboBox.Items>
-            </ComboBox>
-            <TextBox  Name="NeedReputation" Text="0" Grid.Row="5" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="AwardThing"  Text="0" Grid.Row="6" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="AwardExperience"  Text="0" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="SkillPoint" Text="0"  Grid.Row="8" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="AwardReputation"  Text="0" Grid.Row="9" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="ReceiveTaskNPCID"  Text="-1" Grid.Row="10" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="KillAssignedMosetrCount" Text=""  Grid.Row="11" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="GetAssignedThing"   Text="" Grid.Row="12" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="GoToAssgedPos"  Text="0,0,0" Grid.Row="13" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="DeliveryTaskNpcId"  Text="-1" Grid.Row="14" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
-            <TextBox  Name="TimeLimit"  Text="-1" Grid.Row="15" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Background="{Binding ElementName=ContainerGrid,Path=Background}">任务ID：</TextBlock>
+                <ComboBox Name="TaskType"  SelectedIndex="0" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                    <ComboBox.Items>
+                        <ComboBoxItem>主线任务</ComboBoxItem>
+                        <ComboBoxItem>支线任务</ComboBoxItem>
+                        <ComboBoxItem>重复性任务</ComboBoxItem>
+                        <ComboBoxItem>随机任务</ComboBoxItem>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBox  Name="LvlLimit"  Text="0" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <ComboBox Name="CharaTendency" SelectedIndex="0" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                    <ComboBox.Items>
+                        <ComboBoxItem>好杀戮的</ComboBoxItem>
+                        <ComboBoxItem>和平的</ComboBoxItem>
+                    </ComboBox.Items>
+                </ComboBox>
+                <ComboBox Name="RoleOfRace" SelectedIndex="0" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                    <ComboBox.Items>
+                        <ComboBoxItem>人类</ComboBoxItem>
+                        <ComboBoxItem>精灵</ComboBoxItem>
+                        <ComboBoxItem>不死者</ComboBoxItem>
+                        <ComboBoxItem>混血人</ComboBoxItem>
+                        <ComboBoxItem>勇士</ComboBoxItem>
+                        <ComboBoxItem>半精灵</ComboBoxItem>
+                        <ComboBoxItem>木精灵</ComboBoxItem>
+                        <ComboBoxItem>光精灵</ComboBoxItem>
+                        <ComboBoxItem>黑精灵</ComboBoxItem>
+                        <ComboBoxItem>死灵</ComboBoxItem>
+                        <ComboBoxItem>骷颅</ComboBoxItem>
+                        <ComboBoxItem>遗忘者</ComboBoxItem>
+                        <ComboBoxItem>逐光者</ComboBoxItem>
+                        <ComboBoxItem>狂人</ComboBoxItem>
+                        <ComboBoxItem>龙人</ComboBoxItem>
+                        <ComboBoxItem>勇者</ComboBoxItem>
+                        <ComboBoxItem>侠客</ComboBoxItem>
+                        <ComboBoxItem>唤兽者</ComboBoxItem>
+                        <ComboBoxItem>聆听者</ComboBoxItem>
+                        <ComboBoxItem>自然精灵</ComboBoxItem>
+                        <ComboBoxItem>聆听者</ComboBoxItem>
+                        <ComboBoxItem>洞穴精灵</ComboBoxItem>
+                        <ComboBoxItem>太阳精灵</ComboBoxItem>
+                        <ComboBoxItem>彩虹精灵</ComboBoxItem>
+                        <ComboBoxItem>月精灵</ComboBoxItem>
+                        <ComboBoxItem>彩虹精灵</ComboBoxItem>
+                        <ComboBoxItem>月精灵</ComboBoxItem>
+                        <ComboBoxItem>暗夜精灵</ComboBoxItem>
+                        <ComboBoxItem>死灵法师</ComboBoxItem>
+                        <ComboBoxItem>食尸鬼</ComboBoxItem>
+                        <ComboBoxItem>死亡骑士</ComboBoxItem>
+                        <ComboBoxItem>骷髅王</ComboBoxItem>
+                        <ComboBoxItem>吸血鬼</ComboBoxItem>
+                        <ComboBoxItem>暗影</ComboBoxItem>
+                        <ComboBoxItem>英雄</ComboBoxItem>
+                        <ComboBoxItem>自然之声</ComboBoxItem>
+                        <ComboBoxItem>精灵王</ComboBoxItem>
+                        <ComboBoxItem>灵体</ComboBoxItem>
+                        <ComboBoxItem>魔王</ComboBoxItem>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBox  Name="NeedReputation" Text="0" Grid.Row="5" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="AwardThing"  Text="0" Grid.Row="6" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="AwardExperience"  Text="0" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="SkillPoint" Text="0"  Grid.Row="8" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="AwardReputation"  Text="0" Grid.Row="9" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="ReceiveTaskNPCID"  Text="-1" Grid.Row="10" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="KillAssignedMosetrCount" Text=""  Grid.Row="11" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="GetAssignedThing"   Text="" Grid.Row="12" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="GoToAssgedPos"  Text="0,0,0" Grid.Row="13" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="DeliveryTaskNpcId"  Text="-1" Grid.Row="14" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="TimeLimit"  Text="-1" Grid.Row="15" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="TaskSceneName"  Text="test" Grid.Row="16" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="TaskPosition"  Text="1,1,1" Grid.Row="17" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="TaskPositionRadius"  Text="2" Grid.Row="18" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <TextBox  Name="TaskTitle"  Text="1" Grid.Row="19" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
             </Grid>
-        <ProgressBar Grid.Row="1" Maximum="100" Value="50" ></ProgressBar>
-    </Grid>
+            <ProgressBar Grid.Row="1" Maximum="100" Value="50" ></ProgressBar>
+        </Grid>
     </Expander>
 </UserControl>

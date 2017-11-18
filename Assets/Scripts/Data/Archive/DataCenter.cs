@@ -49,14 +49,6 @@ public partial class DataCenter
 
 
 
-    public DataCenter()
-    {
-        //PlayerState = new PlayerState();
-        //EquipmentState = new EquipmentState();
-        //BuffState = new BuffState();
-        //DebuffState = new DebuffState();
-    }
-
     /// <summary>
     /// 可加载元数据集合
     /// </summary>
@@ -101,18 +93,18 @@ public partial class DataCenter
     /// <summary>
     /// 缓存字段引用
     /// </summary>
-    private Dictionary<PropertyInfo, Object> cachedEntityProperties = new Dictionary<PropertyInfo, Object>();
+    private Dictionary<PropertyInfo, System.Object> cachedEntityProperties = new Dictionary<PropertyInfo, System.Object>();
 
 
     /// <summary>
-    /// 获取某元数据
+    /// 获取某元数据,所有实现自ILoadable<>的类,目前有DialogueStructData,GoodsMetaInfoMations,SkillStructData,SynthesisStructData,
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     public T GetMetaData<T>()
     {
         if (allCanLoadable.Keys.Contains(typeof(T)))
-            return (T)(Object)(allCanLoadable[typeof(T)]);
+            return (T)(System.Object)(allCanLoadable[typeof(T)]);
         else
             return default(T);
     }
@@ -142,26 +134,54 @@ public partial class DataCenter
 
 
     /// <summary>
-    /// 保存当前的状态至名称为archiveName的存档中
+    /// 保存一份存档,新id首次存档必须填写名字和介绍。
+    /// 覆盖存档如果不写名字和介绍则复用以前的。如果写了则覆盖。
     /// </summary>
-    public void Save(string archiveName)
+    /// <param name="archiveName"></param>
+    /// <param name="archiveIntro"></param>
+    public void Save(int id, string archiveName="", string archiveIntro="")
     {
+        //new id
+        if (allArchiveBaseInfo.Where(a => a.ID == id).Count() == 0)
+        {
+            if (string.IsNullOrEmpty(archiveName) || string.IsNullOrEmpty(archiveName))
+            {
+                UnityEngine.Debug.LogError("新id首次存档名称和介绍必须提供,存档失败");
+                return;
+            }
+      
+            allArchiveBaseInfo.Add(new Archive(id, archiveName, archiveIntro) { lastedModifiedTime = DateTime.Now });
+        }
+        //已存在id
+        else
+        {
+            Archive saveToArchive = allArchiveBaseInfo.Single(a => a.ID == id);
+            if (!string.IsNullOrEmpty(archiveName))
+                saveToArchive.Name = archiveName;
+            if (!string.IsNullOrEmpty(archiveIntro))
+                saveToArchive.ArchiveIntro = archiveIntro;
+            saveToArchive.lastedModifiedTime = DateTime.Now;
+
+        }
+        //存档
         string json = JsonConvert.SerializeObject(this, new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
-        File.WriteAllText(Path.Combine(archivePath, archiveName + archiveExt), json);
+        File.WriteAllText(Path.Combine(archivePath, id + archiveExt), json);
+
     }
 
 
+    /// <summary>
+    /// 所有存档的基本信息
+    /// </summary>
+    private List<Archive> allArchiveBaseInfo = new List<Archive>();
 
     /// <summary>
     /// 获取当前所有存档名称
     /// </summary>
     /// <returns></returns>
-    public List<String> GetAllArchive()
+    public List<Archive> GetAllArchive()
     {
-        if (!Directory.Exists(archivePath)) Directory.CreateDirectory(archivePath);
-        string[] archives = Directory.GetFiles(archivePath, "*" + archiveExt);
-        List<string> archiveNames = archives.Select(archivePath => Path.GetFileNameWithoutExtension(archivePath)).ToList();
-        return archiveNames;
+        return allArchiveBaseInfo;
     }
 
 
@@ -169,17 +189,59 @@ public partial class DataCenter
     /// 加载存档
     /// </summary>
     /// <param name="archiveName"></param>
-    public void LoadArchive(string archiveName)
+    public void LoadArchive(int id)
     {
-        string archiveFile = Path.Combine(archivePath, archiveName + archiveExt);
+        string archiveFile = Path.Combine(archivePath, id + archiveExt);
         if (File.Exists(archiveFile))
         {
             Instance = JsonConvert.DeserializeObject<DataCenter>(File.ReadAllText(archiveFile));
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("存档不存在");
         }
     }
 
 }
 
+
+/// <summary>
+/// 存档基本结构
+/// </summary>
+public class Archive
+{
+    /// <summary>
+    /// 存档id
+    /// </summary>
+    public int ID { get; set; }
+
+    /// <summary>
+    /// 存档名称
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// 存档简介
+    /// </summary>
+    public string ArchiveIntro { get; set; }
+
+    /// <summary>
+    /// 最后更改时间
+    /// </summary>
+    public DateTime lastedModifiedTime { get; set; }
+
+    public Archive()
+    {
+
+    }
+
+    public Archive(int id, string name,string intro)
+    {
+        this.ID = id;
+        this.Name = name;
+        this.ArchiveIntro = intro;
+    }
+}
 
 public interface ILoadBase
 {

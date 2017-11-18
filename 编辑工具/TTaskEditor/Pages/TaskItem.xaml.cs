@@ -44,6 +44,16 @@ namespace TTaskEditor.Pages
             }
         }
 
+        public int TaskID
+        {
+            get
+            {
+                string id = this.TitleExpander.Header.ToString()
+                  .Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString();
+                return int.Parse(id);
+            }
+        }
+
         /// <summary>
         /// 与其他窗口建立关系链接
         /// </summary>
@@ -237,7 +247,39 @@ namespace TTaskEditor.Pages
                         return null;
                     }
                 }
+                //任务场景名
+                if (string.IsNullOrEmpty(TaskSceneName.Text))
+                {
+                    MessageBox.Show("场景名称没输入");
+                    return null;
 
+                }
+                string sceneName = TaskSceneName.Text;
+                string[] scenePosStrs = TaskPosition.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                float tempnum;
+                if (scenePosStrs.Length != 3 || scenePosStrs.Any(pos => !float.TryParse(pos, out tempnum)))
+                {
+                    MessageBox.Show("场景坐标输入有误");
+                    return null;
+                }
+
+                //任务场景内坐标
+                Vector3 scenePos = new Vector3(float.Parse(scenePosStrs[0]), float.Parse(scenePosStrs[1]), float.Parse(scenePosStrs[2]));
+
+                //任务场景内浮动范围
+                if (!Tool.IsInt(TaskPositionRadius.Text))
+                {
+                    MessageBox.Show("场景内浮动坐标填写有误");
+                    return null;
+                }
+                taskInfo.TaskNode.TaskLocation = new TaskLocation() { SceneName = sceneName, ArrivedCenterPos = scenePos, Radius = int.Parse(TaskPositionRadius.Text) };
+                if (string.IsNullOrEmpty(TaskTitle.Text))
+                {
+                    MessageBox.Show("任务标题没有填写");
+                    return null;
+                }
+                taskInfo.TaskNode.TaskTitile = TaskTitle.Text;
+                //任务标题
                 return taskInfo;
             }
             set

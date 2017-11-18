@@ -7,31 +7,24 @@ using UnityEngine;
 /// <summary>
 /// 合成结构数据
 /// </summary>
-public class SynthesisStructData
+public class SynthesisStructData : ILoadable<SynthesisStructData>
 {
-    /// <summary>
-    /// 合成结构数据的私有静态对象
-    /// </summary>
-    private static SynthesisStructData instance;
-    /// <summary>
-    /// 合成结构数据的单例对象 
-    /// </summary>
-    public static SynthesisStructData Instance
-    {
-        get
-        {
-            if (instance == null) instance = new SynthesisStructData();
-            return instance;
-        }
-    }
     /// <summary>
     ///  合成结构数据的私有构造函数
     /// </summary>
-    private SynthesisStructData()
+    public SynthesisStructData()
     {
         synthesisDataAnalysis = new SynthesisDataAnalysis();
+    }
+
+    /// <summary>
+    /// 实现ILoadable接口
+    /// </summary>
+    public void Load()
+    {
         ReadSynthesisStructData(true);
     }
+
 
     /// <summary>
     /// 合成文件解析

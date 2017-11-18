@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
@@ -91,7 +92,7 @@ namespace TTaskEditor.Pages
 
             //添加所有控件
             if (!File.Exists("ControlPos.txt")) return;
-
+            if (data == null) return;
             List<TaskInfo> allTaskInfos = data.AllNodes;
      
             //创建所有连线
@@ -135,7 +136,8 @@ namespace TTaskEditor.Pages
 
             //添加所有控件
             if (!File.Exists("ControlPos.txt")) return;
-           
+
+            if (data == null) return;
             List<TaskInfo> allTaskInfos = data.AllNodes;
      
             foreach (var taskInfo in allTaskInfos)
@@ -172,6 +174,7 @@ namespace TTaskEditor.Pages
                 MessageBox.Show("有任务格式错误,请修正后保存");
                 return;
             }
+
             foreach (var taskInfo in taskInfos)
             {
                 //加上所有孩子与父亲
@@ -185,15 +188,9 @@ namespace TTaskEditor.Pages
                     }
                 }
             }
-            //进行序列化
-
-            using (StreamWriter sw = new StreamWriter("Tasks.txt"))
-            {
-                foreach (var taskInfo in taskInfos)
-                {
-                    taskInfo.Serialize(sw);
-                }
-            }
+            string json = JsonConvert.SerializeObject(taskInfos, new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+            File.WriteAllText("Tasks.txt",json);
+            ////进行序列化
             //保存所有控件位置
             using (StreamWriter sw = new StreamWriter("ControlPos.txt"))
             {
@@ -367,7 +364,7 @@ namespace TTaskEditor.Pages
             var pos = Mouse.GetPosition(MainCanvas);
             Canvas.SetLeft(taskItem, pos.X);
             Canvas.SetTop(taskItem, pos.Y);
-            controlPos.Add(taskItem.TaskInfo.ID, pos);
+            controlPos.Add(taskItem.TaskID, pos);
             MainCanvas.Children.Add(taskItem);
             allTasks.Add(taskItem);
         }

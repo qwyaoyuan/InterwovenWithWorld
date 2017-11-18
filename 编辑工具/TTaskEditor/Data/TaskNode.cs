@@ -7,6 +7,20 @@ using System.Collections.Generic;
 public class TaskNode
 {
 
+    public TaskNode()
+    {
+
+    }
+    /// <summary>
+    /// 任务地点
+    /// </summary>
+    public TaskLocation TaskLocation { get; set; }
+
+    /// <summary>
+    /// 任务标题
+    /// </summary>
+    public string TaskTitile { get; set; }
+
     /// <summary>
     /// 任务类型
     /// </summary>
@@ -88,95 +102,36 @@ public class TaskNode
     }
 
 
-    public override string ToString()
-    {
-        string awardGoodsStr = string.Empty;
-        for (int i = 0; i < AwardGoods.Count; i++)
-        {
-            if (i == awardGoodsStr.Length-1)
-                awardGoodsStr += AwardGoods[i].ToString();
-        }
-        Func<Dictionary<int, int>.Enumerator, string> toStr = dicE =>
-        {
-            string str = string.Empty;
-            if (dicE.MoveNext())
-            {
-                str += dicE.Current.Key + "," + dicE.Current.Value;
-            }
-            while (dicE.MoveNext())
-            {
-                str += "," + dicE.Current.Key + "," +
-                                             dicE.Current.Value;
-            }
-            return str;
-        };
-
-        var killMosterEnumerator = KillMonsterAssignCount.GetEnumerator();
-        var getGoodsAssignCountEnumerator = GetGoodsAssignCount.GetEnumerator();
-        string killMosterStr = toStr(killMosterEnumerator);
-        string getGoodsAssignCountStr = toStr(getGoodsAssignCountEnumerator);
-
-        string spliter = "|";
-        string nodeStr =  (int)TaskType + spliter + LevelLimit + spliter + (int)ChaTendency +
-                         spliter + (int)RoleOfRace
-                         + spliter + NeedReputation + spliter + awardGoodsStr + spliter+AwardExperience+spliter+
-                         AwardSkillPoint+spliter+AwardReputation+spliter+ ReceiveTaskNpcId + spliter +
-                         DeliveryTaskNpcId + spliter + killMosterStr
-                         + spliter + getGoodsAssignCountStr + spliter + ArriveAssignPosition.ToString() + spliter +
-                         TimeLimit;
-
-
-        return nodeStr;
-    }
-
-
-    public void FromStr(string str)
-    {
-        string[] nodeStr = str.Split(new char[] { '|' });
-     
-        TaskType = (TaskType)int.Parse(nodeStr[0]);
-        LevelLimit = int.Parse(nodeStr[1]);
-        ChaTendency = (CharacterTendency)int.Parse(nodeStr[2]);
-        RoleOfRace = (global::RoleOfRace)int.Parse(nodeStr[3]);
-        NeedReputation = float.Parse(nodeStr[4]);
-        string awardGoodStr = nodeStr[5];
-        AwardGoods = new List<int>();
-        foreach (var awardGood in awardGoodStr.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries))
-        {
-            AwardGoods.Add(Int32.Parse(awardGood));
-        }
-        AwardExperience = int.Parse(nodeStr[6]);
-        AwardSkillPoint = int.Parse(nodeStr[7]);
-        AwardReputation = float.Parse(nodeStr[8]);
-        ReceiveTaskNpcId = int.Parse(nodeStr[9]);
-        DeliveryTaskNpcId = int.Parse(nodeStr[10]);
-        string killMonsterAssignCountStr = nodeStr[11];
-        string[] killMosterStrs = killMonsterAssignCountStr.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
-        KillMonsterAssignCount = new Dictionary<int, int>();
-        for (int i = 0; i < killMosterStrs.Length; i += 2)
-        {
-            KillMonsterAssignCount.Add(int.Parse(killMosterStrs[i]), int.Parse(killMosterStrs[i + 1]));
-        }
-        string getGoodsAssignCountStr = nodeStr[12];
-        string[] getGoodsAssignCountStrs = getGoodsAssignCountStr.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
-        GetGoodsAssignCount = new Dictionary<int, int>();
-        for (int i = 0; i < getGoodsAssignCountStrs.Length; i += 2)
-        {
-            GetGoodsAssignCount.Add(int.Parse(getGoodsAssignCountStrs[i]), int.Parse(getGoodsAssignCountStrs[i + 1]));
-        }
-        string arriveAssignPositionstr = nodeStr[13];
-        string[] arriveAssignPositionStrs = arriveAssignPositionstr.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
-        ArriveAssignPosition = new Vector3(0, 0, 0);
-        if (arriveAssignPositionStrs.Length == 3)
-        {
-            ArriveAssignPosition.X = float.Parse(arriveAssignPositionStrs[0]);
-            ArriveAssignPosition.Y = float.Parse(arriveAssignPositionStrs[1]);
-            ArriveAssignPosition.Z = float.Parse(arriveAssignPositionStrs[2]);
-        }
-        TimeLimit = int.Parse(nodeStr[14]);
-    }
 
 }
+
+/// <summary>
+/// 任务地点
+/// </summary>
+public class TaskLocation
+{
+    /// <summary>
+    /// 场景名
+    /// </summary>
+    public string SceneName { get; set; }
+
+    /// <summary>
+    /// 到达的中心位置
+    /// </summary>
+    public Vector3 ArrivedCenterPos { get; set; }
+
+
+    /// <summary>
+    /// 半径
+    /// </summary>
+    public int Radius { get; set; }
+
+    public TaskLocation()
+    {
+
+    }
+}
+
 
 public class Vector3
 {

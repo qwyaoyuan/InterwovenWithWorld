@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.SqlTypes;
@@ -15,8 +16,6 @@ namespace TTaskEditor.Data
 
         private static Tasks _instance;
 
-
-
         public static Tasks Instance
         {
             get
@@ -25,6 +24,7 @@ namespace TTaskEditor.Data
                 return _instance ?? (_instance = new Tasks());
             }
         }
+
 
         private Grapic<TaskInfo> Data;
 
@@ -36,40 +36,44 @@ namespace TTaskEditor.Data
         /// <param name="path"></param>
         public void LoadTasks(string path)
         {
-            File.ReadLines()
             if (!File.Exists(path)) return;
             Data = new Grapic<TaskInfo>();
-            string[] allLines = File.ReadAllLines(path);
-            for (int i = 0; i < allLines.Length; i += 4)
-            {
-                TaskInfo taskInfo = new TaskInfo();
-                taskInfo.Deserialze(new string[] { allLines[i], allLines[i + 1], allLines[i + 2], allLines[i + 3] });
-                Data.AllNodes.Add(taskInfo);
-            }
-            //填充
+            Data.AllNodes = JsonConvert.DeserializeObject<List<TaskInfo>>(File.ReadAllText(path));
+            Data.RootNode = Data.AllNodes.Single(t => t.Parents == null);
 
-            for (int i = 0; i < Data.AllNodes.Count; i++)
-            {
-                if (Data.AllNodes[i].Children != null)
-                {
-                    for (int j = 0; j < Data.AllNodes[i].Children.Count; j++)
-                    {
-                        Data.AllNodes[i].Children[j] =
-                            Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Children[j].ID));
-                    }
-                }
-                if (Data.AllNodes[i].Parents != null)
-                {
-                    for (int j = 0; j < Data.AllNodes[i].Parents.Count; j++)
-                    {
-                        Data.AllNodes[i].Parents[j] =
-                            Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Parents[j].ID));
-                    }
-                }
-            }
+
+            //Data = new Grapic<TaskInfo>();
+            //string[] allLines = File.ReadAllLines(path);
+            //for (int i = 0; i < allLines.Length; i += 4)
+            //{
+            //    TaskInfo taskInfo = new TaskInfo();
+            //    taskInfo.Deserialze(new string[] { allLines[i], allLines[i + 1], allLines[i + 2], allLines[i + 3] });
+            //    Data.AllNodes.Add(taskInfo);
+            //}
+            ////填充
+
+            //for (int i = 0; i < Data.AllNodes.Count; i++)
+            //{
+            //    if (Data.AllNodes[i].Children != null)
+            //    {
+            //        for (int j = 0; j < Data.AllNodes[i].Children.Count; j++)
+            //        {
+            //            Data.AllNodes[i].Children[j] =
+            //                Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Children[j].ID));
+            //        }
+            //    }
+            //    if (Data.AllNodes[i].Parents != null)
+            //    {
+            //        for (int j = 0; j < Data.AllNodes[i].Parents.Count; j++)
+            //        {
+            //            Data.AllNodes[i].Parents[j] =
+            //                Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Parents[j].ID));
+            //        }
+            //    }
+            //}
             //设置头结点
 
-            Data.RootNode = Data.AllNodes.Single(t => t.Parents == null);
+
 
             //头结点可达
             Data.RootNode.CanVisit = r => true;
@@ -77,11 +81,14 @@ namespace TTaskEditor.Data
             Data.AllNodes.Where(t => t.ID != Data.RootNode.ID).ToList().ForEach(t => t.CanVisit = tt => false);
 
             //获取所有互斥任务
-            string[] allExclusiveTasks = File.ReadAllLines("ExclusiveTasks.txt");
-            foreach (var exclusiveTaskPair in allExclusiveTasks)
+            if (File.Exists("ExclusiveTasks.txt"))
             {
-                string[] taskpair = exclusiveTaskPair.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                exlucsionTaskDic.Add(taskpair[0], taskpair[1]);
+                string[] allExclusiveTasks = File.ReadAllLines("ExclusiveTasks.txt");
+                foreach (var exclusiveTaskPair in allExclusiveTasks)
+                {
+                    string[] taskpair = exclusiveTaskPair.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    exlucsionTaskDic.Add(taskpair[0], taskpair[1]);
+                }
             }
 
             //触发互斥任务不可达
@@ -230,7 +237,7 @@ namespace TTaskEditor.Data
         public T[] GetLastFrameNodes()
         {
             T[] allNode = GetAllNode();
-            Func<T, bool> filter = node => node.CanVisit != null && node.CanVisit(node) &&node.Children!=null&& node.Children.All(n => n != null && n.CanVisit != null && n.CanVisit(n) == false);
+            Func<T, bool> filter = node => node.CanVisit != null && node.CanVisit(node) && node.Children != null && node.Children.All(n => n != null && n.CanVisit != null && n.CanVisit(n) == false);
             return allNode.Where(filter).ToArray();
         }
 
@@ -261,9 +268,7 @@ namespace TTaskEditor.Data
 
         Predicate<T> CanVisit { get; set; }
 
-        void Serialize(StreamWriter sw);
 
-        void Deserialze(string[] strs);
 
     }
 
@@ -341,85 +346,6 @@ namespace TTaskEditor.Data
         /// </summary>
         public Predicate<TaskInfo> CanVisit { get; set; }
 
-        public void Serialize(StreamWriter sw)
-        {
-            sw.WriteLine(ID);
-            //首先写入任务节点
-            sw.WriteLine(TaskNode.ToString());
-            //写入父亲：
-            string parentStr = string.Empty;
-            if (Parents == null || Parents.Count == 0)
-            {
-                sw.WriteLine();
-            }
-            else
-            {
-                for (int i = 0; i < Parents.Count; i++)
-                {
-                    if (i == 0)
-                        parentStr += Parents[i].ID;
-                    else
-                        parentStr += "," + Parents[i].ID;
-                }
-                sw.WriteLine(parentStr);
-            }
-            //写入孩子：
-            string childStr = string.Empty;
-            if (Children == null || Children.Count == 0)
-            {
-                sw.WriteLine();
-            }
-            else
-            {
-                for (int i = 0; i < Children.Count; i++)
-                {
-                    if (i == 0)
-                        childStr += Children[i].ID;
-                    else
-                        childStr += "," + Children[i].ID;
-                }
-                sw.WriteLine(childStr);
-            }
-        }
-
-
-        public void Deserialze(string[] strs)
-        {
-            this.ID = int.Parse(strs[0]);
-            this.TaskNode = new TaskNode();
-            this.TaskNode.FromStr(strs[1]);
-            //反序列化父亲,此时仅仅包含父亲id，父亲实体没有填充
-
-            if (string.IsNullOrEmpty(strs[2]))
-                this.Parents = null;
-            else
-            {
-                string[] parents = strs[2].Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var p in parents)
-                {
-                    TaskInfo t = new TaskInfo();
-                    t.ID = int.Parse(p);
-                    this.AddParent(t);
-                }
-            }
-            //反序列化孩子，此时仅仅包含孩子id，孩子实体没有填充
-            if (string.IsNullOrEmpty(strs[3]))
-                this.Children = null;
-            else
-            {
-                string[] childs = strs[3].Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
-                foreach (var c in childs)
-                {
-                    TaskInfo t = new TaskInfo();
-                    t.ID = int.Parse(c);
-                    this.AddChild(t);
-                }
-            }
-
-        }
-
-
 
         private void EnsureHasChildren()
         {
@@ -469,7 +395,7 @@ namespace TTaskEditor.Data
         /// 增加父亲节点
         /// </summary>
         /// <param name="parents"></param>
-        public void AddParents(params  TaskInfo[] parents)
+        public void AddParents(params TaskInfo[] parents)
         {
             foreach (var taskNode in parents)
             {

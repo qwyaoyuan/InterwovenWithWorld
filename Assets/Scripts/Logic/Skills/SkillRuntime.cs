@@ -47,6 +47,8 @@ public class SkillRuntime
     /// <returns></returns>
     public bool SetSkill(int skillEnum)
     {
+       var skillStructData =DataCenter.Instance.GetMetaData<SkillStructData>();
+
         if (skillEnum > combineBaseNum)
         {
             int skill1Num = skillEnum % 100+1000;skillEnum /= 100;
@@ -55,7 +57,7 @@ public class SkillRuntime
             int skill4Num = skillEnum % 100+1300;skillEnum /= 100;
             SkillBaseStruct[] addSkillBaseStructArray = (new[] { skill1Num, skill2Num, skill3Num, skill4Num })
                 .Select(temp => (EnumSkillType)temp)
-                .Select(temp => SkillStructData.Instance.SearchSkillDatas(temp1 => temp1.skillType == temp).FirstOrDefault())
+                .Select(temp => skillStructData.SearchSkillDatas(temp1 => temp1.skillType == temp).FirstOrDefault())
                 .Where(temp => temp != null)
                 .ToArray();
             List<SkillBaseStruct> tempSkillBaseStruct = new List<SkillBaseStruct>(skillBaseStructList.ToArray());
@@ -67,7 +69,7 @@ public class SkillRuntime
         else if(skillEnum> (int)EnumSkillType.MagicCombinedLevel1Start && skillEnum<(int)EnumSkillType.MagicCombinedLevel4End)
         {
             List<SkillBaseStruct> tempSkillBaseStruct = new List<SkillBaseStruct>(skillBaseStructList.ToArray());
-            SkillBaseStruct skillBaseStruct = SkillStructData.Instance.SearchSkillDatas(temp => temp.skillType == (EnumSkillType)skillEnum).FirstOrDefault();
+            SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == (EnumSkillType)skillEnum).FirstOrDefault();
             tempSkillBaseStruct.Add(skillBaseStruct);
             bool result = SkillCombinDisk.Intance.GetCanCombinSkill(tempSkillBaseStruct.ToArray());
             skillBaseStructList.Add(skillBaseStruct);
