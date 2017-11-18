@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 /// <summary>
 /// 道具类型 (具体类型先不要用,等编辑好了用)
 /// </summary>
@@ -842,4 +845,224 @@ public enum EnumGoodsType
 
     #endregion
 
+}
+
+/// <summary>
+/// 道具辅助类
+/// </summary>
+public static class GoodsStaticTools
+{
+    /// <summary>
+    /// 道具根节点
+    /// </summary>
+    static GoodsNode root;
+    /// <summary>
+    /// 道具类型树节点字典(方便查询)
+    /// </summary>
+    static Dictionary<EnumGoodsType, GoodsNode> goodsNodeDic;
+
+    static GoodsStaticTools()
+    {
+        InitGoodsNode();
+    }
+
+    /// <summary>
+    /// 判断是否是双手武器
+    /// </summary>
+    /// <param name="enumGoodsType"></param>
+    /// <returns></returns>
+    public static bool IsTwoHandedWeapon(EnumGoodsType enumGoodsType)
+    {
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.TwoHandedSword) ||//双手剑
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Arch) ||//弓
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrossBow) ||//弩
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.LongRod);//长杖
+    }
+
+    /// <summary>
+    /// 判断是否是主手武器 
+    /// </summary>
+    /// <param name="enumGoodsType"></param>
+    /// <returns></returns>
+    public static bool IsRightOneHandedWeapon(EnumGoodsType enumGoodsType)
+    {
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.SingleHanedSword) ||//单手剑 
+            GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Dagger) ||//匕首
+             GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.ShortRod);//短杖
+    }
+
+    /// <summary>
+    /// 判断是否是副手武器
+    /// </summary>
+    /// <param name="enumGoodsType"></param>
+    /// <returns></returns>
+    public static bool IsLeftOneHandedWeapon(EnumGoodsType enumGoodsType)
+    {
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Shield) ||//盾牌
+                     GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrystalBall);//水晶球 
+    }
+
+    /// <summary>
+    /// 初始化节点
+    /// </summary>
+    static void InitGoodsNode()
+    {
+        root = new GoodsNode();
+        goodsNodeDic = new Dictionary<EnumGoodsType, GoodsNode>();
+        int layer1 = 1000000;
+        int layer2 = 100000;
+        int layer3 = 1000;
+        var tempDataStruct = Enum.GetValues(typeof(EnumGoodsType)).OfType<EnumGoodsType>()
+            .Select(temp => new { type = temp, value = (int)temp })
+            .OrderBy(temp => temp.value)
+            .ToArray();
+        root.Childs = new List<GoodsNode>();
+        for (int i = 0; i < 10; i++)//第一层
+        {
+            #region 第一层
+            int layer1Min = layer1 * i;
+            int layer1Max = layer1 * (i + 1);
+            var layer1TempDataStruct = tempDataStruct.Where(temp => temp.value >= layer1Min && temp.value < layer1Max)
+                .Select(temp => new { type = temp.type, value = temp.value % layer1, baseValue = temp.value })
+                .ToArray();
+            if (layer1TempDataStruct.Length == 0)
+                continue;
+            GoodsNode layer1TreeNode = new GoodsNode();
+            layer1TreeNode.Childs = new List<GoodsNode>();
+            layer1TreeNode.GoodsType = layer1TempDataStruct[0].type;
+            goodsNodeDic.Add(layer1TreeNode.GoodsType, layer1TreeNode);
+            root.Childs.Add(layer1TreeNode);
+            layer1TreeNode.Parent = root;
+            #endregion
+            for (int j = 0; j < 10; j++)//第二层
+            {
+                #region 第二层
+                int layer2Min = layer2 * j;
+                int layer2Max = layer2 * (j + 1);
+                var layer2TempDataStruct = layer1TempDataStruct.Where(temp => temp.value > layer2Min && temp.value < layer2Max)
+                    .Select(temp => new { type = temp.type, value = temp.value % layer2, baseValue = temp.baseValue })
+                    .ToArray();
+                if (layer2TempDataStruct.Length == 0)
+                    continue;
+                GoodsNode layer2TreeNode = new GoodsNode();
+                layer2TreeNode.Childs = new List<GoodsNode>();
+                layer2TreeNode.GoodsType = layer2TempDataStruct[0].type;
+                goodsNodeDic.Add(layer2TreeNode.GoodsType, layer2TreeNode);
+                layer1TreeNode.Childs.Add(layer2TreeNode);
+                layer2TreeNode.Parent = layer1TreeNode;
+                #endregion
+                for (int k = 0; k < 100; k++)//第三层
+                {
+                    #region 第三层
+                    int layer3Min = layer3 * k;
+                    int layer3Max = layer3 * (k + 1);
+                    var layer3TempDataStruct = layer2TempDataStruct.Where(temp => temp.value >= layer3Min && temp.value < layer3Max)
+                        .Select(temp => new { type = temp.type, value = temp.value % layer3, baseValue = temp.baseValue })
+                        .ToArray();
+                    if (layer3TempDataStruct.Length == 0)
+                        continue;
+                    GoodsNode layer3TreeNode = new GoodsNode();
+                    layer3TreeNode.Childs = new List<GoodsNode>();
+                    layer3TreeNode.GoodsType = layer3TempDataStruct[0].type;
+                    goodsNodeDic.Add(layer3TreeNode.GoodsType, layer3TreeNode);
+                    layer2TreeNode.Childs.Add(layer3TreeNode);
+                    layer3TreeNode.Parent = layer2TreeNode;
+                    #endregion
+                    for (int l = 1; l < layer3TempDataStruct.Length; l++)//第四层 
+                    {
+                        #region 第四层
+                        GoodsNode layer4TreeNode = new GoodsNode();
+                        layer4TreeNode.Childs = new List<GoodsNode>();
+                        layer4TreeNode.GoodsType = layer3TempDataStruct[l].type;
+                        goodsNodeDic.Add(layer4TreeNode.GoodsType, layer4TreeNode);
+                        layer3TreeNode.Childs.Add(layer4TreeNode);
+                        layer4TreeNode.Parent = layer3TreeNode;
+                        #endregion
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 获取指定物品的大类
+    /// </summary>
+    /// <param name="child">子节点</param>
+    /// <param name="deep">检索深度,默认为1(即上下层关系 )</param>
+    /// <returns></returns>
+    public static EnumGoodsType? GetParentGoodsType(EnumGoodsType child, int deep = 1)
+    {
+        GoodsNode childNode = GetGoodNode(child);
+        if (childNode == null)
+            return null;
+        GoodsNode parentNode = childNode;
+        while (deep > 0 && parentNode != null)
+        {
+            deep--;
+            parentNode = parentNode.Parent;
+        }
+        if (parentNode != null)
+            return parentNode.GoodsType;
+        return null;
+    }
+
+    /// <summary>
+    /// 判断给定的父子关系是否存在
+    /// </summary>
+    /// <param name="child">子节点</param>
+    /// <param name="parent">父节点</param>
+    /// <param name="ignoreDeep">是否忽略深度,如果忽略则会忽略两者之间的节点</param>
+    /// <returns></returns>
+    public static bool IsChildGoodsNode(EnumGoodsType child, EnumGoodsType parent, bool ignoreDeep = true)
+    {
+        if ((int)child < (int)parent)
+            return false;
+        if ((int)child - (int)parent > 1000000)
+            return false;
+        GoodsNode childNode = GetGoodNode(child);
+        GoodsNode parentNode = GetGoodNode(parent);
+        if (childNode == null || parentNode == null)
+            return false;
+        if (!ignoreDeep)
+        {
+            return Equals(childNode.Parent, parentNode);
+        }
+        else
+        {
+            GoodsNode _parentNode = childNode;
+            while (_parentNode != null)
+            {
+                if (Equals(_parentNode, parentNode))
+                {
+                    return true;
+                }
+                _parentNode = _parentNode.Parent;
+            }
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 通过类型获取节点对象
+    /// </summary>
+    /// <param name="targetType"></param>
+    /// <returns></returns>
+    private static GoodsNode GetGoodNode(EnumGoodsType targetType)
+    {
+        GoodsNode goodsNode = null;
+        goodsNodeDic.TryGetValue(targetType, out goodsNode);
+        return goodsNode;
+    }
+
+    /// <summary>
+    /// 道具节点
+    /// </summary>
+    public class GoodsNode
+    {
+        public GoodsNode Parent;
+
+        public List<GoodsNode> Childs;
+
+        public EnumGoodsType GoodsType;
+    }
 }

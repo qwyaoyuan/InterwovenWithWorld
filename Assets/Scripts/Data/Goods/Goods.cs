@@ -4,7 +4,7 @@
 /// </summary>
 public class Goods
 {
-    private int ID;
+    private EnumGoodsType enumGoodsType;
 
     /// <summary>
     /// 商品名称
@@ -12,7 +12,7 @@ public class Goods
     public string GoodsName { get; set; }
     #region 物品基础通用属性
     //物品ID
-    public EnumGoodsType EnumGoodsType { get { return (EnumGoodsType)ID; } }
+    public EnumGoodsType EnumGoodsType { get { return enumGoodsType; } }
     //重量
     public int Weight { get; set; }
     //基础价格
@@ -28,14 +28,14 @@ public class Goods
     {
 
     }
-    public Goods(int id)
+    public Goods(EnumGoodsType enumGoodsType)
     {
-        this.ID = id;
+        this.enumGoodsType = enumGoodsType;
     }
 
-    public Goods(int id, string name, int weight, int price, string expain)
+    public Goods(EnumGoodsType enumGoodsType, string name, int weight, int price, string expain)
     {
-        this.ID = id;
+        this.enumGoodsType = enumGoodsType;
         this.GoodsName = name;
         this.Weight = weight;
         this.Price = price;

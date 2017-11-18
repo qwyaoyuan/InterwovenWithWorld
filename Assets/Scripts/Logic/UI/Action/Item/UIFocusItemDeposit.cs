@@ -23,6 +23,16 @@ public class UIFocusItemDeposit : UIFocus
     /// </summary>
     UIListItem focusUIListItem;
 
+    /// <summary>
+    /// 玩家对象
+    /// </summary>
+    PlayerState playerState;
+
+    /// <summary>
+    /// 玩家的运行时状态
+    /// </summary>
+    IPlayerState iPlayerStateRun;
+
     private void Awake()
     {
         //获取List控件
@@ -54,12 +64,20 @@ public class UIFocusItemDeposit : UIFocus
     {
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         UIManager.Instance.KeyPressHandle += Instance_KeyPressHandle;
+        GameState.Instance.Registor<IPlayerState>(IPlayerStateChanged);
+        iPlayerStateRun = GameState.Instance.GetEntity<IPlayerState>();
+        playerState = DataCenter.Instance.GetEntity<PlayerState>();
         //读取数据并初始化控件
         //给List控件重新填充数据
-        //需要读取数据因此这里未实现
         uiDepostiList.Init();
-        //UIListItem uiListItem = uiDepostiList.NewItem();
-        //uiDepostiList.UpdateUI();
+        PlayGoods[] playGoodsArray = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Package).ToArray();//玩家所有包括中的物品
+        foreach (PlayGoods playGoods in playGoodsArray)
+        {
+            UIListItem uiListItem = uiDepostiList.NewItem();
+            uiListItem.childText.text = playGoods.GoodsInfo.GoodsName;
+            uiListItem.value = playGoods;
+        }
+        uiDepostiList.UpdateUI();
         focusUIListItem = uiDepostiList.GetAllImtes().FirstOrDefault();
         if (focusUIListItem)
         {
@@ -74,6 +92,7 @@ public class UIFocusItemDeposit : UIFocus
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
         UIManager.Instance.KeyPressHandle -= Instance_KeyPressHandle;
+        GameState.Instance.UnRegistor<IPlayerState>(IPlayerStateChanged);
     }
 
     /// <summary>
@@ -92,6 +111,50 @@ public class UIFocusItemDeposit : UIFocus
     public override void LostForcus()
     {
         focused = false;
+    }
+
+    /// <summary>
+    /// 玩家状态发生变化
+    /// </summary>
+    /// <param name="iPlayerState"></param>
+    /// <param name="name"></param>
+    private void IPlayerStateChanged(IPlayerState iPlayerState, string name)
+    {
+        if (name == GameState.Instance.GetFieldName<IPlayerState, bool>(temp => temp.EquipmentChanged))//主要用于装备发生变化时修改集合
+        {
+            UIListItem[] nowUIListItems = uiDepostiList.GetAllImtes();
+            List<UIListItem> mustDeleteItems = new List<UIListItem>();
+            foreach (UIListItem item in nowUIListItems)
+            {
+                PlayGoods playGoods = item.value as PlayGoods;
+                if (playGoods.GoodsLocation == GoodsLocation.Wearing)
+                    mustDeleteItems.Add(item);
+            }
+            PlayGoods[] packageGoods = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Package).ToArray();
+            List<PlayGoods> mustAddPlayGoods = new List<PlayGoods>();
+            PlayGoods[] lastPackageGoods = nowUIListItems.Select(temp => temp.value as PlayGoods).ToArray();
+            foreach (PlayGoods item in packageGoods)
+            {
+                if (!lastPackageGoods.Contains(item))
+                {
+                    mustAddPlayGoods.Add(item);
+                }
+            }
+            //删除需要删除的条目
+            foreach (UIListItem item in mustDeleteItems)
+            {
+                uiDepostiList.RemoveItem(item);
+            }
+            //添加需要添加的条目
+            foreach (PlayGoods item in mustAddPlayGoods)
+            {
+                UIListItem uiListItem = uiDepostiList.NewItem();
+                uiListItem.childText.text = item.GoodsInfo.GoodsName;
+                uiListItem.value = item;
+                uiDepostiList.ShowItem(uiListItem);
+            }
+            uiDepostiList.UpdateUI();
+        }
     }
 
     /// <summary>
@@ -119,6 +182,8 @@ public class UIFocusItemDeposit : UIFocus
     /// <param name="moveType"></param>
     public override void MoveChild(UIFocusPath.MoveType moveType)
     {
+        if (focusUIListItem == null)
+            focusUIListItem = uiDepostiList.FirstShowItem();
         UIListItem[] tempArrays = uiDepostiList.GetAllImtes();
         if (tempArrays.Length == 0)
             return;
@@ -191,6 +256,8 @@ public class UIFocusItemDeposit : UIFocus
         }
     }
 
+   
+
     /// <summary>
     /// 开始道具的功能
     /// 如果是装备则替换，如果是药水则恢复
@@ -199,8 +266,90 @@ public class UIFocusItemDeposit : UIFocus
     {
         if (focusUIListItem)
         {
-            //通过id获取对象
-            int id = (int)focusUIListItem.value;
+            //物品对象
+            PlayGoods playGoods = (PlayGoods)focusUIListItem.value;
+            EnumGoodsType enumGoodsType = playGoods.GoodsInfo.EnumGoodsType;
+            int goodsTypeInt = (int)enumGoodsType;
+            if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Equipment))//如果是装备类型则替换装备
+            {
+                //如果是副手武器
+                if (GoodsStaticTools.IsLeftOneHandedWeapon(enumGoodsType))
+                {
+                    //需要判断当前是否佩戴了双手武器以及副手武器(左手武器),如果佩戴了则需要卸载双手武器
+                    PlayGoods[] twoHandedWeapons = playerState.PlayerAllGoods.Where(
+                        temp => temp.GoodsLocation == GoodsLocation.Wearing
+                        && (GoodsStaticTools.IsTwoHandedWeapon(temp.GoodsInfo.EnumGoodsType) ||
+                        (temp.leftRightArms != null && temp.leftRightArms.Value == true))).ToArray();
+                    foreach (PlayGoods _playGoods in twoHandedWeapons)
+                    {
+                        _playGoods.leftRightArms = null;
+                        _playGoods.GoodsLocation = GoodsLocation.Package;
+                    }
+                    playGoods.leftRightArms = false;
+                }
+                //如果是双手武器 
+                else if (GoodsStaticTools.IsTwoHandedWeapon(enumGoodsType))
+                {
+                    //需要判断当前是否佩戴了副手武器以及主手武器(右手武器),如果佩戴了则需要卸载副手武器 
+                    PlayGoods[] oneHandedWeapons = playerState.PlayerAllGoods.Where(
+                        temp => temp.GoodsLocation == GoodsLocation.Wearing &&
+                        (GoodsStaticTools.IsLeftOneHandedWeapon(temp.GoodsInfo.EnumGoodsType) ||
+                        (temp.leftRightArms != null && temp.leftRightArms.Value == false))).ToArray();
+                    foreach (PlayGoods _playGoods in oneHandedWeapons)
+                    {
+                        _playGoods.leftRightArms = null;
+                        _playGoods.GoodsLocation = GoodsLocation.Package;
+                    }
+                    playGoods.leftRightArms = true;
+                }
+                //如果是饰品
+                else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Ornaments))
+                {
+                    EnumGoodsType? ornamentsType = GoodsStaticTools.GetParentGoodsType(playGoods.GoodsInfo.EnumGoodsType);//从基础的饰品类型向上跳到饰品的分类类型(项链 戒指 护身符 勋章)
+                    if (ornamentsType != null && GoodsStaticTools.IsChildGoodsNode(ornamentsType.Value, EnumGoodsType.Ornaments))
+                    {
+                        PlayGoods[] ornaments = playerState.PlayerAllGoods.Where(
+                            temp => temp.GoodsLocation == GoodsLocation.Wearing && GoodsStaticTools.IsChildGoodsNode(temp.GoodsInfo.EnumGoodsType, ornamentsType.Value)).ToArray();
+                        foreach (PlayGoods _playGoods in ornaments)
+                        {
+                            _playGoods.GoodsLocation = GoodsLocation.Package;
+                        }
+                    }
+                }
+                //如果是武器(这里是单手武器,双手武器以及副手在上面已经判断过了 )
+                else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Arms))
+                {
+                    //需要卸载所有的右手装备
+                    PlayGoods[] rightHandedWeapons = playerState.PlayerAllGoods.Where(
+                        temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == false).ToArray();
+                    foreach (PlayGoods _playGoods in rightHandedWeapons)
+                    {
+                        _playGoods.leftRightArms = null;
+                        _playGoods.GoodsLocation = GoodsLocation.Package;
+                    }
+                    playGoods.leftRightArms = true;
+                }
+                //如果是其他装备(防具等)
+                else
+                {
+                    EnumGoodsType? armorType = GoodsStaticTools.GetParentGoodsType(playGoods.GoodsInfo.EnumGoodsType,2);//从基础的防具类型向上跳到防具的大类(头盔大类 盔甲类 鞋子类)
+                    if (armorType != null && GoodsStaticTools.IsChildGoodsNode(armorType.Value, EnumGoodsType.Equipment))
+                    {
+                        PlayGoods[] ammors = playerState.PlayerAllGoods.Where(
+                            temp => temp.GoodsLocation == GoodsLocation.Wearing && GoodsStaticTools.IsChildGoodsNode(temp.GoodsInfo.EnumGoodsType, armorType.Value)).ToArray();
+                        foreach (PlayGoods _playGoods in ammors)
+                        {
+                            _playGoods.GoodsLocation = GoodsLocation.Package;
+                        }
+                    }
+                }
+                playGoods.GoodsLocation = GoodsLocation.Wearing;
+                iPlayerStateRun.EquipmentChanged = true;
+            }
+            else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Elixir))//如果是炼金药剂类则直接服用
+            {
+                throw new System.Exception("物品栏吃药功能暂时未实现");
+            }
         }
     }
 }

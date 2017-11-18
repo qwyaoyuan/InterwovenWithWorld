@@ -124,23 +124,56 @@ public class PlayerState
 public class PlayGoods
 {
     /// <summary>
+    /// 物品的id(并非是物品的类型,是指具体物品的唯一标识)
+    /// </summary>
+    private int id;
+
+    /// <summary>
     /// 物品信息
     /// </summary>
     public Goods GoodsInfo { get; set; }
     /// <summary>
     /// 物品所在位置
     /// </summary>
-    GoodsLocation GoodsLocation { get; set; }
+    public GoodsLocation GoodsLocation { get; set; }
+    /// <summary>
+    /// 主要适用于药品,当该项为0时,则需要销毁
+    /// </summary>
+    public int Count { get; set; }
+
+    /// <summary>
+    /// 物品的id(并非是物品的类型,是指具体物品的唯一标识)
+    /// </summary>
+    public int ID { get { return id; } }
+
+    #region 特殊的属性
+    /// <summary>
+    /// 这是左手还是右手武器 (主要是在类型为装备中的武器判断时使用)
+    /// 左手true  右手false  null表示没有装备
+    /// </summary>
+    public bool? leftRightArms;
+
+    #endregion
 
     public PlayGoods()
     {
         GoodsInfo = new Goods();
         GoodsLocation = GoodsLocation.None;
     }
-    public PlayGoods(Goods goodsInfo, GoodsLocation location)
+    public PlayGoods(int id , Goods goodsInfo, GoodsLocation location)
     {
+        this.id = id;
         this.GoodsInfo = goodsInfo;
         this.GoodsLocation = location;
+    }
+
+    /// <summary>
+    /// 获取物品的图标
+    /// </summary>
+    /// <returns></returns>
+    public Sprite GetGoodsSprite()
+    {
+        throw new System.Exception("未实现,需要返回物品的图标");
     }
 }
 

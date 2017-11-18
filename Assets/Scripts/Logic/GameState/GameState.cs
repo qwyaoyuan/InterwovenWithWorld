@@ -20,12 +20,12 @@ public class GameState : IEntrance,
     /// <summary>
     /// 回调字典
     /// </summary>
-    Dictionary<Type, List<KeyValuePair<Delegate, Action<IBaseState, string>>>> callBackDic;
+    Dictionary<Type, List<KeyValuePair<object, Action<IBaseState, string>>>> callBackDic;
 
     public void Start()
     {
         Instance = this;
-        callBackDic = new Dictionary<Type, List<KeyValuePair<Delegate, Action<IBaseState, string>>>>();
+        callBackDic = new Dictionary<Type, List<KeyValuePair<object, Action<IBaseState, string>>>>();
         Type[] allType = GetType().GetInterfaces();
         foreach (Type type in allType)
         {
@@ -33,7 +33,7 @@ public class GameState : IEntrance,
                 && !Type.Equals(type, typeof(IBaseState))
                 && type.GetInterface(typeof(IBaseState).Name) != null)
             {
-                List<KeyValuePair<Delegate, Action<IBaseState, string>>> callBackList = new List<KeyValuePair<Delegate, Action<IBaseState, string>>>();
+                List<KeyValuePair<object, Action<IBaseState, string>>> callBackList = new List<KeyValuePair<object, Action<IBaseState, string>>>();
                 callBackDic.Add(type, callBackList);
             }
         }
@@ -60,7 +60,7 @@ public class GameState : IEntrance,
         {
             if (!callBackDic.ContainsKey(typeof(T)))
                 return;
-            List<KeyValuePair<Delegate, Action<IBaseState, string>>> callBackList = callBackDic[typeof(T)];
+            List<KeyValuePair<object, Action<IBaseState, string>>> callBackList = callBackDic[typeof(T)];
             if (callBackList != null && !callBackList.Select(temp => temp.Key).Contains(CallbackAction))
             {
                 Action<IBaseState, string> tempAction = (iBaseState, fieldName) =>
@@ -72,7 +72,7 @@ public class GameState : IEntrance,
                     }
                     catch { }
                 };
-                callBackList.Add(new KeyValuePair<Delegate, Action<IBaseState, string>>(CallbackAction, tempAction));
+                callBackList.Add(new KeyValuePair<object, Action<IBaseState, string>>(CallbackAction, tempAction));
             }
         }
     }
@@ -81,19 +81,29 @@ public class GameState : IEntrance,
     /// 移除注册
     /// </summary>
     /// <param name="d"></param>
-    public void UnRegistor(Delegate d)
+    public void UnRegistor<T>(Action<T, string> CallbackAction)
     {
-        if (d == null)
+        if (CallbackAction == null)
             return;
-        foreach (KeyValuePair<Type, List<KeyValuePair<Delegate, Action<IBaseState, string>>>> item in callBackDic)
+        foreach (KeyValuePair<Type, List<KeyValuePair<object, Action<IBaseState, string>>>> item in callBackDic)
         {
-            List<KeyValuePair<Delegate, Action<IBaseState, string>>> actionList = item.Value;
-            int index = actionList.Select(temp => temp.Key).ToList().IndexOf(d);
+            List<KeyValuePair<object, Action<IBaseState, string>>> actionList = item.Value;
+            int index = actionList.Select(temp => temp.Key).ToList().IndexOf(CallbackAction);
             if (index > -1)
             {
                 actionList.RemoveAt(index);
             }
         }
+    }
+
+    /// <summary>
+    /// 获取实体
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T GetEntity<T>() where T:IBaseState
+    {
+        return (T)(object)this;
     }
 
     /// <summary>
@@ -124,10 +134,10 @@ public class GameState : IEntrance,
         if (expr.Body is MemberExpression)
         {
             propertyName = ((MemberExpression)expr.Body).Member.Name;
-            List<KeyValuePair<Delegate, Action<IBaseState, string>>> actionList = null;
+            List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
             if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
             {
-                foreach (KeyValuePair<Delegate, Action<IBaseState, string>> item in actionList)
+                foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
                 {
                     try
                     {
@@ -1909,8 +1919,8 @@ public interface IBaseState
     /// <summary>
     /// 移除注册
     /// </summary>
-    /// <param name="d"></param>
-    void UnRegistor(Delegate d);
+    /// <param name="CallbackAction"></param>
+    void UnRegistor<T>(Action<T, string> CallbackAction);
     /// <summary>
     /// 获取字段或属性名 
     /// </summary>

@@ -26,6 +26,33 @@ public class UIFocusItemEquipmentLattice : UIFocus
     /// 背景边框图品
     /// </summary>
     public Image backLineImage;
+    /// <summary>
+    /// 武器类型,表示的是图标在左手还是右手
+    /// </summary>
+    public EnumWeaponType handedType;
+    /// <summary>
+    /// 数据对象
+    /// </summary>
+    public object value;
+
+    /// <summary>
+    /// 武器类型
+    /// </summary>
+    public enum EnumWeaponType
+    {
+        /// <summary>
+        /// 什么都不是
+        /// </summary>
+        None = 1,
+        /// <summary>
+        /// 单手副手武器
+        /// </summary>
+        LeftOneHanded = 2,
+        /// <summary>
+        /// 单手主手武器
+        /// </summary>
+        RightOneHanded = 4
+    }
 
     private void Awake()
     {
@@ -49,5 +76,4 @@ public class UIFocusItemEquipmentLattice : UIFocus
         //设置没有选中装备
         backLineImage.enabled = false;
     }
-
 }
