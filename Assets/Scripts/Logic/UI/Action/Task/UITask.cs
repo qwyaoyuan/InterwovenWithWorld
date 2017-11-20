@@ -27,6 +27,7 @@ public class UITask : MonoBehaviour
     [SerializeField]
     private Text taskExplanText;
 
+
     private void Awake()
     {
         uiTaskList.ItemClickHandle += UiTaskList_ItemClickHandle;
@@ -49,6 +50,7 @@ public class UITask : MonoBehaviour
     private void OnEnable()
     {
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
+
         uiTaskList.Init();
         //填充任务列表
         //----------------------//

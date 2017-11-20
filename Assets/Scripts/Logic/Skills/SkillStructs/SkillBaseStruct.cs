@@ -45,6 +45,15 @@ public class SkillBaseStruct
     /// </summary>
     public SkillAttributeStruct[] skillAttributeStructs;
 
+    /// <summary>
+    /// 技能的前置条件
+    /// </summary>
+    public SkillPrecondition skillPrecondition;
+
+    /// <summary>
+    /// 技能所属分组
+    /// </summary>
+    public EnumSkillZone skillZone;
 
     //运行时生成的数据↓↓↓
     /// <summary>
@@ -55,6 +64,21 @@ public class SkillBaseStruct
     /// 技能显示的名字(根据语言进行翻译)
     /// </summary>
     public string skillName;
+}
+
+/// <summary>
+/// 技能的前置条件
+/// </summary>
+public class SkillPrecondition
+{
+    /// <summary>
+    /// 需求某组技能投入的总点数
+    /// </summary>
+    public Dictionary<EnumSkillZone, int> mustSkillZonePointDic;
+    /// <summary>
+    /// 需求某技能投入的点数
+    /// </summary>
+    public Dictionary<EnumSkillType, int> mustSkillPointDic;
 }
 
 /// <summary>

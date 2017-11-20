@@ -14,11 +14,41 @@ public class UIAddNum : MonoBehaviour
     /// <summary>
     /// 最小值（闭区间）
     /// </summary>
-    public int min;
+    [SerializeField]
+    private int min;
     /// <summary>
     /// 最大值（闭区间）
     /// </summary>
-    public int max;
+    public int Min
+    {
+        get { return min; }
+        set
+        {
+            if (value > max)
+                max = value;
+            min = value;
+            Value = _value;
+        }
+    }
+    /// <summary>
+    /// 最大值（闭区间）
+    /// </summary>
+    [SerializeField]
+    private int max;
+    /// <summary>
+    /// 最大值（闭区间）
+    /// </summary>
+    public int Max
+    {
+        get { return max; }
+        set
+        {
+            if (value < min)
+                min = value;
+            max = value;
+            Value = _value;
+        }
+    }
     /// <summary>
     /// 当前值
     /// </summary>

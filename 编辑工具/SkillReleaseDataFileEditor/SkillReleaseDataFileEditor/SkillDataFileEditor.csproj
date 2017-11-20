@@ -41,6 +41,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Assets\Scripts\Data\Skill\SkillAnalysisData.cs">
@@ -57,6 +60,9 @@
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\EnumSkillType.cs">
       <Link>Reflect\EnumSkillType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Assets\Scripts\Logic\Skills\SkillStructs\SkillBaseStruct.cs">
+      <Link>Reflect\SkillBaseStruct.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Assets\Scripts\Tools\FieldExplanAttribute.cs">
       <Link>Reflect\FieldExplanAttribute.cs</Link>

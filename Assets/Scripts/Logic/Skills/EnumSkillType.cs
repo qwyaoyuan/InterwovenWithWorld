@@ -572,6 +572,107 @@ public enum EnumSkillType
 
 
 /// <summary>
+/// 技能分组
+/// 主要用于判断前置条件
+/// </summary>
+public enum EnumSkillZone
+{
+    None,
+
+    /// <summary>
+    /// 法术组
+    /// </summary>
+    [FieldExplan("法术组")]
+    FS_MF_Zone,
+    /// <summary>
+    /// 元素系
+    /// </summary>
+    [FieldExplan("元素系")]
+    YS_MF_Zone,
+    /// <summary>
+    /// 信仰系
+    /// </summary>
+    [FieldExplan("信仰系")]
+    XY_MF_Zone,
+    /// <summary>
+    /// 魔法师
+    /// </summary>
+    [FieldExplan("魔法师")]
+    MFS_MF_Zone,
+    /// <summary>
+    /// 萨满
+    /// </summary>
+    [FieldExplan("萨满")]
+    SM_MF_Zone,
+    /// <summary>
+    /// 牧师
+    /// </summary>
+    [FieldExplan("牧师")]
+    MS_MF_Zone,
+    /// <summary>
+    /// 大法师 
+    /// </summary>
+    [FieldExplan("大法师")]
+    DFS_MF_Zone,
+    /// <summary>
+    /// 召唤师
+    /// </summary>
+    [FieldExplan("召唤师")]
+    ZHS_MF_Zone,
+    /// <summary>
+    /// 大萨满
+    /// </summary>
+    [FieldExplan("大萨满")]
+    DSM_MF_Zone,
+    /// <summary>
+    /// 祭司
+    /// </summary>
+    [FieldExplan("祭司")]
+    JS_MF_Zone,
+    /// <summary>
+    /// 教皇
+    /// </summary>
+    [FieldExplan("教皇")]
+    JH_MF_Zone,
+
+    /// <summary>
+    /// 战士
+    /// </summary>
+    [FieldExplan("战士")]
+    ZS_WL_Zone,
+    /// <summary>
+    /// 弓箭手
+    /// </summary>
+    [FieldExplan("弓箭手")]
+    GJS_WL_Zone,
+    /// <summary>
+    /// 狂战士
+    /// </summary>
+    [FieldExplan("狂战士")]
+    KZS_WL_Zone,
+    /// <summary>
+    /// 剑士
+    /// </summary>
+    [FieldExplan("剑士")]
+    JS_WL_Zone,
+    /// <summary>
+    /// 游侠
+    /// </summary>
+    [FieldExplan("游侠")]
+    YX_WL_Zone,
+    /// <summary>
+    /// 盗贼 
+    /// </summary>
+    [FieldExplan("盗贼")]
+    DZ_WL_Zone,
+    /// <summary>
+    /// 神射手
+    /// </summary>
+    [FieldExplan("神射手")]
+    SSS_WL_Zone,
+}
+
+/// <summary>
 /// 技能融合工具类
 /// </summary>
 public static class SkillCombineStaticTools

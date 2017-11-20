@@ -15,3 +15,5 @@ E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillRel
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillReleaseDataFileEditor\SkillReleaseDataFileEditor\obj\Debug\SkillDataFileEditor.SetAttributeForm.resources
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillReleaseDataFileEditor\SkillReleaseDataFileEditor\obj\Debug\SkillDataFileEditor.SetAttributeControl.resources
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillReleaseDataFileEditor\SkillReleaseDataFileEditor\obj\Debug\SkillDataFileEditor.AddOtherAttributeForm.resources
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillReleaseDataFileEditor\SkillReleaseDataFileEditor\bin\Debug\UnityEngine.dll
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\SkillReleaseDataFileEditor\SkillReleaseDataFileEditor\bin\Debug\UnityEngine.xml
