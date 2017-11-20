@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,12 +38,27 @@ public class UIFocusKeySettingLattice : UIFocus
     /// <summary>
     /// 按键格子存放的类型
     /// </summary>
-    public EnumKeyLatticeType keyLatticeType;
+    public EnumKeyContactType keyLatticeType;
 
     /// <summary>
     /// 对应的id
     /// </summary>
     public int id;
+
+    /// <summary>
+    /// 玩家存档对象
+    /// </summary>
+    PlayerState playerState;
+    /// <summary>
+    /// 技能元数据
+    /// </summary>
+    SkillStructData skillStructData;
+
+    private void OnEnable()
+    {
+        playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+    }
 
     /// <summary>
     /// 失去焦点
@@ -65,7 +81,31 @@ public class UIFocusKeySettingLattice : UIFocus
     /// </summary>
     public void InitShow()
     {
-        //SetTargetImage()
+        switch (keyLatticeType)
+        {
+            case EnumKeyContactType.Skill:
+                if (id > (int)EnumSkillType.MagicCombinedStart)//组合技能
+                {
+                    SetTargetImage(SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, id));
+                }
+                else//单一的技能
+                {
+                   SkillBaseStruct skillBaseStruct =  skillStructData.SearchSkillDatas(temp => temp.skillType == (EnumSkillType)id).FirstOrDefault();
+                    if (skillBaseStruct != null)
+                    {
+                        SetTargetImage(skillBaseStruct.skillSprite);
+                    }
+                    else SetTargetImage(null);
+                }
+                break;
+            case EnumKeyContactType.Prap:
+                PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.ID == id).FirstOrDefault();
+                SetTargetImage(playGoods.GoodsInfo.Sprite);
+                break;
+            default:
+                SetTargetImage(null);
+                break;
+        }
     }
 
     /// <summary>
@@ -98,18 +138,18 @@ public class UIFocusKeySettingLattice : UIFocus
         return end;
     }
 
-    /// <summary>
-    /// 格子存放的类型
-    /// </summary>
-    public enum EnumKeyLatticeType
-    {
-        /// <summary>
-        /// 技能
-        /// </summary>
-        Skill,
-        /// <summary>
-        /// 道具
-        /// </summary>
-        Item
-    }
+    ///// <summary>
+    ///// 格子存放的类型
+    ///// </summary>
+    //public enum EnumKeyLatticeType
+    //{
+    //    /// <summary>
+    //    /// 技能
+    //    /// </summary>
+    //    Skill,
+    //    /// <summary>
+    //    /// 道具
+    //    /// </summary>
+    //    Item
+    //}
 }

@@ -25,4 +25,9 @@ public struct KeyContactStruct
     /// 按键id
     /// </summary>
     public int key;
+
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string name;
 }
