@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 /// <summary>
 /// 所有游戏内物品基类
 /// </summary>
@@ -22,6 +23,10 @@ public class Goods
 
     //物品具有的属性列表
     public List<GoodsAbility> goodsAbilities = new List<GoodsAbility>();
+    /// <summary>
+    /// 物品图片
+    /// </summary>
+    public Sprite Sprite { get; set; }
     #endregion
 
     public Goods()

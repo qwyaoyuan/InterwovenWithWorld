@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// 技能类型枚举
@@ -560,6 +562,7 @@ public enum EnumSkillType
     #endregion
 
     /*组合技能的方法是：各个阶段减去它们的开始枚举数值，根据不同的阶段乘以100的n次方，然后相加，最终结果加1亿*/
+    MagicCombinedStart = 100000000,
 
     EndMagic = 200000000,
     #endregion
@@ -678,6 +681,37 @@ public enum EnumSkillZone
 public static class SkillCombineStaticTools
 {
     /// <summary>
+    /// 组合技能对应图片的缓存字典
+    /// </summary>
+    public static Dictionary<int, Texture> combineTextDic;
+
+    static SkillCombineStaticTools()
+    {
+        combineTextDic = new Dictionary<int, Texture>();
+    }
+
+    /// <summary>
+    /// 获取组合技能的技能图片
+    /// </summary>
+    /// <param name="skillStructData">技能元数据对象</param>
+    /// <param name="key">技能id</param>
+    /// <returns></returns>
+    public static Sprite GetCombineSkillSprite(SkillStructData skillStructData, int key)
+    {
+        EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key);
+        SkillBaseStruct[] thisUsedSkills = skillStructData.SearchSkillDatas(temp => skills.Contains(temp.skillType));
+        Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
+        if (sprites == null || sprites.Length == 0)
+            return null;
+        var sizes = sprites.Select(temp => new { width = temp.bounds.size.x, height = temp.bounds.size.y });
+        float width = sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
+        float height = sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
+        if (width == 0 || height == 0)
+            return null;
+        throw new Exception("未实现");
+    }
+
+    /// <summary>
     /// 获取技能的组合值
     /// </summary>
     /// <param name="skills"></param>
@@ -723,6 +757,16 @@ public static class SkillCombineStaticTools
     /// <param name="skillBaseStructs"></param>
     /// <returns></returns>
     public static string GetCombineSkillsName(IEnumerable<SkillBaseStruct> skillBaseStructs)
+    {
+        throw new Exception("未实现");
+    }
+
+    /// <summary>
+    /// 通过组合技能类型来获取该组合的技能名
+    /// </summary>
+    /// <param name="enumSkillTypes"></param>
+    /// <returns></returns>
+    public static string GetCombineSkillsName(IEnumerable<EnumSkillType> enumSkillTypes)
     {
         throw new Exception("未实现");
     }

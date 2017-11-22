@@ -40,6 +40,20 @@ public class UIKeySetting : MonoBehaviour
     /// </summary>
     private UIListItem nowKeySettingListItem;
 
+    /// <summary>
+    /// 按键与技能物品之间对应关系对象
+    /// </summary>
+    KeyContactData keyContactData;
+    /// <summary>
+    /// 玩家存档对象
+    /// </summary>
+    PlayerState playerState;
+
+    /// <summary>
+    /// 技能元数据
+    /// </summary>
+    SkillStructData skillStructData;
+
     void Awake()
     {
         keySettingFocusPath = GetComponent<UIFocusPath>();
@@ -95,8 +109,8 @@ public class UIKeySetting : MonoBehaviour
             UIFocusKeySettingLattice currentKeySettingLattice = UITools.FindTargetPopup<UIFocusKeySettingLattice>(pe.pointerCurrentRaycast.gameObject.transform);
             if (currentKeySettingLattice)
             {
-                if(nowKeySettingLattice)
-                nowKeySettingLattice.LostForcus();
+                if (nowKeySettingLattice)
+                    nowKeySettingLattice.LostForcus();
                 nowKeySettingLattice = currentKeySettingLattice;
                 nowKeySettingLattice.SetForcus();
                 //显示集合
@@ -110,6 +124,9 @@ public class UIKeySetting : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
+        playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
+        skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         selectTargetPanel.gameObject.SetActive(false);
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         enumKeySettingType = EnumKeySettingType.Lattice;
@@ -118,8 +135,6 @@ public class UIKeySetting : MonoBehaviour
             nowKeySettingLattice = keySettingFocusPath.GetFirstFocus() as UIFocusKeySettingLattice;
             if (nowKeySettingLattice)
                 nowKeySettingLattice.SetForcus();
-            //读取数据构建字典，键位与对应的数据
-            //--------------------------//
             //初始化显示
             UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.UIFocuesArray;
             foreach (UIFocus item in uiKeySettingLatticeArray)
@@ -127,10 +142,15 @@ public class UIKeySetting : MonoBehaviour
                 if (!item)
                     continue;
                 UIFocusKeySettingLattice uiKeySettingLattice = item as UIFocusKeySettingLattice;
+                int inputKey = uiKeySettingLattice.GetKeySettingInput();//输入的按键值
                 if (uiKeySettingLattice)
                 {
-                    //通过上面的字典设置对应的格子的ID和类型
-                    //--------------------------//
+                    KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(inputKey);
+                    if (keyContactStructs.Length > 0)
+                    {
+                        uiKeySettingLattice.keyLatticeType = keyContactStructs[0].keyContactType;
+                        uiKeySettingLattice.id = keyContactStructs[0].id;
+                    }
                     //初始化显示
                     uiKeySettingLattice.InitShow();
                 }
@@ -149,9 +169,26 @@ public class UIKeySetting : MonoBehaviour
             nowKeySettingLattice.LostForcus();
         }
         //保存状态
-        //-------------------//
+        UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.UIFocuesArray;
+        foreach (UIFocus item in uiKeySettingLatticeArray)
+        {
+            if (!item)
+                continue;
+            UIFocusKeySettingLattice uiKeySettingLattice = item as UIFocusKeySettingLattice;
+            int inputKey = uiKeySettingLattice.GetKeySettingInput();//输入的按键值
+            if (uiKeySettingLattice)
+            {
+                KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(inputKey);
+                if (keyContactStructs.Length > 0)
+                {
+                    KeyContactStruct newTarget = keyContactStructs[0];
+                    newTarget.id = uiKeySettingLattice.id;
+                    newTarget.keyContactType = uiKeySettingLattice.keyLatticeType;
+                    keyContactData.SetKeyContactStruct(inputKey, newTarget);
+                }
+            }
+        }
     }
-
     /// <summary>
     /// 接收输入
     /// </summary>
@@ -164,7 +201,7 @@ public class UIKeySetting : MonoBehaviour
         switch (enumKeySettingType)
         {
             case EnumKeySettingType.Lattice://此时可以移动和确认
-                Action<UIFocusPath.MoveType> MoveNExtEndAction = (moveType) => 
+                Action<UIFocusPath.MoveType> MoveNExtEndAction = (moveType) =>
                 {
                     if (keySettingFocusPath)
                     {
@@ -198,7 +235,7 @@ public class UIKeySetting : MonoBehaviour
                 }
                 break;
             case EnumKeySettingType.Select://此时可以选择技能
-                Action<int> MoveListSelect = (addOffset) => 
+                Action<int> MoveListSelect = (addOffset) =>
                 {
                     UIListItem[] tempArrays = uiKeySettingList.GetAllImtes();
                     int index = 0;
@@ -208,7 +245,7 @@ public class UIKeySetting : MonoBehaviour
                         index = 0;
                     index += addOffset;
                     index = Mathf.Clamp(index, 0, tempArrays.Length - 1);
-                    if (index < tempArrays.Length && tempArrays.Length>0)
+                    if (index < tempArrays.Length && tempArrays.Length > 0)
                     {
                         uiKeySettingList.ShowItem(tempArrays[index]);
                         if (nowKeySettingListItem && nowKeySettingListItem.childImage)
@@ -246,8 +283,58 @@ public class UIKeySetting : MonoBehaviour
         firstItem.value = null;
         uiKeySettingList.UpdateUI();
         //其他项从技能和道具中检索
-
+        List<KeyContactStruct> keyContactStructList = new List<KeyContactStruct>();
+        //单独的技能
+        foreach (var item in playerState.SkillPoint)
+        {
+            if (item.Value <= 0)
+                return;
+            SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == item.Key).FirstOrDefault();
+            if (skillBaseStruct != null)
+            {
+                KeyContactStruct tempKeyContactStruct;
+                tempKeyContactStruct.id = (int)item.Key;
+                tempKeyContactStruct.key = 0;
+                tempKeyContactStruct.keyContactType = EnumKeyContactType.Skill;
+                tempKeyContactStruct.name = skillBaseStruct.skillName;
+                keyContactStructList.Add(tempKeyContactStruct);
+            }
+        }
+        //组合的技能
+        foreach (var item in playerState.CombineSkills)
+        {
+            if (item != null && item.Count(temp => temp == EnumSkillType.None) < 4)
+            {
+                KeyContactStruct tempKeyContactStruct;
+                tempKeyContactStruct.id = SkillCombineStaticTools.GetCombineSkillKey(item);
+                tempKeyContactStruct.key = 0;
+                tempKeyContactStruct.keyContactType = EnumKeyContactType.Skill;
+                tempKeyContactStruct.name = SkillCombineStaticTools.GetCombineSkillsName(item);
+                keyContactStructList.Add(tempKeyContactStruct);
+            }
+        }
+        //可使用的炼金道具
+        foreach (var item in playerState.PlayerAllGoods.Where(temp =>
+            ((int)temp.GoodsInfo.EnumGoodsType > (int)EnumGoodsType.Item && (int)temp.GoodsInfo.EnumGoodsType < (int)EnumGoodsType.Item + 1000000) ||
+            ((int)temp.GoodsInfo.EnumGoodsType > (int)EnumGoodsType.Elixir && (int)temp.GoodsInfo.EnumGoodsType < (int)EnumGoodsType.Elixir + 1000000)
+            ))
+        {
+            KeyContactStruct tempKeyContactStruct;
+            tempKeyContactStruct.id = item.ID;
+            tempKeyContactStruct.key = 0;
+            tempKeyContactStruct.keyContactType = EnumKeyContactType.Prap;
+            tempKeyContactStruct.name = item.GoodsInfo.GoodsName;
+            keyContactStructList.Add(tempKeyContactStruct);
+        }
+        //显示在下拉列表中
+        foreach (var item in keyContactStructList)
+        {
+            UIListItem uiListItem = uiKeySettingList.NewItem();
+            uiListItem.childText.text = item.name;
+            uiListItem.value = item;
+        }
         //最后的设置
+        uiKeySettingList.UpdateUI();
         nowKeySettingListItem = uiKeySettingList.FirstShowItem();
         uiKeySettingList.ShowItem(nowKeySettingListItem);
         if (nowKeySettingListItem)
@@ -262,8 +349,22 @@ public class UIKeySetting : MonoBehaviour
     /// </summary>
     private void SelectAction()
     {
-        //设置当前框内的显示图片
-
+        if (nowKeySettingLattice)
+        {
+            //设置当前框内的显示图片
+            if (nowKeySettingListItem && nowKeySettingListItem != null)
+            {
+                KeyContactStruct keyContactStruct = (KeyContactStruct)nowKeySettingListItem.value;
+                nowKeySettingLattice.keyLatticeType = keyContactStruct.keyContactType;
+                nowKeySettingLattice.id = keyContactStruct.id;
+            }
+            else
+            {
+                nowKeySettingLattice.keyLatticeType = EnumKeyContactType.None;
+                nowKeySettingLattice.id = 0;
+            }
+            nowKeySettingLattice.InitShow();
+        }
         //最后的设置
         selectTargetPanel.gameObject.SetActive(false);
         //状态改为格子状态

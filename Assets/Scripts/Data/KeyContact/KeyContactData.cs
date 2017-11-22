@@ -67,6 +67,7 @@ public class KeyContactData
                 tempKeyContactStruct.keyContactType = EnumKeyContactType.None;
                 tempKeyContactStruct.id = -1;
                 tempKeyContactStruct.key = -1;
+                tempKeyContactStruct.name = "";
                 return tempKeyContactStruct;
             }
         };

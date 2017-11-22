@@ -118,6 +118,7 @@ public class UISkillCombine : MonoBehaviour
     /// </summary>
     /// <param name="key">该技能的组合值</param>
     /// <returns></returns>
+    [Obsolete("已经转移到SkillCombineStaticTools类中",true)]
     private Sprite CombineSkillSprite( int key)
     {
         EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key);
