@@ -87,13 +87,13 @@ namespace TTaskEditor.Pages
         /// <param name="e"></param>
         void Tasks_Loaded(object sender, RoutedEventArgs e)
         {
-            Grapic<TaskInfo> data = (Grapic<TaskInfo>)TTaskEditor.Data.Tasks.Instance.GetType()
+            Grapic<MetaTaskInfo> data = (Grapic<MetaTaskInfo>)TTaskEditor.Data.Tasks.Instance.GetType()
                 .GetField("Data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(TTaskEditor.Data.Tasks.Instance);
 
             //添加所有控件
             if (!File.Exists("ControlPos.txt")) return;
             if (data == null) return;
-            List<TaskInfo> allTaskInfos = data.AllNodes;
+            List<MetaTaskInfo> allTaskInfos = data.AllNodes;
      
             //创建所有连线
             foreach (var taskInfo in allTaskInfos)
@@ -120,7 +120,7 @@ namespace TTaskEditor.Pages
         /// </summary>
         private void InitialAllTasks()
         {
-            TTaskEditor.Data.Tasks.Instance.LoadTasks("Tasks.txt");
+            TTaskEditor.Data.Tasks.Instance.LoadTasks("MetaTasksData.txt");
             if (File.Exists("ControlPos.txt"))
             {
                 string[] controlPoss = File.ReadAllLines("ControlPos.txt");
@@ -131,14 +131,14 @@ namespace TTaskEditor.Pages
                 }
             }
 
-            Grapic<TaskInfo> data = (Grapic<TaskInfo>)TTaskEditor.Data.Tasks.Instance.GetType()
+            Grapic<MetaTaskInfo> data = (Grapic<MetaTaskInfo>)TTaskEditor.Data.Tasks.Instance.GetType()
                 .GetField("Data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(TTaskEditor.Data.Tasks.Instance);
 
             //添加所有控件
             if (!File.Exists("ControlPos.txt")) return;
 
             if (data == null) return;
-            List<TaskInfo> allTaskInfos = data.AllNodes;
+            List<MetaTaskInfo> allTaskInfos = data.AllNodes;
      
             foreach (var taskInfo in allTaskInfos)
             {
@@ -168,7 +168,7 @@ namespace TTaskEditor.Pages
         {
             var reslut = MessageBox.Show(App.Current.MainWindow, "是否保存", "提示", MessageBoxButton.YesNo);
             if (reslut == MessageBoxResult.No) return;
-            List<TaskInfo> taskInfos = allTasks.Select(t => t.TaskInfo).ToList();
+            List<MetaTaskInfo> taskInfos = allTasks.Select(t => t.MetaTaskInfo).ToList();
             if (taskInfos.Any(t => t == null))
             {
                 MessageBox.Show("有任务格式错误,请修正后保存");
@@ -189,7 +189,18 @@ namespace TTaskEditor.Pages
                 }
             }
             string json = JsonConvert.SerializeObject(taskInfos, new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
-            File.WriteAllText("Tasks.txt",json);
+            File.WriteAllText("MetaTasksData.txt", json);
+
+            for (int i = 0; i < taskInfos.Count; i++)
+            {
+                taskInfos[i].MetaTaskNode.KillMonsterAssignCount = new Dictionary<int, int>();
+                taskInfos[i].MetaTaskNode.GetGoodsAssignCount = new Dictionary<int, int>();
+                taskInfos[i].MetaTaskNode.ArriveAssignPosition = new Vector3(0,0,0);
+                taskInfos[i].MetaTaskNode.TimeLimit = 0;
+            }
+
+            string json2 = JsonConvert.SerializeObject(taskInfos, new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+            File.WriteAllText("TasksInitialData.txt", json2);
             ////进行序列化
             //保存所有控件位置
             using (StreamWriter sw = new StreamWriter("ControlPos.txt"))

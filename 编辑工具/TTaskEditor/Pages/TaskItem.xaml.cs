@@ -65,18 +65,18 @@ namespace TTaskEditor.Pages
             ApplicationState.TransationFromElement = TitleExpander;
         }
 
-        public TaskInfo TaskInfo
+        public MetaTaskInfo MetaTaskInfo
         {
             get
             {
-                TaskInfo taskInfo = new TaskInfo();
+                MetaTaskInfo metaTaskInfo = new MetaTaskInfo();
                 string id = this.TitleExpander.Header.ToString()
                     .Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString();
-                taskInfo.ID = int.Parse(id);
-                //taskInfo.TaskNode.ArriveAssignPosition
+                metaTaskInfo.ID = int.Parse(id);
+                //metaTaskInfo.MetaTaskNode.ArriveAssignPosition
                 if (string.IsNullOrEmpty(GoToAssgedPos.Text))
                 {
-                    taskInfo.TaskNode.ArriveAssignPosition = new Vector3(0, 0, 0);
+                    metaTaskInfo.MetaTaskNode.ArriveAssignPosition = new Vector3(0, 0, 0);
 
                 }
                 else
@@ -84,7 +84,7 @@ namespace TTaskEditor.Pages
                     try
                     {
                         string[] strs = GoToAssgedPos.Text.Split(new char[] { ',' });
-                        taskInfo.TaskNode.ArriveAssignPosition = new Vector3(float.Parse(strs[0]), float.Parse(strs[1]),
+                        metaTaskInfo.MetaTaskNode.ArriveAssignPosition = new Vector3(float.Parse(strs[0]), float.Parse(strs[1]),
                             float.Parse(strs[2]));
                     }
                     catch
@@ -95,7 +95,7 @@ namespace TTaskEditor.Pages
                 }
                 try
                 {
-                    taskInfo.TaskNode.AwardExperience = int.Parse(AwardExperience.Text);
+                    metaTaskInfo.MetaTaskNode.AwardExperience = int.Parse(AwardExperience.Text);
                 }
                 catch
                 {
@@ -103,17 +103,17 @@ namespace TTaskEditor.Pages
                     return null;
                 }
                 if (string.IsNullOrEmpty(AwardThing.Text))
-                    taskInfo.TaskNode.AwardGoods = new List<int>();
+                    metaTaskInfo.MetaTaskNode.AwardGoods = new List<int>();
                 else
                 {
                     try
                     {
                         string[] strs = AwardThing.Text.Split(new char[] { ',' });
-                        taskInfo.TaskNode.AwardGoods = new List<int>();
+                        metaTaskInfo.MetaTaskNode.AwardGoods = new List<int>();
 
                         foreach (var award in strs)
                         {
-                            taskInfo.TaskNode.AwardGoods.Add(int.Parse(award));
+                            metaTaskInfo.MetaTaskNode.AwardGoods.Add(int.Parse(award));
                         }
                     }
                     catch
@@ -124,7 +124,7 @@ namespace TTaskEditor.Pages
                 }
                 try
                 {
-                    taskInfo.TaskNode.AwardReputation = float.Parse(AwardReputation.Text);
+                    metaTaskInfo.MetaTaskNode.AwardReputation = float.Parse(AwardReputation.Text);
                 }
                 catch
                 {
@@ -133,7 +133,7 @@ namespace TTaskEditor.Pages
                 }
                 try
                 {
-                    taskInfo.TaskNode.AwardSkillPoint = int.Parse(SkillPoint.Text);
+                    metaTaskInfo.MetaTaskNode.AwardSkillPoint = int.Parse(SkillPoint.Text);
                 }
                 catch
                 {
@@ -141,14 +141,14 @@ namespace TTaskEditor.Pages
                     return null;
                 }
 
-                taskInfo.TaskNode.ChaTendency = (CharacterTendency)CharaTendency.SelectedIndex;
+                metaTaskInfo.MetaTaskNode.ChaTendency = (CharacterTendency)CharaTendency.SelectedIndex;
                 if (string.IsNullOrEmpty(DeliveryTaskNpcId.Text))
-                    taskInfo.TaskNode.DeliveryTaskNpcId = -1;
+                    metaTaskInfo.MetaTaskNode.DeliveryTaskNpcId = -1;
                 else
                 {
                     try
                     {
-                        taskInfo.TaskNode.DeliveryTaskNpcId = int.Parse(DeliveryTaskNpcId.Text);
+                        metaTaskInfo.MetaTaskNode.DeliveryTaskNpcId = int.Parse(DeliveryTaskNpcId.Text);
                     }
                     catch
                     {
@@ -159,16 +159,16 @@ namespace TTaskEditor.Pages
 
 
                 if (String.IsNullOrEmpty(GetAssignedThing.Text))
-                    taskInfo.TaskNode.GetGoodsAssignCount = new Dictionary<int, int>();
+                    metaTaskInfo.MetaTaskNode.GetGoodsAssignCount = new Dictionary<int, int>();
                 else
                 {
                     try
                     {
                         string[] strs = GetAssignedThing.Text.Split(new char[] { ',' });
-                        taskInfo.TaskNode.GetGoodsAssignCount = new Dictionary<int, int>();
+                        metaTaskInfo.MetaTaskNode.GetGoodsAssignCount = new Dictionary<int, int>();
                         for (int i = 0; i < strs.Length; i += 2)
                         {
-                            taskInfo.TaskNode.GetGoodsAssignCount.Add(int.Parse(strs[i]), int.Parse(strs[i + 1]));
+                            metaTaskInfo.MetaTaskNode.GetGoodsAssignCount.Add(int.Parse(strs[i]), int.Parse(strs[i + 1]));
                         }
                     }
                     catch
@@ -178,16 +178,16 @@ namespace TTaskEditor.Pages
                     }
                 }
                 if (string.IsNullOrEmpty(KillAssignedMosetrCount.Text))
-                    taskInfo.TaskNode.KillMonsterAssignCount = new Dictionary<int, int>();
+                    metaTaskInfo.MetaTaskNode.KillMonsterAssignCount = new Dictionary<int, int>();
                 else
                 {
                     try
                     {
                         string[] strs = KillAssignedMosetrCount.Text.Split(new char[] { ',' });
-                        taskInfo.TaskNode.KillMonsterAssignCount = new Dictionary<int, int>();
+                        metaTaskInfo.MetaTaskNode.KillMonsterAssignCount = new Dictionary<int, int>();
                         for (int i = 0; i < strs.Length; i += 2)
                         {
-                            taskInfo.TaskNode.KillMonsterAssignCount.Add(int.Parse(strs[i]), int.Parse(strs[i + 1]));
+                            metaTaskInfo.MetaTaskNode.KillMonsterAssignCount.Add(int.Parse(strs[i]), int.Parse(strs[i + 1]));
                         }
                     }
                     catch
@@ -198,7 +198,7 @@ namespace TTaskEditor.Pages
                 }
                 try
                 {
-                    taskInfo.TaskNode.LevelLimit = int.Parse(LvlLimit.Text);
+                    metaTaskInfo.MetaTaskNode.LevelLimit = int.Parse(LvlLimit.Text);
 
                 }
 
@@ -207,11 +207,11 @@ namespace TTaskEditor.Pages
                     MessageBox.Show("级别限制输入有误,应为整型数字");
                     return null;
                 }
-                taskInfo.TaskNode.TaskType = (TaskType)TaskType.SelectedIndex;
-                taskInfo.TaskNode.RoleOfRace = (RoleOfRace)RoleOfRace.SelectedIndex;
+                metaTaskInfo.MetaTaskNode.TaskType = (TaskType)TaskType.SelectedIndex;
+                metaTaskInfo.MetaTaskNode.RoleOfRace = (RoleOfRace)RoleOfRace.SelectedIndex;
                 try
                 {
-                    taskInfo.TaskNode.NeedReputation = float.Parse(NeedReputation.Text);
+                    metaTaskInfo.MetaTaskNode.NeedReputation = float.Parse(NeedReputation.Text);
                 }
                 catch
                 {
@@ -219,12 +219,12 @@ namespace TTaskEditor.Pages
                     return null;
                 }
                 if (string.IsNullOrEmpty(ReceiveTaskNPCID.Text))
-                    taskInfo.TaskNode.ReceiveTaskNpcId = -1;
+                    metaTaskInfo.MetaTaskNode.ReceiveTaskNpcId = -1;
                 else
                 {
                     try
                     {
-                        taskInfo.TaskNode.ReceiveTaskNpcId = int.Parse(ReceiveTaskNPCID.Text);
+                        metaTaskInfo.MetaTaskNode.ReceiveTaskNpcId = int.Parse(ReceiveTaskNPCID.Text);
                     }
                     catch
                     {
@@ -234,12 +234,12 @@ namespace TTaskEditor.Pages
                 }
 
                 if (string.IsNullOrEmpty(TimeLimit.Text))
-                    taskInfo.TaskNode.TimeLimit = -1;
+                    metaTaskInfo.MetaTaskNode.TimeLimit = -1;
                 else
                 {
                     try
                     {
-                        taskInfo.TaskNode.TimeLimit = int.Parse(TimeLimit.Text);
+                        metaTaskInfo.MetaTaskNode.TimeLimit = int.Parse(TimeLimit.Text);
                     }
                     catch
                     {
@@ -272,20 +272,20 @@ namespace TTaskEditor.Pages
                     MessageBox.Show("场景内浮动坐标填写有误");
                     return null;
                 }
-                taskInfo.TaskNode.TaskLocation = new TaskLocation() { SceneName = sceneName, ArrivedCenterPos = scenePos, Radius = int.Parse(TaskPositionRadius.Text) };
+                metaTaskInfo.MetaTaskNode.TaskLocation = new TaskLocation() { SceneName = sceneName, ArrivedCenterPos = scenePos, Radius = int.Parse(TaskPositionRadius.Text) };
                 if (string.IsNullOrEmpty(TaskTitle.Text))
                 {
                     MessageBox.Show("任务标题没有填写");
                     return null;
                 }
-                taskInfo.TaskNode.TaskTitile = TaskTitle.Text;
+                metaTaskInfo.MetaTaskNode.TaskTitile = TaskTitle.Text;
                 //任务标题
-                return taskInfo;
+                return metaTaskInfo;
             }
             set
             {
                 this.TitleExpander.Header = value.ID;
-                string[] nodePropities = value.TaskNode.ToString().Split(new char[] { '|' });
+                string[] nodePropities = value.MetaTaskNode.ToString().Split(new char[] { '|' });
                 this.TaskType.SelectedIndex = int.Parse(nodePropities[0]);
                 this.LvlLimit.Text = nodePropities[1];
                 this.CharaTendency.SelectedIndex = int.Parse(nodePropities[2]);

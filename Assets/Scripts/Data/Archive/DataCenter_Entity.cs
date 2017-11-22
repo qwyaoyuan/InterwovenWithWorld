@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public partial class DataCenter
@@ -7,25 +8,26 @@ public partial class DataCenter
     /// <summary>
     /// 玩家状态
     /// </summary>
-    private PlayerState playerState;
+    private PlayerState PlayerState;
+
 
     /// <summary>
     /// 任务进度
     /// </summary>
-    private TaskProgress taskProgress;
-
+    private RuntimeTasksData RuntimeTasks;
 
     /// <summary>
     /// 按键映射数据
     /// </summary>
-    private KeyContactData keyConatactData;
+    private KeyContactData KeyConatactData;
+
 
 
     public DataCenter()
     {
-        playerState = new PlayerState();
-        taskProgress = new TaskProgress();
-        keyConatactData = new KeyContactData();
+        PlayerState = new PlayerState();
+        KeyConatactData = new KeyContactData();
+        RuntimeTasks = new RuntimeTasksData();
     }
 
 
@@ -94,10 +96,7 @@ public class PlayerState
     /// </summary>
     public int Reputation;
 
-    /// <summary>
-    /// 任务进度
-    /// </summary>
-    public TaskProgress TaskProgress;
+
 
 
     /// <summary>
@@ -110,7 +109,6 @@ public class PlayerState
     {
         SkillPoint = new Dictionary<EnumSkillType, int>();
         RoleOfRaceRoute = new List<RoleOfRace>();
-        TaskProgress = new TaskProgress();
         PlayerAllGoods = new List<PlayGoods>();
         CombineSkills = new List<EnumSkillType[]>();
     }
@@ -160,20 +158,26 @@ public class PlayGoods
         GoodsInfo = new Goods();
         GoodsLocation = GoodsLocation.None;
     }
-    public PlayGoods(int id , Goods goodsInfo, GoodsLocation location)
+    public PlayGoods(int id, Goods goodsInfo, GoodsLocation location)
     {
         this.id = id;
         this.GoodsInfo = goodsInfo;
         this.GoodsLocation = location;
     }
 
+    [JsonIgnore]
+    private Sprite cachedSprite;
+
     /// <summary>
-    /// 获取物品的图标
+    /// 获取物品的图标,此函数是假定我们的物品Sprite的名称和物品的名称是一致的
     /// </summary>
     /// <returns></returns>
     public Sprite GetGoodsSprite()
     {
-        throw new System.Exception("未实现,需要返回物品的图标");
+        if (cachedSprite == null)
+            cachedSprite = Resources.Load<Sprite>(GoodsInfo.GoodsName);
+        return cachedSprite;
+
     }
 }
 
@@ -198,51 +202,6 @@ public enum GoodsLocation
     None,
 }
 
-
-/// <summary>
-/// 任务进度
-/// </summary>
-public class TaskProgress
-{
-    public List<TaskItem> allDoingTasks;
-    public TaskProgress()
-    {
-        allDoingTasks = new List<TaskItem>();
-    }
-
-}
-/// <summary>
-/// 任务项
-/// </summary>
-public class TaskItem
-{
-    /// <summary>
-    /// 进行的任务id
-    /// </summary>
-    public int TaskId;
-    /// <summary>
-    /// 已经杀死的怪物数量
-    /// </summary>
-    public Dictionary<int, int> HaveKillMonsterCount { get; set; }
-
-    /// <summary>
-    /// 已经获取的物品数量
-    /// </summary>
-    public Dictionary<int, int> HaveGoodsAssignCount { get; set; }
-
-    /// <summary>
-    /// 此任务已经经过的时间
-    /// </summary>
-    public int TimeElasped;
-
-    public TaskItem()
-    {
-        TaskId = -1;
-        HaveKillMonsterCount = new Dictionary<int, int>();
-        HaveGoodsAssignCount = new Dictionary<int, int>();
-    }
-
-}
 
 
 

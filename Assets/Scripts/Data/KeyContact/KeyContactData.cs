@@ -25,7 +25,7 @@ public class KeyContactData
     /// </summary>
     public KeyContactData()
     {
-
+        keyContactStructs = new Dictionary<int, KeyContactStruct>();
     }
 
     /// <summary>

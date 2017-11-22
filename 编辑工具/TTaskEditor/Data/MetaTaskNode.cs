@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 /// <summary>
 /// 任务节点
 /// </summary>
-public class TaskNode
+public class MetaTaskNode
 {
 
-    public TaskNode()
+    public MetaTaskNode()
     {
-
+      
     }
+
     /// <summary>
     /// 任务地点
     /// </summary>
     public TaskLocation TaskLocation { get; set; }
+
 
     /// <summary>
     /// 任务标题
@@ -44,6 +47,7 @@ public class TaskNode
     /// <summary>
     /// 需要的声望
     /// </summary>
+    [JsonProperty("Reputation")]
     public float NeedReputation { get; set; }
 
     /// <summary>
@@ -79,22 +83,26 @@ public class TaskNode
     /// <summary>
     /// 杀死某怪物指定数量
     /// </summary>
+    [JsonProperty("KillMosterCount")]
     public Dictionary<int, int> KillMonsterAssignCount { get; set; }
 
     /// <summary>
     /// 获取物品指定数量
     /// </summary>
+    [JsonProperty("GetGoodsCount")]
     public Dictionary<int, int> GetGoodsAssignCount { get; set; }
 
     /// <summary>
     /// 到达指定区域 ,Vector.zero
     /// </summary>
+    [JsonProperty("Position")]
     public Vector3 ArriveAssignPosition { get; set; }
 
 
     /// <summary>
     /// 时间限制
     /// </summary>
+    [JsonProperty("Time")]
     public int TimeLimit
     {
         get;

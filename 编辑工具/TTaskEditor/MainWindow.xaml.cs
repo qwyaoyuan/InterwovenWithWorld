@@ -22,7 +22,6 @@ namespace TTaskEditor
         public MainWindow()
         {
             InitializeComponent();
-            Tasks.Instance.LoadTasks("Tasks.txt");
         }
     }
 }

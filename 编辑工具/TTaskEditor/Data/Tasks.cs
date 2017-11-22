@@ -26,7 +26,7 @@ namespace TTaskEditor.Data
         }
 
 
-        private Grapic<TaskInfo> Data;
+        private Grapic<MetaTaskInfo> Data;
 
 
         private NameValueCollection exlucsionTaskDic = new NameValueCollection();
@@ -37,95 +37,10 @@ namespace TTaskEditor.Data
         public void LoadTasks(string path)
         {
             if (!File.Exists(path)) return;
-            Data = new Grapic<TaskInfo>();
-            Data.AllNodes = JsonConvert.DeserializeObject<List<TaskInfo>>(File.ReadAllText(path));
+            Data = new Grapic<MetaTaskInfo>();
+            Data.AllNodes = JsonConvert.DeserializeObject<List<MetaTaskInfo>>(File.ReadAllText(path));
             Data.RootNode = Data.AllNodes.Single(t => t.Parents == null);
 
-
-            //Data = new Grapic<TaskInfo>();
-            //string[] allLines = File.ReadAllLines(path);
-            //for (int i = 0; i < allLines.Length; i += 4)
-            //{
-            //    TaskInfo taskInfo = new TaskInfo();
-            //    taskInfo.Deserialze(new string[] { allLines[i], allLines[i + 1], allLines[i + 2], allLines[i + 3] });
-            //    Data.AllNodes.Add(taskInfo);
-            //}
-            ////填充
-
-            //for (int i = 0; i < Data.AllNodes.Count; i++)
-            //{
-            //    if (Data.AllNodes[i].Children != null)
-            //    {
-            //        for (int j = 0; j < Data.AllNodes[i].Children.Count; j++)
-            //        {
-            //            Data.AllNodes[i].Children[j] =
-            //                Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Children[j].ID));
-            //        }
-            //    }
-            //    if (Data.AllNodes[i].Parents != null)
-            //    {
-            //        for (int j = 0; j < Data.AllNodes[i].Parents.Count; j++)
-            //        {
-            //            Data.AllNodes[i].Parents[j] =
-            //                Data.AllNodes.Find(t => t.ID.Equals(Data.AllNodes[i].Parents[j].ID));
-            //        }
-            //    }
-            //}
-            //设置头结点
-
-
-
-            //头结点可达
-            Data.RootNode.CanVisit = r => true;
-            //其余结点全部不可达
-            Data.AllNodes.Where(t => t.ID != Data.RootNode.ID).ToList().ForEach(t => t.CanVisit = tt => false);
-
-            //获取所有互斥任务
-            if (File.Exists("ExclusiveTasks.txt"))
-            {
-                string[] allExclusiveTasks = File.ReadAllLines("ExclusiveTasks.txt");
-                foreach (var exclusiveTaskPair in allExclusiveTasks)
-                {
-                    string[] taskpair = exclusiveTaskPair.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    exlucsionTaskDic.Add(taskpair[0], taskpair[1]);
-                }
-            }
-
-            //触发互斥任务不可达
-            Data.AllNodes.ForEach(n => n.Stated += t =>
-            {
-                if (t.Parents == null || t.Parents.Count != 1) return;
-                var sibling = t.Parents[0].Children.Where(c => c.ID != n.ID);
-                if (exlucsionTaskDic.AllKeys.Contains<string>(t.ID.ToString()))
-                {
-                    string[] exclusiveIds = exlucsionTaskDic.GetValues(t.ID.ToString());
-                    if (exclusiveIds == null) return;
-                    sibling.ToList().ForEach(s =>
-                    {
-                        if (exclusiveIds.Contains(s.ID.ToString()))
-                            s.CanVisit = ss => false;
-                    });
-                }
-
-            });
-
-
-            //testCode
-            //firstLevel
-            //var firstTask = GetAllToDoList();
-            //firstTask[0].IsOver = true;
-
-
-            //var secondTasks = GetAllToDoList();
-            //bool isexluseSive = IsTaskExclusive(secondTasks[0].ID, secondTasks[1].ID);
-
-            //secondTasks[0].IsStart = true;
-            //var now = GetAllToDoList();
-            //secondTasks[0].IsOver = true;
-
-
-            ////var thirdTasks = GetAllToDoList();
-            ////thirdTasks[0].IsOver = true;
 
         }
 
@@ -154,7 +69,7 @@ namespace TTaskEditor.Data
         /// 获取当前所有可做任务
         /// </summary>
         /// <returns></returns>
-        public List<TaskInfo> GetAllToDoList()
+        public List<MetaTaskInfo> GetAllToDoList()
         {
             return Data.GetLastFrameNodes().ToList();
         }
@@ -198,14 +113,13 @@ namespace TTaskEditor.Data
                 if (currentTransferNode.Children == null) continue;
                 foreach (var child in currentTransferNode.Children)
                 {
-                    if (!hasTransferNode.Contains(currentTransferNode) && (child.CanVisit == null || child.CanVisit(child)))
+                    if (!hasTransferNode.Contains(currentTransferNode) && child.CanVisit)
                     {
                         hasTransferNode.Add(currentTransferNode);
                         remainNode.Enqueue(child);
                     }
                 }
             }
-
         }
 
 
@@ -237,8 +151,18 @@ namespace TTaskEditor.Data
         public T[] GetLastFrameNodes()
         {
             T[] allNode = GetAllNode();
-            Func<T, bool> filter = node => node.CanVisit != null && node.CanVisit(node) && node.Children != null && node.Children.All(n => n != null && n.CanVisit != null && n.CanVisit(n) == false);
-            return allNode.Where(filter).ToArray();
+
+            List<T> retNodes = new List<T>();
+
+            foreach (var node in allNode)
+            {
+                if (node.CanVisit && node.Children != null && node.Children.All(n => n != null && n.CanVisit == false))
+                {
+                    if (!node.Visited)
+                        retNodes.Add(node);
+                }
+            }
+            return retNodes.ToArray();
         }
 
 
@@ -253,7 +177,7 @@ namespace TTaskEditor.Data
             if (startNode.Children == null) return;
             foreach (T childNode in startNode.Children)
             {
-                if (hasDFSNode.Contains(childNode) || (hasDFSNode != null && childNode.CanVisit != null && childNode.CanVisit(childNode) == false))
+                if (hasDFSNode.Contains(childNode) || (hasDFSNode != null && childNode.CanVisit == false))
                     continue;
                 DFS(action, childNode);
             }
@@ -266,13 +190,13 @@ namespace TTaskEditor.Data
 
         List<T> Parents { get; set; }
 
-        Predicate<T> CanVisit { get; set; }
+        bool CanVisit { get; set; }
 
-
+        bool Visited { get; set; }
 
     }
 
-    public class TaskInfo : IGraphicNode<TaskInfo>
+    public class MetaTaskInfo : IGraphicNode<MetaTaskInfo>
     {
 
         /// <summary>
@@ -283,87 +207,57 @@ namespace TTaskEditor.Data
         private bool isStart;
 
 
-        public event Action<TaskInfo> Stated;
-        /// <summary>
-        /// 是否开始,即接取任务
-        /// </summary>
-        public bool IsStart
+     
+
+
+        public MetaTaskInfo()
         {
-            get { return isStart; }
-            set
-            {
-                if (value)
-                {
-                    if (Stated != null)
-                        Stated(this);
-                }
-            }
-        }
-
-        private bool isOver;
-
-
-        /// <summary>
-        /// 当前任务是否完成
-        /// </summary>
-        public bool IsOver
-        {
-            get { return isOver; }
-            set
-            {
-                if (value)
-                {
-                    if (this.Children != null)
-                        this.Children.ForEach(t => t.CanVisit = tt => true);
-                }
-                isOver = value;
-            }
-        }
-
-
-
-        public TaskInfo()
-        {
-            TaskNode = new TaskNode();
+            MetaTaskNode = new MetaTaskNode();
         }
         /// <summary>
         /// 任务节点
         /// </summary>
-        public TaskNode TaskNode { get; set; }
+        [JsonProperty("TaskNode")]
+        public MetaTaskNode MetaTaskNode { get; set; }
 
         /// <summary>
         /// 当前节点的孩子们
         /// </summary>
-        public List<TaskInfo> Children { get; set; }
+        public List<MetaTaskInfo> Children { get; set; }
 
         /// <summary>
         /// 当前节点的父亲们
         /// </summary>
-        public List<TaskInfo> Parents { get; set; }
+        public List<MetaTaskInfo> Parents { get; set; }
 
         /// <summary>
         /// 是否可以visit
         /// </summary>
-        public Predicate<TaskInfo> CanVisit { get; set; }
+        public bool CanVisit { get; set; }
+
+        /// <summary>
+        /// 是否已经Visited
+        /// </summary>
+        public bool Visited { get; set; }
 
 
         private void EnsureHasChildren()
         {
             if (Children == null)
-                Children = new List<TaskInfo>();
+                Children = new List<MetaTaskInfo>();
         }
 
         private void EnsureHasParents()
         {
             if (Parents == null)
-                Parents = new List<TaskInfo>();
+                Parents = new List<MetaTaskInfo>();
         }
 
         /// <summary>
         /// 增加一个孩纸
         /// </summary>
         /// <param name="child"></param>
-        public void AddChild(TaskInfo child)
+        public void AddChild(MetaTaskInfo child)
         {
             EnsureHasChildren();
             this.Children.Add(child);
@@ -373,7 +267,7 @@ namespace TTaskEditor.Data
         /// 增加一个父亲
         /// </summary>
         /// <param name="parent"></param>
-        public void AddParent(TaskInfo parent)
+        public void AddParent(MetaTaskInfo parent)
         {
             EnsureHasParents();
             this.Parents.Add(parent);
@@ -383,7 +277,7 @@ namespace TTaskEditor.Data
         /// 增加孩子节点
         /// </summary>
         /// <param name="childs"></param>
-        public void AddChildren(params TaskInfo[] childs)
+        public void AddChildren(params MetaTaskInfo[] childs)
         {
             foreach (var taskNode in childs)
             {
@@ -395,7 +289,7 @@ namespace TTaskEditor.Data
         /// 增加父亲节点
         /// </summary>
         /// <param name="parents"></param>
-        public void AddParents(params TaskInfo[] parents)
+        public void AddParents(params MetaTaskInfo[] parents)
         {
             foreach (var taskNode in parents)
             {
@@ -407,7 +301,7 @@ namespace TTaskEditor.Data
         /// 移除孩子节点
         /// </summary>
         /// <param name="child"></param>
-        public void RemoveChild(TaskInfo child)
+        public void RemoveChild(MetaTaskInfo child)
         {
             if (this.Children == null || this.Children.Count <= 0) return;
             this.Children.RemoveAll(t => t.ID.Equals(child.ID));
@@ -418,7 +312,7 @@ namespace TTaskEditor.Data
         /// 移除父亲节点
         /// </summary>
         /// <param name="parent"></param>
-        public void RemoveParent(TaskInfo parent)
+        public void RemoveParent(MetaTaskInfo parent)
         {
             if (this.Parents == null || this.Parents.Count <= 0) return;
             this.Parents.RemoveAll(t => t.ID.Equals(parent.ID));
@@ -428,7 +322,7 @@ namespace TTaskEditor.Data
         /// 移除孩子节点们
         /// </summary>
         /// <param name="childs"></param>
-        public void RemoveChilds(params TaskInfo[] childs)
+        public void RemoveChilds(params MetaTaskInfo[] childs)
         {
             foreach (var taskNode in childs)
             {
@@ -440,7 +334,7 @@ namespace TTaskEditor.Data
         /// 移动父亲节点们
         /// </summary>
         /// <param name="parents"></param>
-        public void RemoveParents(params TaskInfo[] parents)
+        public void RemoveParents(params MetaTaskInfo[] parents)
         {
             foreach (var taskNode in parents)
             {

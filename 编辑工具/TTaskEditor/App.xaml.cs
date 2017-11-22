@@ -12,5 +12,7 @@ namespace TTaskEditor
     /// </summary>
     public partial class App : Application
     {
+
+
     }
 }

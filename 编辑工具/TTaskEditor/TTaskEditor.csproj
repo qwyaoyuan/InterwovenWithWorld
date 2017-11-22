@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\CustomDTJsonConverter.cs" />
     <Compile Include="Tool.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -74,7 +75,7 @@
     </Compile>
     <Compile Include="Data\ApplicationState.cs" />
     <Compile Include="Data\RoleOfRace.cs" />
-    <Compile Include="Data\TaskNode.cs" />
+    <Compile Include="Data\MetaTaskNode.cs" />
     <Compile Include="Data\Tasks.cs" />
     <Compile Include="Helper\RandomId.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -121,6 +122,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

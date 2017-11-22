@@ -15,7 +15,8 @@ public class GoodsMetaInfoMations : ILoadable<GoodsMetaInfoMations>
 
     public void Load()
     {
-        allGoodsInfo = JsonConvert.DeserializeObject<Dictionary<int, Goods>>(Resources.Load<TextAsset>("Data/allGoodsMetaInfo").text);
+    
+        allGoodsInfo = JsonConvert.DeserializeObject<Dictionary<int, Goods>>(Resources.Load<TextAsset>("Data/Goods/allGoodsMetaInfo").text);
     }
 
 
@@ -26,10 +27,8 @@ public class GoodsMetaInfoMations : ILoadable<GoodsMetaInfoMations>
     /// <returns></returns>
     public Goods this[EnumGoodsType enumGoodsType]
     {
-
         get
         {
-
             int intType = (int)enumGoodsType;
             if (allGoodsInfo.ContainsKey(intType))
             {
