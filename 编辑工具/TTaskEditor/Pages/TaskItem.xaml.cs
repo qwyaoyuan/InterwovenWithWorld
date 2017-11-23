@@ -279,28 +279,33 @@ namespace TTaskEditor.Pages
                     return null;
                 }
                 metaTaskInfo.MetaTaskNode.TaskTitile = TaskTitle.Text;
+                metaTaskInfo.MetaTaskNode.TaskExplain = new TextRange(TaskExplain.Document.ContentStart, TaskExplain.Document.ContentEnd).Text;
                 //任务标题
                 return metaTaskInfo;
             }
             set
             {
-                this.TitleExpander.Header = value.ID;
+               // this.TitleExpander.Header = value.ID;
                 string[] nodePropities = value.MetaTaskNode.ToString().Split(new char[] { '|' });
-                this.TaskType.SelectedIndex = int.Parse(nodePropities[0]);
-                this.LvlLimit.Text = nodePropities[1];
-                this.CharaTendency.SelectedIndex = int.Parse(nodePropities[2]);
-                this.RoleOfRace.SelectedIndex = int.Parse(nodePropities[3]);
-                this.NeedReputation.Text = nodePropities[4];
-                this.AwardThing.Text = nodePropities[5];
-                this.AwardExperience.Text = nodePropities[6];
-                this.SkillPoint.Text = nodePropities[7];
-                this.AwardReputation.Text = nodePropities[8];
-                this.ReceiveTaskNPCID.Text = nodePropities[9];
-                this.DeliveryTaskNpcId.Text = nodePropities[10];
-                this.KillAssignedMosetrCount.Text = nodePropities[11];
-                this.GetAssignedThing.Text = nodePropities[12];
-                this.GoToAssgedPos.Text = nodePropities[13];
-                this.TimeLimit.Text = nodePropities[14];
+                this.TaskType.SelectedIndex = (int)value.MetaTaskNode.TaskType;
+                this.LvlLimit.Text = value.MetaTaskNode.LevelLimit.ToString();
+                this.CharaTendency.SelectedIndex = (int)value.MetaTaskNode.ChaTendency;
+                this.RoleOfRace.SelectedIndex = (int)value.MetaTaskNode.RoleOfRace;
+                this.NeedReputation.Text = value.MetaTaskNode.NeedReputation.ToString();
+
+                this.AwardThing.Text = value.MetaTaskNode.AwardGoods.Aggregate<int, string,string>("", (s, i) => s + "," + i,s=>s.Substring(1));
+                this.AwardExperience.Text = value.MetaTaskNode.AwardExperience.ToString();
+                this.SkillPoint.Text = value.MetaTaskNode.AwardSkillPoint.ToString();
+                this.AwardReputation.Text = value.MetaTaskNode.AwardReputation.ToString();
+                this.ReceiveTaskNPCID.Text = value.MetaTaskNode.ReceiveTaskNpcId.ToString();
+                this.DeliveryTaskNpcId.Text = value.MetaTaskNode.DeliveryTaskNpcId.ToString();
+                this.KillAssignedMosetrCount.Text = value.MetaTaskNode.KillMonsterAssignCount.Aggregate(string.Empty, (s, kv) => s + "," + kv.Key + "," + kv.Value,s=>s.Substring(1));
+                this.GetAssignedThing.Text = value.MetaTaskNode.GetGoodsAssignCount.Aggregate(string.Empty, (s, kv) => s + "," + kv.Key + "," + kv.Value,s=>s.Substring(1));
+                this.GoToAssgedPos.Text = value.MetaTaskNode.ArriveAssignPosition.ToString();
+                this.TimeLimit.Text = value.MetaTaskNode.TimeLimit.ToString();
+                TaskExplain.Document.Blocks.Clear();
+                TaskExplain.Document.Blocks.Add(new Paragraph(new Run(value.MetaTaskNode.TaskExplain)));
+
             }
         }
     }

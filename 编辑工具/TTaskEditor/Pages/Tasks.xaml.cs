@@ -149,6 +149,7 @@ namespace TTaskEditor.Pages
                 MainCanvas.Children.Add(taskItem);
                 allTasks.Add(taskItem);
                 expanders.Add(taskInfo.ID,taskItem.TitleExpander);
+                taskItem.MetaTaskInfo = taskInfo;
             }
     
         }

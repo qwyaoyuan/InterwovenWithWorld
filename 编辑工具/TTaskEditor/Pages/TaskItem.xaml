@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"  Background="White">
+             d:DesignHeight="300" d:DesignWidth="300" >
     <UserControl.Resources>
         <SolidColorBrush   x:Key="SetColumnBackColor" Color="White"></SolidColorBrush>
     </UserControl.Resources>
@@ -15,7 +15,7 @@
         </ContextMenu>
     </UserControl.ContextMenu>
     <Expander Name="TitleExpander"  RenderTransformOrigin="0.5,0.5">
-        <Grid Name="ContainerGrid">
+        <Grid Name="ContainerGrid" >
             <Grid.RowDefinitions>
                 <RowDefinition  Height="*"/>
                 <RowDefinition  Height="10"/>
@@ -46,10 +46,11 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <!--边框-->
                 <Border Grid.Column="0" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
@@ -72,6 +73,7 @@
                 <Border Grid.Column="0" Grid.Row="17" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="0" Grid.Row="18" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="0" Grid.Row="19" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="0" Grid.Row="20" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="1" Grid.Row="0" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="1" Grid.Row="1" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="1" Grid.Row="2" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
@@ -92,6 +94,7 @@
                 <Border Grid.Column="1" Grid.Row="17" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="1" Grid.Row="18" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <Border Grid.Column="1" Grid.Row="19" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
+                <Border Grid.Column="1" Grid.Row="20" BorderBrush="{StaticResource GridBorderColor}" BorderThickness="1"/>
                 <!--属性-->
                 <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务ID：</TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务类型：</TextBlock>
@@ -113,6 +116,7 @@
                 <TextBlock Grid.Row="17" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务场景内坐标：</TextBlock>
                 <TextBlock Grid.Row="18" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务场景内坐标浮动范围：</TextBlock>
                 <TextBlock Grid.Row="19" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">任务标题：</TextBlock>
+                <TextBlock Grid.Row="20" Grid.Column="0"  HorizontalAlignment="Left" VerticalAlignment="Center">任务说明：</TextBlock>
                 <!--Set列-->
                 <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Background="{Binding ElementName=ContainerGrid,Path=Background}">任务ID：</TextBlock>
                 <ComboBox Name="TaskType"  SelectedIndex="0" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
@@ -188,6 +192,7 @@
                 <TextBox  Name="TaskPosition"  Text="1,1,1" Grid.Row="17" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
                 <TextBox  Name="TaskPositionRadius"  Text="2" Grid.Row="18" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
                 <TextBox  Name="TaskTitle"  Text="1" Grid.Row="19" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{Binding ElementName=ContainerGrid,Path=Background}"></TextBox>
+                <RichTextBox Name="TaskExplain" Grid.Row="20" Width="{Binding ElementName=TaskTitle,Path=ActualWidth}" Grid.Column="1" FlowDirection="LeftToRight" HorizontalAlignment="Stretch"   Background="{Binding ElementName=ContainerGrid,Path=Background}"></RichTextBox>
             </Grid>
             <ProgressBar Grid.Row="1" Maximum="100" Value="50" ></ProgressBar>
         </Grid>

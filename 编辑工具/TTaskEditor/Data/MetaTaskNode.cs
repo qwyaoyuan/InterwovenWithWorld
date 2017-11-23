@@ -10,7 +10,7 @@ public class MetaTaskNode
 
     public MetaTaskNode()
     {
-      
+        AwardGoods =new List<int>();
     }
 
     /// <summary>
@@ -23,6 +23,13 @@ public class MetaTaskNode
     /// 任务标题
     /// </summary>
     public string TaskTitile { get; set; }
+
+
+
+    /// <summary>
+    /// 任务说明
+    /// </summary>
+    public string TaskExplain { get; set; }
 
     /// <summary>
     /// 任务类型
