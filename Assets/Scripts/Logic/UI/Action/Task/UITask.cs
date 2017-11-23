@@ -27,6 +27,15 @@ public class UITask : MonoBehaviour
     [SerializeField]
     private Text taskExplanText;
 
+    /// <summary>
+    /// 运行时任务
+    /// </summary>
+    RuntimeTasksData runtimeTaskData;
+
+    /// <summary>
+    /// 地图的状态对象 
+    /// </summary>
+    IMapState iMapState;
 
     private void Awake()
     {
@@ -49,11 +58,21 @@ public class UITask : MonoBehaviour
 
     private void OnEnable()
     {
+        runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        iMapState = GameState.Instance.GetEntity<IMapState>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
 
         uiTaskList.Init();
         //填充任务列表
-        //----------------------//
+        RunTimeTaskInfo[] runTimeTaskInfoArray = runtimeTaskData.GetAllToDoList().Where(temp => temp.IsStart == true).ToArray();
+        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfoArray)
+        {
+            RunTimeTaskNode runTimeTaskNode = runTimeTaskInfo.RunTimeTaskNode;//该任务的节点
+            UIListItem uiListItem = uiTaskList.NewItem();
+            uiListItem.value = runTimeTaskInfo;
+            uiListItem.childText.text = runTimeTaskNode.TaskTitile;
+        }
+        uiTaskList.UpdateUI();
         nowTaskItem = uiTaskList.FirstShowItem();
         if (nowTaskItem)
             uiTaskList.ShowItem(nowTaskItem);
@@ -72,7 +91,7 @@ public class UITask : MonoBehaviour
     /// <param name="rockValue"></param>
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
-        Action<int> MoveListAction = (addOffset) => 
+        Action<int> MoveListAction = (addOffset) =>
         {
             UIListItem[] tempArrays = uiTaskList.GetAllImtes();
             if (tempArrays.Length == 0)
@@ -116,8 +135,14 @@ public class UITask : MonoBehaviour
     {
         if (!nowTaskItem)
         {
-            //只是地图跟踪当前任务
-            //-------------------//
+            RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as RunTimeTaskInfo;
+            if (runTimeTaskInfo != null)
+            {
+                if (iMapState.MarkTaskID == runTimeTaskInfo.ID)//如果相等则取消标记
+                    iMapState.MarkTaskID = -1;
+                else//如果不想等则重新标记
+                    iMapState.MarkTaskID = runTimeTaskInfo.ID;
+            }
         }
     }
 
@@ -131,7 +156,15 @@ public class UITask : MonoBehaviour
         else
         {
             //显示任务
-            //--------------------------//
+            RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as RunTimeTaskInfo;
+            if (runTimeTaskInfo != null)
+            {
+                taskExplanText.text = runTimeTaskInfo.RunTimeTaskNode.TaskExplain;
+                //根据类型以及其他信息显示完善的数据信息
+                throw new Exception("未完善");
+            }
+            else
+                taskExplanText.text = "";
         }
     }
 

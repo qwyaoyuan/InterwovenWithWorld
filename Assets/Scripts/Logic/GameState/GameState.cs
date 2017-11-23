@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 /// 游戏状态
 /// </summary>
 public class GameState : IEntrance,
-    IGameState, IPlayerState
+    IGameState, IPlayerState , IMapState
 {
     /// <summary>
     /// 单例对象
@@ -1902,6 +1902,32 @@ public class GameState : IEntrance,
 
 
     #endregion
+    #endregion
+
+    #region IMapState
+
+    /// <summary>
+    /// 需要在地图上标记的任务的id
+    /// </summary>
+    int _MarkTaskID = -1;
+    /// <summary>
+    /// 需要在的地图上标记的任务的id
+    /// </summary>
+    public int MarkTaskID
+    {
+        get
+        {
+            return _MarkTaskID;
+        }
+        set
+        {
+            int tempMarkTaskID = _MarkTaskID;
+            _MarkTaskID = value;
+            if (tempMarkTaskID != _MarkTaskID)
+                Call<IMapState, int>(temp => temp.MarkTaskID);
+        }
+    }
+
     #endregion
 }
 

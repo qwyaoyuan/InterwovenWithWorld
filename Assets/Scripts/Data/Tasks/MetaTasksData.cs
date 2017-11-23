@@ -233,6 +233,11 @@ public class MetaTaskNode
     public string TaskTitile { get; set; }
 
     /// <summary>
+    /// 任务说明
+    /// </summary>
+    public string TaskExplain { get; set; }
+
+    /// <summary>
     /// 任务类型
     /// </summary>
     public Enums.TaskType TaskType { get; set; }

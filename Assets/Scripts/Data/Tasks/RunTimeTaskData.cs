@@ -124,7 +124,15 @@ public class RuntimeTasksData
         return GetAllToDoList().Where(t => t.RunTimeTaskNode.ReceiveTaskNpcId == npcId).ToList();
     }
 
-
+    /// <summary>
+    /// 根据任务ID获取任务对象(只会从正在执行的任务中选取)
+    /// </summary>
+    /// <param name="taskID"></param>
+    /// <returns></returns>
+    public RunTimeTaskInfo GetTasksWithID(int taskID)
+    {
+        return GetAllToDoList().Where(temp => temp.ID == taskID && temp.IsStart == true).FirstOrDefault();
+    }
 
 
 
@@ -368,6 +376,11 @@ public class RunTimeTaskNode
     /// 任务标题
     /// </summary>
     public string TaskTitile { get; set; }
+
+    /// <summary>
+    /// 任务说明
+    /// </summary>
+    public string TaskExplain { get; set; }
 
     /// <summary>
     /// 任务类型
