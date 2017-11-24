@@ -35,7 +35,6 @@ public partial class DataCenter
             if (instance == null)
             {
                 instance = new DataCenter();
-                instance.LoadArchive(0);
             }
             if (instance.allCanLoadable.Count <= 0)
             {
@@ -218,7 +217,6 @@ public partial class DataCenter
     private void CheckPhysisArchives()
     {
 
-
         var allPhysisArchives = Directory.GetFiles(archivePath, "*" + archiveExt, SearchOption.AllDirectories).Select(Path.GetFileNameWithoutExtension).ToList();
         for (int i = 0; i < allArchiveBaseInfo.Count; i++)
         {
@@ -245,7 +243,7 @@ public partial class DataCenter
     public List<Archive> GetAllArchive()
     {
         CheckPhysisArchives();
-        return allArchiveBaseInfo.Where(a => a.ID != 0).ToList();
+        return allArchiveBaseInfo.ToList();
     }
 
 
@@ -256,10 +254,6 @@ public partial class DataCenter
     public void LoadArchive(int id)
     {
         string archiveFile = Path.Combine(archivePath, id + archiveExt);
-        if (id == 0)
-        {
-            archiveFile = Path.Combine(baseDataPath, id + archiveExt);
-        }
         if (File.Exists(archiveFile))
         {
             Instance = JsonConvert.DeserializeObject<DataCenter>(File.ReadAllText(archiveFile), new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects, ContractResolver = new MyContractResolver() });
