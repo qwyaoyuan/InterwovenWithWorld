@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 /// 游戏状态
 /// </summary>
 public class GameState : IEntrance,
-    IGameState, IPlayerState , IMapState
+    IGameState, IPlayerState, IMapState
 {
     /// <summary>
     /// 单例对象
@@ -101,7 +101,7 @@ public class GameState : IEntrance,
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public T GetEntity<T>() where T:IBaseState
+    public T GetEntity<T>() where T : IBaseState
     {
         return (T)(object)this;
     }
@@ -184,7 +184,7 @@ public class GameState : IEntrance,
     /// </summary>
     public Vector2 CameraRotateSpeed
     {
-        get{ return _CameraRotateSpeed; }
+        get { return _CameraRotateSpeed; }
         set
         {
             Vector2 tempCameraRotateSpeed = _CameraRotateSpeed;
@@ -203,7 +203,7 @@ public class GameState : IEntrance,
     /// </summary>
     public Vector2 CameraYAngleRange
     {
-        get{ return _CameraYAngleRange; }
+        get { return _CameraYAngleRange; }
         set
         {
             Vector2 tempCameraYAngleRange = _CameraYAngleRange;
@@ -1913,6 +1913,7 @@ public class GameState : IEntrance,
     }
     #endregion
     #region IAnimatorState 动画状态
+    #region 外部设置
     /// <summary>
     /// 当前的魔法动画类型
     /// </summary>
@@ -2015,7 +2016,6 @@ public class GameState : IEntrance,
         }
     }
 
-
     /// <summary>
     /// 当前的移动方向类型
     /// </summary>
@@ -2034,6 +2034,103 @@ public class GameState : IEntrance,
                 Call<IAnimatorState, int>(temp => temp.MoveAnimatorVectorType);
         }
     }
+
+    /// <summary>
+    /// 翻滚动画
+    /// </summary>
+    bool _RollAnimator;
+    /// <summary>
+    /// 翻滚动画
+    /// </summary>
+    public bool RollAnimator
+    {
+        get { return _RollAnimator; }
+        set
+        {
+            bool tempRollAnimator = _RollAnimator;
+            _RollAnimator = value;
+            if (tempRollAnimator != _RollAnimator)
+                Call<IAnimatorState, bool>(temp => temp.RollAnimator);
+        }
+    }
+    #endregion
+    #region 内部设置
+    /// <summary>
+    /// 是否正在进行魔法动作
+    /// </summary>
+    bool _IsMagicActionState;
+    /// <summary>
+    ///  是否正在进行魔法动作
+    /// </summary>
+    public bool IsMagicActionState
+    {
+        get { return _IsMagicActionState; }
+        set
+        {
+            bool tempIsMagicActionState = _IsMagicActionState;
+            _IsMagicActionState = value;
+            if (tempIsMagicActionState != _IsMagicActionState)
+                Call<IAnimatorState, bool>(temp => temp.IsMagicActionState);
+        }
+    }
+
+    /// <summary>
+    /// 是否正在进行物理动作
+    /// </summary>
+    bool _IsPhycisActionState;
+    /// <summary>
+    /// 是否正在进行物理动作
+    /// </summary>
+    public bool IsPhycisActionState
+    {
+        get { return _IsPhycisActionState; }
+        set
+        {
+            bool tempIsPhycisActionState = _IsPhycisActionState;
+            _IsPhycisActionState = value;
+            if (tempIsPhycisActionState != _IsPhycisActionState)
+                Call<IAnimatorState, bool>(temp => temp.IsPhycisActionState);
+        }
+    }
+
+    /// <summary>
+    /// 当前物理动作(普通攻击)的阶段
+    /// </summary>
+    int _PhycisActionNowType;
+    /// <summary>
+    /// 当前物理动作(普通攻击)的阶段
+    /// </summary>
+    public int PhycisActionNowType
+    {
+        get { return _PhycisActionNowType; }
+        set
+        {
+            int tempPhycisActionNowType = _PhycisActionNowType;
+            _PhycisActionNowType = value;
+            if (tempPhycisActionNowType != _PhycisActionNowType)
+                Call<IAnimatorState, int>(temp => temp.PhycisActionNowType);
+        }
+    }
+
+    /// <summary>
+    /// 是否正在进行技能动作
+    /// </summary>
+    bool _IsSkillState;
+    /// <summary>
+    /// 是否正在进行技能动作
+    /// </summary>
+    public bool IsSkillState
+    {
+        get { return _IsSkillState; }
+        set
+        {
+            bool tempIsSkillState = _IsSkillState;
+            _IsSkillState = value;
+            if (tempIsSkillState != _IsSkillState)
+                Call<IAnimatorState, bool>(temp => temp.IsSkillState);
+        }
+    }
+    #endregion
 
     #endregion
     #endregion

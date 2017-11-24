@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public interface IAnimatorState : IBaseState
 {
+    #region  外部设置 
     /// <summary>
     /// 当前的魔法动画类型
     /// </summary>
@@ -31,6 +32,29 @@ public interface IAnimatorState : IBaseState
     /// 当前的移动方向类型(EnumMoveAnimatorVectorType枚举值表示了四个方向,更详细的的方向请使用-180到180表示(左-右))
     /// </summary>
     int MoveAnimatorVectorType { get; set; }
+    /// <summary>
+    /// 翻滚动画
+    /// </summary>
+    bool RollAnimator { get; set; }
+    #endregion
+    #region 内部设置 
+    /// <summary>
+    /// 是否正在进行魔法动作
+    /// </summary>
+    bool IsMagicActionState { get; set; }
+    /// <summary>
+    ///  是否正在进行物理动作(普通攻击)
+    /// </summary>
+    bool IsPhycisActionState { get; set; }
+    /// <summary>
+    /// 当前物理动作(普通攻击)的阶段 
+    /// </summary>
+    int PhycisActionNowType { get; set; }
+    /// <summary>
+    /// 是否正在进行技能动作
+    /// </summary>
+    bool IsSkillState { get; set; }
+    #endregion 
 }
 
 /// <summary>

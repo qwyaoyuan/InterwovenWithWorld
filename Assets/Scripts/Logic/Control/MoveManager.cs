@@ -191,7 +191,10 @@ public class MoveManager : IInput
     /// <param name="forward"></param>
     public void Move(Vector2 forward)
     {
-        if (CheckCanMoveState())
+        if (CheckCanMoveState() 
+            && !iAnimatorState.IsMagicActionState
+            && !iAnimatorState.IsPhycisActionState
+            && !iAnimatorState.IsSkillState)
         {
             float moveSpeed = iPlayerAttributeState.MoveSpeed;//移动速度(向前移动  向后移动0.7  左右移动0.3) 
             float strength = Mathf.Pow(forward.sqrMagnitude, 0.5f);//速度的力度
@@ -209,25 +212,6 @@ public class MoveManager : IInput
                 }
             else
             {
-                //float angle = Mathf.Atan2(Mathf.Abs(forward.y), Mathf.Abs(forward.x)) * Mathf.Rad2Deg;//计算角度
-                //float bili = angle / 90;//从左右方向向前后方向的比例
-                //Debug.Log(angle + " " + bili);
-                //if (forward.y > 0)//前方向
-                //{
-                //    moveSpeed = Mathf.Lerp(moveSpeed * 0.7f, moveSpeed, bili);
-                //    if (forward.x > 0)
-                //        animForwardAngle = 0.5f * (1 - bili);
-                //    else
-                //        animForwardAngle = -0.5f * (1 - bili);
-                //}
-                //else//后方向
-                //{
-                //    moveSpeed = Mathf.Lerp(moveSpeed * 0.7f, moveSpeed * 0.5f, bili);
-                //    if (forward.x > 0)
-                //        animForwardAngle = 0.5f + 0.5f * (1 - bili);
-                //    else
-                //        animForwardAngle = -0.5f - 0.5f * (1 - bili);
-                //}
                 float angle = Vector2.Angle(new Vector2(0, 1), forward);
                 if (forward.y >= 0)//前方向
                 {
@@ -250,7 +234,7 @@ public class MoveManager : IInput
             moveSpeed = Mathf.Abs(moveSpeed);//取速度的绝对值
             animForwardAngle *= 180;
             //设置动画的状态
-            iAnimatorState.AnimatorMoveSpeed = Mathf.Pow( Vector2.SqrMagnitude(forward),0.5f);//  moveSpeed / iPlayerAttributeState.MoveSpeed;
+            iAnimatorState.AnimatorMoveSpeed = Mathf.Pow(Vector2.SqrMagnitude(forward), 0.5f);//  moveSpeed / iPlayerAttributeState.MoveSpeed;
             iAnimatorState.MoveAnimatorVectorType = (int)animForwardAngle;
             //处理对象移动
             if (moveSpeed > 0)
