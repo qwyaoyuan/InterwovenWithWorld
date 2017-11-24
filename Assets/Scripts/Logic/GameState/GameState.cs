@@ -175,10 +175,99 @@ public class GameState : IEntrance,
         }
     }
 
+    /// <summary>
+    /// 镜头的移动速度
+    /// </summary>
+    private Vector2 _CameraRotateSpeed;
+    /// <summary>
+    /// 镜头的移动速度
+    /// </summary>
+    public Vector2 CameraRotateSpeed
+    {
+        get{ return _CameraRotateSpeed; }
+        set
+        {
+            Vector2 tempCameraRotateSpeed = _CameraRotateSpeed;
+            _CameraRotateSpeed = value;
+            if (!Vector2.Equals(tempCameraRotateSpeed, _CameraRotateSpeed))
+                Call<IGameState, Vector2>(temp => temp.CameraRotateSpeed);
+        }
+    }
+
+    /// <summary>
+    /// 镜头与对象的Y轴夹角范围
+    /// </summary>
+    private Vector2 _CameraYAngleRange;
+    /// <summary>
+    /// 镜头与对象的夹角范围 
+    /// </summary>
+    public Vector2 CameraYAngleRange
+    {
+        get{ return _CameraYAngleRange; }
+        set
+        {
+            Vector2 tempCameraYAngleRange = _CameraYAngleRange;
+            _CameraYAngleRange = value;
+            if (_CameraYAngleRange.x > _CameraYAngleRange.y)
+            {
+                float tempX = _CameraYAngleRange.x;
+                _CameraYAngleRange.x = _CameraYAngleRange.y;
+                _CameraYAngleRange.y = tempX;
+            }
+            if (!Vector2.Equals(_CameraYAngleRange, tempCameraYAngleRange))
+                Call<IGameState, Vector2>(temp => temp.CameraYAngleRange);
+        }
+    }
+
+
     #endregion
 
     #region IPlayerState 角色的状态，包括属性状态 buff状态 debuff状态 特殊状态 
     #region 自身状态
+    /// <summary>
+    /// 玩家操纵角色的游戏对象 
+    /// </summary>
+    GameObject _PlayerObj;
+    /// <summary>
+    /// 玩家操纵角色的游戏对象
+    /// </summary>
+    public GameObject PlayerObj
+    {
+        get
+        {
+            return _PlayerObj;
+        }
+        set
+        {
+            GameObject tempPlayObj = _PlayerObj;
+            _PlayerObj = value;
+            if (!GameObject.Equals(tempPlayObj, _PlayerObj))
+                Call<IPlayerState, GameObject>(temp => temp.PlayerObj);
+        }
+    }
+
+    /// <summary>
+    /// 玩家的摄像机
+    /// </summary>
+    Camera _PlayerCamera;
+    /// <summary>
+    /// 玩家的摄像机
+    /// </summary>
+    public Camera PlayerCamera
+    {
+        get
+        {
+            return _PlayerCamera;
+        }
+        set
+        {
+            Camera tempPlayerCamera = _PlayerCamera;
+            _PlayerCamera = value;
+            if (!Camera.Equals(tempPlayerCamera, _PlayerCamera))
+                Call<IPlayerState, Camera>(temp => temp.PlayerCamera);
+        }
+    }
+
     /// <summary>
     /// 更新自身属性
     /// 在等级变化 装备变化时触发
@@ -1863,6 +1952,32 @@ public class GameState : IEntrance,
     }
 
     /// <summary>
+    /// 当前的物理技能类型,用于检索动画 
+    /// </summary>
+    EnumSkillType _PhysicAnimatorSkillType;
+    /// <summary>
+    /// 当前的物理技能类型,用于检索动画
+    /// </summary>
+    public EnumSkillType PhysicAnimatorSkillType
+    {
+        get
+        {
+            return _PhysicAnimatorSkillType;
+        }
+        set
+        {
+            EnumSkillType tempPhysicAnimatorSkillType = _PhysicAnimatorSkillType;
+            _PhysicAnimatorSkillType = value;
+            //检测该技能是不是物理技能
+            int skillNum = (int)_PhysicAnimatorSkillType;
+            if (!(_PhysicAnimatorSkillType > EnumSkillType.SpecialPhysicReleaseStart && _PhysicAnimatorSkillType < EnumSkillType.SpecialPhysicReleaseEnd))
+                _PhysicAnimatorSkillType = tempPhysicAnimatorSkillType;
+            if (_PhysicAnimatorSkillType != tempPhysicAnimatorSkillType)
+                Call<IAnimatorState, EnumSkillType>(temp => temp.PhysicAnimatorSkillType);
+        }
+    }
+
+    /// <summary>
     /// 当前的交互动画类型
     /// </summary>
     EnumMutualAnimatorType _MutualAnimatorType;
@@ -1882,6 +1997,26 @@ public class GameState : IEntrance,
     }
 
     /// <summary>
+    /// 动画的移动速度(0-1)
+    /// </summary>
+    float _AnimatorMoveSpeed;
+    /// <summary>
+    /// 动画的移动速度(0-1)
+    /// </summary>
+    public float AnimatorMoveSpeed
+    {
+        get { return _AnimatorMoveSpeed; }
+        set
+        {
+            float tempAnimatorMoveSpeed = _AnimatorMoveSpeed;
+            _AnimatorMoveSpeed = value;
+            if (tempAnimatorMoveSpeed != _AnimatorMoveSpeed)
+                Call<IAnimatorState, float>(temp => temp.AnimatorMoveSpeed);
+        }
+    }
+
+
+    /// <summary>
     /// 当前的移动方向类型
     /// </summary>
     int _MoveAnimatorVectorType;
@@ -1899,7 +2034,6 @@ public class GameState : IEntrance,
                 Call<IAnimatorState, int>(temp => temp.MoveAnimatorVectorType);
         }
     }
-
 
     #endregion
     #endregion

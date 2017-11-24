@@ -10,6 +10,15 @@ public interface IPlayerState : IBaseState,
     IAttributeState,IBuffState,IDebuffState,ISpecialState, IAnimatorState
 {
     /// <summary>
+    /// 玩家操纵角色的游戏对象
+    /// </summary>
+    GameObject PlayerObj { get; set; }
+    /// <summary>
+    /// 玩家的摄像机
+    /// </summary>
+    Camera PlayerCamera { get; set; }
+
+    /// <summary>
     /// 更新属性
     /// </summary>
     void UpdateAttribute();

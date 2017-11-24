@@ -16,9 +16,17 @@ public interface IAnimatorState : IBaseState
     /// </summary>
     EnumPhysicAnimatorType PhysicAnimatorType { get; set; }
     /// <summary>
+    /// 当前的物理技能类型,用于检索动画
+    /// </summary>
+    EnumSkillType PhysicAnimatorSkillType { get; set; }
+    /// <summary>
     /// 当前的交互动画类型
     /// </summary>
     EnumMutualAnimatorType MutualAnimatorType { get; set; }
+    /// <summary>
+    /// 动画的移动速度
+    /// </summary>
+    float AnimatorMoveSpeed { get; set; }
     /// <summary>
     /// 当前的移动方向类型(EnumMoveAnimatorVectorType枚举值表示了四个方向,更详细的的方向请使用-180到180表示(左-右))
     /// </summary>
@@ -30,7 +38,19 @@ public interface IAnimatorState : IBaseState
 /// </summary>
 public enum EnumMagicAnimatorType
 {
+    /// <summary>
+    /// 没有
+    /// </summary>
     None,
+    /// <summary>
+    /// 吟唱
+    /// </summary>
+    Sing,
+    /// <summary>
+    /// 发射
+    /// </summary>
+    Shot,
+
 }
 
 /// <summary>
@@ -38,7 +58,18 @@ public enum EnumMagicAnimatorType
 /// </summary>
 public enum EnumPhysicAnimatorType
 {
+    /// <summary>
+    /// 没有
+    /// </summary>
     None,
+    /// <summary>
+    /// 普通攻击
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// 技能
+    /// </summary>
+    Skill,
 }
 
 /// <summary>
@@ -46,6 +77,9 @@ public enum EnumPhysicAnimatorType
 /// </summary>
 public enum EnumMutualAnimatorType
 {
+    /// <summary>
+    /// 没有
+    /// </summary>
     None,
 }
 

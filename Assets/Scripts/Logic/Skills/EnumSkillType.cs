@@ -15,7 +15,11 @@ public enum EnumSkillType
     None = 0,
 
     #region 特殊技能
-    SpecialReleaseStart = 1,
+    #region 魔法
+    /// <summary>
+    /// 特殊的直接释放的魔法技能序列的开始
+    /// </summary>
+    SpecialMagicReleaseStart = 1,
     /// <summary>
     /// 大魔法
     /// </summary>
@@ -70,7 +74,25 @@ public enum EnumSkillType
     /// 释放魔法
     /// </summary>
     MagicRelease = 199,
-    SpecialReleaseEnd = 200,
+    /// <summary>
+    /// 特殊的直接释放的魔法技能序列的结束
+    /// </summary>
+    SpecialMagicReleaseEnd = 200,
+    #endregion
+    #region 物理
+    /// <summary>
+    /// 物理普通攻击
+    /// </summary>
+    PhysicAttack = 201,
+    /// <summary>
+    /// 特殊的直接释放的物理技能序列的开始
+    /// </summary>
+    SpecialPhysicReleaseStart = 202,
+    /// <summary>
+    /// 特殊的直接释放的物理技能序列的结束
+    /// </summary>
+    SpecialPhysicReleaseEnd = 299,
+    #endregion
     #endregion
 
     #region 被动技能
