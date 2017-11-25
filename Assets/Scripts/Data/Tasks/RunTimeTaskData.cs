@@ -371,7 +371,7 @@ public class RunTimeTaskNode
     /// <summary>
     /// 任务地点
     /// </summary>
-    private Enums.TaskLocation TaskLocation { get; set; }
+    public Enums.TaskLocation TaskLocation { get; set; }
 
     /// <summary>
     /// 任务标题

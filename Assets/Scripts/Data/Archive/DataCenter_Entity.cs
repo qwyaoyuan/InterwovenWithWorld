@@ -135,7 +135,7 @@ public class PlayGoods
     /// </summary>
     public GoodsLocation GoodsLocation { get; set; }
     /// <summary>
-    /// 主要适用于药品,当该项为0时,则需要销毁
+    /// 主要适用于药品以及需要堆叠的物品(比如任务物品),当该项为0时,则需要销毁
     /// </summary>
     public int Count { get; set; }
 

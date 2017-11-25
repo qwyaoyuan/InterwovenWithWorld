@@ -14,6 +14,11 @@ public interface IGameState : IBaseState
     EnumGameRunType GameRunType { get; set; }
 
     /// <summary>
+    /// 当前的场景名
+    /// </summary>
+    string SceneName { get; set; }
+
+    /// <summary>
     /// 镜头的移动速度
     /// x表示围绕旋转(角色)
     /// y表示上下旋转(摄像机)
@@ -27,6 +32,7 @@ public interface IGameState : IBaseState
     /// 计算夹角的向量为对象的Y轴正方向,对象到摄像机的方向 
     /// </summary>
     Vector2 CameraYAngleRange { get; set; }
+
 }
 
 /// <summary>
