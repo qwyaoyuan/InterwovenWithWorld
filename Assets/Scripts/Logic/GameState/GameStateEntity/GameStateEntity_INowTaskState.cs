@@ -72,7 +72,7 @@ public partial class GameState : INowTaskState
         if (runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId >= 0)
             checkNPCRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
         //位置检测(与NPC检测互斥,如果存在交任务的npc则不检测位置)
-        else if (runTimeTaskInfo.RunTimeTaskNode.TaskLocation != null && runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition != Vector3.zero)
+        else if (runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition != Vector3.zero)
             checkPostionRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
         //击杀怪物检测
         if (runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount.Count > 0)

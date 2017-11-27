@@ -456,6 +456,7 @@ public class RunTimeTaskNode
 
     /// <summary>
     /// 到达指定区域 ,Vector.zero
+    /// 是否存在到达指定位置的判定条件
     /// </summary>
     [JsonProperty("Position")]
     public Vector3 NowArrivedPosition { get; set; }

@@ -50,6 +50,19 @@ public class UIBigMap : MonoBehaviour
     /// </summary>
     UIMapIconStruct flagIconStruct;
 
+    /// <summary>
+    /// 地图状态
+    /// </summary>
+    IMapState iMapState;
+    /// <summary>
+    /// npc数据
+    /// </summary>
+    NPCData npcData;
+    /// <summary>
+    /// 游戏状态对象
+    /// </summary>
+    IGameState iGameState;
+
     private void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
@@ -70,6 +83,9 @@ public class UIBigMap : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
+        iGameState = GameState.Instance.GetEntity<IGameState>();
+        iMapState = GameState.Instance.GetEntity<IMapState>();
+        npcData = DataCenter.Instance.GetMetaData<NPCData>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         bigMapOperateState = EnumBigMapOperateState.OperateMap;
         showSettingPanel.gameObject.SetActive(false);
@@ -90,8 +106,9 @@ public class UIBigMap : MonoBehaviour
     private void ResetMap()
     {
         //根据场景初始化地图
-
+        uiMapControl.InitMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene);
         //重绘全地图的图标
+        NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(iGameState.SceneName);
 
         //根据玩家位置设置地图中心位置
     }

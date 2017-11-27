@@ -19,6 +19,12 @@ public class UIMap : MonoBehaviour
     private Image mapImage;
 
     /// <summary>
+    /// 地图遮罩图片的控件
+    /// </summary>
+    [SerializeField]
+    private Image maskImage;
+
+    /// <summary>
     /// 地图手柄控件
     /// </summary>
     [SerializeField]
@@ -254,11 +260,12 @@ public class UIMap : MonoBehaviour
     /// 初始化地图
     /// </summary>
     /// <param name="mapSprite">背景地图的图片</param>
+    /// <param name="maskSprite">地图遮罩的图片</param>
     /// <param name="sceneRect">该地图表示场景的大小</param>
     /// <param name="stickOnPixel">操控手柄吸附距离</param>
     /// <param name="scale">缩放比例</param>
     /// <param name="minScale">最小的缩放比例</param>
-    public void InitMap(Sprite mapSprite, Rect sceneRect, float scale = 0.2f, float minScale = 0.05f, int stickOnPixel = 50)
+    public void InitMap(Sprite mapSprite,Sprite maskSprite, Rect sceneRect, float scale = 0.2f, float minScale = 0.05f, int stickOnPixel = 50)
     {
         RectTransform mapRectTrans = GetComponent<RectTransform>();
         float mapWidth = mapRectTrans.rect.width;
@@ -288,6 +295,15 @@ public class UIMap : MonoBehaviour
             this.minScale = minScale >= 0.01f && minScale < 0.9f ? minScale : 0.01f;
             this.scale = 1;
             Scale = scale;
+        }
+        if (maskSprite)
+        {
+            maskImage.sprite = maskSprite;
+            maskImage.color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            maskImage.color = new Color(1, 1, 1, 0);
         }
         this.sceneRect = sceneRect;
         this.stickOnPixel = stickOnPixel;
