@@ -14,7 +14,8 @@ public interface INowTaskState : IBaseState
     /// </summary>
     /// <param name="checkTaskType">检测类型</param>
     /// <param name="value">数据</param>
-    void CheckNowTask(EnumCheckTaskType checkTaskType,int value);
+    /// <returns>如果返回false表示没有完成该任务,如果范围true表示该任务完成</returns>
+    bool CheckNowTask(EnumCheckTaskType checkTaskType,int value);
 
     /// <summary>
     /// 接取任务
@@ -32,6 +33,30 @@ public interface INowTaskState : IBaseState
     /// </summary>
     /// <param name="taskID">任务的id</param>
     void GiveUPTask(int taskID);
+
+    /// <summary>
+    /// 获取制定场景中的未接取任务,如果场景名为空,则返回所有未接取任务
+    /// 检测的是接取任务NPC所在的场景
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    RunTimeTaskInfo[] GetWaitTask(string scene);
+
+    /// <summary>
+    /// 获取指定场景中的正在执行的任务,如果场景名为空,则返回所有正在执行的任务
+    /// 检测的是完成NPC或者完成地点所在的场景
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    RunTimeTaskInfo[] GetStartTask(string scene);
+
+    /// <summary>
+    /// 获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务
+    /// 检测的是完成NPC所在的场景(完成地点类型的立即就完成了)
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    RunTimeTaskInfo[] GetEndTask(string scene);
 }
 
 /// <summary>

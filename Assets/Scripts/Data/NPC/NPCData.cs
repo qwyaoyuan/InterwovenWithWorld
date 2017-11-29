@@ -63,6 +63,10 @@ public class NPCDataInfo
     /// npc在地图上的图标
     /// </summary>
     public Sprite NPCSprite;
+    /// <summary>
+    /// npc所在场景,如果是路牌则表示跳转到指定场景
+    /// </summary>
+    public string SceneName;
 }
 
 /// <summary>
@@ -90,4 +94,8 @@ public enum EnumNPCType
     /// 佣兵提交
     /// </summary>
     Mercenarier,
+    /// <summary>
+    /// 路牌
+    /// </summary>
+    Street
 }

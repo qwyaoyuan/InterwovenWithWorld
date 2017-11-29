@@ -290,7 +290,6 @@ public class Archive
     /// <summary>
     /// 最后更改时间
     /// </summary>
-
     public DateTime LastedModifiedTime { get; set; }
 
     public Archive()

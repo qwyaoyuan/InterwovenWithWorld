@@ -62,6 +62,24 @@ public class UIBigMap : MonoBehaviour
     /// 游戏状态对象
     /// </summary>
     IGameState iGameState;
+    /// <summary>
+    /// 玩家状态
+    /// </summary>
+    IPlayerState iPlayerState;
+    /// <summary>
+    /// 当前任务状态
+    /// </summary>
+    INowTaskState iNowTaskState;
+
+    /// <summary>
+    /// 地图图标对象集合
+    /// </summary>
+    List<UIMapIconStruct> uiMapIconStructList;
+
+    /// <summary>
+    /// 任务运行时数据
+    /// </summary>
+    RuntimeTasksData runTimeTasksData;
 
     private void Awake()
     {
@@ -84,8 +102,11 @@ public class UIBigMap : MonoBehaviour
     private void OnEnable()
     {
         iGameState = GameState.Instance.GetEntity<IGameState>();
+        iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         iMapState = GameState.Instance.GetEntity<IMapState>();
+        iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        runTimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         bigMapOperateState = EnumBigMapOperateState.OperateMap;
         showSettingPanel.gameObject.SetActive(false);
@@ -108,9 +129,81 @@ public class UIBigMap : MonoBehaviour
         //根据场景初始化地图
         uiMapControl.InitMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene);
         //重绘全地图的图标
+        uiMapIconStructList = new List<UIMapIconStruct>();
+        //npc与路牌
         NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(iGameState.SceneName);
-
+        foreach (NPCDataInfo npcDataInfo in npcDataInfos)
+        {
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(npcDataInfo.NPCSprite, new Vector2(20, 20), new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
+            object[] innerValue = new object[]
+            {
+                npcDataInfo.NPCType!= EnumNPCType.Street?EnumBigMapIconCheck.Action : EnumBigMapIconCheck.Street,
+                npcDataInfo
+            };
+            uiMapIconStruct.value = innerValue;
+            uiMapIconStructList.Add(uiMapIconStruct);
+        }
+        //任务
+        //等待接取的任务
+        RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(iGameState.SceneName);
+        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Wait)
+        {
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId);//接取任务的NPC
+            //需要传入一个金色的叹号
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30), 
+                new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
+            object[] innerValue = new object[]
+            {
+                EnumBigMapIconCheck.Task,
+                runTimeTaskInfo,
+                0//0表示等待接取,1表示正在执行,2表示已经完成
+            };
+            uiMapIconStruct.value = innerValue;
+            uiMapIconStructList.Add(uiMapIconStruct);
+        }
+        //正在执行的任务
+        RunTimeTaskInfo[] runTimeTaskInfos_Start = iNowTaskState.GetStartTask(iGameState.SceneName);
+        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Start)
+        {
+            Vector2 targetPosition = Vector2.zero;
+            if (runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition != Vector3.zero)
+                targetPosition = new Vector2(runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.x, runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.z);
+            else
+            {
+                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+                targetPosition = new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z);
+            }
+            //需要传入一个白色的的问号
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30), targetPosition);
+            object[] innerValue = new object[]
+            {
+                EnumBigMapIconCheck.Task,
+                runTimeTaskInfo,
+                1//0表示等待接取,1表示正在执行,2表示已经完成
+            };
+            uiMapIconStruct.value = innerValue;
+            uiMapIconStructList.Add(uiMapIconStruct);
+        }
+        //条件达成但是没有交付的任务
+        RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(iGameState.SceneName);
+        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_End)
+        {
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+            //需要传入一个金色的问号
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30),
+                new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
+            object[] innerValue = new object[]
+            {
+                EnumBigMapIconCheck.Task,
+                runTimeTaskInfo,
+                2//0表示等待接取,1表示正在执行,2表示已经完成
+            };
+            uiMapIconStruct.value = innerValue;
+            uiMapIconStructList.Add(uiMapIconStruct);
+        }
         //根据玩家位置设置地图中心位置
+        Vector2 playerLocation = new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z);
+        uiMapControl.MoveToTerrainPoint(playerLocation);
     }
 
     /// <summary>
@@ -148,7 +241,7 @@ public class UIBigMap : MonoBehaviour
                         nowUIFocus = uiFocusPath.GetFirstFocus();
                 if (nowUIFocus)
                 {
-                    Action<UIFocusPath.MoveType> MoveUIFocusAction = (moveType) => 
+                    Action<UIFocusPath.MoveType> MoveUIFocusAction = (moveType) =>
                     {
                         UIFocus nextUIFocus = uiFocusPath.GetNextFocus(nowUIFocus, moveType);
                         if (nextUIFocus != null)
@@ -210,7 +303,8 @@ public class UIBigMap : MonoBehaviour
                 return;
             try
             {
-                EnumBigMapIconCheck enumBigMapIconCheck = (EnumBigMapIconCheck)flagIconStruct.value;
+                object[] innerValue = (object[])flagIconStruct.value;
+                EnumBigMapIconCheck enumBigMapIconCheck = (EnumBigMapIconCheck)innerValue[0];
                 if (enumBigMapIconCheck == EnumBigMapIconCheck.Flag)//如果该标记已经是标记则移除该图标
                 {
                     uiMapControl.RemoveIcon(flagIconStruct);
@@ -225,7 +319,8 @@ public class UIBigMap : MonoBehaviour
         {
             try
             {
-                EnumBigMapIconCheck enumBigMapIconCheck = (EnumBigMapIconCheck)uiMapIconStruct.value;
+                object[] innerValue = (object[])flagIconStruct.value;
+                EnumBigMapIconCheck enumBigMapIconCheck = (EnumBigMapIconCheck)innerValue[0];
                 switch (enumBigMapIconCheck)
                 {
                     case EnumBigMapIconCheck.Task:
@@ -242,7 +337,10 @@ public class UIBigMap : MonoBehaviour
                         break;
                     case EnumBigMapIconCheck.Street:
                         //传送
-                        //-----------------------------//
+                        {
+                            NPCDataInfo npcDataInfo = (NPCDataInfo)innerValue[1];
+                            iGameState.ChangedScene(npcDataInfo.SceneName, npcDataInfo.NPCLocation + Vector3.one);
+                        }
                         break;
                 }
             }
@@ -256,7 +354,7 @@ public class UIBigMap : MonoBehaviour
                 //在该处设置图标 
                 Sprite flagSprit = null;
                 flagIconStruct = uiMapControl.AddIcon(flagSprit, iconSize, terrainPos);
-                flagIconStruct.value = EnumBigMapIconCheck.Flag;
+                flagIconStruct.value = new object[] { EnumBigMapIconCheck.Flag, null };
             }
         }
     }

@@ -110,26 +110,26 @@ public partial class GameState : INowTaskState
         CheckNowTask(EnumCheckTaskType.Position);
     }
 
-    public void CheckNowTask(EnumCheckTaskType checkTaskType, int value = -1)
+    public bool CheckNowTask(EnumCheckTaskType checkTaskType, int value = -1)
     {
         switch (checkTaskType)
         {
             case EnumCheckTaskType.Position:
-                CheckNowTaskPostion();
-                break;
+                return CheckNowTaskPostion();
             case EnumCheckTaskType.Monster:
                 if (value != -1)
-                    CheckNowTaskMonster(value);
+                   return CheckNowTaskMonster(value);
                 break;
             case EnumCheckTaskType.Goods:
                 if (value != -1)
-                    CheckNowTaskGoods(value);
+                    return CheckNowTaskGoods(value);
                 break;
             case EnumCheckTaskType.NPC:
                 if (value != -1)
-                    CheckNowTaskNPC(value);
+                   return CheckNowTaskNPC(value);
                 break;
         }
+        return false;
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测任务(关于角色位置)
     /// </summary>
-    void CheckNowTaskPostion()
+    bool CheckNowTaskPostion()
     {
         if (checkPostionDicTempList == null)
             checkPostionDicTempList = new List<RunTimeTaskInfo>();
@@ -177,10 +177,12 @@ public partial class GameState : INowTaskState
                     else//如果不存在其他的检测了,则此任务完成
                     {
                         OverTaskID = runTimeTaskInfo.ID;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /// <summary>
@@ -192,7 +194,7 @@ public partial class GameState : INowTaskState
     /// 检测任务(关于NPC)
     /// </summary>
     /// <param name="npcID">NPC的id,在点击npc并结束对话的时候调用</param>
-    void CheckNowTaskNPC(int npcID)
+    bool CheckNowTaskNPC(int npcID)
     {
         if (checkNPCDicTempList == null)
             checkNPCDicTempList = new List<RunTimeTaskInfo>();
@@ -219,10 +221,12 @@ public partial class GameState : INowTaskState
                     else//如果不存在其他的检测了,则此任务完成
                     {
                         OverTaskID = runTimeTaskInfo.ID;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /// <summary>
@@ -234,7 +238,7 @@ public partial class GameState : INowTaskState
     /// 检测任务(关于击杀怪物)
     /// </summary>
     /// <param name="monsterID">怪物的id</param>
-    void CheckNowTaskMonster(int monsterID)
+    bool CheckNowTaskMonster(int monsterID)
     {
         if (checkMonsterDicTempList == null)
             checkMonsterDicTempList = new List<RunTimeTaskInfo>();
@@ -269,10 +273,12 @@ public partial class GameState : INowTaskState
                     if (!HasCheckTaskID(runTimeTaskInfo.ID))//如果不存在检测项了则直接完成任务
                     {
                         OverTaskID = runTimeTaskInfo.ID;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /// <summary>
@@ -285,7 +291,7 @@ public partial class GameState : INowTaskState
     /// 物品在外部进行填入(这里只处理检测和移除,物品的生成不做处理)
     /// </summary>
     /// <param name="goodsID">变动了的物品的类型id(EnumGoodsType枚举),内部会判断物品类型,不论是丢弃或者增加</param>
-    void CheckNowTaskGoods(int goodsID)
+    bool CheckNowTaskGoods(int goodsID)
     {
         if (checkGoodsDicTempList == null)
             checkGoodsDicTempList = new List<RunTimeTaskInfo>();
@@ -332,10 +338,12 @@ public partial class GameState : INowTaskState
                             playerState.PlayerAllGoods.RemoveAll(temp => temp.Count <= 0);
                         }
                         GoodsChanged = true;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     /// <summary>
@@ -491,6 +499,36 @@ public partial class GameState : INowTaskState
             RemoveTaskByIDAtDicAndList(runTimeTaskInfo.ID);
             runTimeTaskInfo.GiveUpTask();
         }
+    }
+
+    /// <summary>
+    /// 获取制定场景中的未接取任务,如果场景名为空,则返回所有未接取任务
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    public RunTimeTaskInfo[] GetWaitTask(string scene)
+    {
+        throw new Exception("获取制定场景中的未接取任务,如果场景名为空,则返回所有未接取任务");
+    }
+
+    /// <summary>
+    /// 获取指定场景中的正在执行的任务,如果场景名为空,则返回所有正在执行的任务
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    public RunTimeTaskInfo[] GetStartTask(string scene)
+    {
+        throw new Exception("获取指定场景中的正在执行的任务,如果场景名为空,则返回所有正在执行的任务");
+    }
+
+    /// <summary>
+    /// 获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <returns></returns>
+    public RunTimeTaskInfo[] GetEndTask(string scene)
+    {
+        throw new Exception("获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务");
     }
 
     /// <summary>

@@ -30,6 +30,20 @@ public partial class GameState : IGameState
     }
 
     /// <summary>
+    /// 更改场景
+    /// </summary>
+    /// <param name="sceneName">场景名</param>
+    /// <param name="playerLocation">玩家的位置</param>
+    public void ChangedScene(string sceneName, Vector3 playerLocation)
+    {
+        throw new System.Exception("需要更改场景");
+        //更该场景完成后修改场景名
+        SceneName = sceneName;
+        //更改过后修改玩家位置
+        PlayerObj.transform.position = playerLocation;
+    }
+
+    /// <summary>
     /// 当前的场景名 
     /// </summary>
     private string _SceneName;
@@ -39,7 +53,7 @@ public partial class GameState : IGameState
     public string SceneName
     {
         get { return _SceneName == null ? "" : _SceneName; }
-        set
+        private set
         {
             string tempSceneName = _SceneName;
             _SceneName = value;

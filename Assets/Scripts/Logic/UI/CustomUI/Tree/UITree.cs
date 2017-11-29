@@ -45,6 +45,11 @@ public class UITree : MonoBehaviour
     /// </summary>
     UITreeNode selectNode;
 
+    /// <summary>
+    /// 选择的节点发生变化事件
+    /// </summary>
+    public event Action<UITreeNode> SelectNodeChangedHandle;
+
     private void Awake()
     {
         roots = new List<UITreeNode>();
@@ -210,21 +215,142 @@ public class UITree : MonoBehaviour
         {
             allTreeNode.Remove(uiTreeNode);
         };
-        createNode.SelectNodeHandle += (uiTreeNode) => 
+        createNode.SelectNodeHandle += (uiTreeNode) =>
         {
             if (selectNode && !object.Equals(selectNode, uiTreeNode))
             {
                 selectNode.IsSelect = false;
             }
-            selectNode = uiTreeNode;
+            bool selectNodeChanged = !UITreeNode.Equals(selectNode, uiTreeNode);
+            if (selectNodeChanged)
+            {
+                selectNode = uiTreeNode;
+                //将该节点至于显示区域中
+                ShowUITreeNode();
+                //回调通知
+                if (SelectNodeChangedHandle != null)
+                    SelectNodeChangedHandle(selectNode);
+            }
         };
-        createNode.StateChangedHandle += () => 
+        createNode.StateChangedHandle += () =>
         {
             UpdateRenderer();
         };
         createNodeObj.transform.SetParent(rendererPanel);
         createNodeObj.SetActive(false);
         return createNode;
+    }
+
+    /// <summary>
+    /// 显示当前选择节点
+    /// </summary>
+    private void ShowUITreeNode()
+    {
+        if (selectNode)
+        {
+            RectTransform selectNodeRectTrans = selectNode.GetComponent<RectTransform>();
+            float selectNodeY = selectNodeRectTrans.localPosition.y;
+            float selectNodeWidth = selectNodeRectTrans.rect.height;
+            float rendererY = rendererPanel.localPosition.y;
+            float rendererWidth = rendererPanel.parent.GetComponent<RectTransform>().rect.width;
+            float offset = 0;
+            if (rendererY + selectNodeY > 0)//该选项在面板上部,面板应该向下移动(y值减小)
+            {
+                offset = -(rendererY + selectNodeY);
+            }
+            else if (rendererY + selectNodeY - selectNodeWidth < -rendererWidth)//该选项在面板下部,面板应该项上移动(y值增加)
+            {
+                offset = -rendererWidth - (rendererY + selectNodeY - selectNodeWidth);
+            }
+            if (offset != 0)
+                rendererPanel.localPosition = new Vector3(rendererPanel.localPosition.x, rendererPanel.localPosition.y + offset, rendererPanel.localPosition.z);
+        }
+    }
+
+    /// <summary>
+    /// 向上选择节点
+    /// </summary>
+    public void SelectUPTreeNode()
+    {
+        if (selectNode != null)
+        {
+            if (selectNode.Parent != null)//不是根节点 
+            {
+                int index = selectNode.Parent.IndexOf(selectNode);
+                if (index > 0)
+                {
+                    UITreeNode tempNode = selectNode.Parent[index - 1];
+                    Func<UITreeNode, UITreeNode> FindDeepLastNode = null;
+                    FindDeepLastNode = (targetNode) =>
+                    {
+                        if (targetNode.Count > 0)
+                        {
+                            return FindDeepLastNode(targetNode[targetNode.Count - 1]);
+                        }
+                        else return targetNode;
+                    };
+                    selectNode = FindDeepLastNode(tempNode);
+                }
+                else if (index == 0)
+                {
+                    selectNode = selectNode.Parent;
+                }
+            }
+            else//这是根节点
+            {
+                int index = roots.IndexOf(selectNode);
+                if (index > 0)
+                {
+                    selectNode = roots[index - 1];
+                }
+            }
+            selectNode.IsSelect = true;
+        }
+    }
+
+    /// <summary>
+    /// 向下选择节点
+    /// </summary>
+    public void SelectDownTreeNode()
+    {
+        if (selectNode != null)
+        {
+            Action<UITreeNode> MoveDownAction = null;
+            MoveDownAction = (targetNode) =>
+            {
+                if (targetNode.Parent != null)//不是根节点
+                {
+                    int index = targetNode.Parent.IndexOf(targetNode);//在父节点中的下标
+                    if (index >= 0 && index < targetNode.Parent.Count - 1)
+                        selectNode = targetNode.Parent[index + 1];
+                    else if (index >= targetNode.Parent.Count - 1)
+                    {
+                        MoveDownAction(targetNode.Parent);//已经到了该子节点的尽头,返回父节点寻找父节点向下移动的方式
+                    }
+                }
+                else//根节点
+                {
+                    int index = roots.IndexOf(targetNode);
+                    if (index >= 0 && index < roots.Count - 1)
+                    {
+                        selectNode = roots[index + 1];
+                    }
+                }
+            };
+            MoveDownAction(selectNode);
+            selectNode.IsSelect = true;
+        }
+    }
+
+    /// <summary>
+    /// 获取选择的节点
+    /// </summary>
+    public UITreeNode SelectNode
+    {
+        get
+        {
+            return selectNode;
+        }
     }
 
     /// <summary>

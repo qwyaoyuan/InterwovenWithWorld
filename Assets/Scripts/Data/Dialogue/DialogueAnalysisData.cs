@@ -148,8 +148,6 @@ public class DialogueAnalysisData
         return maxID;
     }
 
-
-
     /// <summary>
     /// 通过NPCid获取多个对话条件
     /// </summary>
@@ -354,6 +352,12 @@ public class DialogueCondition
                     break;
             }
         }
+
+        //递归设置父节点
+        if (topPoint != null)
+        {
+            topPoint.SetParent(null);
+        }
     }
 }
 
@@ -373,6 +377,10 @@ public class DialoguePoint
     /// 子节点
     /// </summary>
     public DialoguePoint[] childDialoguePoints;
+    /// <summary>
+    /// 父节点
+    /// </summary>
+    public DialoguePoint parentDialoguePoint;
 
     /// <summary>
     /// 返回数据字符串
@@ -456,6 +464,20 @@ public class DialoguePoint
         }
         return resultList.ToArray();
     }
+
+    /// <summary>
+    /// 设置父节点
+    /// </summary>
+    /// <param name="parent"></param>
+    public void SetParent(DialoguePoint parent)
+    {
+        this.parentDialoguePoint = parent;
+        if(childDialoguePoints!=null && childDialoguePoints.Length >0)
+            foreach (DialoguePoint child in childDialoguePoints)
+            {
+                child.SetParent(this);
+            }
+    }
 }
 
 /// <summary>
@@ -499,7 +521,7 @@ public class DialogueValue
     public string showValue;
 
     /// <summary>
-    /// 附加数据
+    /// 附加数据(如果有任务的话表示任务的id)
     /// </summary>
     public string otherValue;
 

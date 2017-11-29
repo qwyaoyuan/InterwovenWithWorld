@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public interface IGameState : IBaseState
 {
-
     /// <summary>
     /// 游戏运行状态
     /// </summary>
@@ -16,7 +15,14 @@ public interface IGameState : IBaseState
     /// <summary>
     /// 当前的场景名
     /// </summary>
-    string SceneName { get; set; }
+    string SceneName { get; }
+
+    /// <summary>
+    /// 更改场景
+    /// </summary>
+    /// <param name="sceneName">场景</param>
+    /// <param name="playerLocation">玩家的位置</param>
+    void ChangedScene(string sceneName,Vector3 playerLocation);
 
     /// <summary>
     /// 镜头的移动速度
@@ -59,9 +65,13 @@ public enum EnumGameRunType
     /// <summary>
     /// 任务对话中
     /// </summary>
-    Task,
+    TaskTalk,
     /// <summary>
     /// 过场动画中
     /// </summary>
-    Cutscenes
+    Cutscenes,
+    /// <summary>
+    /// 合成界面
+    /// </summary>
+    Synthesis,
 }

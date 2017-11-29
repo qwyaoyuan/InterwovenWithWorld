@@ -75,10 +75,18 @@ public class UITreeNode : MonoBehaviour, IEnumerable<UITreeNode>
     public object value;
 
     /// <summary>
+    /// 设置或获取要显示的文字
+    /// </summary>
+    public string ExplanText
+    {
+        get { return explanText.text; }
+        set { explanText.text = value; }
+    }
+
+    /// <summary>
     /// 是否显示
     /// </summary>
     private bool _isDisplay;
-
     /// <summary>
     /// 是否显示
     /// </summary>
@@ -102,7 +110,6 @@ public class UITreeNode : MonoBehaviour, IEnumerable<UITreeNode>
     /// 是否展开节点
     /// </summary>
     private bool _isExpand;
-
     /// <summary>
     /// 是否展开节点
     /// </summary>

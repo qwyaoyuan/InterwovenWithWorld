@@ -50,6 +50,7 @@ public partial class GameState : IEntrance, IBaseState
         runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         //调用各自的开始函数
         Start_INowTaskState();
+        Start_IInteractiveState();
     }
 
     public void Update()
@@ -181,6 +182,11 @@ public partial class GameState : IEntrance, IBaseState
     /// 任务的销毁函数
     /// </summary>
     partial void OnDestroy_INowTaskState();
+
+    /// <summary>
+    /// 对话的开始函数 
+    /// </summary>
+    partial void Start_IInteractiveState();
 
     #endregion
 }
