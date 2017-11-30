@@ -45,12 +45,18 @@ public partial class GameState : IEntrance, IBaseState
                 callBackDic.Add(type, callBackList);
             }
         }
+    }
+
+    /// <summary>
+    /// 在加载存档后调用来初始化数据
+    /// </summary>
+    public void LoadArchive()
+    {
         //初始化共有数据
         playerState = DataCenter.Instance.GetEntity<PlayerState>();
         runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
-        //调用各自的开始函数
-        Start_INowTaskState();
-        Start_IInteractiveState();
+        //其他的加载初始化
+        Load_INowTaskState();
     }
 
     public void Update()
@@ -122,6 +128,7 @@ public partial class GameState : IEntrance, IBaseState
 
     /// <summary>
     /// 获取字段名
+    /// 也可以传入一个函数,但是注意如果函数和自动重名则会认为这是一个
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
@@ -133,6 +140,23 @@ public partial class GameState : IEntrance, IBaseState
         if (expr.Body is MemberExpression)
         {
             propertyName = ((MemberExpression)expr.Body).Member.Name;
+        }
+        else if (expr.Body is UnaryExpression)
+        {
+            Expression expressionOperand = (expr.Body as UnaryExpression).Operand;
+            if (expressionOperand is MethodCallExpression)
+            {
+                MethodCallExpression methodCallExpression = expressionOperand as MethodCallExpression;
+                if (methodCallExpression.Arguments.Count == 3)
+                {
+                    Expression expression1 = methodCallExpression.Arguments[2];
+                    MethodInfo methodInfo = (expression1 as ConstantExpression).Value as MethodInfo;
+                    if (methodInfo != null)
+                    {
+                        propertyName = methodInfo.Name;
+                    }
+                }
+            }
         }
         return propertyName;
     }
@@ -165,28 +189,19 @@ public partial class GameState : IEntrance, IBaseState
 
     public void OnDestroy()
     {
-        //调用各自的销毁函数
-        OnDestroy_INowTaskState();
+
     }
 
     #region 声明函数分部
     /// <summary>
-    /// 任务的开始函数
+    /// 加载函数调用时调用
     /// </summary>
-    partial void Start_INowTaskState();
+    partial void Load_INowTaskState();
+
     /// <summary>
     /// 任务的更新函数
     /// </summary>
     partial void Update_INowTaskState();
-    /// <summary>
-    /// 任务的销毁函数
-    /// </summary>
-    partial void OnDestroy_INowTaskState();
-
-    /// <summary>
-    /// 对话的开始函数 
-    /// </summary>
-    partial void Start_IInteractiveState();
 
     #endregion
 }

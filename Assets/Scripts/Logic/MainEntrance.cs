@@ -21,6 +21,8 @@ public class MainEntrance : MonoBehaviour
     {
         iEntranceList = new List<IEntrance>();
         Instance = this;
+        //该脚本不能在加载场景时被销毁
+        DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
@@ -32,6 +34,7 @@ public class MainEntrance : MonoBehaviour
         Registor(new SkillDealHandle());
         Registor(new GameState());
         Registor(new InputControl());
+        Registor(new InterludesManager());
     }
 
     void Update()

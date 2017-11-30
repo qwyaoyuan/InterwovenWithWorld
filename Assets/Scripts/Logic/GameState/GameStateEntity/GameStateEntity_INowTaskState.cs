@@ -42,9 +42,9 @@ public partial class GameState : INowTaskState
     MetaTasksData metaTasksData;
 
     /// <summary>
-    /// 任务接口实现对象的开始函数
+    /// 任务接口实现对象的加载函数 
     /// </summary>
-    partial void Start_INowTaskState()
+    partial void Load_INowTaskState()
     {
         metaTasksData = DataCenter.Instance.GetMetaData<MetaTasksData>();
         //当前可以做的任务,包括正在做的和可以接取的
@@ -142,6 +142,8 @@ public partial class GameState : INowTaskState
     /// </summary>
     bool CheckNowTaskPostion()
     {
+        if (checkPostionRunTimeDic == null)
+            return false;
         if (checkPostionDicTempList == null)
             checkPostionDicTempList = new List<RunTimeTaskInfo>();
         if (checkPostionRunTimeDic.Count > 0)
@@ -196,6 +198,8 @@ public partial class GameState : INowTaskState
     /// <param name="npcID">NPC的id,在点击npc并结束对话的时候调用</param>
     bool CheckNowTaskNPC(int npcID)
     {
+        if (checkNPCRunTimeDic == null)
+            return false;
         if (checkNPCDicTempList == null)
             checkNPCDicTempList = new List<RunTimeTaskInfo>();
         if (checkNPCRunTimeDic.Count > 0)
@@ -240,6 +244,8 @@ public partial class GameState : INowTaskState
     /// <param name="monsterID">怪物的id</param>
     bool CheckNowTaskMonster(int monsterID)
     {
+        if (checkMonsterRunTimeDic == null)
+            return false;
         if (checkMonsterDicTempList == null)
             checkMonsterDicTempList = new List<RunTimeTaskInfo>();
         if (checkMonsterRunTimeDic.Count > 0)
@@ -293,6 +299,8 @@ public partial class GameState : INowTaskState
     /// <param name="goodsID">变动了的物品的类型id(EnumGoodsType枚举),内部会判断物品类型,不论是丢弃或者增加</param>
     bool CheckNowTaskGoods(int goodsID)
     {
+        if (checkGoodsRunTimeDic == null)
+            return false;
         if (checkGoodsDicTempList == null)
             checkGoodsDicTempList = new List<RunTimeTaskInfo>();
         if (checkGoodsRunTimeDic.Count > 0)
@@ -399,15 +407,28 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 开始任务
     /// </summary>
-    /// <param name="taskID"></param>
-    public void StartTask(int taskID)
+    int _StartTask;
+    /// <summary>
+    /// 开始任务
+    /// </summary>
+    public int StartTask
     {
-        RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Wait.Where(temp => temp.ID == taskID).FirstOrDefault();
-        if (runTimeTaskInfo != null)
+        get { return _StartTask; }
+        set
         {
-            runTimeTaskInfos_Wait.Remove(runTimeTaskInfo);
-            runTimeTaskInfos_Start.Add(runTimeTaskInfo);
-            SetStartTaskCheckClassify(runTimeTaskInfo);
+            int tempStartTask = _StartTask;
+            _StartTask = value;
+            if (tempStartTask != _StartTask)
+            {
+                RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Wait.Where(temp => temp.ID == _StartTask).FirstOrDefault();
+                if (runTimeTaskInfo != null)
+                {
+                    runTimeTaskInfos_Wait.Remove(runTimeTaskInfo);
+                    runTimeTaskInfos_Start.Add(runTimeTaskInfo);
+                    SetStartTaskCheckClassify(runTimeTaskInfo);
+                    Call<INowTaskState, int>(temp => temp.StartTask);
+                }
+            }
         }
     }
 
@@ -529,13 +550,5 @@ public partial class GameState : INowTaskState
     public RunTimeTaskInfo[] GetEndTask(string scene)
     {
         throw new Exception("获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务");
-    }
-
-    /// <summary>
-    /// 任务接口实现对象的销毁函数
-    /// </summary>
-    partial void OnDestroy_INowTaskState()
-    {
-
     }
 }

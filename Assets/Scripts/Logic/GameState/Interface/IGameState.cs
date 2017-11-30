@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,8 @@ public interface IGameState : IBaseState
     /// </summary>
     /// <param name="sceneName">场景</param>
     /// <param name="playerLocation">玩家的位置</param>
-    void ChangedScene(string sceneName,Vector3 playerLocation);
+    /// <param name="LoadResultAction">加载结果回调</param>
+    void ChangedScene(string sceneName, Vector3 playerLocation, Action<bool> LoadResultAction = null);
 
     /// <summary>
     /// 镜头的移动速度
@@ -69,7 +71,7 @@ public enum EnumGameRunType
     /// <summary>
     /// 过场动画中
     /// </summary>
-    Cutscenes,
+    Interludes,
     /// <summary>
     /// 合成界面
     /// </summary>

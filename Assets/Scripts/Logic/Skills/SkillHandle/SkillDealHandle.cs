@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 技能处理类
 /// </summary>
-public class SkillDealHandle : MonoBehaviour, IEntrance
+public class SkillDealHandle : IEntrance
 {
     /// <summary>
     /// 技能处理类的单例对象

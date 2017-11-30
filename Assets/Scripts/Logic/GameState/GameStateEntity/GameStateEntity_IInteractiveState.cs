@@ -10,13 +10,6 @@ using UnityEngine;
 public partial class GameState : IInteractiveState
 {
 
-
-    /// <summary>
-    /// 对话的开始函数 
-    /// </summary>
-    partial void Start_IInteractiveState()
-    { }
-
     /// <summary>
     /// 主线的中间过度展示
     /// </summary>

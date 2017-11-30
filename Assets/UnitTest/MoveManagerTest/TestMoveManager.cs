@@ -12,7 +12,7 @@ public class TestMoveManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        (new GameState()).Start();
+        //(new GameState()).Start();
         GameState.Instance.PlayerObj = gameObject;
         GameState.Instance.PlayerCamera = playerCamera;
         GameState.Instance.MoveSpeed = 3;
@@ -38,11 +38,11 @@ public class TestMoveManager : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y");
         MoveManager.Instance.View(new Vector2(-mouseX, -mouseY));
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            BuffState buffState = GameState.Instance.Xuanyun;
-            buffState.Time = buffState.Time > 0 ? 0 : 1;
-            GameState.Instance.Xuanyun = buffState;
-        }
+        //if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    BuffState buffState = GameState.Instance.Xuanyun;
+        //    buffState.Time = buffState.Time > 0 ? 0 : 1;
+        //    GameState.Instance.Xuanyun = buffState;
+        //}
     }
 }

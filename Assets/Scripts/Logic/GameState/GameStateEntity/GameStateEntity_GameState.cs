@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,13 +35,32 @@ public partial class GameState : IGameState
     /// </summary>
     /// <param name="sceneName">场景名</param>
     /// <param name="playerLocation">玩家的位置</param>
-    public void ChangedScene(string sceneName, Vector3 playerLocation)
+    /// <param name="LoadResultAction">加载结果回调</param>
+    public void ChangedScene(string sceneName, Vector3 playerLocation, Action<bool> LoadResultAction = null)
     {
-        throw new System.Exception("需要更改场景");
-        //更该场景完成后修改场景名
-        SceneName = sceneName;
-        //更改过后修改玩家位置
-        PlayerObj.transform.position = playerLocation;
+        //如果要切换的场景不是当前场景则加载场景
+        if (SceneName != sceneName)
+        {
+            UIChangeScene.Instance.LoadScene(sceneName, result =>
+            {
+                //自身调用初始化数据
+                Debug.Log("需要调用自身的函数实现数据的初始化,如地图显示,npc位置等一系列的数据");
+                //创建玩家操纵的游戏对象
+                GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+                GameObject.Instantiate(playerPrefab);
+                //更改过后修改玩家位置
+                PlayerObj.transform.position = playerLocation;
+                //回调
+                if (LoadResultAction != null)
+                    LoadResultAction(result);
+            });
+            SceneName = sceneName;
+        }
+        else//如果不需要切换场景则直接更改玩家位置即可
+        {
+            //更改过后修改玩家位置
+            PlayerObj.transform.position = playerLocation;
+        }
     }
 
     /// <summary>

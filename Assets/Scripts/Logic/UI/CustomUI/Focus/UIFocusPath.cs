@@ -30,7 +30,7 @@ public class UIFocusPath : MonoBehaviour
     public UIFocus GetFirstFocus()
     {
         if (UIFocuesArray != null)
-            return UIFocuesArray.First(temp => temp != null);
+            return UIFocuesArray.FirstOrDefault(temp => temp != null && temp.gameObject.activeSelf != false);
         return null;
     }
 
@@ -42,7 +42,7 @@ public class UIFocusPath : MonoBehaviour
     public T GetFirstFocus<T>() where T : UIFocus
     {
         if (UIFocuesArray != null)
-            return UIFocuesArray.First(temp => temp != null && (temp as T) != null) as T;
+            return UIFocuesArray.First(temp => temp != null && (temp as T) != null && temp.gameObject.activeSelf != false) as T;
         return null;
     }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 入口界面UI
@@ -43,6 +44,11 @@ public class UIEntrance : MonoBehaviour
     /// 设置面板
     /// </summary>
     private Canvas settingCanvas;
+
+    /// <summary>
+    /// 是否正在加载场景
+    /// </summary>
+    bool isLoadedScene;
 
     /// <summary>
     /// ui路径
@@ -233,22 +239,46 @@ public class UIEntrance : MonoBehaviour
     /// </summary>
     public void ContinueButtonClick()
     {
+        if (isLoadedScene)
+            return;
         //切换场景
         nowFocus = EventSystem.current.currentSelectedGameObject.GetComponent<UIFocus>();
+
+        List<Archive> archiveList = DataCenter.Instance.GetAllArchive();//获取所有存档名 
+        Archive defaultArchive = archiveList.FirstOrDefault(temp => temp.ID == 1);
+        if (defaultArchive != null)
+        {
+            DataCenter.Instance.LoadArchive(1);//加载第一个存档
+            GetArchiveData();
+        }
     }
+
     /// <summary>
     /// 新游戏按钮按下事件
     /// </summary>
     public void NewGameButtonClick()
     {
+        if (isLoadedScene)
+            return;
         //切换场景
         nowFocus = EventSystem.current.currentSelectedGameObject.GetComponent<UIFocus>();
+        List<Archive> archiveList = DataCenter.Instance.GetAllArchive();//获取所有存档名 
+        Archive defaultArchive = archiveList.FirstOrDefault(temp => temp.ID == 1);
+        if (defaultArchive == null)
+        {
+            DataCenter.Instance.Save(1, "存档", "默认存档");
+            DataCenter.Instance.LoadArchive(1);
+            GetArchiveData();
+        }
     }
+
     /// <summary>
     /// 设置按钮按下事件
     /// </summary>
     public void SettingButtonClick()
     {
+        if (isLoadedScene)
+            return;
         nowFocus = EventSystem.current.currentSelectedGameObject.GetComponent<UIFocus>();
         //显示设置面板
         if (settingCanvas)
@@ -257,4 +287,26 @@ public class UIEntrance : MonoBehaviour
         }
     }
     #endregion
+
+    /// <summary>
+    /// 将当前存档数据放入运行时数据中,同时跳转场景
+    /// </summary>
+    private void GetArchiveData()
+    {
+        //加载数据
+        GameState.Instance.LoadArchive();
+        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        //切换场景
+        if (string.IsNullOrEmpty(playerState.Scene))
+        {
+            playerState.Scene = "中央王国";
+            playerState.Location = new Vector3(813.9f, 36.64f, 909.7f);
+        }
+        isLoadedScene = true;
+        IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+        iGameState.ChangedScene(playerState.Scene, playerState.Location, result => isLoadedScene = false);
+       
+    }
+
+
 }

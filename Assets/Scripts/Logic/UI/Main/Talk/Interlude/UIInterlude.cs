@@ -184,7 +184,7 @@ public class UIInterlude : MonoBehaviour
         {
             gameObject.SetActive(false);
             //接受任务
-            iNowTaskState.StartTask(runTimeTaskInfo.ID);
+            iNowTaskState.StartTask =runTimeTaskInfo.ID;
         }
     }
 }

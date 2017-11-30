@@ -39,6 +39,16 @@ public partial class DataCenter
 public class PlayerState
 {
     /// <summary>
+    /// 玩家所在的场景
+    /// </summary>
+    public string Scene;
+
+    /// <summary>
+    /// 玩家的位置
+    /// </summary>
+    public Vector3 Location;
+
+    /// <summary>
     /// 人物等级
     /// </summary>
     public int Level;

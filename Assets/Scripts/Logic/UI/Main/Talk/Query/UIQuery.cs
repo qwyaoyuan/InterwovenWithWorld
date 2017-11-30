@@ -241,7 +241,7 @@ public class UIQuery : MonoBehaviour
                              RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(taskID);
                              if (runTimeTaskInfo.IsOver == false && runTimeTaskInfo.IsStart == false)
                              {
-                                 iNowTaskState.StartTask(runTimeTaskInfo.ID);
+                                 iNowTaskState.StartTask =runTimeTaskInfo.ID;
                                  gameObject.SetActive(false);
                              }
                          }

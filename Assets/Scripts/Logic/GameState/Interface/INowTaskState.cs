@@ -18,10 +18,9 @@ public interface INowTaskState : IBaseState
     bool CheckNowTask(EnumCheckTaskType checkTaskType,int value);
 
     /// <summary>
-    /// 接取任务
+    /// 获取刚刚接取的任务或者设置要接取的任务
     /// </summary>
-    /// <param name="taskID">任务id</param>
-    void StartTask(int taskID);
+    int StartTask { get; set; }
 
     /// <summary>
     /// 完成任务的id(只有内部可以设置值,外部可以监听更改)
