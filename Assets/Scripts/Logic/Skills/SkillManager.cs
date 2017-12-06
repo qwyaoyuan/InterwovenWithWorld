@@ -91,12 +91,12 @@ public class SkillManager : IInput
 
     public void Move(Vector2 forward)
     {
-        throw new NotImplementedException();
+     
     }
 
     public void View(Vector2 view)
     {
-        throw new NotImplementedException();
+       
     }
 
 

@@ -48,15 +48,6 @@ public class KeyContactData
     /// <returns></returns>
     public KeyContactStruct[] GetKeyContactStruct(int key, Func<KeyContactStruct, bool> selecter = null)
     {
-        List<KeyContactStruct> tempKeyContactStructs = new List<KeyContactStruct>();
-        //表示本功能键 除了L1 L2 R1 R2 左右摇杆外的其他键
-        int baseFunctionKey = key % 16;
-        //附加功能键 L1 L2 R1 R2
-        int addFunctionKey = key - baseFunctionKey;
-        bool l1 = ((addFunctionKey / L1) % 2) == 1;//是否按下了L1键
-        bool r1 = ((addFunctionKey / R1) % 2) == 1;//是否按下了R1键
-        bool l2 = ((addFunctionKey / L2) % 2) == 1;//是否按下了L2键
-        bool r2 = ((addFunctionKey / R2) % 2) == 1;//是否按下了R2键
         Func<int, KeyContactStruct> GetSpecificTarget = (_key) =>
         {
             if (keyContactStructs.ContainsKey(_key))
@@ -66,22 +57,40 @@ public class KeyContactData
                 KeyContactStruct tempKeyContactStruct;
                 tempKeyContactStruct.keyContactType = EnumKeyContactType.None;
                 tempKeyContactStruct.id = -1;
-                tempKeyContactStruct.key = -1;
+                tempKeyContactStruct.key = _key;
                 tempKeyContactStruct.name = "";
                 return tempKeyContactStruct;
             }
         };
-        if (l1)
-            tempKeyContactStructs.Add(GetSpecificTarget(L1 + baseFunctionKey));
-        if (r1)
-            tempKeyContactStructs.Add(GetSpecificTarget(R1 + baseFunctionKey));
-        if (l2)
-            tempKeyContactStructs.Add(GetSpecificTarget(L2 + baseFunctionKey));
-        if (r2)
-            tempKeyContactStructs.Add(GetSpecificTarget(R2 + baseFunctionKey));
-        if (!l1 && !l2 && !r1 && !r2)
-            tempKeyContactStructs.Add(GetSpecificTarget(baseFunctionKey));
-        tempKeyContactStructs.RemoveAll(temp => temp.keyContactType == EnumKeyContactType.None);
+
+        List<KeyContactStruct> tempKeyContactStructs = new List<KeyContactStruct>();
+        if (key >= (int)EnumInputType.Start)//功能键
+        {
+            tempKeyContactStructs.Add(GetSpecificTarget(key));
+        }
+        else
+        {
+            //表示本功能键 除了L1 L2 R1 R2 左右摇杆外的其他键
+            int baseFunctionKey = key % 16;
+            //附加功能键 L1 L2 R1 R2
+            int addFunctionKey = key - baseFunctionKey;
+            bool l1 = ((addFunctionKey / L1) % 2) == 1;//是否按下了L1键
+            bool r1 = ((addFunctionKey / R1) % 2) == 1;//是否按下了R1键
+            bool l2 = ((addFunctionKey / L2) % 2) == 1;//是否按下了L2键
+            bool r2 = ((addFunctionKey / R2) % 2) == 1;//是否按下了R2键
+            
+            if (l1)
+                tempKeyContactStructs.Add(GetSpecificTarget(L1 + baseFunctionKey));
+            if (r1)
+                tempKeyContactStructs.Add(GetSpecificTarget(R1 + baseFunctionKey));
+            if (l2)
+                tempKeyContactStructs.Add(GetSpecificTarget(L2 + baseFunctionKey));
+            if (r2)
+                tempKeyContactStructs.Add(GetSpecificTarget(R2 + baseFunctionKey));
+            if (!l1 && !l2 && !r1 && !r2)
+                tempKeyContactStructs.Add(GetSpecificTarget(baseFunctionKey));
+            tempKeyContactStructs.RemoveAll(temp => temp.keyContactType == EnumKeyContactType.None);
+        }
         if (selecter != null)
             tempKeyContactStructs.RemoveAll(temp => !selecter(temp));
         return tempKeyContactStructs.ToArray();

@@ -25,6 +25,17 @@ public class UIMain : MonoBehaviour
     GameObject synthesisPanel;
 
     /// <summary>
+    /// 设置面板预设提
+    /// </summary>
+    [SerializeField]
+    GameObject settingPanelPrefab;
+
+    /// <summary>
+    /// 设置面板
+    /// </summary>
+    Canvas settingPanel;
+
+    /// <summary>
     /// 交互对象
     /// </summary>
     IInteractiveState iInteractiveState;
@@ -34,6 +45,10 @@ public class UIMain : MonoBehaviour
         iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
         iInteractiveState.InterludeObj = interludePanel;
         iInteractiveState.QueryObj = queryPanel;
+
+        GameObject settingPanelObj = GameObject.Instantiate<GameObject>(settingPanelPrefab);
+        settingPanel = settingPanelObj.GetComponent<Canvas>();
+        settingPanel.gameObject.SetActive(false);
     }
 
 }

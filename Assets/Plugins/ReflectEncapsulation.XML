@@ -1,0 +1,398 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReflectEncapsulation</name>
+    </assembly>
+    <members>
+        <member name="M:ReflectEncapsulation.Entry.On``1(``0)">
+            <summary>
+            封装对象
+            </summary>
+            <typeparam name="T">对象类型</typeparam>
+            <param name="target">对象</param>
+            <returns></returns>
+        </member>
+        <member name="T:ReflectEncapsulation.ReflectDiscard">
+            <summary>
+            丢弃对象接口
+            </summary>
+        </member>
+        <member name="T:ReflectEncapsulation.IEasyReflect">
+            <summary>
+            简单反射接口
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Call``1(System.String,System.Object[])">
+            <summary>
+            调用指定函数
+            </summary>
+            <typeparam name="U">类型</typeparam>
+            <param name="methodName">方法名</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Call(System.String,System.Object[])">
+            <summary>
+            调用指定函数
+            </summary>
+            <param name="methodName">方法名</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Set``1(System.String,``0)">
+            <summary>
+            设置指定属性的值
+            </summary>
+            <typeparam name="U">属性类型</typeparam>
+            <param name="propertyName">属性名</param>
+            <param name="value">要设置的值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Set(System.String,System.Object)">
+            <summary>
+            设置指定属性的值
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="value">要设置的值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Get``1(System.String)">
+            <summary>
+            获取指定属性的值
+            </summary>
+            <typeparam name="U">属性类型</typeparam>
+            <param name="propertyName">属性名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Get(System.String)">
+            <summary>
+            获取指定属性的值
+            </summary>
+            <param name="propertyName">属性名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Field``1(System.String)">
+            <summary>
+            获取指定字段的值
+            </summary>
+            <typeparam name="U">字段类型</typeparam>
+            <param name="fieldName">字段名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Field(System.String)">
+            <summary>
+            获取指定字段的值
+            </summary>
+            <param name="fieldName">字段名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Field``1(System.String,``0)">
+            <summary>
+            设置指定字段的值
+            </summary>
+            <typeparam name="U">字段类型</typeparam>
+            <param name="fieldName">字段名</param>
+            <param name="value">字段值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.IEasyReflect.Field(System.String,System.Object)">
+            <summary>
+            设置指定字段的值
+            </summary>
+            <param name="fieldName">字段名</param>
+            <param name="value">字段值</param>
+            <returns></returns>
+        </member>
+        <member name="P:ReflectEncapsulation.IEasyReflect.Back">
+            <summary>
+            上层调用对象
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectDiscard.Discard">
+            <summary>
+            丢弃该对象
+            </summary>
+        </member>
+        <member name="T:ReflectEncapsulation.ReflectCache`1">
+            <summary>
+            反射缓存
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectCache`1.type">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectCache`1.methodInfos">
+            <summary>
+            T类型方法元数据缓存字典
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectCache`1.fieldInfos">
+            <summary>
+            T类型属性
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectCache`1.getMethodInfos">
+            <summary>
+            属性的get方法
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectCache`1.setMethodInfos">
+            <summary>
+            属性的set方法
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectCache`1.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectCache`1.GetMethodInfo(System.String)">
+            <summary>
+            获取方法元数据
+            </summary>
+            <param name="name">名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectCache`1.GetFieldInfo(System.String)">
+            <summary>
+            获取字段元数据
+            </summary>
+            <param name="name">名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectCache`1.GetGetMethodInfo(System.String)">
+            <summary>
+            获取属性的Get方法元数据
+            </summary>
+            <param name="name">名字</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectCache`1.GetSetMethodInfo(System.String)">
+            <summary>
+            获取属性额Set方法元数据 
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ReflectEncapsulation.ReflectUnit`1">
+            <summary>
+            反射单元
+            <typeparam name="T">元素类型</typeparam>
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectUnit`1.reflectCache">
+            <summary>
+            反射缓存队列字典
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectUnit`1.reflectUnits">
+            <summary>
+            对象缓存
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.#cctor">
+            <summary>
+            反射单元静态构造
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.CheckMethod(System.String,System.Reflection.MethodInfo@)">
+            <summary>
+            检测是否存在方法的元数据并获取方法的元数据
+            </summary>
+            <param name="methodName">方法名</param>
+            <param name="methodInfo">方法的元数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.CheckField(System.String,System.Reflection.FieldInfo@)">
+            <summary>
+            检测是否存在字段的元数据并获取字段的元数据
+            </summary>
+            <param name="fieldName">字段名</param>
+            <param name="fieldInfo">字段的元数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.CheckGet(System.String,System.Reflection.MethodInfo@)">
+            <summary>
+            检测是否存在属性的Get方法并获取Get方法的元数据
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="getMethodInfo">Get方法的元数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.CheckSet(System.String,System.Reflection.MethodInfo@)">
+            <summary>
+            检测是否存在属性的Set方法并获取Set方法的元数据 
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="setMethodInfo">Set方法的元数据</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.GetReflectUnit">
+            <summary>
+            获取对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.SetReflectUnit(ReflectEncapsulation.ReflectUnit{`0})">
+            <summary>
+            将对象放入池子中
+            </summary>
+            <param name="discardTarget"></param>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.op_Implicit(ReflectEncapsulation.ReflectUnit{`0})~`0">
+            <summary>
+            将对象转化成内部的元素
+            </summary>
+            <param name="target"></param>
+            <returns></returns>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectUnit`1.element">
+            <summary>
+            元素
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectUnit`1.back">
+            <summary>
+            上层调用对象
+            </summary>
+        </member>
+        <member name="F:ReflectEncapsulation.ReflectUnit`1.num">
+            <summary>
+            编号
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.#ctor(`0,System.Int32,ReflectEncapsulation.ReflectDiscard)">
+            <summary>
+            反射单元构造函数
+            </summary>
+            <param name="element">元素</param>
+            <param name="num">编号</param>
+            <param name="back">上层调用对象</param>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.#ctor">
+            <summary>
+            反射单元构造函数（无参构造）
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Init(`0,System.Int32,ReflectEncapsulation.ReflectDiscard)">
+            <summary>
+            初始化数据
+            </summary>
+            <param name="element">元素</param>
+            <param name="num">编号</param>
+            <param name="back">上层调用对象</param>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Init">
+            <summary>
+            初始化数据
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Discard">
+            <summary>
+            丢弃该对象
+            </summary>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Call``1(System.String,System.Object[])">
+            <summary>
+            调用指定函数
+            如果函数有返回值，则返回返回值的封装对象，如果没有则返回自身的封装对象
+            </summary>
+            <typeparam name="U">类型</typeparam>
+            <param name="methodName">方法名</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Call(System.String,System.Object[])">
+            <summary>
+            调用指定函数
+            如果函数有返回值，则返回返回值的封装对象，如果没有则返回自身的封装对象
+            </summary>
+            <param name="methodName">方法名</param>
+            <param name="param">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Set``1(System.String,``0)">
+            <summary>
+            设置指定属性的值
+            </summary>
+            <typeparam name="U">属性类型</typeparam>
+            <param name="propertyName">属性名</param>
+            <param name="value">要设置的值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Set(System.String,System.Object)">
+            <summary>
+            设置指定属性的值
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="value">要设置的值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Get``1(System.String)">
+            <summary>
+            获取指定属性的值
+            </summary>
+            <typeparam name="U">属性类型</typeparam>
+            <param name="propertyName">属性名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Get(System.String)">
+            <summary>
+            获取指定属性的值
+            </summary>
+            <param name="propertyName">属性名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Field``1(System.String)">
+            <summary>
+            获取指定字段的值
+            </summary>
+            <typeparam name="U">字段类型</typeparam>
+            <param name="fieldName">字段名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Field(System.String)">
+            <summary>
+            获取指定字段的值
+            </summary>
+            <param name="fieldName">字段名</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Field``1(System.String,``0)">
+            <summary>
+            设置指定字段的值
+            </summary>
+            <typeparam name="U">字段类型</typeparam>
+            <param name="fieldName">字段名</param>
+            <param name="value">字段值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.Field(System.String,System.Object)">
+            <summary>
+            设置指定字段的值
+            </summary>
+            <param name="fieldName">字段名</param>
+            <param name="value">字段值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ReflectEncapsulation.ReflectUnit`1.End">
+            <summary>
+            请在结束时调用该方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:ReflectEncapsulation.ReflectUnit`1.Element">
+            <summary>
+            获取元素
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:ReflectEncapsulation.ReflectUnit`1.Back">
+            <summary>
+            获取接口
+            </summary>
+        </member>
+    </members>
+</doc>

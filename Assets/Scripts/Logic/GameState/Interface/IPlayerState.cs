@@ -25,7 +25,11 @@ public interface IPlayerState : IBaseState,
     /// <summary>
     /// 等级
     /// </summary>
-    int Level { get; set; }
+    int Level { get; }
+    /// <summary>
+    /// 经验值(本级的)
+    /// </summary>
+    int Experience { get; set; }
     /// <summary>
     /// 技能等级变化
     /// </summary>

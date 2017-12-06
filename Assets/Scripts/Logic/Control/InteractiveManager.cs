@@ -31,26 +31,26 @@ public class InteractiveManager : IInput
 
     public void KeyPress(int key)
     {
-        throw new NotImplementedException();
+       
     }
 
     public void KeyUp(int key)
     {
-        throw new NotImplementedException();
+     
     }
 
     public void Move(Vector2 forward)
     {
-        throw new NotImplementedException();
+     
     }
 
     public void View(Vector2 view)
     {
-        throw new NotImplementedException();
+      
     }
 
     public void KeyDown(int key)
     {
-        throw new NotImplementedException();
+      
     }
 }

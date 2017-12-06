@@ -78,6 +78,17 @@ public enum EnumInputType
     RT = 128,
     #endregion
 
+    #region 其他的功能键位
+    /// <summary>
+    /// Start键
+    /// </summary>
+    Start = 256,
+    /// <summary>
+    /// Back键
+    /// </summary>
+    Back = 257,
+    #endregion
+
     #region 键盘按键,计算出的数值是上面的复合数值
 
     #endregion

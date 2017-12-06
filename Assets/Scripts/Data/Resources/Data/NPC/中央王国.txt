@@ -1,0 +1,1 @@
+﻿{"NPCDataInfos":[{"NPCType":0,"NPCID":0,"NPCName":"TestName","locationX":813.9,"locationY":36.505146,"locationZ":909.7,"angleX":0.0,"angleY":0.0,"angleZ":0.0,"npcSpriteID":"1:1_26","SceneName":null,"npcPrefabName":"Cube","OtherValue":null}],"sceneName":"中央王国"}

@@ -19,11 +19,16 @@ public struct BuffState
     /// 临时数据
     /// </summary>
     public object tempData;
+    /// <summary>
+    /// buff等级
+    /// </summary>
+    public int level;
 
-    public BuffState(EnumStatusEffect statusEffect,object data)
+    public BuffState(EnumStatusEffect statusEffect,int level,object data)
     {
         this.statusEffect = statusEffect;
         Time = 0;
+        this.level = level;
         tempData = data;
     }
 

@@ -21,7 +21,7 @@ public partial class GameState
         get
         {
             if (_Chaofeng == null)
-                _Chaofeng = new BuffState(EnumStatusEffect.cf2, 0);
+                _Chaofeng = new BuffState(EnumStatusEffect.cf2,0, null);
             return _Chaofeng.Value;
         }
         set
@@ -50,7 +50,7 @@ public partial class GameState
         get
         {
             if (_Hunluan == null)
-                _Hunluan = new BuffState(EnumStatusEffect.hl1, 0);
+                _Hunluan = new BuffState(EnumStatusEffect.hl1, 0, null);
             return _Hunluan.Value;
         }
         set
@@ -79,7 +79,7 @@ public partial class GameState
         get
         {
             if (_Jiangzhi == null)
-                _Jiangzhi = new BuffState(EnumStatusEffect.jz6, 0);
+                _Jiangzhi = new BuffState(EnumStatusEffect.jz6, 0, null);
             return _Jiangzhi.Value;
         }
         set
@@ -108,7 +108,7 @@ public partial class GameState
         get
         {
             if (_Kongju == null)
-                _Kongju = new BuffState(EnumStatusEffect.kj1, 0);
+                _Kongju = new BuffState(EnumStatusEffect.kj1, 0, null);
             return _Kongju.Value;
         }
         set
@@ -137,7 +137,7 @@ public partial class GameState
         get
         {
             if (_Meihuo == null)
-                _Meihuo = new BuffState(EnumStatusEffect.mh4, 0);
+                _Meihuo = new BuffState(EnumStatusEffect.mh4, 0, null);
             return _Meihuo.Value;
         }
         set
@@ -166,7 +166,7 @@ public partial class GameState
         get
         {
             if (_Xuanyun == null)
-                _Xuanyun = new BuffState(EnumStatusEffect.xy1, 0);
+                _Xuanyun = new BuffState(EnumStatusEffect.xy1, 0, null);
             return _Xuanyun.Value;
         }
         set
@@ -195,7 +195,7 @@ public partial class GameState
         get
         {
             if (_Zhimang == null)
-                _Zhimang = new BuffState(EnumStatusEffect.zm1, 0);
+                _Zhimang = new BuffState(EnumStatusEffect.zm1, 0, null);
             return _Zhimang.Value;
         }
         set
@@ -224,7 +224,7 @@ public partial class GameState
         get
         {
             if (_Jingu == null)
-                _Jingu = new BuffState(EnumStatusEffect.jg2, 0);
+                _Jingu = new BuffState(EnumStatusEffect.jg2, 0, null);
             return _Jingu.Value;
         }
         set
@@ -253,7 +253,7 @@ public partial class GameState
         get
         {
             if (_Jinmo == null)
-                _Jinmo = new BuffState(EnumStatusEffect.jm3, 0);
+                _Jinmo = new BuffState(EnumStatusEffect.jm3, 0, null);
             return _Jinmo.Value;
         }
         set
@@ -282,7 +282,7 @@ public partial class GameState
         get
         {
             if (_Mabi == null)
-                _Mabi = new BuffState(EnumStatusEffect.mb2, 0);
+                _Mabi = new BuffState(EnumStatusEffect.mb2, 0, null);
             return _Mabi.Value;
         }
         set

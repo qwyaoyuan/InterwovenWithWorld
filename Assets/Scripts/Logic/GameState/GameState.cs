@@ -29,6 +29,10 @@ public partial class GameState : IEntrance, IBaseState
     /// 运行时任务对象
     /// </summary>
     RuntimeTasksData runtimeTaskData;
+    /// <summary>
+    /// 等级数据
+    /// </summary>
+    LevelData levelData;
 
     public void Start()
     {
@@ -55,8 +59,10 @@ public partial class GameState : IEntrance, IBaseState
         //初始化共有数据
         playerState = DataCenter.Instance.GetEntity<PlayerState>();
         runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        levelData = DataCenter.Instance.GetMetaData<LevelData>();
         //其他的加载初始化
         Load_INowTaskState();
+        LoadIPlayerState();
     }
 
     public void Update()
@@ -194,7 +200,7 @@ public partial class GameState : IEntrance, IBaseState
 
     #region 声明函数分部
     /// <summary>
-    /// 加载函数调用时调用
+    /// (任务)加载函数调用时调用
     /// </summary>
     partial void Load_INowTaskState();
 
@@ -202,6 +208,11 @@ public partial class GameState : IEntrance, IBaseState
     /// 任务的更新函数
     /// </summary>
     partial void Update_INowTaskState();
+
+    /// <summary>
+    /// (玩家状态)加载函数时调用
+    /// </summary>
+    partial void LoadIPlayerState();
 
     #endregion
 }

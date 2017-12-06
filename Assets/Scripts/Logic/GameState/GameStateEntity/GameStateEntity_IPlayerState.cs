@@ -5,8 +5,17 @@ using UnityEngine;
 /// <summary>
 /// 实现了IPlayerState接口的GameState类的一个分支实体
 /// </summary>
-public partial class GameState :IPlayerState
+public partial class GameState : IPlayerState
 {
+    /// <summary>
+    /// 玩家状态接口实现对象的加载函数
+    /// </summary>
+    partial void LoadIPlayerState()
+    {
+        _Level = playerState.Level;
+        _Experience = playerState.Experience;
+    }
+
     #region IPlayerState的自身状态
     /// <summary>
     /// 玩家操纵角色的游戏对象 
@@ -72,18 +81,61 @@ public partial class GameState :IPlayerState
         {
             return _Level;
         }
-        set
+        private set
         {
             int tempLevel = _Level;
             _Level = value;
             if (tempLevel != _Level)
             {
                 //处理存档内的等级
-
+                playerState.Level = _Level;
                 //更新自身属性
                 UpdateAttribute();
                 //回调
                 Call<IPlayerState, int>(temp => temp.Level);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 当前经验(本级的)
+    /// </summary>
+    int _Experience;
+    /// <summary>
+    /// 当前经验(本级的)
+    /// </summary>
+    public int Experience
+    {
+        get { return _Experience; }
+        set
+        {
+            int tempExperience = _Experience;
+            _Experience = value;
+            if (tempExperience != _Experience)
+            {
+                //计算当前经验是否可以升级,如果可以则升级
+                LevelDataInfo levelDataInfo = levelData[Level];
+                if (levelDataInfo != null)
+                {
+                    if (_Experience > levelDataInfo.Experience)
+                    {
+                        if (_Level < levelData.MaxLevel)
+                        {
+                            _Experience -= levelDataInfo.Experience;
+                            Level += 1;//等级加1
+                            //可能会有经验超出的情况
+                            //后期处理
+                        }
+                        else//表示已经满级了
+                        {
+                            _Experience = levelDataInfo.Experience;
+                        }
+                    }
+                }
+                //处理存档内的经验
+                playerState.Experience = _Experience;
+                //回调
+                Call<IPlayerState, int>(temp => temp.Experience);
             }
         }
     }

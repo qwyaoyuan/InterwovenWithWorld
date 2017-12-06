@@ -1,0 +1,1 @@
+﻿{"0":{"level":0,"experience":1,"strength":1,"spirit":1,"agility":1,"concentration":1,"freedomPoint":1},"1":{"level":1,"experience":2,"strength":2,"spirit":2,"agility":2,"concentration":2,"freedomPoint":2}}

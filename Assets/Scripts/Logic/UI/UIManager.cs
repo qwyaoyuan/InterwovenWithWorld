@@ -32,24 +32,76 @@ public class UIManager : IInput
 
     public event Action<UIManager.KeyType, Vector2> KeyUpHandle;
 
+    /// <summary>
+    /// 将EnumInputType类型的数值转换为KeyType类型枚举
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    private KeyType? ChangeKeyEnum(int key)
+    {
+        EnumInputType enumInputType = (EnumInputType)key;
+        switch (enumInputType)
+        {
+            case EnumInputType.Up:
+                return KeyType.UP;
+            case EnumInputType.Left:
+                return KeyType.LEFT;
+            case EnumInputType.Right:
+                return KeyType.RIGHT;
+            case EnumInputType.Down:
+                return KeyType.DOWN;
+            case EnumInputType.A:
+                return KeyType.A;
+            case EnumInputType.B:
+                return KeyType.B;
+            case EnumInputType.X:
+                return KeyType.X;
+            case EnumInputType.Y:
+                return KeyType.Y;
+            case EnumInputType.L3:
+                return KeyType.LEFT_ROCKER;
+            case EnumInputType.R3:
+                return KeyType.RIGHT_ROCKER;
+            case EnumInputType.LB:
+                return KeyType.L1;
+            case EnumInputType.RB:
+                return KeyType.R1;
+            case EnumInputType.LT:
+                return KeyType.L2;
+            case EnumInputType.RT:
+                return KeyType.R2;
+            case EnumInputType.Start:
+                return KeyType.START;
+            case EnumInputType.Back:
+                return KeyType.Back;
+            default:
+                return null;
+        }
+    }
+
     public void KeyDown(int key)
     {
-        
+      
     }
 
     public void KeyPress(int key)
     {
-        
+        KeyType? keyType = ChangeKeyEnum(key);
+        if (keyType != null && KeyPressHandle != null)
+            KeyPressHandle(keyType.Value, Vector2.zero);
     }
 
     public void KeyUp(int key)
     {
-       
+        KeyType? keyType = ChangeKeyEnum(key);
+        if (keyType != null && KeyUpHandle != null)
+            KeyUpHandle(keyType.Value, Vector2.zero);
     }
 
     public void Move(Vector2 forward)
     {
-        
+        if (KeyPressHandle != null)
+            KeyPressHandle(KeyType.None, forward);
     }
 
     public void View(Vector2 view)
@@ -62,6 +114,7 @@ public class UIManager : IInput
     /// </summary>
     public enum KeyType
     {
+        None,
         A,
         B,
         X,
@@ -78,7 +131,7 @@ public class UIManager : IInput
         DOWN,
         LEFT_ROCKER,
         RIGHT_ROCKER,
-        OPTION,
+        Back,
         START
     }
 }

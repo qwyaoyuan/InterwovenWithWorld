@@ -45,6 +45,25 @@ public partial class GameState : IGameState
             {
                 //自身调用初始化数据
                 Debug.Log("需要调用自身的函数实现数据的初始化,如地图显示,npc位置等一系列的数据");
+                //加载地图的图片以及遮罩资源
+                IMapState iMapState = GetEntity<IMapState>();
+                MapData mapData = DataCenter.Instance.GetMetaData<MapData>();
+                MapDataInfo mapDataInfo = mapData[sceneName];
+                if (mapDataInfo != null)
+                {
+                    mapDataInfo.Load();
+                    iMapState.MapBackSprite = mapDataInfo.MapSprite;
+                    Sprite mapMaskSprite = playerState.GetSceneMapMaskSprite(sceneName, mapDataInfo.MapSprite);
+                    iMapState.MaskMapSprite = mapMaskSprite;
+                    iMapState.MapRectAtScene = mapDataInfo.SceneRect;
+                }
+                //初始化npc与npc的位置
+                NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+                NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(sceneName);
+                foreach (NPCDataInfo npcDataInfo in npcDataInfos)
+                {
+                    npcDataInfo.Load();//切换场景是有时候会导致游戏对象被删除,需要重新Load
+                }
                 //创建玩家操纵的游戏对象
                 GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
                 GameObject.Instantiate(playerPrefab);

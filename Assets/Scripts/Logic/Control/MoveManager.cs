@@ -236,16 +236,16 @@ public class MoveManager : IInput
             //设置动画的状态
             iAnimatorState.AnimatorMoveSpeed = Mathf.Pow(Vector2.SqrMagnitude(forward), 0.5f);//  moveSpeed / iPlayerAttributeState.MoveSpeed;
             iAnimatorState.MoveAnimatorVectorType = (int)animForwardAngle;
+            CharacterController characterController = iPlayerState.PlayerObj.GetComponent<CharacterController>();
             //处理对象移动
             if (moveSpeed > 0)
             {
                 forward *= moveSpeed * Time.deltaTime;
                 Vector3 self_forward = iPlayerState.PlayerObj.transform.TransformDirection(new Vector3(forward.x, 0, forward.y));
                 self_forward.y = 0;
-                CharacterController characterController = iPlayerState.PlayerObj.GetComponent<CharacterController>();
-                //iPlayerState.PlayerObj.transform.Translate(self_forward, Space.World);
                 characterController.Move(self_forward);
             }
+            characterController.Move(Vector3.down * Time.deltaTime * 10);//持续添加重力
         }
     }
 
@@ -257,6 +257,9 @@ public class MoveManager : IInput
     {
         if (CheckCanMoveState())
         {
+            view.x = -view.x;//左右方向调整
+            view.y = -view.y;//上下方向调整
+
             //左右旋转的话旋转整体
             float leftRight = view.x;//左右移动 正表示右方向 负表示左方向
             iPlayerState.PlayerObj.transform.Rotate(Vector3.up, -leftRight * iGameState.CameraRotateSpeed.x * Time.deltaTime, Space.World);

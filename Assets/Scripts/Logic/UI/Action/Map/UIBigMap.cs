@@ -148,9 +148,11 @@ public class UIBigMap : MonoBehaviour
         RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(iGameState.SceneName);
         foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Wait)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId);//接取任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId);//接取任务的NPC
+            if (npcDataInfo == null)
+                continue;
             //需要传入一个金色的叹号
-            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30), 
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30),
                 new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
             object[] innerValue = new object[]
             {
@@ -170,8 +172,9 @@ public class UIBigMap : MonoBehaviour
                 targetPosition = new Vector2(runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.x, runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.z);
             else
             {
-                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
-                targetPosition = new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z);
+                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+                if (npcDataInfo != null)
+                    targetPosition = new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z);
             }
             //需要传入一个白色的的问号
             UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30), targetPosition);
@@ -188,7 +191,9 @@ public class UIBigMap : MonoBehaviour
         RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(iGameState.SceneName);
         foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_End)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+            if (npcDataInfo == null)
+                continue;
             //需要传入一个金色的问号
             UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(null, new Vector2(20, 30),
                 new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));

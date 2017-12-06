@@ -54,6 +54,11 @@ public class PlayerState
     public int Level;
 
     /// <summary>
+    /// 当前的经验值
+    /// </summary>
+    public int Experience;
+
+    /// <summary>
     /// 自由点
     /// </summary>
     public int FreedomPoint;
@@ -106,14 +111,21 @@ public class PlayerState
     /// </summary>
     public int Reputation;
 
+    /// <summary>
+    /// 场景与对应地图的遮罩数据字典
+    /// </summary>
+    public Dictionary<string, byte[,]> SceneMapMaskDataDic;
 
-
+    /// <summary>
+    /// 场景与对应地图的遮罩图片信息字典
+    /// </summary>
+    [JsonIgnore]
+    private Dictionary<string, Sprite> sceneMapMaskSpriteDic;
 
     /// <summary>
     /// 玩家所有物品
     /// </summary>
     public List<PlayGoods> PlayerAllGoods;
-
 
     public PlayerState()
     {
@@ -123,7 +135,70 @@ public class PlayerState
         CombineSkills = new List<EnumSkillType[]>();
     }
 
+    /// <summary>
+    /// 获取指定场景的地图遮罩
+    /// </summary>
+    /// <param name="sceneName">指定的场景名</param>
+    /// <param name="targetSceneMapSprite">指定场景的地图精灵</param>
+    /// <returns></returns>
+    public Sprite GetSceneMapMaskSprite(string sceneName, Sprite targetSceneMapSprite)
+    {
+        if (SceneMapMaskDataDic == null)
+            SceneMapMaskDataDic = new Dictionary<string, byte[,]>();
+        if (!SceneMapMaskDataDic.ContainsKey(sceneName))
+        {
+            byte[,] maskDataArray = new byte[(int)targetSceneMapSprite.rect.width, (int)targetSceneMapSprite.rect.height];
+            SceneMapMaskDataDic.Add(sceneName, maskDataArray);
+        }
+        if (sceneMapMaskSpriteDic == null)
+            sceneMapMaskSpriteDic = new Dictionary<string, Sprite>();
+        if (!sceneMapMaskSpriteDic.ContainsKey(sceneName))
+        {
+            byte[,] maskDatArray = SceneMapMaskDataDic[sceneName];
+            Texture2D texture2D = new Texture2D(maskDatArray.GetLength(0), maskDatArray.GetLength(1));
+            Color[] colors = new Color[texture2D.width * texture2D.height];
+            for (int i = 0; i < texture2D.width; i++)
+            {
+                for (int j = 0; j < texture2D.height; j++)
+                {
+                    float data = maskDatArray[i, j]/255f;
+                    colors[i * texture2D.height + j] = new Color(data, data, data);
+                }
+            }
+            texture2D.SetPixels(colors);
+            texture2D.Apply();
+            Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), Vector2.zero);
+            sceneMapMaskSpriteDic.Add(sceneName, sprite);
+        }
+        return sceneMapMaskSpriteDic[sceneName];
+    }
 
+    /// <summary>
+    /// 保存指定场景的地图遮罩图片的数据
+    /// </summary>
+    /// <param name="sceneName">指定的场景</param>
+    public void SaveGetSceneMapMaskData(string sceneName)
+    {
+        if (sceneMapMaskSpriteDic != null && sceneMapMaskSpriteDic.ContainsKey(sceneName))
+        {
+            Sprite sprite = sceneMapMaskSpriteDic[sceneName];
+            Texture2D texture2D = sprite.texture;
+            byte[,] mapDataArray = new byte[texture2D.width, texture2D.height];
+            Color[] colors = texture2D.GetPixels();
+            for (int i = 0; i < texture2D.width; i++)
+            {
+                for (int j = 0; j < texture2D.height; j++)
+                {
+                    Color color = colors[i * texture2D.height + j];
+                    mapDataArray[i, j] = (byte)(color.r * 255);
+                }
+            }
+            if (SceneMapMaskDataDic.ContainsKey(sceneName))
+            {
+                SceneMapMaskDataDic[sceneName] = mapDataArray;
+            }
+        }
+    }
 }
 
 /// <summary>
