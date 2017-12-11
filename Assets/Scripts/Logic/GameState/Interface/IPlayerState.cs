@@ -7,7 +7,7 @@ using UnityEngine;
 /// 比如是Buff与Debuff 动画的状态 玩家当前的属性（将所有属性叠加后）
 /// </summary>
 public interface IPlayerState : IBaseState,
-    IAttributeState,IBuffState,IDebuffState,ISpecialState, IAnimatorState
+    IAttributeState, IBuffState, IDebuffState, ISpecialState, IAnimatorState, ISkillState
 {
     /// <summary>
     /// 玩家操纵角色的游戏对象
@@ -33,7 +33,7 @@ public interface IPlayerState : IBaseState,
     /// <summary>
     /// 技能等级变化
     /// </summary>
-    bool SkillLevelChanged {get; set; }
+    bool SkillLevelChanged { get; set; }
     /// <summary>
     /// 种族等级变化
     /// </summary>

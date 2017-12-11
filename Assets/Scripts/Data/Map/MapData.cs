@@ -96,15 +96,39 @@ public class MapDataInfo
     }
 
     /// <summary>
-    /// 场景的边界
+    /// 场景的边界X
     /// </summary>
-    [JsonProperty]
-    private Rect sceneRect;
+    [JsonProperty] private float sceneRectX;
+    /// <summary>
+    /// 场景的边界Y
+    /// </summary>
+    [JsonProperty] private float sceneRectY;
+    /// <summary>
+    /// 场景的边界W
+    /// </summary>
+    [JsonProperty] private float sceneRectW;
+    /// <summary>
+    /// 场景的边界H
+    /// </summary>
+    [JsonProperty] private float sceneRectH;
     /// <summary>
     /// 场景的边界
     /// </summary>
     [JsonIgnore]
-    public Rect SceneRect { get { return sceneRect; } }
+    public Rect SceneRect
+    {
+        get
+        {
+            return new Rect(sceneRectX, sceneRectY, sceneRectW, sceneRectH);
+        }
+        private set
+        {
+            sceneRectX = value.x;
+            sceneRectY = value.y;
+            sceneRectW = value.width;
+            sceneRectH = value.height;
+        }
+    }
 
     public void Load()
     {

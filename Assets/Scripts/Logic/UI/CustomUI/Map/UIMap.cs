@@ -247,11 +247,19 @@ public class UIMap : MonoBehaviour
         if (mapImage != null)
         {
             int childsCount = mapImage.transform.childCount;
-            for (int i = childsCount - 1; i >= 0; i++)
+            if (childsCount > 0)
             {
-                Transform child = mapImage.transform.GetChild(i);
-                DestroyImmediate(child.gameObject);
+                Transform[] childTranses = Enumerable.Range(0, childsCount).Select(temp => mapImage.transform.GetChild(temp)).ToArray();
+                foreach (Transform childTrans in childTranses)
+                {
+                    Destroy(childTrans.gameObject);
+                }
             }
+            //    for (int i = childsCount - 1; i >= 0; i++)
+            //{
+            //    Transform child = mapImage.transform.GetChild(i);
+            //    DestroyImmediate(child.gameObject);
+            //}
         }
         uiImapIconStructList = new List<UIMapIconStruct>();
     }

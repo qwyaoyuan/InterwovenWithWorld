@@ -14,6 +14,17 @@ public interface IGameState : IBaseState
     EnumGameRunType GameRunType { get; set; }
 
     /// <summary>
+    /// 将一个游戏运行状态压入栈中
+    /// </summary>
+    /// <param name="enumGameRunType"></param>
+    void PushEnumGameRunType(EnumGameRunType enumGameRunType);
+
+    /// <summary>
+    /// 提出最顶层的一个状态
+    /// </summary>
+    EnumGameRunType PopEnumGameRunType();
+
+    /// <summary>
     /// 当前的场景名
     /// </summary>
     string SceneName { get; }

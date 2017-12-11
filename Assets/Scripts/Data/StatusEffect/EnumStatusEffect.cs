@@ -284,9 +284,9 @@ public enum EnumStatusAction
     [FieldExplan("抗性变化（主要对应的是各种Buff状态的抗性）")]
     StateResistance,  
     /// <summary>
-    /// 无法离开战斗，攻击嘲讽目标以外的敌人时伤害降低
+    /// 无法离开战斗
     /// </summary>
-    [FieldExplan("无法离开战斗,攻击嘲讽目标以外的敌人时伤害降低")]
+    [FieldExplan("无法离开战斗")]
     CantLeaveTheFight,
     /// <summary>
     /// 攻击其他目标伤害变化

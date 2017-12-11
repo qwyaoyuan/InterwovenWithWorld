@@ -260,7 +260,7 @@ public class PlayGoods
     public Sprite GetGoodsSprite()
     {
         if (cachedSprite == null)
-            cachedSprite = Resources.Load<Sprite>(GoodsInfo.GoodsName);
+            cachedSprite = GoodsInfo.Sprite; //Resources.Load<Sprite>(GoodsInfo.GoodsName);
         return cachedSprite;
 
     }

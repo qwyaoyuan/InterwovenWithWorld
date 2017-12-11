@@ -206,7 +206,7 @@ namespace SkillDataFileEditor
         {
             OpenFileDialog opd = new OpenFileDialog();
             opd.InitialDirectory = NewProjectForm.lastPath;
-            opd.Filter = "技能编辑文件|*.SkillEditor";
+            opd.Filter = "技能编辑文件|*.SkillEditor|技能编辑文件(文本)|*.txt";
             DialogResult dr = opd.ShowDialog();
             if (dr == DialogResult.OK)
             {
@@ -258,7 +258,7 @@ namespace SkillDataFileEditor
                 string[] idToDatas = treeNode.Tag as string[];
                 if (idToDatas != null)
                 {
-                    string value = File.ReadAllText(folderPath + "\\" + idToDatas[2], Encoding.UTF8);
+                    string value = File.ReadAllText(folderPath + "\\" + idToDatas[2] + ".txt", Encoding.UTF8);
                     values.Add(value);
                 }
             }
@@ -360,7 +360,7 @@ namespace SkillDataFileEditor
                     projectValue += "\r\n";
                     //每个文件的数据
                     string value = skillAnalysisData.Disanalysis(tags[0]);
-                    File.WriteAllText(folderPath + "\\" + tags[2], value, Encoding.UTF8);
+                    File.WriteAllText(folderPath + "\\" + tags[2] + ".txt", value, Encoding.UTF8);
                 }
                 File.WriteAllText(projectFilePath, projectValue, Encoding.UTF8);
             }
@@ -646,7 +646,7 @@ namespace SkillDataFileEditor
                 attributeOtherControl.Tag = id;
                 attributeOtherControl.SaveData();
             }
-            selectNode .Text = idToDatas[0] + "~" + idToDatas[1] + "~" + skillAnalysisData.GetValue<string>(idToDatas[0], "releaseMode");
+            selectNode.Text = idToDatas[0] + "~" + idToDatas[1] + "~" + skillAnalysisData.GetValue<string>(idToDatas[0], "releaseMode");
         }
 
         /// <summary>

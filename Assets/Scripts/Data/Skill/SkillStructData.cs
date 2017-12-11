@@ -74,6 +74,10 @@ public class SkillStructData:ILoadable<SkillStructData>
                     skillBaseStruct.skillZone = skillAnalysisData.GetEnum<EnumSkillZone>(id, "skillZone");
                     string[] particalsNames = skillAnalysisData.GetValues<string>(id, "particleNames").Where(temp => !string.IsNullOrEmpty(temp)).ToArray();
                     skillBaseStruct.particals = new GameObject[particalsNames.Length];
+                    //加载技能图标
+                    skillBaseStruct.skillSprite = SkillSpriteData.GetSprite(skillBaseStruct.skillType);
+                    //计算技能名(现在暂定使用元名字)
+                    skillBaseStruct.skillName = skillBaseStruct.name;
                     //加载粒子 
 
                     //完成加载粒子

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -27,29 +28,88 @@ public class SkillManager : IInput
     /// <summary>
     /// 技能管理器的私有构造函数
     /// </summary>
-    private SkillManager() { }
+    private SkillManager()
+    {
+        GameState.Instance.Registor<GameState>(GameStateChanged);
+    }
+
+    /// <summary>
+    /// 游戏状态发生变化
+    /// </summary>
+    /// <param name="gameState"></param>
+    /// <param name="fieldName"></param>
+    private void GameStateChanged(GameState gameState, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<GameState, Action>(temp => temp.LoadArchive)))
+        {
+            InitDataTarget();
+        }
+    }
+
+    /// <summary>
+    /// 按键对应数据对象
+    /// </summary>
+    KeyContactData keyContactData;
+
+    /// <summary>
+    /// 技能状态对象
+    /// </summary>
+    ISkillState iSkillState;
+
+    /// <summary>
+    /// 技能数据管理对象
+    /// </summary>
+    SkillStructData skillStructData;
+
+    /// <summary>
+    /// 初始化数据对象
+    /// </summary>
+    private void InitDataTarget()
+    {
+        keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
+        skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+        iSkillState = GameState.Instance.GetEntity<ISkillState>();
+    }
+
+
 
     public void KeyDown(int key)
     {
-        //从按键对应数据对象中获取该键位对应的按键数组（选取条件为选择技能）
-        //KeyContactStruct[] keyContactStructs =
-        //  KeyContactData.Instance.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
-        //if (keyContactStructs.Length > 0 && SkillDealHandle.Instance.CanDealSkill)
-        //{
-        //    //只处理其中的一个
-        //    KeyContactStruct keyContactStruct = keyContactStructs[0];
-        //    //释放魔法
-        //    if (keyContactStruct.id == (int)EnumSkillType.MagicRelease && SkillRuntime.Instance.GetSkills().Length > 0)
-        //    {
-        //        //给魔法技能处理模块
-        //        SkillDealHandle.Instance.BeginCombineSkill(SkillRuntime.Instance.GetSkills());
-        //        SkillRuntime.Instance.SavingMagicPowerTime = 0;
-        //    }
-        //}
+        KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
+        if (keyContactStructs.Length > 0)
+        {
+            foreach (KeyContactStruct keyContactStruct in keyContactStructs)//便利所有按键对象
+            {
+                int skillID = keyContactStruct.id;
+                //组合技能放入技能组合盘
+                if (skillID > (int)EnumSkillType.MagicCombinedStart)
+                {
+                    EnumSkillType[] enumSkillTypes = SkillCombineStaticTools.GetCombineSkills(skillID);
+                    SkillBaseStruct[] combineSkills = skillStructData.SearchSkillDatas(temp => enumSkillTypes.Contains(temp.skillType));
+                    iSkillState.CombineSkills = combineSkills;
+                }
+                //如果按下魔法释放键,则释放组合盘中的魔法
+                else if (skillID == (int)EnumSkillType.MagicRelease)
+                {
+                    if (iSkillState.StartCombineSkillRelease())
+                    {
+                        //设置蓄力动作
+                    }
+                }
+                else//非组合技能直接释放
+                {
+                    if (iSkillState.ReleaseNormalSkill(skillStructData.SearchSkillDatas(temp => (int)temp.skillType == skillID).FirstOrDefault()))
+                    {
+                        //设置动作
+                    }
+                }
+            }
+        }
     }
 
     public void KeyPress(int key)
     {
+
         //从按键对应数据对象中获取该键位对应的按键数组（选取条件为选择技能）
         //KeyContactStruct[] keyContactStructs =
         // KeyContactData.Instance.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
@@ -67,27 +127,23 @@ public class SkillManager : IInput
 
     public void KeyUp(int key)
     {
-        //从按键对应数据对象中获取该键位对应的按键数组（选取条件为选择技能）
-        //KeyContactStruct[] keyContactStructs =
-        //   KeyContactData.Instance.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
-        //if (keyContactStructs.Length > 0)
-        //{
-        //    //只处理其中的一个
-        //    KeyContactStruct keyContactStruct = keyContactStructs[0];
-        //    if (keyContactStruct.id > (int)EnumSkillType.EndMagic && keyContactStruct.id < (int)EnumSkillType.EndMagic)
-        //    {
-        //        bool addResult = SkillRuntime.Instance.SetSkill(keyContactStruct.id);
-        //        if (!addResult)
-        //            Debug.Log("无法使用的组合");
-        //    }
-        //    //释放魔法  如果读条完成则可以释放
-        //    if (keyContactStruct.id == (int)EnumSkillType.MagicRelease)
-        //    {
-        //        //通知魔法技能处理模块可以释放魔法了
-        //        SkillDealHandle.Instance.EndCombineSkill(SkillRuntime.Instance.SavingMagicPowerTime);
-        //    }
-        //}
-    }
+        KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
+        if (keyContactStructs.Length > 0)
+        {
+            foreach (KeyContactStruct keyContactStruct in keyContactStructs)//便利所有按键对象
+            {
+                int skillID = keyContactStruct.id;
+                if (skillID == (int)EnumSkillType.MagicRelease)//松开释放按钮
+                {
+
+                    if (iSkillState.EndCombineSkillRelease())
+                    {
+                        //设置释放动作
+                    }
+                }
+            }
+        }
+        }
 
     public void Move(Vector2 forward)
     {

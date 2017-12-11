@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -17,6 +18,11 @@ public class UIAction : MonoBehaviour
     /// </summary>
     UIFocusTabPage nowTabPageFocus;
 
+    /// <summary>
+    /// 游戏状态接口对象 
+    /// </summary>
+    IGameState iGameState;
+
     void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
@@ -24,6 +30,10 @@ public class UIAction : MonoBehaviour
 
     private void OnEnable()
     {
+        iGameState = GameState.Instance.GetEntity<IGameState>();
+        //压入状态 
+        iGameState.PushEnumGameRunType(EnumGameRunType.Setting);
+
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         if (uiFocusPath)
         {
@@ -36,12 +46,15 @@ public class UIAction : MonoBehaviour
             }
         }
         //重新载入数据
-        //throw new NotImplementedException();
+        ShowIndex(0);
     }
 
     private void OnDisable()
     {
+        //弹出状态
+        iGameState.PopEnumGameRunType();
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
+        ShowIndex(-1);
     }
 
     /// <summary>
@@ -94,6 +107,37 @@ public class UIAction : MonoBehaviour
             nowTabPageFocus = nextTabPageFocus as UIFocusTabPage;
             nowTabPageFocus.panel.gameObject.SetActive(true);
             nowTabPageFocus.SetForcus();
+        }
+    }
+
+    /// <summary>
+    /// 显示指定的标签
+    /// </summary>
+    /// <param name="index"></param>
+    public void ShowIndex(int index)
+    {
+        UIFocusTabPage[] tabPages = uiFocusPath.UIFocuesArray.OfType<UIFocusTabPage>().ToArray();
+        if (tabPages.Length > 0)
+        {
+            if (index < 0)
+                tabPages.ToList().ForEach(temp => 
+                {
+                    temp.panel.gameObject.SetActive(false);
+                    temp.LostForcus();
+                });
+            else
+            {
+                if (index > tabPages.Length - 1)
+                    index = 0;
+                for (int i = 0; i < tabPages.Length; i++)
+                {
+                    tabPages[i].panel.gameObject.SetActive(i == index);
+                    if (i == index)
+                        tabPages[i].SetForcus();
+                    else
+                        tabPages[i].LostForcus();
+                }
+            }
         }
     }
 }

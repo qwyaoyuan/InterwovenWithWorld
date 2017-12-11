@@ -10,7 +10,7 @@ public partial class GameState : IPlayerState
     /// <summary>
     /// 玩家状态接口实现对象的加载函数
     /// </summary>
-    partial void LoadIPlayerState()
+    partial void Load_IPlayerState()
     {
         _Level = playerState.Level;
         _Experience = playerState.Experience;

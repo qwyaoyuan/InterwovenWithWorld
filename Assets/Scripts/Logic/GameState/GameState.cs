@@ -62,12 +62,17 @@ public partial class GameState : IEntrance, IBaseState
         levelData = DataCenter.Instance.GetMetaData<LevelData>();
         //其他的加载初始化
         Load_INowTaskState();
-        LoadIPlayerState();
+        Load_IPlayerState();
+        Load_IGameState();
+        Load_IPlayerState_ISkillState();
+        //通知存档加载
+        Call<GameState, Action>(temp => temp.LoadArchive);
     }
 
     public void Update()
     {
         Update_INowTaskState();
+        Update_IPlayerState_ISkillState();
     }
 
     /// <summary>
@@ -174,21 +179,34 @@ public partial class GameState : IEntrance, IBaseState
     /// <param name="fieldName"></param>
     private void Call<T, U>(Expression<Func<T, U>> expr) where T : IBaseState
     {
-        string propertyName = string.Empty;
-        if (expr.Body is MemberExpression)
+        //string propertyName = string.Empty;
+        //if (expr.Body is MemberExpression)
+        //{
+        //    propertyName = ((MemberExpression)expr.Body).Member.Name;
+        //    List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
+        //    if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
+        //    {
+        //        foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
+        //        {
+        //            try
+        //            {
+        //                item.Value(this, propertyName);
+        //            }
+        //            catch { }
+        //        }
+        //    }
+        //}
+        string propertyName = GetFieldName(expr);
+        List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
+        if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
         {
-            propertyName = ((MemberExpression)expr.Body).Member.Name;
-            List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
-            if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
+            foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
             {
-                foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
+                try
                 {
-                    try
-                    {
-                        item.Value(this, propertyName);
-                    }
-                    catch { }
+                    item.Value(this, propertyName);
                 }
+                catch { }
             }
         }
     }
@@ -212,7 +230,22 @@ public partial class GameState : IEntrance, IBaseState
     /// <summary>
     /// (玩家状态)加载函数时调用
     /// </summary>
-    partial void LoadIPlayerState();
+    partial void Load_IPlayerState();
+
+    /// <summary>
+    /// (游戏状态)加载函数时调用
+    /// </summary>
+    partial void Load_IGameState();
+
+    /// <summary>
+    /// (技能状态)加载函数时调用 
+    /// </summary>
+    partial void Load_IPlayerState_ISkillState();
+
+    /// <summary>
+    /// 技能状态的更新函数
+    /// </summary>
+    partial void Update_IPlayerState_ISkillState();
 
     #endregion
 }

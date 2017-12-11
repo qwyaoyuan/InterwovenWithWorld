@@ -9,26 +9,62 @@ using UnityEngine;
 public partial class GameState : IGameState
 {
 
+    partial void Load_IGameState()
+    {
+        _GameRunTypeStack = new Stack<EnumGameRunType>();
+        _GameRunTypeStack.Push(EnumGameRunType.Start);
+    }
+
     #region IGameState
 
     /// <summary>
-    /// 游戏运行状态
+    /// 游戏状态堆栈
     /// </summary>
-    private EnumGameRunType _GameRunType;
+    private Stack<EnumGameRunType> _GameRunTypeStack;
     /// <summary>
     /// 游戏运行状态
     /// </summary>
     public EnumGameRunType GameRunType
     {
-        get { return _GameRunType; }
+        get
+        {
+            return _GameRunTypeStack.Peek();
+            
+        }
         set
         {
-            EnumGameRunType tempGameRunType = _GameRunType;
-            _GameRunType = value;
+            EnumGameRunType tempGameRunType = GameRunType;//当前的顶层状态
+            EnumGameRunType _GameRunType = value;//要直接设置的状态
+            _GameRunTypeStack.Clear();
+            _GameRunTypeStack.Push(_GameRunType);
             if (tempGameRunType != _GameRunType)
                 Call<IGameState, EnumGameRunType>(temp => temp.GameRunType);
         }
     }
+
+    /// <summary>
+    /// 将一个游戏运行状态压入栈中
+    /// </summary>
+    /// <param name="enumGameRunType"></param>
+    public void PushEnumGameRunType(EnumGameRunType enumGameRunType)
+    {
+        if (GameRunType != enumGameRunType)
+        {
+            _GameRunTypeStack.Push(enumGameRunType);
+            Call<IGameState, EnumGameRunType>(temp => temp.GameRunType);
+        }
+    }
+
+    /// <summary>
+    /// 提出最顶层的一个状态
+    /// </summary>
+    public EnumGameRunType PopEnumGameRunType()
+    {
+        if (_GameRunTypeStack.Count <= 1)
+            return _GameRunTypeStack.Peek();
+        return _GameRunTypeStack.Pop();
+    }
+
 
     /// <summary>
     /// 更改场景
@@ -72,8 +108,9 @@ public partial class GameState : IGameState
                 //回调
                 if (LoadResultAction != null)
                     LoadResultAction(result);
+                SceneName = sceneName;
+                GameRunType = EnumGameRunType.Safe;
             });
-            SceneName = sceneName;
         }
         else//如果不需要切换场景则直接更改玩家位置即可
         {

@@ -124,7 +124,7 @@ public class UIFocusPath : MonoBehaviour
                 if (tempUIFocus)
                     nextUIFocus = tempUIFocus;
             }
-            if (nextUIFocus.gameObject.activeSelf)//如果没有隐藏则直接返回
+            if (nextUIFocus==null || nextUIFocus.gameObject.activeSelf)//如果没有隐藏则直接返回
                 return nextUIFocus;
             return GetNextFocus(nextUIFocus, moveType, cycle);//如果隐藏了则以当前点为坐标继续向下查找
         }

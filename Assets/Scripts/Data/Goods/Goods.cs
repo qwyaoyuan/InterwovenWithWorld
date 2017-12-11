@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// 所有游戏内物品基类
@@ -26,6 +27,7 @@ public class Goods
     /// <summary>
     /// 物品图片
     /// </summary>
+    [JsonIgnore]
     public Sprite Sprite { get; set; }
     #endregion
 

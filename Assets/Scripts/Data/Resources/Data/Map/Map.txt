@@ -1,0 +1,1 @@
+﻿{"中央王国":{"sceneName":"中央王国","mapSpriteID":"20081111_9084db5f1439ccc3027d112jgfi8q39G:20081111_9084db5f1439ccc3027d112jgfi8q39G","sceneRectX":0.0,"sceneRectY":0.0,"sceneRectW":1000.0,"sceneRectH":1000.0}}

@@ -259,7 +259,21 @@ public class InputControl : IEntrance
             pressList.Add(OverlayFunc((int)EnumInputType.Y));
         if (releaseDownY)
             upList.Add(OverlayFunc((int)EnumInputType.Y));
-        
+        //Back键
+        if (pressDownBack)
+            downList.Add((int)EnumInputType.Back);
+        if (pressBack)
+            pressList.Add((int)EnumInputType.Back);
+        if (releaseDownBack)
+            upList.Add((int)EnumInputType.Back);
+        //Start键
+        if (pressDownStart)
+            downList.Add((int)EnumInputType.Start);
+        if (pressStart)
+            pressList.Add((int)EnumInputType.Start);
+        if (releaseDownStart)
+            upList.Add((int)EnumInputType.Start);
+
 
         //循环给键
         foreach (IInput iInput in inputList)

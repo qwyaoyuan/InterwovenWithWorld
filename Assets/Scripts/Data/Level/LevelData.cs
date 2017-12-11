@@ -13,7 +13,7 @@ public class LevelData : ILoadable<LevelData>
     /// <summary>
     /// 保存等级信息文件的路径
     /// </summary>
-    public static string dataFilePath = "Data/Level";
+    public static string dataFilePath = "Data/Level/Level";
 
     /// <summary>
     /// 等级与数据对应的字典
@@ -26,7 +26,7 @@ public class LevelData : ILoadable<LevelData>
         string assetText = Encoding.UTF8.GetString(textAsset.bytes);
         levelToDataDic = JsonConvert.DeserializeObject<Dictionary<int, LevelDataInfo>>(assetText);
         if (levelToDataDic == null)
-            levelToDataDic = new Dictionary<int, LevelDataInfo>();
+            levelToDataDic = new Dictionary<int, LevelDataInfo>(); 
     }
 
     /// <summary>

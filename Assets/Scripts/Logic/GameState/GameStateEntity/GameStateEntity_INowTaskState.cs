@@ -118,7 +118,7 @@ public partial class GameState : INowTaskState
                 return CheckNowTaskPostion();
             case EnumCheckTaskType.Monster:
                 if (value != -1)
-                   return CheckNowTaskMonster(value);
+                    return CheckNowTaskMonster(value);
                 break;
             case EnumCheckTaskType.Goods:
                 if (value != -1)
@@ -126,7 +126,7 @@ public partial class GameState : INowTaskState
                 break;
             case EnumCheckTaskType.NPC:
                 if (value != -1)
-                   return CheckNowTaskNPC(value);
+                    return CheckNowTaskNPC(value);
                 break;
         }
         return false;
@@ -529,7 +529,11 @@ public partial class GameState : INowTaskState
     /// <returns></returns>
     public RunTimeTaskInfo[] GetWaitTask(string scene)
     {
-        throw new Exception("获取制定场景中的未接取任务,如果场景名为空,则返回所有未接取任务");
+        NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        if (string.IsNullOrEmpty(scene))
+            return runTimeTaskInfos_Wait.ToArray();
+        else
+            return runTimeTaskInfos_Wait.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
     }
 
     /// <summary>
@@ -539,7 +543,11 @@ public partial class GameState : INowTaskState
     /// <returns></returns>
     public RunTimeTaskInfo[] GetStartTask(string scene)
     {
-        throw new Exception("获取指定场景中的正在执行的任务,如果场景名为空,则返回所有正在执行的任务");
+        NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        if (string.IsNullOrEmpty(scene))
+            return runTimeTaskInfos_Start.ToArray();
+        else
+            return runTimeTaskInfos_Start.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
     }
 
     /// <summary>
@@ -549,6 +557,12 @@ public partial class GameState : INowTaskState
     /// <returns></returns>
     public RunTimeTaskInfo[] GetEndTask(string scene)
     {
-        throw new Exception("获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务");
+        NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        IEnumerable<RunTimeTaskInfo> taskInfos = runTimeTaskInfos_Start
+            .Where(temp => !checkMonsterRunTimeDic.ContainsKey(temp.ID) && !checkGoodsRunTimeDic.ContainsKey(temp.ID));
+        if (string.IsNullOrEmpty(scene))
+            return taskInfos.ToArray();
+        else
+            return taskInfos.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
     }
 }

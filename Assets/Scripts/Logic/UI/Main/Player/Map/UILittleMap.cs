@@ -46,6 +46,13 @@ public class UILittleMap : MonoBehaviour
         npcData = DataCenter.Instance.GetMetaData<NPCData>();
         runTimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         ResetMap();
+        GameState.Instance.Registor<IGameState>(IGamgeStateChaged);
+    }
+
+    private void IGamgeStateChaged(IGameState iGameState, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IGameState, string>(temp => temp.SceneName)))
+            ResetMap();
     }
 
     /// <summary>
@@ -53,6 +60,8 @@ public class UILittleMap : MonoBehaviour
     /// </summary>
     private void ResetMap()
     {
+        if (iMapState.MapBackSprite == null)
+            return;
         //根据场景初始化地图
         uiMapControl.InitMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene, 0.05f);
         //重回全地图的图标
@@ -139,6 +148,8 @@ public class UILittleMap : MonoBehaviour
 
     void MoveToCenter()
     {
+        if (iPlayerState.PlayerObj == null)
+            return;
         //始终移动地图中心到玩家处
         Vector2 playerLocation = new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z);
         uiMapControl.MoveToTerrainPoint(playerLocation);

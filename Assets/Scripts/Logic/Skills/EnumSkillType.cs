@@ -12,6 +12,7 @@ public enum EnumSkillType
     /// <summary>
     /// 没有技能
     /// </summary>
+    [FieldExplan("空")]
     None = 0,
 
     #region 特殊技能
@@ -71,8 +72,9 @@ public enum EnumSkillType
     [FieldExplan("神依")]
     JH09,
     /// <summary>
-    /// 释放魔法
+    /// 魔法释放
     /// </summary>
+    [FieldExplan("魔法释放")]
     MagicRelease = 199,
     /// <summary>
     /// 特殊的直接释放的魔法技能序列的结束
@@ -334,7 +336,7 @@ public enum EnumSkillType
     SpecialCircleEnd = 800,
     #endregion
 
-    #region 魔法技能
+    #region 魔法组合技能
     MagicStart = 1000,
     #region 需要结合的技能(1阶段)
     MagicCombinedLevel1Start = 1000,
@@ -589,10 +591,6 @@ public enum EnumSkillType
     EndMagic = 200000000,
     #endregion
 
-
-
-    /*物理技能*/
-    PhysicsStart = 200000002,
 }
 
 
@@ -697,99 +695,3 @@ public enum EnumSkillZone
     SSS_WL_Zone,
 }
 
-/// <summary>
-/// 技能融合工具类
-/// </summary>
-public static class SkillCombineStaticTools
-{
-    /// <summary>
-    /// 组合技能对应图片的缓存字典
-    /// </summary>
-    public static Dictionary<int, Texture> combineTextDic;
-
-    static SkillCombineStaticTools()
-    {
-        combineTextDic = new Dictionary<int, Texture>();
-    }
-
-    /// <summary>
-    /// 获取组合技能的技能图片
-    /// </summary>
-    /// <param name="skillStructData">技能元数据对象</param>
-    /// <param name="key">技能id</param>
-    /// <returns></returns>
-    public static Sprite GetCombineSkillSprite(SkillStructData skillStructData, int key)
-    {
-        EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key);
-        SkillBaseStruct[] thisUsedSkills = skillStructData.SearchSkillDatas(temp => skills.Contains(temp.skillType));
-        Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
-        if (sprites == null || sprites.Length == 0)
-            return null;
-        var sizes = sprites.Select(temp => new { width = temp.bounds.size.x, height = temp.bounds.size.y });
-        float width = sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
-        float height = sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
-        if (width == 0 || height == 0)
-            return null;
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 获取技能的组合值
-    /// </summary>
-    /// <param name="skills"></param>
-    /// <returns></returns>
-    public static int GetCombineSkillKey(IEnumerable<EnumSkillType> skills)
-    {
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 获取组合值组合的技能
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    public static EnumSkillType[] GetCombineSkills(int key)
-    {
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 获取是否可以组合技能
-    /// </summary>
-    /// <param name="skills"></param>
-    /// <returns></returns>
-    public static bool GetCanCombineSkills(params EnumSkillType[] skills)
-    {
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 通过组合技能的阶段来获取所有该阶段的技能
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public static EnumSkillType[] GetBaseSkillBackCombineSkillIndex(int index)
-    {
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 通过组合技能数组来获取该组合的技能名
-    /// </summary>
-    /// <param name="skillBaseStructs"></param>
-    /// <returns></returns>
-    public static string GetCombineSkillsName(IEnumerable<SkillBaseStruct> skillBaseStructs)
-    {
-        throw new Exception("未实现");
-    }
-
-    /// <summary>
-    /// 通过组合技能类型来获取该组合的技能名
-    /// </summary>
-    /// <param name="enumSkillTypes"></param>
-    /// <returns></returns>
-    public static string GetCombineSkillsName(IEnumerable<EnumSkillType> enumSkillTypes)
-    {
-        throw new Exception("未实现");
-    }
-}

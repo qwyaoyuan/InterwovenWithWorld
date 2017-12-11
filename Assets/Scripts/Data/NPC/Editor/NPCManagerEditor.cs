@@ -387,7 +387,7 @@ public class EditorNPCDataInfoWindow : EditorWindow
             isCreate = true;
         }
         Sprite tempSprite = (Sprite)EditorGUILayout.ObjectField("NPC Sprite:", tempNPCDataInfo.NPCSprite, typeof(Sprite), false);
-        if (tempSprite != tempNPCDataInfo.NPCSprite)
+        if (tempSprite != tempNPCDataInfo.NPCSprite && tempSprite!=null)
         {
             tempNPCDataInfo.npcSpriteID = SpriteManager.GetName(tempSprite);
             tempNPCDataInfo.NPCSprite = tempSprite;

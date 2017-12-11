@@ -66,6 +66,8 @@ public class UIFocusItemEquipment : UIFocus
         //设置对应位置的装备
         foreach (UIFocusItemEquipmentLattice equipmentLattice in allLttices)
         {
+            if (equipmentLattice == null)
+                return;
             PlayGoods[] firstCheck = WearingPlayGoods.Where(temp => (int)temp.GoodsInfo.EnumGoodsType > equipmentLattice.minType && (int)temp.GoodsInfo.EnumGoodsType < equipmentLattice.maxType).ToArray();
             if (firstCheck.Length > 0)
             {

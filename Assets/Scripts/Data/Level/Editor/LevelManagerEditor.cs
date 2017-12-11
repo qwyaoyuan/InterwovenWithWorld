@@ -23,7 +23,7 @@ public class LevelManagerEditor : EditorWindow
     Dictionary<int, LevelDataInfo> levelToDataDic;
 
     [MenuItem("小工具/Level数据编辑器")]
-    static void AddWindown()
+    static void AddWindow()
     {
         LevelManagerEditor levelManagerEditor = EditorWindow.GetWindow<LevelManagerEditor>();
         levelManagerEditor.Show();

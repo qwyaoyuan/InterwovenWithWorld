@@ -210,7 +210,8 @@ public class UISkillLittle : MonoBehaviour
             UIFocusSkillLittleLattice.skillPointDic = new Dictionary<EnumSkillType, int>();
             foreach (EnumSkillType skillType in Enum.GetValues(typeof(EnumSkillType)))
             {
-                UIFocusSkillLittleLattice.skillPointDic.Add(skillType, playerState.SkillPoint.Where(temp => temp.Key == skillType).Sum(temp => temp.Value));
+                if (!UIFocusSkillLittleLattice.skillPointDic.ContainsKey(skillType))
+                    UIFocusSkillLittleLattice.skillPointDic.Add(skillType, playerState.SkillPoint.Where(temp => temp.Key == skillType).Sum(temp => temp.Value));
             }
             //计算每组已经加的技能点的总数
             UIFocusSkillLittleLattice.zonePointDic = new Dictionary<EnumSkillZone, int>();
