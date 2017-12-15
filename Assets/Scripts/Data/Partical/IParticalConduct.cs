@@ -22,11 +22,31 @@ public interface IParticalConduct
     /// <summary>
     /// 碰撞后的回调
     /// </summary>
-    /// <param name="CallBack"></param>
-    void SetCollisionCallback(Action<GameObject> CallBack);
+    /// <param name="CallBack">碰撞回调,返回是否应该发生碰撞</param>
+    void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack);
     /// <summary>
     /// 设置方向
     /// </summary>
     /// <param name="forward"></param>
     void SetForward(Vector3 forward);
+    /// <summary>
+    /// 设置范围(优先:移动距离>攻击范围)
+    /// </summary>
+    /// <param name="range"></param>
+    void SetRange(float range);
+}
+
+/// <summary>
+/// 碰撞后回调的结构
+/// </summary>
+public class CollisionHitCallbackStruct
+{
+    /// <summary>
+    /// 碰撞的点
+    /// </summary>
+    public Vector3 hitPoint;
+    /// <summary>
+    /// 碰撞的游戏对象
+    /// </summary>
+    public GameObject targetObj;
 }

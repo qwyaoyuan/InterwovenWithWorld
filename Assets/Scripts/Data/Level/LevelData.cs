@@ -109,12 +109,6 @@ public class LevelDataInfo
     /// </summary>
     [JsonIgnore] public int Agility { get { return agility; } }
 
-    [JsonProperty] private int concentration;
-    /// <summary>
-    /// 专注,表示升到该等级后附加的属性
-    /// </summary>
-    [JsonIgnore] public int Concentration { get { return concentration; } }
-
     [JsonProperty] private int freedomPoint;
     /// <summary>
     /// 自由点数,表示升到该等级后附加的自由点数

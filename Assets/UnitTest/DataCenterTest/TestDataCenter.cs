@@ -56,7 +56,6 @@ public class TestDataCenter : MonoBehaviour
         //获取 PlayerState
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
         playerState.Agility = 1;
-        playerState.Concentration = 2;
         playerState.Level = 20;
 
 

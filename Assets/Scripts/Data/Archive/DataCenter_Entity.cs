@@ -102,11 +102,6 @@ public class PlayerState
     public int Agility;
 
     /// <summary>
-    /// 专注
-    /// </summary>
-    public int Concentration;
-
-    /// <summary>
     /// 声望
     /// </summary>
     public int Reputation;

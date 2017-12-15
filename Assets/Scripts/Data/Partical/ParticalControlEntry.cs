@@ -6,14 +6,28 @@ using UnityEngine;
 /// <summary>
 /// 粒子控制入口
 /// </summary>
-public abstract class ParticalControlEntry : MonoBehaviour
+public abstract class ParticalControlEntry : MonoBehaviour, IParticalConduct
 {
+    /// <summary>
+    /// 生命周期时间(这里是最长时间)
+    /// </summary>
+    protected float lifeTime;
+
+    /// <summary>
+    /// 当前的生命持续时间
+    /// </summary>
+    protected float _lifeTimeNow;
+
+    /// <summary>
+    /// 检测碰撞的间隔时间
+    /// </summary>
+    protected float checkCollisionIntervalTime = 1;
+
     /// <summary>
     /// 初始化
     /// </summary>
     /// <param name="pos">位置</param>
     /// <param name="forward">方向</param>
-    /// <param name="color">颜色</param>
     /// <param name="layerMask">碰撞遮罩</param>
     /// <param name="CollisionCallback">碰撞后回调</param>
     /// 下面的这些参数属于可选参数,不同的粒子不一定有效 
@@ -24,7 +38,117 @@ public abstract class ParticalControlEntry : MonoBehaviour
         Vector3 forward,
         Color color,
         LayerMask layerMask,
-        Action<GameObject> CollisionCallback,
+        Func<CollisionHitCallbackStruct, bool> CollisionCallback,
         float range,
         params GameObject[] targetObjs);
+
+    /// <summary>
+    /// 设置生命周期
+    /// </summary>
+    /// <param name="lifeTime">生命周期时间(这里是最长时间)</param>
+    public virtual void SetLifeCycle(float lifeTime)
+    {
+        this.lifeTime = lifeTime;
+        _lifeTimeNow = 0;
+    }
+
+    /// <summary>
+    /// 检测碰撞的间隔时间
+    /// 只有持续性的效果会使用该参数
+    /// </summary>
+    /// <param name="intervalTime">检测碰撞的间隔时间</param>
+    public virtual void SetCheckCollisionIntervalTime(float intervalTime)
+    {
+        this.checkCollisionIntervalTime = intervalTime;
+    }
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    protected virtual void Update()
+    {
+        //如果现在是默认的生命周期时间(0),则将其设置为3
+        if (this.lifeTime <= 0)
+            this.lifeTime = 3;
+        _lifeTimeNow += Time.deltaTime;
+        if (_lifeTimeNow > this.lifeTime)//超出指定时间则销毁粒子
+            Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 便利子节点
+    /// </summary>
+    /// <typeparam name="T">要查找的类型</typeparam>
+    /// <param name="trans">节点对象</param>
+    /// <param name="callback">回调</param>
+    private void ForeachChildNode<T>(Transform trans, Action<T> callback, bool first = true)
+    {
+        if (first)
+        {
+            T[] ts  = trans.GetComponents<T>();
+            foreach (T t in ts)
+            {
+                if (!object.Equals(t, this) && callback != null)
+                {
+                    callback(t);
+                }
+                
+            }
+        }
+        int count = trans.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            Transform childTrans = trans.GetChild(i);
+            T[] ts = childTrans.GetComponents<T>();
+            if (ts != null && callback != null)
+            {
+                foreach (T t in ts)
+                {
+                    callback(t);
+                }
+            }
+            ForeachChildNode<T>(childTrans, callback, false);
+        }
+    }
+
+    /// <summary>
+    /// 设置子节点的碰撞回调
+    /// </summary>
+    /// <param name="CallBack"></param>
+    public virtual void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.SetCollisionCallback(CallBack));
+    }
+
+    /// <summary>
+    /// 设置子节点的颜色
+    /// </summary>
+    /// <param name="color"></param>
+    public virtual void SetColor(Color color)
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.SetColor(color));
+    }
+
+    /// <summary>
+    /// 设置子节点的朝向
+    /// </summary>
+    /// <param name="forward"></param>
+    public virtual void SetForward(Vector3 forward)
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.SetForward(forward));
+    }
+
+    /// <summary>
+    /// 设置子结点的碰撞层
+    /// </summary>
+    /// <param name="layerMask"></param>
+    public virtual void SetLayerMask(LayerMask layerMask)
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.SetLayerMask(layerMask));
+    }
+
+    public virtual void SetRange(float range)
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.SetRange(range));
+    }
 }

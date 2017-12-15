@@ -163,10 +163,6 @@ public class LevelManagerEditor : EditorWindow
             int agility = EditorGUILayout.IntField("本等级附加的敏捷", levelDataInfo.Agility);
             if (agility != levelDataInfo.Agility)
                 levelDataInfoUnit.Field("agility", agility).End();
-            //设置该等级附加的专注
-            int concentration = EditorGUILayout.IntField("本等级附加的专注", levelDataInfo.Concentration);
-            if (concentration != levelDataInfo.Concentration)
-                levelDataInfoUnit.Field("concentration", concentration).End();
             //设置该等级附加的自由点数
             int freedomPoint = EditorGUILayout.IntField("本等级附加的自由点数", levelDataInfo.FreedomPoint);
             if (freedomPoint != levelDataInfo.FreedomPoint)
