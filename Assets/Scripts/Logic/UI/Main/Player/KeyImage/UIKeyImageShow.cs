@@ -17,6 +17,10 @@ public class UIKeyImageShow : MonoBehaviour
     [Range(1, 8, order = 1)]
     [SerializeField]
     private int InputType;
+    /// <summary>
+    /// 内部图片(用于显示冷却)
+    /// </summary>
+    public Image innerImage;
 
     /// <summary>
     /// 该键的显示图片控件
@@ -38,6 +42,11 @@ public class UIKeyImageShow : MonoBehaviour
     /// </summary>
     PlayerState playerState;
 
+    /// <summary>
+    /// 技能状态
+    /// </summary>
+    ISkillState iSkillState;
+
     bool r1Press;
 
     bool r2Press;
@@ -52,6 +61,7 @@ public class UIKeyImageShow : MonoBehaviour
         keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
         playerState = DataCenter.Instance.GetEntity<PlayerState>();
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+        iSkillState = GameState.Instance.GetEntity<ISkillState>();
         Show();
     }
 
@@ -63,6 +73,11 @@ public class UIKeyImageShow : MonoBehaviour
     void OnDisable()
     {
         UIManager.Instance.KeyPressHandle -= Instance_KeyPressHandle;
+    }
+
+    private void LateUpdate()
+    {
+        Show();
     }
 
     private void Instance_KeyPressHandle(UIManager.KeyType arg1, Vector2 arg2)
@@ -84,7 +99,6 @@ public class UIKeyImageShow : MonoBehaviour
                     l2Press = true;
                     break;
             }
-            Show();
         }
     }
 
@@ -102,11 +116,14 @@ public class UIKeyImageShow : MonoBehaviour
             keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LB).FirstOrDefault();
         else if (l2Press)
             keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LT).FirstOrDefault();
+        else
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType).FirstOrDefault();
 
         switch (keyContactStruct.keyContactType)
         {
             case EnumKeyContactType.None:
                 keyImage.sprite = null;
+                innerImage.fillAmount = 0;
                 break;
             case EnumKeyContactType.Skill:
                 int skillKey = keyContactStruct.id;
@@ -114,6 +131,11 @@ public class UIKeyImageShow : MonoBehaviour
                     keyImage.sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, skillKey);
                 else
                     keyImage.sprite = skillStructData.SearchSkillDatas(temp => (int)temp.skillType == skillKey).Select(temp => temp.skillSprite).FirstOrDefault();
+                //这里还需要判断是不是没有冷却的技能,比如魔法释放 普通攻击等
+                if (skillKey != (int)EnumSkillType.MagicRelease && skillKey != (int)EnumSkillType.PhysicAttack)
+                    innerImage.fillAmount = Mathf.Clamp(iSkillState.PublicCoolingTime / 1, 0, 1);
+                else
+                    innerImage.fillAmount = 0;
                 break;
             case EnumKeyContactType.Prap:
                 PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => (int)temp.GoodsInfo.EnumGoodsType == keyContactStruct.id).FirstOrDefault();
@@ -123,9 +145,11 @@ public class UIKeyImageShow : MonoBehaviour
                 }
                 else
                     keyImage.sprite = null;
+                innerImage.fillAmount = 0;
                 break;
             case EnumKeyContactType.Action:
                 keyImage.sprite = null;
+                innerImage.fillAmount = 0;
                 break;
         }
         keyImage.enabled = keyImage.sprite != null;

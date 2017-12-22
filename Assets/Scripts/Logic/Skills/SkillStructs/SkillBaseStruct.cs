@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 技能基础数据（只包含最基础的技能，组合技能拆开计算）
@@ -26,7 +27,7 @@ public class SkillBaseStruct
     /// <summary>
     /// 该技能包含的粒子
     /// </summary>
-    public GameObject[] particals;
+    //public GameObject[] particals;
     /// <summary>
     /// 技能的信仰类型(如果非信仰的技能释放模式，则忽略该字段 )
     /// </summary>
@@ -51,9 +52,9 @@ public class SkillBaseStruct
     public SkillPrecondition skillPrecondition;
 
     /// <summary>
-    /// 技能所属分组
+    /// 技能所属分组数组
     /// </summary>
-    public EnumSkillZone skillZone;
+    public EnumSkillZone[] skillZones;
 
     //运行时生成的数据↓↓↓
     /// <summary>
@@ -87,7 +88,11 @@ public class SkillPrecondition
 public class SkillAttributeStruct
 {
     /// <summary>
-    /// 基础耗魔单位
+    /// 最大耗魔上限
+    /// </summary>
+    public int MaxMP;
+    /// <summary>
+    /// 法力上限加成百分比
     /// </summary>
     public int MP;
     /// <summary>
@@ -95,11 +100,11 @@ public class SkillAttributeStruct
     /// </summary>
     public int DMG;
     /// <summary>
-    /// 特效影响力
+    /// 特效影响力(伤害-->点燃 减抗性等)
     /// </summary>
     public int ERST;
     /// <summary>
-    /// 驻留时间
+    /// 驻留时间(持续时间-->特效 buff 屏障 范围伤害持续)
     /// </summary>
     public int RETI;
     /// <summary>
@@ -117,9 +122,42 @@ public class SkillAttributeStruct
     /// <summary>
     /// HP附加
     /// </summary>
+    [Obsolete("该属性已经过时",true)]
     public int ADDHP;
     /// <summary>
     /// MP附加
     /// </summary>
     public int ADDMP;
+    /// <summary>
+    /// 魔法攻击力加成百分比
+    /// </summary>
+    public int MpAttack;
+    /// <summary>
+    /// 魔法防御力加成百分比
+    /// </summary>
+    public int MpDefence;
+    /// <summary>
+    /// 魔法回复速度加成
+    /// </summary>
+    public int MpReload;
+    /// <summary>
+    /// 魔法亲和性
+    /// </summary>
+    public int MagicFit;
+    /// <summary>
+    /// 光明信仰强度
+    /// </summary>
+    public int Light;
+    /// <summary>
+    /// 黑暗信仰强度
+    /// </summary>
+    public int Dark;
+    /// <summary>
+    /// 生物信仰强度
+    /// </summary>
+    public int Life;
+    /// <summary>
+    /// 自然信仰强度
+    /// </summary>
+    public int Nature;
 }

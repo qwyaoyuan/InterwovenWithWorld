@@ -49,24 +49,8 @@ public partial class GameState : IEntrance, IBaseState
                 callBackDic.Add(type, callBackList);
             }
         }
-    }
-
-    /// <summary>
-    /// 在加载存档后调用来初始化数据
-    /// </summary>
-    public void LoadArchive()
-    {
-        //初始化共有数据
-        playerState = DataCenter.Instance.GetEntity<PlayerState>();
-        runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
-        levelData = DataCenter.Instance.GetMetaData<LevelData>();
-        //其他的加载初始化
-        Load_INowTaskState();
-        Load_IPlayerState();
-        Load_IGameState();
-        Load_IPlayerState_ISkillState();
-        //通知存档加载
-        Call<GameState, Action>(temp => temp.LoadArchive);
+        //其他的开始方法
+        Start_IMonsterCollection();
     }
 
     public void Update()
@@ -179,23 +163,6 @@ public partial class GameState : IEntrance, IBaseState
     /// <param name="fieldName"></param>
     private void Call<T, U>(Expression<Func<T, U>> expr) where T : IBaseState
     {
-        //string propertyName = string.Empty;
-        //if (expr.Body is MemberExpression)
-        //{
-        //    propertyName = ((MemberExpression)expr.Body).Member.Name;
-        //    List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
-        //    if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
-        //    {
-        //        foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
-        //        {
-        //            try
-        //            {
-        //                item.Value(this, propertyName);
-        //            }
-        //            catch { }
-        //        }
-        //    }
-        //}
         string propertyName = GetFieldName(expr);
         List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
         if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
@@ -246,6 +213,11 @@ public partial class GameState : IEntrance, IBaseState
     /// 技能状态的更新函数
     /// </summary>
     partial void Update_IPlayerState_ISkillState();
+
+    /// <summary>
+    /// 怪物集合的开始方法
+    /// </summary>
+    partial void Start_IMonsterCollection();
 
     #endregion
 }

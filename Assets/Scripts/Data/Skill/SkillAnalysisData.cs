@@ -194,6 +194,19 @@ public class SkillAnalysisData
     }
 
     /// <summary>
+    /// 获取枚举值数组
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="id"></param>
+    /// <param name="fieldName"></param>
+    /// <returns></returns>
+    public T[] GetEnums<T>(string id, string fieldName)
+    {
+        string[] values = GetValues<string>(id, fieldName);
+        return values.Select(temp => (T)Enum.Parse(typeof(T), temp)).ToArray();
+    }
+
+    /// <summary>
     /// 获取枚举值
     /// </summary>
     /// <typeparam name="T">枚举的类型</typeparam>

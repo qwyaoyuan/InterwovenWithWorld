@@ -1,67 +1,67 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 /// <summary>
-/// µÀ¾ßÀàĞÍ (¾ßÌåÀàĞÍÏÈ²»ÒªÓÃ,µÈ±à¼­ºÃÁËÓÃ)
+/// é“å…·ç±»å‹ (å…·ä½“ç±»å‹å…ˆä¸è¦ç”¨,ç­‰ç¼–è¾‘å¥½äº†ç”¨)
 /// </summary>
 public enum EnumGoodsType
 {
-    #region ËØ²ÄÀà
+    #region ç´ æç±»
     /// <summary>
-    /// ËØ²ÄÀàµÄÆğÊ¼
+    /// ç´ æç±»çš„èµ·å§‹
     /// </summary>
-    [FieldExplan("ËØ²Ä")]
+    [FieldExplan("ç´ æ")]
     SourceMaterial = 1000000,
 
-    #region ¿óÊ¯´óÀà
+    #region çŸ¿çŸ³å¤§ç±»
     /// <summary>
-    /// ¿óÊ¯´óÀà
+    /// çŸ¿çŸ³å¤§ç±»
     /// </summary>
-    [FieldExplan("¿óÊ¯´óÀà")]
+    [FieldExplan("çŸ¿çŸ³å¤§ç±»")]
     MineralBig = 1100000,
 
-    #region ¿óÊ¯
+    #region çŸ¿çŸ³
     /// <summary>
-    /// ¿óÊ¯
+    /// çŸ¿çŸ³
     /// </summary>
-    [FieldExplan("¿óÊ¯")]
+    [FieldExplan("çŸ¿çŸ³")]
     MineralLittle = 1110000,
 
-    #region ¾ßÌåµÄ¿óÊ¯
+    #region å…·ä½“çš„çŸ¿çŸ³
     /// <summary>
-    /// Ìú¿óÊ¯
+    /// é“çŸ¿çŸ³
     /// </summary>
-    [FieldExplan("Ìú¿óÊ¯")]
+    [FieldExplan("é“çŸ¿çŸ³")]
     TieKuangShi = 1110001,
     #endregion
 
     #endregion
 
-    #region ±¦Ê¯
+    #region å®çŸ³
     /// <summary>
-    /// ±¦Ê¯
+    /// å®çŸ³
     /// </summary>
-    [FieldExplan("±¦Ê¯ ")]
+    [FieldExplan("å®çŸ³ ")]
     Gemston = 1111000,
 
-    #region ¾ßÌåµÄ±¦Ê¯
+    #region å…·ä½“çš„å®çŸ³
 
     #endregion
 
     #endregion
 
-    #region Öı¶§
+    #region é“¸é”­
     /// <summary>
-    /// Öı¶§
+    /// é“¸é”­
     /// </summary>
-    [FieldExplan("Öı¶§")]
+    [FieldExplan("é“¸é”­")]
     IngotCasting = 1112000,
 
-    #region ¾ßÌåµÄÖı¶§
+    #region å…·ä½“çš„é“¸é”­
     /// <summary>
-    /// Ã«Åß
+    /// æ¯›èƒš
     /// </summary>
-    [FieldExplan("Ã«Åß")]
+    [FieldExplan("æ¯›èƒš")]
     MaoPei = 1112001,
     #endregion
 
@@ -69,106 +69,106 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ÉúÎïËØ²ÄÀà
+    #region ç”Ÿç‰©ç´ æç±»
     /// <summary>
-    /// ÉúÎïËØ²Ä
+    /// ç”Ÿç‰©ç´ æ
     /// </summary>
-    [FieldExplan("ÉúÎïËØ²Ä")]
+    [FieldExplan("ç”Ÿç‰©ç´ æ")]
     BiologyMaterial = 1200000,
 
-    #region ÊŞÆ¤
+    #region å…½çš®
     /// <summary>
-    /// ÊŞÆ¤ 
+    /// å…½çš® 
     /// </summary>
-    [FieldExplan("ÊŞÆ¤")]
+    [FieldExplan("å…½çš®")]
     Hide = 1210000,
 
-    #region ¾ßÌåµÄÊŞÆ¤ 
+    #region å…·ä½“çš„å…½çš® 
 
     #endregion
 
     #endregion
 
-    #region ÊŞ×¦ 
+    #region å…½çˆª 
     /// <summary>
-    /// ÊŞ×¦
+    /// å…½çˆª
     /// </summary>
-    [FieldExplan("ÊŞ×¦")]
+    [FieldExplan("å…½çˆª")]
     KemonoZume = 1211000,
 
-    #region ¾ßÌåµÄÊŞ×¦
+    #region å…·ä½“çš„å…½çˆª
 
     #endregion
 
     #endregion
 
-    #region ÊŞ¹Ç 
+    #region å…½éª¨ 
     /// <summary>
-    /// ÊŞ¹Ç
+    /// å…½éª¨
     /// </summary>
-    [FieldExplan("ÊŞ¹Ç")]
+    [FieldExplan("å…½éª¨")]
     AnimalBone = 1212000,
 
-    #region ¾ßÌåµÄÊŞ¹Ç 
+    #region å…·ä½“çš„å…½éª¨ 
 
     #endregion
 
     #endregion
 
-    #region ÊŞÈâ
+    #region å…½è‚‰
     /// <summary>
-    /// ÊŞÈâ
+    /// å…½è‚‰
     /// </summary>
-    [FieldExplan("ÊŞÈâ")]
+    [FieldExplan("å…½è‚‰")]
     Meat = 1213000,
 
-    #region  ¾ßÌåµÄÊŞÈâ
+    #region  å…·ä½“çš„å…½è‚‰
     #endregion
 
     #endregion
 
     #endregion
 
-    #region ×ÔÈ»ËØ²ÄÀà
+    #region è‡ªç„¶ç´ æç±»
     /// <summary>
-    /// ×ÔÈ»ËØ²ÄÀà 
+    /// è‡ªç„¶ç´ æç±» 
     /// </summary>
-    [FieldExplan("×ÔÈ»ËØ²Ä")]
+    [FieldExplan("è‡ªç„¶ç´ æ")]
     NaturalMaterial = 1300000,
 
-    #region ²İÒ©
+    #region è‰è¯
     /// <summary>
-    /// ²İÒ©
+    /// è‰è¯
     /// </summary>
     HerbalMedicine = 1310000,
 
-    #region ¾ßÌåµÄ²İÒ©
+    #region å…·ä½“çš„è‰è¯
 
     #endregion
 
     #endregion
 
-    #region Ä¾²Ä
+    #region æœ¨æ
     /// <summary>
-    /// Ä¾²Ä
+    /// æœ¨æ
     /// </summary>
-    [FieldExplan("Ä¾²Ä")]
+    [FieldExplan("æœ¨æ")]
     Wood = 1311000,
 
-    #region ¾ßÌåµÄÄ¾²Ä
+    #region å…·ä½“çš„æœ¨æ
 
     #endregion
 
     #endregion
 
-    #region ¹ûÊµ
+    #region æœå®
     /// <summary>
-    /// ¹ûÊµ
+    /// æœå®
     /// </summary>
-    [FieldExplan("¹ûÊµ")]
+    [FieldExplan("æœå®")]
     Fruit = 1312000,
 
-    #region ¾ßÌåµÄ¹ûÊµ
+    #region å…·ä½“çš„æœå®
 
     #endregion
 
@@ -176,34 +176,34 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ÌØÊâËØ²ÄÀà
+    #region ç‰¹æ®Šç´ æç±»
     /// <summary>
-    /// ÌØÊâËØ²ÄÀà
+    /// ç‰¹æ®Šç´ æç±»
     /// </summary>
-    [FieldExplan("ÌØÊâËØ²Ä")]
+    [FieldExplan("ç‰¹æ®Šç´ æ")]
     SpecialMaterial = 1400000,
 
-    #region µôÂäÌØÊâËØ²ÄÀà
+    #region æ‰è½ç‰¹æ®Šç´ æç±»
     /// <summary>
-    /// µôÂäÌØÊâËØ²Ä
+    /// æ‰è½ç‰¹æ®Šç´ æ
     /// </summary>
-    [FieldExplan("µôÂäÌØÊâËØ²Ä")]
+    [FieldExplan("æ‰è½ç‰¹æ®Šç´ æ")]
     DropSpecialMaterial = 1410000,
 
-    #region ¾ßÌåµÄµôÂäÌØÊâËØ²Ä
+    #region å…·ä½“çš„æ‰è½ç‰¹æ®Šç´ æ
 
     #endregion
 
     #endregion
 
-    #region ÈÎÎñÌØÊâËØ²ÄÀà
+    #region ä»»åŠ¡ç‰¹æ®Šç´ æç±»
     /// <summary>
-    /// ÈÎÎñÌØÊâËØ²Ä
+    /// ä»»åŠ¡ç‰¹æ®Šç´ æ
     /// </summary>
-    [FieldExplan("ÈÎÎñÌØÊâËØ²Ä")]
+    [FieldExplan("ä»»åŠ¡ç‰¹æ®Šç´ æ")]
     TaskSpecialMaterial = 1411000,
 
-    #region ¾ßÌåµÄÈÎÎñÌØÊâËØ²Ä
+    #region å…·ä½“çš„ä»»åŠ¡ç‰¹æ®Šç´ æ
 
     #endregion
 
@@ -213,136 +213,136 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ×°±¸Àà
+    #region è£…å¤‡ç±»
     /// <summary>
-    /// ×°±¸Àà
+    /// è£…å¤‡ç±»
     /// </summary>
-    [FieldExplan("×°±¸")]
+    [FieldExplan("è£…å¤‡")]
     Equipment = 2000000,
 
-    #region ÎäÆ÷Àà
+    #region æ­¦å™¨ç±»
     /// <summary>
-    /// ÎäÆ÷Àà
+    /// æ­¦å™¨ç±»
     /// </summary>
-    [FieldExplan("ÎäÆ÷")]
+    [FieldExplan("æ­¦å™¨")]
     Arms = 2100000,
 
-    #region µ¥ÊÖ½£
+    #region å•æ‰‹å‰‘
     /// <summary>
-    /// µ¥ÊÖ½£
+    /// å•æ‰‹å‰‘
     /// </summary>
-    [FieldExplan("µ¥ÊÖ½£")]
+    [FieldExplan("å•æ‰‹å‰‘")]
     SingleHanedSword = 2110000,
 
-    #region ¾ßÌåµÄµ¥ÊÖ½£
+    #region å…·ä½“çš„å•æ‰‹å‰‘
     /// <summary>
-    /// Ìú½£
+    /// é“å‰‘
     /// </summary>
-    [FieldExplan("Ìú½£")]
+    [FieldExplan("é“å‰‘")]
     TieJian = 2110001,
     #endregion
 
     #endregion
 
-    #region Ë«ÊÖ½£ 
+    #region åŒæ‰‹å‰‘ 
     /// <summary>
-    /// Ë«ÊÖ½£
+    /// åŒæ‰‹å‰‘
     /// </summary>
-    [FieldExplan("Ë«ÊÖ½£")]
+    [FieldExplan("åŒæ‰‹å‰‘")]
     TwoHandedSword = 2111000,
 
-    #region ¾ßÌåµÄË«ÊÖ½£
+    #region å…·ä½“çš„åŒæ‰‹å‰‘
 
     #endregion
 
     #endregion
 
-    #region ¹­
+    #region å¼“
     /// <summary>
-    /// ¹­
+    /// å¼“
     /// </summary>
-    [FieldExplan("¹­")]
+    [FieldExplan("å¼“")]
     Arch = 2112000,
 
-    #region ¾ßÌåµÄ¹­ 
+    #region å…·ä½“çš„å¼“ 
 
     #endregion
 
     #endregion
 
-    #region åó 
+    #region å¼© 
     /// <summary>
-    /// åó
+    /// å¼©
     /// </summary>
-    [FieldExplan("åó")]
+    [FieldExplan("å¼©")]
     CrossBow = 2113000,
 
-    #region ¾ßÌåµÄåó
+    #region å…·ä½“çš„å¼©
 
     #endregion
 
     #endregion
 
-    #region ¶Ü
+    #region ç›¾
     /// <summary>
-    /// ¶Ü
+    /// ç›¾
     /// </summary>
-    [FieldExplan("¾ßÌåµÄ¶Ü")]
+    [FieldExplan("å…·ä½“çš„ç›¾")]
     Shield = 2114000,
 
-    #region ¾ßÌåµÄ¶Ü
+    #region å…·ä½“çš„ç›¾
 
     #endregion
 
     #endregion
 
-    #region Ø°Ê×
+    #region åŒ•é¦–
     /// <summary>
-    /// Ø°Ê×
+    /// åŒ•é¦–
     /// </summary>
-    [FieldExplan("Ø°Ê×")]
+    [FieldExplan("åŒ•é¦–")]
     Dagger = 2115000,
 
-    #region ¾ßÌåµÄØ°Ê×
+    #region å…·ä½“çš„åŒ•é¦–
 
     #endregion
 
     #endregion
 
-    #region ³¤ÕÈ
+    #region é•¿æ–
     /// <summary>
-    /// ³¤ÕÈ
+    /// é•¿æ–
     /// </summary>
-    [FieldExplan("³¤ÕÈ")]
+    [FieldExplan("é•¿æ–")]
     LongRod = 2116000,
 
-    #region ¾ßÌåµÄ³¤ÕÈ
+    #region å…·ä½“çš„é•¿æ–
 
     #endregion
 
     #endregion
 
-    #region ¶ÌÕÈ
+    #region çŸ­æ–
     /// <summary>
-    /// ¶ÌÕÈ
+    /// çŸ­æ–
     /// </summary>
-    [FieldExplan("¶ÌÕÈ")]
+    [FieldExplan("çŸ­æ–")]
     ShortRod = 2117000,
 
-    #region ¾ßÌåµÄ¶ÌÕÈ 
+    #region å…·ä½“çš„çŸ­æ– 
 
     #endregion
 
     #endregion
 
-    #region Ë®¾§Çò
+    #region æ°´æ™¶çƒ
     /// <summary>
-    /// Ë®¾§Çò 
+    /// æ°´æ™¶çƒ 
     /// </summary>
-    [FieldExplan("Ë®¾§Çò")]
+    [FieldExplan("æ°´æ™¶çƒ")]
     CrystalBall = 2118000,
 
-    #region ¾ßÌåµÄË®¾§Çò
+    #region å…·ä½“çš„æ°´æ™¶çƒ
 
     #endregion
 
@@ -350,46 +350,46 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region Í·¿ø´óÀà
+    #region å¤´ç›”å¤§ç±»
     /// <summary>
-    /// Í·¿ø´óÀà
+    /// å¤´ç›”å¤§ç±»
     /// </summary>
-    [FieldExplan("Í·¿ø´óÀà")]
+    [FieldExplan("å¤´ç›”å¤§ç±»")]
     HelmetBig = 2200000,
 
-    #region Í·¿ø
+    #region å¤´ç›”
     /// <summary>
-    /// Í·¿ø
+    /// å¤´ç›”
     /// </summary>
-    [FieldExplan("Í·¿ø")]
+    [FieldExplan("å¤´ç›”")]
     HelmetLittle = 2210000,
 
-    #region ¾ßÌåµÄÍ·¿ø
+    #region å…·ä½“çš„å¤´ç›”
 
     #endregion
 
     #endregion
 
-    #region Í·»·
+    #region å¤´ç¯
     /// <summary>
-    /// Í·»·
+    /// å¤´ç¯
     /// </summary>
-    [FieldExplan("Í·»·")]
+    [FieldExplan("å¤´ç¯")]
     HeadRing = 2211000,
 
-    #region ¾ßÌåµÄÍ·»·
+    #region å…·ä½“çš„å¤´ç¯
     #endregion
 
     #endregion
 
-    #region ¶µÃ±
+    #region å…œå¸½
     /// <summary>
-    /// ¶µÃ±
+    /// å…œå¸½
     /// </summary>
-    [FieldExplan("¶µÃ±")]
+    [FieldExplan("å…œå¸½")]
     Hood = 2212000,
 
-    #region ¾ßÌåµÄ¶µÃ±
+    #region å…·ä½“çš„å…œå¸½
 
     #endregion
 
@@ -397,47 +397,47 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ¿ø¼×Àà
+    #region ç›”ç”²ç±»
     /// <summary>
-    /// ¿ø¼×Àà
+    /// ç›”ç”²ç±»
     /// </summary>
-    [FieldExplan("¿ø¼×")]
+    [FieldExplan("ç›”ç”²")]
     Armor = 2300000,
 
-    #region ÖØ¼× 
+    #region é‡ç”² 
     /// <summary>
-    /// ÖØ¼×
+    /// é‡ç”²
     /// </summary>
-    [FieldExplan("ÖØ¼×")]
+    [FieldExplan("é‡ç”²")]
     HeavyArmor = 2310000,
 
-    #region ¾ßÌåµÄÖØ¼×
+    #region å…·ä½“çš„é‡ç”²
 
     #endregion
 
     #endregion
 
-    #region Æ¤¼×
+    #region çš®ç”²
     /// <summary>
-    /// Æ¤¼×
+    /// çš®ç”²
     /// </summary>
-    [FieldExplan("Æ¤¼×")]
+    [FieldExplan("çš®ç”²")]
     LeatherArmor = 2311000,
 
-    #region ¾ßÌåµÄÆ¤¼×
+    #region å…·ä½“çš„çš®ç”²
 
     #endregion
 
     #endregion
 
-    #region ·¨ÅÛ
+    #region æ³•è¢
     /// <summary>
-    /// ·¨ÅÛ
+    /// æ³•è¢
     /// </summary>
-    [FieldExplan("·¨ÅÛ")]
+    [FieldExplan("æ³•è¢")]
     Robe = 2312000,
 
-    #region ¾ßÌåµÄ·¨ÅÛ
+    #region å…·ä½“çš„æ³•è¢
 
     #endregion
 
@@ -445,47 +445,47 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region Ğ¬×ÓÀà
+    #region é‹å­ç±»
     /// <summary>
-    /// Ğ¬×ÓÀà
+    /// é‹å­ç±»
     /// </summary>
-    [FieldExplan("Ğ¬×Ó")]
+    [FieldExplan("é‹å­")]
     Shoes = 2400000,
 
-    #region ¼×Ñ¥
+    #region ç”²é´
     /// <summary>
-    /// ¼×Ñ¥
+    /// ç”²é´
     /// </summary>
-    [FieldExplan("¼×Ñ¥")]
+    [FieldExplan("ç”²é´")]
     ArmoredBoots = 2410000,
 
-    #region ¾ßÌåµÄ¼×Ñ¥
+    #region å…·ä½“çš„ç”²é´
 
     #endregion
 
     #endregion
 
-    #region Æ¤Ñ¥
+    #region çš®é´
     /// <summary>
-    /// Æ¤Ñ¥
+    /// çš®é´
     /// </summary>
-    [FieldExplan("Æ¤Ñ¥")]
+    [FieldExplan("çš®é´")]
     Boots = 2411000,
 
-    #region ¾ßÌåµÄÆ¤Ñ¥
+    #region å…·ä½“çš„çš®é´
 
     #endregion
 
     #endregion
 
-    #region ²¼Ğ¬
+    #region å¸ƒé‹
     /// <summary>
-    /// ²¼Ğ¬
+    /// å¸ƒé‹
     /// </summary>
-    [FieldExplan("²¼Ğ¬")]
+    [FieldExplan("å¸ƒé‹")]
     ClothShoes = 2412000,
 
-    #region ¾ßÌåµÄ²¼Ğ¬
+    #region å…·ä½“çš„å¸ƒé‹
 
     #endregion
 
@@ -493,59 +493,59 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ÊÎÆ·Àà
+    #region é¥°å“ç±»
     /// <summary>
-    /// ÊÎÆ·Àà
+    /// é¥°å“ç±»
     /// </summary>
-    [FieldExplan("ÊÎÆ·")]
+    [FieldExplan("é¥°å“")]
     Ornaments = 2500000,
 
-    #region ÏîÁ´
+    #region é¡¹é“¾
     /// <summary>
-    /// ÏîÁ´
+    /// é¡¹é“¾
     /// </summary>
-    [FieldExplan("ÏîÁ´")]
+    [FieldExplan("é¡¹é“¾")]
     Necklace = 2510000,
 
-    #region ¾ßÌåµÄÏîÁ´
+    #region å…·ä½“çš„é¡¹é“¾
 
     #endregion
 
     #endregion
 
-    #region ½äÖ¸
+    #region æˆ’æŒ‡
     /// <summary>
-    /// ½äÖ¸
+    /// æˆ’æŒ‡
     /// </summary>
-    [FieldExplan("½äÖ¸")]
+    [FieldExplan("æˆ’æŒ‡")]
     Ring = 2511000,
 
-    #region ¾ßÌåµÄ½äÖ¸
+    #region å…·ä½“çš„æˆ’æŒ‡
     #endregion
 
     #endregion
 
-    #region »¤Éí·û
+    #region æŠ¤èº«ç¬¦
     /// <summary>
-    /// »¤Éí·û
+    /// æŠ¤èº«ç¬¦
     /// </summary>
-    [FieldExplan("»¤Éí·û")]
+    [FieldExplan("æŠ¤èº«ç¬¦")]
     Amulet = 2512000,
 
-    #region ¾ßÌåµÄ»¤Éí·û
+    #region å…·ä½“çš„æŠ¤èº«ç¬¦
 
     #endregion
 
     #endregion
 
-    #region Ñ«ÕÂ
+    #region å‹‹ç« 
     /// <summary>
-    /// Ñ«ÕÂ
+    /// å‹‹ç« 
     /// </summary>
-    [FieldExplan("Ñ«ÕÂ")]
+    [FieldExplan("å‹‹ç« ")]
     Medal = 2513000,
 
-    #region ¾ßÌåµÄÑ«ÕÂ 
+    #region å…·ä½“çš„å‹‹ç«  
 
     #endregion
 
@@ -555,41 +555,41 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region µÀ¾ßÀà
+    #region é“å…·ç±»
     /// <summary>
-    /// µÀ¾ßÀà
+    /// é“å…·ç±»
     /// </summary>
-    [FieldExplan("µÀ¾ß")]
+    [FieldExplan("é“å…·")]
     Item = 3000000,
 
-    #region Í¶ÖÀµÀ¾ßÀà
+    #region æŠ•æ·é“å…·ç±»
     /// <summary>
-    /// Í¶ÖÀµÀ¾ßÀà
+    /// æŠ•æ·é“å…·ç±»
     /// </summary>
-    [FieldExplan("Í¶ÖÀµÀ¾ß")]
+    [FieldExplan("æŠ•æ·é“å…·")]
     ThrowItem = 3100000,
 
-    #region Õ¨µ¯Àà 
+    #region ç‚¸å¼¹ç±» 
     /// <summary>
-    /// Õ¨µ¯Àà
+    /// ç‚¸å¼¹ç±»
     /// </summary>
-    [FieldExplan("Õ¨µ¯")]
+    [FieldExplan("ç‚¸å¼¹")]
     Bomb = 3110000,
 
-    #region ¾ßÌåµÄÕ¨µ¯
+    #region å…·ä½“çš„ç‚¸å¼¹
 
     #endregion
 
     #endregion
 
-    #region ·ÉĞĞµÀ¾ßÀà
+    #region é£è¡Œé“å…·ç±»
     /// <summary>
-    /// ·ÉĞĞµÀ¾ßÀà
+    /// é£è¡Œé“å…·ç±»
     /// </summary>
-    [FieldExplan("·ÉĞĞµÀ¾ß")]
+    [FieldExplan("é£è¡Œé“å…·")]
     FlyItem = 3111000,
 
-    #region ¾ßÌåµÄ·ÉĞĞµÀ¾ß
+    #region å…·ä½“çš„é£è¡Œé“å…·
 
     #endregion
 
@@ -597,34 +597,34 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region Ä§Å¼Àà
+    #region é­”å¶ç±»
     /// <summary>
-    /// Ä§Å¼Àà
+    /// é­”å¶ç±»
     /// </summary>
-    [FieldExplan("Ä§Å¼")]
+    [FieldExplan("é­”å¶")]
     Golem = 3200000,
 
-    #region ¿ÉÖÆ×÷Ä§Å¼
+    #region å¯åˆ¶ä½œé­”å¶
     /// <summary>
-    /// ¿ÉÖÆ×÷Ä§Å¼
+    /// å¯åˆ¶ä½œé­”å¶
     /// </summary>
-    [FieldExplan("¿ÉÖÆ×÷Ä§Å¼")]
+    [FieldExplan("å¯åˆ¶ä½œé­”å¶")]
     CanMakeGolem = 3210000,
 
-    #region ¾ßÌåµÄ¿ÉÖÆ×÷Ä§Å¼
+    #region å…·ä½“çš„å¯åˆ¶ä½œé­”å¶
 
     #endregion
 
     #endregion
 
-    #region ²»¿ÉÖÆ×÷Ä§Å¼
+    #region ä¸å¯åˆ¶ä½œé­”å¶
     /// <summary>
-    /// ²»¿ÉÖÆ×÷Ä§Å¼
+    /// ä¸å¯åˆ¶ä½œé­”å¶
     /// </summary>
-    [FieldExplan("²»¿ÉÖÆ×÷Ä§Å¼")]
+    [FieldExplan("ä¸å¯åˆ¶ä½œé­”å¶")]
     CannotMakeGolem = 3211000,
 
-    #region ¾ßÌåµÄ²»¿ÉÖÆ×÷Ä§Å¼
+    #region å…·ä½“çš„ä¸å¯åˆ¶ä½œé­”å¶
 
     #endregion
 
@@ -632,34 +632,34 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ÏİÚåÀà
+    #region é™·é˜±ç±»
     /// <summary>
-    /// ÏİÚåÀà
+    /// é™·é˜±ç±»
     /// </summary>
-    [FieldExplan("ÏİÚå")]
+    [FieldExplan("é™·é˜±")]
     Trap = 3300000,
 
-    #region ¹Ì¶¨µãÏİÚå
+    #region å›ºå®šç‚¹é™·é˜±
     /// <summary>
-    /// ¹Ì¶¨µãÏİÚå
+    /// å›ºå®šç‚¹é™·é˜±
     /// </summary>
-    [FieldExplan("¹Ì¶¨µãÏİÚå")]
+    [FieldExplan("å›ºå®šç‚¹é™·é˜±")]
     FixedTrap = 3310000,
 
-    #region ¾ßÌåµÄ¹Ì¶¨µãÏİÚå 
+    #region å…·ä½“çš„å›ºå®šç‚¹é™·é˜± 
 
     #endregion
 
     #endregion
 
-    #region ÌØÊâÓÃ·¨ÏİÚå
+    #region ç‰¹æ®Šç”¨æ³•é™·é˜±
     /// <summary>
-    /// ÌØÊâÓÃ·¨ÏİÚå
+    /// ç‰¹æ®Šç”¨æ³•é™·é˜±
     /// </summary>
-    [FieldExplan("ÌØÊâÓÃ·¨ÏİÚå")]
+    [FieldExplan("ç‰¹æ®Šç”¨æ³•é™·é˜±")]
     SpecialTrap = 3311000,
 
-    #region ¾ßÌåµÄÌØÊâÓÃ·¨ÏİÚå
+    #region å…·ä½“çš„ç‰¹æ®Šç”¨æ³•é™·é˜±
 
     #endregion
 
@@ -669,28 +669,28 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region Á¶½ğÒ©¼ÁÀà
+    #region ç‚¼é‡‘è¯å‰‚ç±»
     /// <summary>
-    /// Á¶½ğÒ©¼ÁÀà
+    /// ç‚¼é‡‘è¯å‰‚ç±»
     /// </summary>
-    [FieldExplan("Á¶½ğÒ©¼Á")]
+    [FieldExplan("ç‚¼é‡‘è¯å‰‚")]
     Elixir = 4000000,
 
-    #region ¾ÆÀà
+    #region é…’ç±»
     /// <summary>
-    /// ¾ÆÀà
+    /// é…’ç±»
     /// </summary>
-    [FieldExplan("¾Æ")]
+    [FieldExplan("é…’")]
     Wine = 4100000,
 
-    #region ÆÕÍ¨¾Æ
+    #region æ™®é€šé…’
     /// <summary>
-    /// ÆÕÍ¨¾Æ 
+    /// æ™®é€šé…’ 
     /// </summary>
-    [FieldExplan("ÆÕÍ¨¾Æ")]
+    [FieldExplan("æ™®é€šé…’")]
     NormalWine = 4110000,
 
-    #region ¾ßÌåµÄÆÕÍ¨¾Æ
+    #region å…·ä½“çš„æ™®é€šé…’
 
     #endregion
 
@@ -698,21 +698,21 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region »Ö¸´Ò©¼Á´óÀà
+    #region æ¢å¤è¯å‰‚å¤§ç±»
     /// <summary>
-    /// »Ö¸´Ò©¼Á´óÀà
+    /// æ¢å¤è¯å‰‚å¤§ç±»
     /// </summary>
-    [FieldExplan("»Ö¸´Ò©¼Á´óÀà")]
+    [FieldExplan("æ¢å¤è¯å‰‚å¤§ç±»")]
     RestorativeDrugsBig = 4200000,
 
-    #region »Ö¸´Ò©¼Á
+    #region æ¢å¤è¯å‰‚
     /// <summary>
-    /// »Ö¸´Ò©¼Á
+    /// æ¢å¤è¯å‰‚
     /// </summary>
-    [FieldExplan("»Ö¸´Ò©¼Á")]
+    [FieldExplan("æ¢å¤è¯å‰‚")]
     RestorativeDrugsLittle = 4210000,
 
-    #region ¾ßÌåµÄ»Ø¸´Ò©¼Á
+    #region å…·ä½“çš„å›å¤è¯å‰‚
 
     #endregion
 
@@ -720,21 +720,21 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region Ç¿»¯Ò©¼Á´óÀà
+    #region å¼ºåŒ–è¯å‰‚å¤§ç±»
     /// <summary>
-    /// Ç¿»¯Ò©¼Á´óÀà
+    /// å¼ºåŒ–è¯å‰‚å¤§ç±»
     /// </summary>
-    [FieldExplan("Ç¿»¯Ò©¼Á´óÀà")]
+    [FieldExplan("å¼ºåŒ–è¯å‰‚å¤§ç±»")]
     StrengthenAgentBig = 4300000,
 
-    #region Ç¿»¯Ò©¼Á 
+    #region å¼ºåŒ–è¯å‰‚ 
     /// <summary>
-    /// Ç¿»¯Ò©¼Á
+    /// å¼ºåŒ–è¯å‰‚
     /// </summary>
-    [FieldExplan("Ç¿»¯Ò©¼Á")]
+    [FieldExplan("å¼ºåŒ–è¯å‰‚")]
     StrengthenAgentLittle = 4310000,
 
-    #region ¾ßÌåµÄÇ¿»¯Ò©¼Á
+    #region å…·ä½“çš„å¼ºåŒ–è¯å‰‚
 
     #endregion
 
@@ -742,21 +742,21 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ¸½Ä§Ò©¼Á´óÀà
+    #region é™„é­”è¯å‰‚å¤§ç±»
     /// <summary>
-    /// ¸½Ä§Ò©¼Á´óÀà
+    /// é™„é­”è¯å‰‚å¤§ç±»
     /// </summary>
-    [FieldExplan("¸½Ä§Ò©¼Á´óÀà")]
+    [FieldExplan("é™„é­”è¯å‰‚å¤§ç±»")]
     EnchantElixirBig = 4400000,
 
-    #region ¸½Ä§Ò©¼Á 
+    #region é™„é­”è¯å‰‚ 
     /// <summary>
-    /// ¸½Ä§Ò©¼Á
+    /// é™„é­”è¯å‰‚
     /// </summary>
-    [FieldExplan("¸½Ä§Ò©¼Á")]
+    [FieldExplan("é™„é­”è¯å‰‚")]
     EnchantElixirLittle = 4410000,
 
-    #region ¾ßÌåµÄ¸½Ä§Ò©¼Á
+    #region å…·ä½“çš„é™„é­”è¯å‰‚
 
     #endregion
 
@@ -764,21 +764,21 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ¹¦ÄÜÒ©¼Á´óÀà
+    #region åŠŸèƒ½è¯å‰‚å¤§ç±»
     /// <summary>
-    /// ¹¦ÄÜÒ©¼Á´óÀà
+    /// åŠŸèƒ½è¯å‰‚å¤§ç±»
     /// </summary>
-    [FieldExplan("¹¦ÄÜÒ©¼Á´óÀà")]
+    [FieldExplan("åŠŸèƒ½è¯å‰‚å¤§ç±»")]
     FunctionalAgnetBig = 4500000,
 
-    #region ¹¦ÄÜÒ©¼Á
+    #region åŠŸèƒ½è¯å‰‚
     /// <summary>
-    /// ¹¦ÄÜÒ©¼Á
+    /// åŠŸèƒ½è¯å‰‚
     /// </summary>
-    [FieldExplan("¹¦ÄÜÒ©¼Á")]
+    [FieldExplan("åŠŸèƒ½è¯å‰‚")]
     FunctionalAgnetLittle = 4510000,
 
-    #region ¾ßÌåµÄ¹¦ÄÜÒ©¼Á
+    #region å…·ä½“çš„åŠŸèƒ½è¯å‰‚
 
     #endregion
 
@@ -788,54 +788,54 @@ public enum EnumGoodsType
 
     #endregion
 
-    #region ÌØÊâÎïÆ·Àà
+    #region ç‰¹æ®Šç‰©å“ç±»
     /// <summary>
-    /// ÌØÊâÎïÆ·Àà
+    /// ç‰¹æ®Šç‰©å“ç±»
     /// </summary>
-    [FieldExplan("ÌØÊâÎïÆ·")]
+    [FieldExplan("ç‰¹æ®Šç‰©å“")]
     SpecialItem = 5000000,
 
-    #region Êé¼®Àà
+    #region ä¹¦ç±ç±»
     /// <summary>
-    /// Êé¼®Àà
+    /// ä¹¦ç±ç±»
     /// </summary>
-    [FieldExplan("Êé¼®")]
+    [FieldExplan("ä¹¦ç±")]
     Book = 5100000,
 
-    #region ¹ÊÊÂÊé 
+    #region æ•…äº‹ä¹¦ 
     /// <summary>
-    /// ¹ÊÊÂÊé
+    /// æ•…äº‹ä¹¦
     /// </summary>
-    [FieldExplan("¹ÊÊÂÊé")]
+    [FieldExplan("æ•…äº‹ä¹¦")]
     StoryBook = 5110000,
 
-    #region ¾ßÌåµÄ¹ÊÊÂÊé
+    #region å…·ä½“çš„æ•…äº‹ä¹¦
 
     #endregion
 
     #endregion
 
-    #region ¼¼ÄÜÊé
+    #region æŠ€èƒ½ä¹¦
     /// <summary>
-    /// ¼¼ÄÜÊé
+    /// æŠ€èƒ½ä¹¦
     /// </summary>
-    [FieldExplan("¼¼ÄÜÊé")]
+    [FieldExplan("æŠ€èƒ½ä¹¦")]
     SkillBook = 5111000,
 
-    #region ¾ßÌåµÄ¼¼ÄÜÊé
+    #region å…·ä½“çš„æŠ€èƒ½ä¹¦
 
     #endregion
 
     #endregion
 
-    #region ĞÅ¼ã
+    #region ä¿¡ç¬º
     /// <summary>
-    /// ĞÅ¼ã
+    /// ä¿¡ç¬º
     /// </summary>
-    [FieldExplan("ĞÅ¼ã")]
+    [FieldExplan("ä¿¡ç¬º")]
     Letterhead = 5112000,
 
-    #region ¾ßÌåµÄĞÅ¼ã
+    #region å…·ä½“çš„ä¿¡ç¬º
 
     #endregion
 
@@ -848,16 +848,16 @@ public enum EnumGoodsType
 }
 
 /// <summary>
-/// µÀ¾ß¸¨ÖúÀà
+/// é“å…·è¾…åŠ©ç±»
 /// </summary>
 public static class GoodsStaticTools
 {
     /// <summary>
-    /// µÀ¾ß¸ù½Úµã
+    /// é“å…·æ ¹èŠ‚ç‚¹
     /// </summary>
     static GoodsNode root;
     /// <summary>
-    /// µÀ¾ßÀàĞÍÊ÷½Úµã×Öµä(·½±ã²éÑ¯)
+    /// é“å…·ç±»å‹æ ‘èŠ‚ç‚¹å­—å…¸(æ–¹ä¾¿æŸ¥è¯¢)
     /// </summary>
     static Dictionary<EnumGoodsType, GoodsNode> goodsNodeDic;
 
@@ -867,43 +867,43 @@ public static class GoodsStaticTools
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÊÇ·ñÊÇË«ÊÖÎäÆ÷
+    /// åˆ¤æ–­æ˜¯å¦æ˜¯åŒæ‰‹æ­¦å™¨
     /// </summary>
     /// <param name="enumGoodsType"></param>
     /// <returns></returns>
     public static bool IsTwoHandedWeapon(EnumGoodsType enumGoodsType)
     {
-        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.TwoHandedSword) ||//Ë«ÊÖ½£
-                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Arch) ||//¹­
-                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrossBow) ||//åó
-                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.LongRod);//³¤ÕÈ
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.TwoHandedSword) ||//åŒæ‰‹å‰‘
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Arch) ||//å¼“
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrossBow) ||//å¼©
+                        GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.LongRod);//é•¿æ–
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÊÇ·ñÊÇÖ÷ÊÖÎäÆ÷ 
+    /// åˆ¤æ–­æ˜¯å¦æ˜¯ä¸»æ‰‹æ­¦å™¨ 
     /// </summary>
     /// <param name="enumGoodsType"></param>
     /// <returns></returns>
     public static bool IsRightOneHandedWeapon(EnumGoodsType enumGoodsType)
     {
-        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.SingleHanedSword) ||//µ¥ÊÖ½£ 
-            GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Dagger) ||//Ø°Ê×
-             GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.ShortRod);//¶ÌÕÈ
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.SingleHanedSword) ||//å•æ‰‹å‰‘ 
+            GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Dagger) ||//åŒ•é¦–
+             GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.ShortRod);//çŸ­æ–
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÊÇ·ñÊÇ¸±ÊÖÎäÆ÷
+    /// åˆ¤æ–­æ˜¯å¦æ˜¯å‰¯æ‰‹æ­¦å™¨
     /// </summary>
     /// <param name="enumGoodsType"></param>
     /// <returns></returns>
     public static bool IsLeftOneHandedWeapon(EnumGoodsType enumGoodsType)
     {
-        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Shield) ||//¶ÜÅÆ
-                     GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrystalBall);//Ë®¾§Çò 
+        return GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Shield) ||//ç›¾ç‰Œ
+                     GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.CrystalBall);//æ°´æ™¶çƒ 
     }
 
     /// <summary>
-    /// ³õÊ¼»¯½Úµã
+    /// åˆå§‹åŒ–èŠ‚ç‚¹
     /// </summary>
     static void InitGoodsNode()
     {
@@ -917,9 +917,9 @@ public static class GoodsStaticTools
             .OrderBy(temp => temp.value)
             .ToArray();
         root.Childs = new List<GoodsNode>();
-        for (int i = 0; i < 10; i++)//µÚÒ»²ã
+        for (int i = 0; i < 10; i++)//ç¬¬ä¸€å±‚
         {
-            #region µÚÒ»²ã
+            #region ç¬¬ä¸€å±‚
             int layer1Min = layer1 * i;
             int layer1Max = layer1 * (i + 1);
             var layer1TempDataStruct = tempDataStruct.Where(temp => temp.value >= layer1Min && temp.value < layer1Max)
@@ -934,9 +934,9 @@ public static class GoodsStaticTools
             root.Childs.Add(layer1TreeNode);
             layer1TreeNode.Parent = root;
             #endregion
-            for (int j = 0; j < 10; j++)//µÚ¶ş²ã
+            for (int j = 0; j < 10; j++)//ç¬¬äºŒå±‚
             {
-                #region µÚ¶ş²ã
+                #region ç¬¬äºŒå±‚
                 int layer2Min = layer2 * j;
                 int layer2Max = layer2 * (j + 1);
                 var layer2TempDataStruct = layer1TempDataStruct.Where(temp => temp.value > layer2Min && temp.value < layer2Max)
@@ -951,9 +951,9 @@ public static class GoodsStaticTools
                 layer1TreeNode.Childs.Add(layer2TreeNode);
                 layer2TreeNode.Parent = layer1TreeNode;
                 #endregion
-                for (int k = 0; k < 100; k++)//µÚÈı²ã
+                for (int k = 0; k < 100; k++)//ç¬¬ä¸‰å±‚
                 {
-                    #region µÚÈı²ã
+                    #region ç¬¬ä¸‰å±‚
                     int layer3Min = layer3 * k;
                     int layer3Max = layer3 * (k + 1);
                     var layer3TempDataStruct = layer2TempDataStruct.Where(temp => temp.value >= layer3Min && temp.value < layer3Max)
@@ -968,9 +968,9 @@ public static class GoodsStaticTools
                     layer2TreeNode.Childs.Add(layer3TreeNode);
                     layer3TreeNode.Parent = layer2TreeNode;
                     #endregion
-                    for (int l = 1; l < layer3TempDataStruct.Length; l++)//µÚËÄ²ã 
+                    for (int l = 1; l < layer3TempDataStruct.Length; l++)//ç¬¬å››å±‚ 
                     {
-                        #region µÚËÄ²ã
+                        #region ç¬¬å››å±‚
                         GoodsNode layer4TreeNode = new GoodsNode();
                         layer4TreeNode.Childs = new List<GoodsNode>();
                         layer4TreeNode.GoodsType = layer3TempDataStruct[l].type;
@@ -985,10 +985,10 @@ public static class GoodsStaticTools
     }
 
     /// <summary>
-    /// »ñÈ¡Ö¸¶¨ÎïÆ·µÄ´óÀà
+    /// è·å–æŒ‡å®šç‰©å“çš„å¤§ç±»
     /// </summary>
-    /// <param name="child">×Ó½Úµã</param>
-    /// <param name="deep">¼ìË÷Éî¶È,Ä¬ÈÏÎª1(¼´ÉÏÏÂ²ã¹ØÏµ )</param>
+    /// <param name="child">å­èŠ‚ç‚¹</param>
+    /// <param name="deep">æ£€ç´¢æ·±åº¦,é»˜è®¤ä¸º1(å³ä¸Šä¸‹å±‚å…³ç³» )</param>
     /// <returns></returns>
     public static EnumGoodsType? GetParentGoodsType(EnumGoodsType child, int deep = 1)
     {
@@ -1007,11 +1007,11 @@ public static class GoodsStaticTools
     }
 
     /// <summary>
-    /// ÅĞ¶Ï¸ø¶¨µÄ¸¸×Ó¹ØÏµÊÇ·ñ´æÔÚ
+    /// åˆ¤æ–­ç»™å®šçš„çˆ¶å­å…³ç³»æ˜¯å¦å­˜åœ¨
     /// </summary>
-    /// <param name="child">×Ó½Úµã</param>
-    /// <param name="parent">¸¸½Úµã</param>
-    /// <param name="ignoreDeep">ÊÇ·ñºöÂÔÉî¶È,Èç¹ûºöÂÔÔò»áºöÂÔÁ½ÕßÖ®¼äµÄ½Úµã</param>
+    /// <param name="child">å­èŠ‚ç‚¹</param>
+    /// <param name="parent">çˆ¶èŠ‚ç‚¹</param>
+    /// <param name="ignoreDeep">æ˜¯å¦å¿½ç•¥æ·±åº¦,å¦‚æœå¿½ç•¥åˆ™ä¼šå¿½ç•¥ä¸¤è€…ä¹‹é—´çš„èŠ‚ç‚¹</param>
     /// <returns></returns>
     public static bool IsChildGoodsNode(EnumGoodsType child, EnumGoodsType parent, bool ignoreDeep = true)
     {
@@ -1043,7 +1043,7 @@ public static class GoodsStaticTools
     }
 
     /// <summary>
-    /// Í¨¹ıÀàĞÍ»ñÈ¡½Úµã¶ÔÏó
+    /// é€šè¿‡ç±»å‹è·å–èŠ‚ç‚¹å¯¹è±¡
     /// </summary>
     /// <param name="targetType"></param>
     /// <returns></returns>
@@ -1055,7 +1055,7 @@ public static class GoodsStaticTools
     }
 
     /// <summary>
-    /// µÀ¾ß½Úµã
+    /// é“å…·èŠ‚ç‚¹
     /// </summary>
     public class GoodsNode
     {

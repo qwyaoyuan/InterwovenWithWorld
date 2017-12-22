@@ -45,20 +45,45 @@ public class UIFocusKeySettingLattice : UIFocus
     /// </summary>
     public int id;
 
+
+    PlayerState _PlayerState;
     /// <summary>
     /// 玩家存档对象
     /// </summary>
-    PlayerState playerState;
+    PlayerState ThisPlayerState
+    {
+        get
+        {
+            if(_PlayerState==null)
+                _PlayerState = DataCenter.Instance.GetEntity<PlayerState>(); ;
+            return _PlayerState;
+        }
+    }
+
+    SkillStructData _SkillStructData;
     /// <summary>
     /// 技能元数据
     /// </summary>
-    SkillStructData skillStructData;
-
-    private void OnEnable()
+    SkillStructData ThisSkillStructData
     {
-        playerState = DataCenter.Instance.GetEntity<PlayerState>();
-        skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+        get
+        {
+            if(_SkillStructData==null)
+                _SkillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+            return _SkillStructData;
+        }
     }
+
+    private void Awake()
+    {
+        //图像向内收缩
+        if (targetImage)
+        {
+            targetImage.rectTransform.offsetMax=new Vector2(-3, -3);
+            targetImage.rectTransform.offsetMin = new Vector2(3, 3);
+        }
+    }
+
 
     /// <summary>
     /// 失去焦点
@@ -84,13 +109,15 @@ public class UIFocusKeySettingLattice : UIFocus
         switch (keyLatticeType)
         {
             case EnumKeyContactType.Skill:
+                if (ThisSkillStructData == null)
+                    break;
                 if (id > (int)EnumSkillType.MagicCombinedStart)//组合技能
                 {
-                    SetTargetImage(SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, id));
+                    SetTargetImage(SkillCombineStaticTools.GetCombineSkillSprite(ThisSkillStructData, id));
                 }
                 else//单一的技能
                 {
-                   SkillBaseStruct skillBaseStruct =  skillStructData.SearchSkillDatas(temp => temp.skillType == (EnumSkillType)id).FirstOrDefault();
+                   SkillBaseStruct skillBaseStruct =  ThisSkillStructData.SearchSkillDatas(temp => temp.skillType == (EnumSkillType)id).FirstOrDefault();
                     if (skillBaseStruct != null)
                     {
                         SetTargetImage(skillBaseStruct.skillSprite);
@@ -99,7 +126,9 @@ public class UIFocusKeySettingLattice : UIFocus
                 }
                 break;
             case EnumKeyContactType.Prap:
-                PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.ID == id).FirstOrDefault();
+                if (ThisPlayerState == null)
+                    break;
+                PlayGoods playGoods = ThisPlayerState.PlayerAllGoods.Where(temp => temp.ID == id).FirstOrDefault();
                 SetTargetImage(playGoods.GoodsInfo.Sprite);
                 break;
             default:

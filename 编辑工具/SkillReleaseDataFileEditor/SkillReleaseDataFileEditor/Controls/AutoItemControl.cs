@@ -238,8 +238,10 @@ namespace SkillDataFileEditor
                             tempLabelControl = new Label();
                             panel.Controls.Add(tempLabelControl);
                             tempLabelControl.Name = "Label_Show";
-                            tempLabelControl.AutoSize = true;
                             tempLabelControl.Text = itemStruct.Label;
+                            tempLabelControl.AutoSize = true;
+                            tempLabelControl.MaximumSize = new Size(150, 0);
+                            //tempLabelControl.Width = panel.Size.Width / 2;
                             tempLabelControl.Location = new Point(3, 3);
                         }
                         else

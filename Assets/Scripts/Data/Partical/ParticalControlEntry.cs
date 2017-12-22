@@ -152,3 +152,46 @@ public abstract class ParticalControlEntry : MonoBehaviour, IParticalConduct
         ForeachChildNode<IParticalConduct>(transform, temp => temp.SetRange(range));
     }
 }
+
+/// <summary>
+/// 粒子初始化时所用参数的结构
+/// </summary>
+public struct ParticalInitParamData
+{
+    /// <summary>
+    /// 位置
+    /// </summary>
+    public Vector3 position;
+    /// <summary>
+    /// 粒子朝向
+    /// </summary>
+    public Vector3 forward;
+    /// <summary>
+    /// 粒子颜色
+    /// </summary>
+    public Color color;
+    /// <summary>
+    /// 粒子的碰撞遮罩
+    /// </summary>
+    public LayerMask layerMask;
+    /// <summary>
+    /// 碰撞后的回掉
+    /// </summary>
+    public Func<CollisionHitCallbackStruct, bool> CollisionCallBack;
+    /// <summary>
+    /// 范围属性(也许是长度也许是范围)
+    /// </summary>
+    public float range;
+    /// <summary>
+    /// 目标对象(有些粒子有 有些粒子没有)
+    /// </summary>
+    public GameObject[] targetObjs;
+    /// <summary>
+    /// 粒子的生命周期
+    /// </summary>
+    public float lifeTime;
+    /// <summary>
+    /// 粒子碰撞的间隔时间(有些粒子有 有些粒子没有)
+    /// </summary>
+    public float checkCollisionIntervalTime;
+}

@@ -41,7 +41,14 @@ public class UIFocusSkillCombineLattice : UIFocus
         set
         {
             if (skillImage)
+            {
                 skillImage.sprite = value;
+                skillImage.gameObject.SetActive(value != null);
+            }
+        }
+        get
+        {
+            return skillImage == null ? null : skillImage.sprite;
         }
     }
 

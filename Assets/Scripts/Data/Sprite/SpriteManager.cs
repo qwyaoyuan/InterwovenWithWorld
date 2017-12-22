@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,14 +20,82 @@ public class SpriteManager
     /// </summary>
     static Dictionary<string, Sprite> strToSpriteDic;
 
+    /// <summary>
+    /// 是否已经加载完毕
+    /// </summary>
+    static bool loaded;
+
     static SpriteManager()
     {
+        loaded = false;
+    }
+
+    /// <summary>
+    /// 关闭加载资源携程
+    /// </summary>
+    static Action CloseEnumerableLoad;
+
+    /// <summary>
+    /// 使用携程加载资源
+    /// 传入关闭携程函数
+    /// 返回加载携程对象
+    /// </summary>
+    /// <param name="returnLoad">调用返回加载携程</param>
+    /// <param name="CloseEnumerableLoad">调用关闭携程</param>
+    public static void Load(Action<IEnumerable> returnLoad, Action CloseEnumerableLoad)
+    {
+        if (SpriteManager.CloseEnumerableLoad != null)
+        {
+            try
+            {
+                SpriteManager.CloseEnumerableLoad();
+            }
+            catch { }
+            SpriteManager.CloseEnumerableLoad = null;
+        }
+        SpriteManager.CloseEnumerableLoad = CloseEnumerableLoad;
+        if (returnLoad != null)
+        {
+            returnLoad(EnumerableLoad());
+        }
+    }
+
+    static IEnumerable EnumerableLoad()
+    {
+        strToSpriteDic = new Dictionary<string, Sprite>();
+        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteDirectoryPath);
+        int count = 0;
+        foreach (Sprite sprite in sprites)
+        {
+            strToSpriteDic.Add(sprite.texture.name + ":" + sprite.name, sprite);
+            count++;
+            if (count > 5)
+            {
+                count = 0;
+                yield return null;
+            }
+        }
+        loaded = true;
+    }
+
+    static void Load()
+    {
+        if (SpriteManager.CloseEnumerableLoad != null)
+        {
+            try
+            {
+                SpriteManager.CloseEnumerableLoad();
+            }
+            catch { }
+            SpriteManager.CloseEnumerableLoad = null;
+        }
         strToSpriteDic = new Dictionary<string, Sprite>();
         Sprite[] sprites = Resources.LoadAll<Sprite>(spriteDirectoryPath);
         foreach (Sprite sprite in sprites)
         {
             strToSpriteDic.Add(sprite.texture.name + ":" + sprite.name, sprite);
         }
+        loaded = true;
     }
 
     /// <summary>
@@ -36,6 +105,8 @@ public class SpriteManager
     /// <returns></returns>
     public static Sprite GetSrpite(string name)
     {
+        if (!loaded)
+            Load();
         if (strToSpriteDic.ContainsKey(name))
             return strToSpriteDic[name];
         return null;
@@ -48,6 +119,8 @@ public class SpriteManager
     /// <returns></returns>
     public static string GetName(Sprite sprite)
     {
+        if (!loaded)
+            Load();
         string name = strToSpriteDic.Where(temp => temp.Value == sprite).Select(temp => temp.Key).FirstOrDefault();
         return name;
     }

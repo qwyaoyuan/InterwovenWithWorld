@@ -94,8 +94,12 @@ public class UISkillCombine : MonoBehaviour
         uiCombineSkillList.CanClickListItem = true;
         nowCombineSkillItem = uiCombineSkillList.FirstShowItem();
         uiCombineSkillList.ShowItem(nowCombineSkillItem);
-        if(nowCombineSkillItem)
+        if (nowCombineSkillItem)
+        {
+            nowCombineSkillItem.childImage.enabled = true;
+            nowCombineSkillItem.childImage.gameObject.SetActive(true);
             SetSkillCombineLatticeAndShowVadio((EnumSkillType[])nowCombineSkillItem.value);
+        }
     }
 
     /// <summary>
@@ -113,32 +117,25 @@ public class UISkillCombine : MonoBehaviour
         return combineSkillNames;
     }
 
-    /// <summary>
-    /// 组合技能的技能图片
-    /// </summary>
-    /// <param name="key">该技能的组合值</param>
-    /// <returns></returns>
-    [Obsolete("已经转移到SkillCombineStaticTools类中",true)]
-    private Sprite CombineSkillSprite( int key)
-    {
-        EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key);
-        SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => skills.Contains(temp.skillType));
-        Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
-        if (sprites == null || sprites.Length == 0)
-            return null;
-        var sizes = sprites.Select(temp => new { width = temp.bounds.size.x, height = temp.bounds.size.y });
-        float width = sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
-        float height = sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
-        if (width == 0 || height == 0)
-            return null;
-        return null;
-    }
-
     private void OnDisable()
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
         if (nowUISkilCombineLattice)
             nowUISkilCombineLattice.LostForcus();
+        //保存数据
+        UIListItem[] allUIListItems = uiCombineSkillList.GetAllImtes();
+        playerState.CombineSkills.Clear();
+        foreach (UIListItem uiListItem in allUIListItems)
+        {
+            if (uiListItem != null && uiListItem.value!=null && uiListItem.value.GetType().Equals(typeof(EnumSkillType[])))
+            {
+                EnumSkillType[] enumSkillTypes = uiListItem.value as EnumSkillType[];
+                if (enumSkillTypes.Count(temp => temp == EnumSkillType.None) != 4)
+                {
+                    playerState.CombineSkills.Add(enumSkillTypes);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -184,10 +181,16 @@ public class UISkillCombine : MonoBehaviour
                             {
                                 uiCombineSkillList.ShowItem(tempArrays[index]);
                                 if (nowCombineSkillItem && nowCombineSkillItem.childImage)
+                                {
                                     nowCombineSkillItem.childImage.enabled = false;
+                                    nowCombineSkillItem.childImage.gameObject.SetActive(false);
+                                }
                                 nowCombineSkillItem = tempArrays[index];
                                 if (nowCombineSkillItem && nowCombineSkillItem.childImage)
+                                {
                                     nowCombineSkillItem.childImage.enabled = true;
+                                    nowCombineSkillItem.childImage.gameObject.SetActive(true);
+                                }
                                 if (nowCombineSkillItem)
                                 {
                                     SetSkillCombineLatticeAndShowVadio((EnumSkillType[])nowCombineSkillItem.value);
@@ -255,10 +258,16 @@ public class UISkillCombine : MonoBehaviour
                             {
                                 uiSelectSkillList.ShowItem(tempArrays[index]);
                                 if (uiSelectSkillList && nowSelectSkillItem.childImage)
+                                {
                                     nowSelectSkillItem.childImage.enabled = false;
+                                    nowSelectSkillItem.childImage.gameObject.SetActive(false);
+                                }
                                 nowSelectSkillItem = tempArrays[index];
                                 if (uiSelectSkillList && nowSelectSkillItem.childImage)
+                                {
                                     nowSelectSkillItem.childImage.enabled = true;
+                                    nowSelectSkillItem.childImage.gameObject.SetActive(true);
+                                }
                             }
                         }
                         break;
@@ -286,15 +295,17 @@ public class UISkillCombine : MonoBehaviour
     {
         //重置技能
         if (nowSelectSkillItem && nowUISkilCombineLattice)
-        {        
+        {
             //判断当前锁定框的位置并修改技能
             int level = nowUISkilCombineLattice.Level;
             EnumSkillType[] thisCombineSkillTypes = nowCombineSkillItem.value as EnumSkillType[];
             EnumSkillType[] tempCombineSkillTypes = thisCombineSkillTypes.Clone() as EnumSkillType[];
-            tempCombineSkillTypes[level] = (EnumSkillType)nowSelectSkillItem.value;
-            if (SkillCombineStaticTools.GetCanCombineSkills(tempCombineSkillTypes))//该框内是否可以使用该技能
+            tempCombineSkillTypes[level - 1] = (EnumSkillType)nowSelectSkillItem.value;
+            if (SkillCombineStaticTools.GetCanCombineSkills(tempCombineSkillTypes)//该框内是否可以使用该技能
+                || tempCombineSkillTypes.Count(temp => temp == EnumSkillType.None) == 4//说明都是空的
+                )
             {
-                thisCombineSkillTypes[level] = (EnumSkillType)nowSelectSkillItem.value;
+                thisCombineSkillTypes[level - 1] = (EnumSkillType)nowSelectSkillItem.value;
                 //修改组合框的图标
                 SetSkillCombineLatticeAndShowVadio(thisCombineSkillTypes);
                 //修改组合技能集合中选中技能的名字
@@ -324,10 +335,14 @@ public class UISkillCombine : MonoBehaviour
         {
             if (thisUsedSkills.Length > i)
             {
-                uiFocus[i].SkillSprite = thisUsedSkills[i].skillSprite;
+                uiFocus[i].SkillSprite = SkillSpriteData.GetSprite(thisUsedSkills[i].skillType);
+            }
+            else
+            {
+                uiFocus[i].SkillSprite = null;
             }
         }
-        throw new Exception("未实现查找视频");
+        //throw new Exception("未实现查找视频");
     }
 
     /// <summary>
@@ -342,10 +357,16 @@ public class UISkillCombine : MonoBehaviour
             if (!combineSkillItem)
                 return;
             if (nowCombineSkillItem && nowCombineSkillItem.childImage)
+            {
                 nowCombineSkillItem.childImage.enabled = false;
+                nowCombineSkillItem.childImage.gameObject.SetActive(false);
+            }
             nowCombineSkillItem = combineSkillItem;
             if (nowCombineSkillItem && nowCombineSkillItem.childImage)
+            {
                 nowCombineSkillItem.childImage.enabled = true;
+                nowCombineSkillItem.childImage.gameObject.SetActive(true);
+            }
             SetSkillCombineLatticeAndShowVadio((EnumSkillType[])combineSkillItem.value);
         }
     }
@@ -382,17 +403,17 @@ public class UISkillCombine : MonoBehaviour
         uiSelectSkillList.Init();
         //需要选中的技能框以及已经存放的技能显示可以放入的技能
         //当前的技能组合
-        EnumSkillType[] nowSkillCombineTypes=  (nowCombineSkillItem.value as EnumSkillType[]).Clone() as EnumSkillType[];
+        EnumSkillType[] nowSkillCombineTypes = (nowCombineSkillItem.value as EnumSkillType[]).Clone() as EnumSkillType[];
         //判断当前锁定框的位置
-        int index = nowUISkilCombineLattice.Level;
+        int level = nowUISkilCombineLattice.Level;
         //通过位置和判断是否可以组合技能显示需要添加的技能
-        EnumSkillType[] canSetSkillTypes = SkillCombineStaticTools.GetBaseSkillBackCombineSkillIndex(index);//该阶段的技能
+        EnumSkillType[] canSetSkillTypes = SkillCombineStaticTools.GetBaseSkillBackCombineSkillIndex(level);//该阶段的技能
         EnumSkillType[] addedPointSkillTypes = playerState.SkillPoint.Where(temp => temp.Value > 0).Select(temp => temp.Key).ToArray();//所有加点的技能
         List<EnumSkillType> mustShowSkillTypes = canSetSkillTypes.Intersect(addedPointSkillTypes).ToList(); //简略判断可以显示的技能
         //将现有技能组合判断是否可以使用技能
-        mustShowSkillTypes.RemoveAll(temp => 
+        mustShowSkillTypes.RemoveAll(temp =>
         {
-            nowSkillCombineTypes[index] = temp;
+            nowSkillCombineTypes[level - 1] = temp;
             return !SkillCombineStaticTools.GetCanCombineSkills(nowSkillCombineTypes);
         });
         mustShowSkillTypes.Insert(0, EnumSkillType.None);//第一个必须是None技能
@@ -400,13 +421,18 @@ public class UISkillCombine : MonoBehaviour
         {
             UIListItem uiListItem = uiSelectSkillList.NewItem();
             SkillBaseStruct tempSkillBaseStruct = skillStructData_Base.SearchSkillDatas(temp => temp.skillType == mustShowSkillType).FirstOrDefault();
-            uiListItem.childImage.sprite = tempSkillBaseStruct == null ? null : tempSkillBaseStruct.skillSprite;
+            //uiListItem.childImage.sprite = tempSkillBaseStruct == null ? null : tempSkillBaseStruct.skillSprite;
             uiListItem.value = mustShowSkillType;
+            uiListItem.childText.text = SkillCombineStaticTools.GetSingleSkillName(mustShowSkillType);
         }
+        uiSelectSkillList.UpdateUI();
         //设置第一个技能高亮
         nowSelectSkillItem = uiSelectSkillList.FirstShowItem();
         if (nowSelectSkillItem)
+        {
+            nowSelectSkillItem.childImage.gameObject.SetActive(true);
             nowSelectSkillItem.childImage.enabled = true;
+        }
         //然后切换状态到技能选择 
         enumUISkillCombine = EnumUISkillCombine.CombineSkillSelect;
     }

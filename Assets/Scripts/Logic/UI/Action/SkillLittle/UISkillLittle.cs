@@ -68,8 +68,12 @@ public class UISkillLittle : MonoBehaviour
                 continue;
             UIFocusSkillLittleLattice currentSkillLattice = uiSkillLattice as UIFocusSkillLittleLattice;
             if (currentSkillLattice)
+            {
                 currentSkillLattice.SkillLittleSettingState = false;
+                currentSkillLattice.InitSkillShow(UpdatePreconditionState);
+            }
         }
+        UpdatePreconditionState();
     }
 
     /// <summary>
@@ -217,7 +221,7 @@ public class UISkillLittle : MonoBehaviour
             UIFocusSkillLittleLattice.zonePointDic = new Dictionary<EnumSkillZone, int>();
             foreach (EnumSkillZone skillZone in Enum.GetValues(typeof(EnumSkillZone)))
             {
-                int point = skillStructData.SearchSkillDatas(temp => temp.skillZone == skillZone)//首先查询出该组的技能
+                int point = skillStructData.SearchSkillDatas(temp => temp.skillZones.Contains(skillZone))//首先查询出该组的技能
                     .Select(temp =>
                     {
                         int p = 0;
@@ -236,25 +240,46 @@ public class UISkillLittle : MonoBehaviour
                 UIFocusSkillLittleLattice.skillPointDic[skillType] = tempSkillPoint;
             else
                 UIFocusSkillLittleLattice.skillPointDic.Add(skillType, tempSkillPoint);
-            EnumSkillZone skillZone = EnumSkillZone.None;
+            EnumSkillZone[] skillZones = new EnumSkillZone[0];
             try
             {
-                skillZone = skillStructData.SearchSkillDatas(temp => temp.skillType == skillType).FirstOrDefault().skillZone;
+                skillZones = skillStructData.SearchSkillDatas(temp => temp.skillType == skillType).FirstOrDefault().skillZones;
             }
             catch { }
-            int tempZonePoint = skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
-                .Select(temp =>
+            var tempZonePoints = skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
+                .Where(temp => temp != null)//从集合中便利所有控件
+                .Select(temp =>//从中选出控件代表的技能以及该技能所在的组
                 new
                 {
                     type = (EnumSkillType)temp.skillID,
-                    zone = skillStructData.SearchSkillDatas(typeData => typeData.skillType == (EnumSkillType)temp.skillID).FirstOrDefault().skillZone
-                }).Where(temp => temp.zone == skillZone)
-                .Select(temp => playerState.SkillPoint.Where(typeData => typeData.Key == temp.type).FirstOrDefault())
-                .Sum(temp => temp.Value);
-            if (UIFocusSkillLittleLattice.zonePointDic.ContainsKey(skillZone))
-                UIFocusSkillLittleLattice.zonePointDic[skillZone] = tempZonePoint;
-            else
-                UIFocusSkillLittleLattice.zonePointDic.Add(skillZone, tempZonePoint);
+                    zone = skillStructData.SearchSkillDatas(typeData => typeData.skillType == (EnumSkillType)temp.skillID)
+                                .Select(innerTemp => innerTemp.skillZones).FirstOrDefault()
+                })
+                .Where(temp => temp.zone != null && temp.zone.Intersect(skillZones).Count() > 0)//两者存在交集则选择此项目
+                .Select(temp =>//选出该技能与本次加点技能对应的组
+                new
+                {
+                    skill = playerState.SkillPoint.Where(typeData => typeData.Key == temp.type).FirstOrDefault(),
+                    zones = temp.zone.Intersect(skillZones)
+                });
+            Dictionary<EnumSkillZone, int> tempZonePointDic = new Dictionary<EnumSkillZone, int>();//临时的组加点
+            foreach (var tempZonePoint in tempZonePoints)
+            {
+                foreach (EnumSkillZone zone in tempZonePoint.zones)
+                {
+                    if (tempZonePointDic.ContainsKey(zone))
+                        tempZonePointDic[zone] += tempZonePoint.skill.Value;
+                    else tempZonePointDic.Add(zone, tempZonePoint.skill.Value);
+                }
+            }
+            foreach (var itemZonePoint in tempZonePointDic)
+            {
+                if (UIFocusSkillLittleLattice.zonePointDic.ContainsKey(itemZonePoint.Key))
+                    UIFocusSkillLittleLattice.zonePointDic[itemZonePoint.Key] = itemZonePoint.Value;
+                else
+                    UIFocusSkillLittleLattice.zonePointDic.Add(itemZonePoint.Key, itemZonePoint.Value);
+            }
+
         }
 
         if (UIFocusSkillLittleLattice.skillMustPointDic == null)

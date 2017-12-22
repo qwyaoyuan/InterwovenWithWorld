@@ -58,11 +58,6 @@ public enum EnumGoodsAbility
     [FieldExplan("灵巧值附加")]
     DEX = 30,
     /// <summary>
-    /// 专注值附加
-    /// </summary>
-    [FieldExplan("专注值附加")]
-    HIT = 40,
-    /// <summary>
     /// 意志值附加
     /// </summary>
     [FieldExplan("意志值附加")]

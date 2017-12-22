@@ -12,8 +12,8 @@ public partial class GameState
     partial void Load_IPlayerState_ISkillState()
     {
         _CombineSkills = new SkillBaseStruct[4];
-        isSkillStartHolding = false;
-        skillStartHoldingTime = 0;
+        _IsSkillStartHolding = false;
+        _SkillStartHoldingTime = 0;
     }
 
     /// <summary>
@@ -24,12 +24,59 @@ public partial class GameState
     /// <summary>
     /// 是否开始蓄力
     /// </summary>
-    bool isSkillStartHolding;
+    bool _IsSkillStartHolding;
+    /// <summary>
+    /// 是否开始蓄力
+    /// </summary>
+    public bool IsSkillStartHolding
+    {
+        get { return _IsSkillStartHolding; }
+        private set
+        {
+            bool tempIsSkillStartHolding = _IsSkillStartHolding;
+            _IsSkillStartHolding = value;
+            if (tempIsSkillStartHolding != _IsSkillStartHolding)
+                Call<ISkillState, bool>(temp => temp.IsSkillStartHolding);
+        }
+    }
 
     /// <summary>
     /// 技能蓄力时间
     /// </summary>
-    float skillStartHoldingTime;
+    float _SkillStartHoldingTime;
+    /// <summary>
+    /// 技能蓄力时间
+    /// </summary>
+    public float SkillStartHoldingTime
+    {
+        get { return _SkillStartHoldingTime; }
+        private set
+        {
+            float tempSkillStartHoldingTime = _SkillStartHoldingTime;
+            _SkillStartHoldingTime = value;
+            if (_SkillStartHoldingTime != tempSkillStartHoldingTime)
+                Call<ISkillState, float>(temp => temp.SkillStartHoldingTime);
+        }
+    }
+
+    /// <summary>
+    /// 公共冷却时间
+    /// </summary>
+    float _PublicCoolingTime;
+    /// <summary>
+    /// 公共冷却时间
+    /// </summary>
+    public float PublicCoolingTime
+    {
+        get { return _PublicCoolingTime; }
+        private set
+        {
+            float tempPublicCoolingTime = _PublicCoolingTime;
+            _PublicCoolingTime = value;
+            if (_PublicCoolingTime != tempPublicCoolingTime)
+                Call<ISkillState, float>(temp => temp.PublicCoolingTime);
+        }
+    }
 
     /// <summary>
     /// 获取或设置组合技能
@@ -41,11 +88,11 @@ public partial class GameState
         get { if (_CombineSkills == null) return new SkillBaseStruct[0]; else return _CombineSkills.Where(temp => temp != null).ToArray(); }
         set
         {
-            if (isSkillStartHolding)
+            if (_IsSkillStartHolding)
                 return;
             if (_CombineSkills == null)
                 _CombineSkills = new SkillBaseStruct[4];
-            if (value == null && value.Count(temp => temp == null) == 0)
+            if (value == null || value.Count(temp => temp == null) > 0)
             {
                 SkillBaseStruct[] tempCombineSkills = _CombineSkills;
                 _CombineSkills = new SkillBaseStruct[4];
@@ -63,9 +110,9 @@ public partial class GameState
                 SkillBaseStruct _thirdSkillBaseStruct = value.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel3Start && temp.skillType < EnumSkillType.MagicCombinedLevel3End);
                 SkillBaseStruct _fourthSkillBaseStruct = value.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel4Start && temp.skillType < EnumSkillType.MagicCombinedLevel4End);
                 SkillBaseStruct combineFirstSkillBaseStruct = _firstSkillBaseStruct != null ? _firstSkillBaseStruct : firstSkillBaseStruct;
-                SkillBaseStruct combineSecondSkillBaseStruct = _secondSkillBaseStruct != null ? _secondSkillBaseStruct : firstSkillBaseStruct;
-                SkillBaseStruct combineThirdSkillBaseStruct = _thirdSkillBaseStruct != null ? _thirdSkillBaseStruct : firstSkillBaseStruct;
-                SkillBaseStruct combineFourthSkillBaseStruct = _fourthSkillBaseStruct != null ? _fourthSkillBaseStruct : firstSkillBaseStruct;
+                SkillBaseStruct combineSecondSkillBaseStruct = _secondSkillBaseStruct != null ? _secondSkillBaseStruct : secondSkillBaseStruct;
+                SkillBaseStruct combineThirdSkillBaseStruct = _thirdSkillBaseStruct != null ? _thirdSkillBaseStruct : thirdSkillBaseStruct;
+                SkillBaseStruct combineFourthSkillBaseStruct = _fourthSkillBaseStruct != null ? _fourthSkillBaseStruct : fourthSkillBaseStruct;
                 bool canUseThisCombine = SkillCombineStaticTools.GetCanCombineSkills(
                     combineFirstSkillBaseStruct != null ? combineFirstSkillBaseStruct.skillType : EnumSkillType.None,
                     combineSecondSkillBaseStruct != null ? combineSecondSkillBaseStruct.skillType : EnumSkillType.None,
@@ -101,10 +148,12 @@ public partial class GameState
 
     partial void Update_IPlayerState_ISkillState()
     {
-        if (isSkillStartHolding)
+        if (IsSkillStartHolding)
         {
-            skillStartHoldingTime += Time.deltaTime;
+            SkillStartHoldingTime += Time.deltaTime;
         }
+        if (PublicCoolingTime > 0)
+            PublicCoolingTime -= Time.deltaTime;
     }
 
     /// <summary>
@@ -115,14 +164,17 @@ public partial class GameState
     {
         bool canRelease = _CombineSkills != null
             && _CombineSkills.Count(temp => temp != null) > 0
-            && SkillCombineStaticTools.GetCanCombineSkills(_CombineSkills.Select(temp=>temp!=null?temp.skillType:EnumSkillType.None).ToArray());
+            && SkillCombineStaticTools.GetCanCombineSkills(_CombineSkills.Select(temp => temp != null ? temp.skillType : EnumSkillType.None).ToArray())
+            && PublicCoolingTime <= 0;
         if (canRelease)
         {
-            isSkillStartHolding = true;
-            skillStartHoldingTime = 0;
+            IsSkillStartHolding = true;
+            SkillStartHoldingTime = 0;
         }
         return canRelease;
     }
+
+
 
     /// <summary>
     /// 结束按住(松开)释放魔法键(用于结束计时并释放)
@@ -130,16 +182,47 @@ public partial class GameState
     /// <returns>是否可以释放该技能</returns>
     public bool EndCombineSkillRelease()
     {
-        if (isSkillStartHolding)
+        if (_IsSkillStartHolding)
         {
             bool canRelease = _CombineSkills != null
                 && _CombineSkills.Count(temp => temp != null) > 0
                 && SkillCombineStaticTools.GetCanCombineSkills(_CombineSkills.Select(temp => temp != null ? temp.skillType : EnumSkillType.None).ToArray());
             //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
+            if (canRelease)
+            {
+                //这里需要根据类型判断粒子;
+                int key = SkillCombineStaticTools.GetCombineSkillKey(_CombineSkills);
+                GameObject particalPrefab = SkillCombineStaticTools.GetCombineSkillsPartical(key);
+                if (particalPrefab != null)
+                {
+                    IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+                    IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
+                    ParticalInitParamData[] particalInitParamDatas = iDamage.GetParticalInitParamData(iPlayerState.PlayerObj, _CombineSkills);
+                    if (iPlayerState.PlayerObj)
+                    {
+                        foreach (ParticalInitParamData particalInitParamData in particalInitParamDatas)
+                        {
+                            GameObject particalObj = GameObject.Instantiate<GameObject>(particalPrefab);
+                            ParticalControlEntry particalControlEntry = particalObj.GetComponent<ParticalControlEntry>();
+                            particalControlEntry.SetLifeCycle(particalInitParamData.lifeTime);
+                            particalControlEntry.SetCheckCollisionIntervalTime(particalInitParamData.checkCollisionIntervalTime);
+                            particalControlEntry.Init(
+                                particalInitParamData.position,
+                                particalInitParamData.forward,
+                                particalInitParamData.color,
+                                particalInitParamData.layerMask,
+                                particalInitParamData.CollisionCallBack,
+                                particalInitParamData.range,
+                                particalInitParamData.targetObjs);
+                        }
+                    }
+                }
+            }
+            PublicCoolingTime = 2;//公共冷却时间为1秒
             //初始化
-            isSkillStartHolding = false;
-            skillStartHoldingTime = 0;
-            CombineSkills = null;
+            IsSkillStartHolding = false;
+            SkillStartHoldingTime = 0;
+            //CombineSkills = null;
             return canRelease;
         }
         return false;
@@ -151,7 +234,7 @@ public partial class GameState
     /// <param name="skillBaseStruct"></param>
     public bool ReleaseNormalSkill(SkillBaseStruct skillBaseStruct)
     {
-        if (isSkillStartHolding)
+        if (IsSkillStartHolding)
         {
             //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
             return true;

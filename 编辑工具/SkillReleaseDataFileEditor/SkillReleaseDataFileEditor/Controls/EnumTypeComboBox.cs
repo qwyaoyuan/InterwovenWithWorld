@@ -140,8 +140,19 @@ namespace SkillDataFileEditor
         /// </summary>
         public string TextValue
         {
-            get { return selectValue; }
-            set { ComboBox_Main.Text = value; }
+            get
+            {
+                return selectValue;
+            }
+            set
+            {
+                //ComboBox_Main.Text = value;
+                if (values != null)
+                {
+                    int index = values.ToList().IndexOf(value);
+                    ComboBox_Main.SelectedIndex = index;
+                }
+            }
         }
 
         /// <summary>
@@ -194,7 +205,7 @@ namespace SkillDataFileEditor
                         if (attributes.Length > 0)
                         {
                             FieldExplanAttribute fieldExplanAttribute = (FieldExplanAttribute)attributes[0];
-                            messages[i] = fieldExplanAttribute.GetExplan();
+                            messages[i] = values[i] + "-->" + fieldExplanAttribute.GetExplan();
                         }
                         else messages[i] = "未找到说明!";
                     }
@@ -202,9 +213,9 @@ namespace SkillDataFileEditor
             }
             if (values != null)
             {
-                foreach (string value in values)
+                foreach (string message in messages)
                 {
-                    ComboBox_Main.Items.Add(value);
+                    ComboBox_Main.Items.Add(message);
                 }
                 if (values.Length > 0)
                     ComboBox_Main.SelectedIndex = 0;
@@ -222,7 +233,8 @@ namespace SkillDataFileEditor
             {
                 ListenControl = _listenControl;
                 Label_Message.Text = messages[ComboBox_Main.SelectedIndex];
-                selectValue = ComboBox_Main.Text;
+                selectValue = values[ComboBox_Main.SelectedIndex];
+                //selectValue = ComboBox_Main.Text;
                 SelectedChanged?.Invoke(this, new EnumTypeCBOSelectedChangedEventArgs() { targetControl = this, selectText = selectValue });
                 isChangedValue = true;
             }
@@ -237,12 +249,20 @@ namespace SkillDataFileEditor
         private void ListenControl_TextChanged(object sender, EventArgs e)
         {
             Control c = sender as Control;
-            if (c != null && !string.Equals(c.Text, ComboBox_Main.Text))
+            if (values == null)
+                return;
+            //if (c != null && !string.Equals(c.Text, ComboBox_Main.Text))
+            if(c!=null)
             {
-                ComboBox_Main.Text = c.Text;
-                if (!string.Equals(ComboBox_Main.Text, c.Text) && values != null && values.Length > 0)
+                int index = values.ToList().IndexOf(c.Text);
+                if (index != ComboBox_Main.SelectedIndex)
                 {
-                    ComboBox_Main.Text = values[0];
+                    //ComboBox_Main.Text = c.Text;
+                    ComboBox_Main.SelectedIndex = index;
+                    //if (!string.Equals(ComboBox_Main.Text, c.Text) && values != null && values.Length > 0)
+                    //{
+                    //    ComboBox_Main.Text = values[0];
+                    //}
                 }
             }
         }

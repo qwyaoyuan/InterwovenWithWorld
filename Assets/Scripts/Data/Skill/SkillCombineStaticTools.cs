@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using UnityEngine;
 
 /// <summary>
@@ -482,15 +485,25 @@ public class SkillCombineNextNodeStruct
 public static class SkillCombineStaticTools
 {
     /// <summary>
+    /// 组合的值对应粒子名配置文件路径
+    /// </summary>
+    public static string combineSkillKeyToParticalNameFilePath = "Data/Skill/CombinePartical/CombinePartical";
+
+    /// <summary>
+    /// 组合技能的值对应粒子名字典
+    /// </summary>
+    private static Dictionary<int, string> combineSkillKeyToParticalNameDic;
+
+    /// <summary>
     /// 组合技能对应图片的缓存字典
     /// </summary>
-    public static Dictionary<int, Sprite> combineSpriteDic;
+    private static Dictionary<int, Sprite> combineSpriteDic;
 
     /// <summary>
     /// 可以使用的组合技能集合
     /// 注意一阶段的技能也是组合技能,也是从1亿开始的数字
     /// </summary>
-    public static List<SkillCombineNextNodeStruct> canUseCombineSkillList;
+    private static List<SkillCombineNextNodeStruct> canUseCombineSkillList;
 
     static SkillCombineStaticTools()
     {
@@ -505,7 +518,19 @@ public static class SkillCombineStaticTools
         foreach (EnumSkillType enumSkillType in level_SkillTypes)
         {
             SkillCombineNextNodeStruct skillCombineNExtNodeStruct = new SkillCombineNextNodeStruct(enumSkillType, null);
+            canUseCombineSkillList.Add(skillCombineNExtNodeStruct);
             skillCombineNExtNodeStruct.SetNext();
+        }
+        //添加组合技能值对应的粒子名
+        try
+        {
+            TextAsset textAsset = Resources.Load<TextAsset>(combineSkillKeyToParticalNameFilePath);
+            string assetText = Encoding.UTF8.GetString(textAsset.bytes);
+            combineSkillKeyToParticalNameDic = JsonConvert.DeserializeObject<Dictionary<int, string>>(assetText, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+        }
+        catch
+        {
+            combineSkillKeyToParticalNameDic = new Dictionary<int, string>();
         }
     }
 
@@ -524,7 +549,7 @@ public static class SkillCombineStaticTools
         Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
         if (sprites == null || sprites.Length == 0)
             return null;
-        var sizes = sprites.Select(temp => new { width = temp.bounds.size.x, height = temp.bounds.size.y });
+        var sizes = sprites.Select(temp => new { width = temp.textureRect.width , height = temp.textureRect.height });
         int width = (int)sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
         int height = (int)sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
         if (width == 0 || height == 0)
@@ -671,6 +696,10 @@ public static class SkillCombineStaticTools
                     value = value - (int)EnumSkillType.MagicCombinedLevel4Start;
                     value *= (int)Mathf.Pow(100, 3);
                 }
+                else if (enumSkillType != EnumSkillType.None)
+                {
+                    return value;
+                }
                 if (index > -1)
                     transDataArray[index] = value;
             }
@@ -680,12 +709,26 @@ public static class SkillCombineStaticTools
     }
 
     /// <summary>
+    /// 获取技能的组合值
+    /// </summary>
+    /// <param name="skillBaseStructs"></param>
+    /// <returns></returns>
+    public static int GetCombineSkillKey(IEnumerable<SkillBaseStruct> skillBaseStructs)
+    {
+        return GetCombineSkillKey(skillBaseStructs.Where(temp => temp != null).Select(temp => temp.skillType));
+    }
+
+    /// <summary>
     /// 获取组合值组合的技能
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
     public static EnumSkillType[] GetCombineSkills(int key)
     {
+        if (key < (int)EnumSkillType.MagicCombinedStart)
+        {
+            return new EnumSkillType[] { (EnumSkillType)key };
+        }
         int level1 = key % 100; key /= 100;
         int level2 = key % 100; key /= 100;
         int level3 = key % 100; key /= 100;
@@ -709,7 +752,7 @@ public static class SkillCombineStaticTools
     /// <returns></returns>
     public static bool GetCanCombineSkills(params EnumSkillType[] skills)
     {
-        List<EnumSkillType> skillList = skills.Where(temp => temp > EnumSkillType.MagicCombinedStart && temp < EnumSkillType.EndMagic).ToList();
+        List<EnumSkillType> skillList = skills.Where(temp => temp > EnumSkillType.MagicCombinedLevel1Start && temp < EnumSkillType.MagicCombinedLevel4End).ToList();
         int rightCount = canUseCombineSkillList.Select(temp => temp.ThisIsACombineSkills(skillList)).Count(temp => temp);
         return rightCount > 0;
     }
@@ -743,6 +786,17 @@ public static class SkillCombineStaticTools
     /// <returns></returns>
     public static string GetCombineSkillsName(IEnumerable<SkillBaseStruct> skillBaseStructs)
     {
+        if (skillBaseStructs.Count() == 1)
+        {
+            SkillBaseStruct skillBaseStruct = skillBaseStructs.FirstOrDefault();
+            if (skillBaseStruct != null)
+            {
+                if (skillBaseStruct.skillType < EnumSkillType.MagicStart)
+                {
+                    return skillBaseStruct.skillName;
+                }
+            }
+        }
         List<KeyValuePair<EnumSkillType, string>> tempList = skillBaseStructs.Select(temp => new KeyValuePair<EnumSkillType, string>(temp.skillType, temp.skillName)).ToList();
         string combineSkillName = canUseCombineSkillList.Select(temp => temp.GetCombineSkillName(tempList, "")).Where(temp => !string.IsNullOrEmpty(temp)).FirstOrDefault();
         return combineSkillName == null ? "" : combineSkillName;
@@ -762,5 +816,60 @@ public static class SkillCombineStaticTools
             return GetCombineSkillsName(thisUsedSkills);
         }
         return "";
+    }
+
+    /// <summary>
+    /// 获取单一技能的名字(反射枚举获取)
+    /// </summary>
+    /// <param name="skillBaseStruct"></param>
+    /// <returns></returns>
+    public static string GetSingleSkillName(SkillBaseStruct skillBaseStruct)
+    {
+        if (skillBaseStruct == null)
+            return "空";
+        EnumSkillType enumSkillType = skillBaseStruct.skillType;
+        Type t = typeof(EnumSkillType);
+        FieldInfo fieldInfo = t.GetField(enumSkillType.ToString());
+        if (fieldInfo != null)
+        {
+            FieldExplanAttribute fieldExplan = fieldInfo.GetCustomAttributes(typeof(FieldExplanAttribute), false).OfType<FieldExplanAttribute>().FirstOrDefault();
+            if (fieldExplan != null)
+            {
+                return fieldExplan.GetExplan();
+            }
+        }
+        return "空";
+    }
+
+    /// <summary>
+    /// 获取单一技能的名字(反射枚举获取)
+    /// </summary>
+    /// <param name="enumSkillType"></param>
+    /// <returns></returns>
+    public static string GetSingleSkillName(EnumSkillType enumSkillType)
+    {
+        SkillStructData skillStructData_Base = DataCenter.Instance.GetMetaData<SkillStructData>();
+        if (skillStructData_Base != null)
+        {
+            SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => enumSkillType == temp.skillType);
+            return GetSingleSkillName(thisUsedSkills.FirstOrDefault());
+        }
+        return "空";
+    }
+
+    /// <summary>
+    /// 获取组合值组合技能的粒子
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static GameObject GetCombineSkillsPartical(int key)
+    {
+        EnumSkillType[] enumSkillTypes = GetCombineSkills(key);
+        if (combineSkillKeyToParticalNameDic != null && combineSkillKeyToParticalNameDic.ContainsKey(key))
+        {
+            string particalName = combineSkillKeyToParticalNameDic[key];
+            return ParticalManager.GetPartical(particalName);
+        }
+        return null;
     }
 }

@@ -30,15 +30,15 @@ public class SkillManager : IInput
     /// </summary>
     private SkillManager()
     {
-        GameState.Instance.Registor<GameState>(GameStateChanged);
+        GameState.Instance.Registor<IGameState>(GameStateChanged);
     }
 
     /// <summary>
     /// 游戏状态发生变化
     /// </summary>
-    /// <param name="gameState"></param>
+    /// <param name="iGameState"></param>
     /// <param name="fieldName"></param>
-    private void GameStateChanged(GameState gameState, string fieldName)
+    private void GameStateChanged(IGameState iGameState, string fieldName)
     {
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<GameState, Action>(temp => temp.LoadArchive)))
         {
@@ -62,6 +62,11 @@ public class SkillManager : IInput
     SkillStructData skillStructData;
 
     /// <summary>
+    /// 游戏状态
+    /// </summary>
+    IGameState iGameState;
+
+    /// <summary>
     /// 初始化数据对象
     /// </summary>
     private void InitDataTarget()
@@ -69,12 +74,17 @@ public class SkillManager : IInput
         keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         iSkillState = GameState.Instance.GetEntity<ISkillState>();
+        iGameState = GameState.Instance.GetEntity<IGameState>();
     }
 
 
 
     public void KeyDown(int key)
     {
+        if (keyContactData == null)
+            return;
+        if (iGameState.GameRunType != EnumGameRunType.Safe && iGameState.GameRunType != EnumGameRunType.Unsafa)
+            return;
         KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
         if (keyContactStructs.Length > 0)
         {
@@ -87,6 +97,11 @@ public class SkillManager : IInput
                     EnumSkillType[] enumSkillTypes = SkillCombineStaticTools.GetCombineSkills(skillID);
                     SkillBaseStruct[] combineSkills = skillStructData.SearchSkillDatas(temp => enumSkillTypes.Contains(temp.skillType));
                     iSkillState.CombineSkills = combineSkills;
+                }
+                else if (skillID > (int)EnumSkillType.MagicCombinedLevel1Start && skillID < (int)EnumSkillType.MagicCombinedLevel4End)
+                {
+                    SkillBaseStruct[] singleCombineSkills = skillStructData.SearchSkillDatas(temp => (EnumSkillType)skillID == temp.skillType);
+                    iSkillState.CombineSkills = singleCombineSkills;
                 }
                 //如果按下魔法释放键,则释放组合盘中的魔法
                 else if (skillID == (int)EnumSkillType.MagicRelease)
@@ -104,6 +119,10 @@ public class SkillManager : IInput
                     }
                 }
             }
+        }
+        else if (keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.None).Count() == 1)//如果输入了空的按键则
+        {
+            iSkillState.CombineSkills = null;
         }
     }
 
@@ -127,6 +146,10 @@ public class SkillManager : IInput
 
     public void KeyUp(int key)
     {
+        if (keyContactData == null)
+            return;
+        if (iGameState.GameRunType != EnumGameRunType.Safe && iGameState.GameRunType != EnumGameRunType.Unsafa)
+            return;
         KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
         if (keyContactStructs.Length > 0)
         {
@@ -143,16 +166,16 @@ public class SkillManager : IInput
                 }
             }
         }
-        }
+    }
 
     public void Move(Vector2 forward)
     {
-     
+
     }
 
     public void View(Vector2 view)
     {
-       
+
     }
 
 

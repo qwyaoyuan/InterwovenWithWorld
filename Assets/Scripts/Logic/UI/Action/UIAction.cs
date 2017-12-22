@@ -80,7 +80,7 @@ public class UIAction : MonoBehaviour
         }
         switch (keyType)
         {
-            case UIManager.KeyType.B://返回
+            case UIManager.KeyType.START://返回
                 CloseActionClick();
                 break;
         }

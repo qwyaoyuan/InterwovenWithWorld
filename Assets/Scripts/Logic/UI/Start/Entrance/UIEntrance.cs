@@ -296,6 +296,27 @@ public class UIEntrance : MonoBehaviour
         //加载数据
         GameState.Instance.LoadArchive();
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        /*测试代码*/
+        //添加技能点
+        EnumSkillType[] enumSkillTypes = Enum.GetValues(typeof(EnumSkillType)).OfType<EnumSkillType>().Where(temp =>
+            (temp < EnumSkillType.MagicCombinedLevel1End && temp > EnumSkillType.MagicCombinedLevel1Start)
+            || (temp < EnumSkillType.MagicCombinedLevel2End && temp > EnumSkillType.MagicCombinedLevel2Start)
+            || (temp < EnumSkillType.MagicCombinedLevel3End && temp > EnumSkillType.MagicCombinedLevel3Start)
+            || (temp < EnumSkillType.MagicCombinedLevel4End && temp > EnumSkillType.MagicCombinedLevel4Start)
+        ).ToArray();
+        foreach (var item in enumSkillTypes)
+        {
+            playerState.SkillPoint.Add(item, 1);
+        }
+        playerState.SkillPoint.Add(EnumSkillType.MagicRelease, 1);
+        playerState.FreedomPoint = 2;
+        //添加按键
+        KeyContactData keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
+        keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { id = 199, key = (int)EnumInputType.A, keyContactType = EnumKeyContactType.Skill, name = "释放魔法" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Up, new KeyContactStruct() {id = 1001,key = (int)EnumInputType.Up,keyContactType= EnumKeyContactType.Skill,name = "奥术弹" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Right, new KeyContactStruct() { id = 1101, key = (int)EnumInputType.Right, keyContactType = EnumKeyContactType.Skill, name = "火元素" });
+
+        /**********/
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))
         {
@@ -305,7 +326,7 @@ public class UIEntrance : MonoBehaviour
         isLoadedScene = true;
         IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
         iGameState.ChangedScene(playerState.Scene, playerState.Location, result => isLoadedScene = false);
-       
+
     }
 
 

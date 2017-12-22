@@ -101,12 +101,13 @@ public class UIManager : IInput
     public void Move(Vector2 forward)
     {
         if (KeyPressHandle != null)
-            KeyPressHandle(KeyType.None, forward);
+            KeyPressHandle(KeyType.LEFT_ROCKER, forward);
     }
 
     public void View(Vector2 view)
     {
-       
+        if (KeyPressHandle != null)
+            KeyPressHandle(KeyType.RIGHT_ROCKER, view);
     }
 
     /// <summary>

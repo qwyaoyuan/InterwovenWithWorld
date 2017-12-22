@@ -9,6 +9,24 @@ using UnityEngine;
 public partial class GameState : IGameState
 {
 
+    /// <summary>
+    /// 在加载存档后调用来初始化数据
+    /// </summary>
+    public void LoadArchive()
+    {
+        //初始化共有数据
+        playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        levelData = DataCenter.Instance.GetMetaData<LevelData>();
+        //其他的加载初始化
+        Load_INowTaskState();
+        Load_IPlayerState();
+        Load_IGameState();
+        Load_IPlayerState_ISkillState();
+        //通知存档加载
+        Call<IGameState, Action>(temp => temp.LoadArchive);
+    }
+
     partial void Load_IGameState()
     {
         _GameRunTypeStack = new Stack<EnumGameRunType>();

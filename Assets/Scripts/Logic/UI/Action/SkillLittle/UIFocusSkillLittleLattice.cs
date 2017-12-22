@@ -57,7 +57,7 @@ public class UIFocusSkillLittleLattice : UIFocus
     /// <summary>
     /// 所有组的当前加点情况 (这个数据用于计算技能加点时,判断当前的状态是否复合前置条件)
     /// </summary>
-    public static Dictionary<EnumSkillZone,int> zonePointDic;
+    public static Dictionary<EnumSkillZone, int> zonePointDic;
     /// <summary>
     /// 所有技能的当前加点情况(这个数据用于计算技能加点时,判断当前的状态是否复合前置条件)
     /// </summary>
@@ -77,7 +77,7 @@ public class UIFocusSkillLittleLattice : UIFocus
         uiAddNum = GetComponent<UIAddNum>();
         uiAddNum.ClickLeftHandle += UiAddNum_ClickLeftHandle;
         uiAddNum.ClickRightHandle += UIAddNum_ClickRightHandle;
-    }   
+    }
 
     /// <summary>
     /// 设置焦点
@@ -110,7 +110,7 @@ public class UIFocusSkillLittleLattice : UIFocus
             if (uiAddNum)
             {
                 //如果是false则直接隐藏
-                if (settingState)
+                if (!settingState)
                 {
                     uiAddNum.SetLeftHandleState(settingState);
                     uiAddNum.SetRightHandleState(settingState);
@@ -124,8 +124,12 @@ public class UIFocusSkillLittleLattice : UIFocus
                     {
                         if (CheckMinHandleCanUse(enumSkillType))//检查技能是否可以点击减按钮
                             uiAddNum.SetLeftHandleState(true);
+                        else
+                            uiAddNum.SetLeftHandleState(false);
                         if (CheckMaxHandleCanUse(enumSkillType))//检查技能是否可以点击加按钮
                             uiAddNum.SetRightHandleState(true);
+                        else
+                            uiAddNum.SetRightHandleState(false);
                     }
                     else
                     {
@@ -168,7 +172,7 @@ public class UIFocusSkillLittleLattice : UIFocus
         {
             case UIFocusPath.MoveType.LEFT:
             case UIFocusPath.MoveType.DOWN:
-                UIAddNum_ClickRightHandle();
+                UiAddNum_ClickLeftHandle();
                 break;
             case UIFocusPath.MoveType.RIGHT:
             case UIFocusPath.MoveType.UP:
@@ -196,7 +200,7 @@ public class UIFocusSkillLittleLattice : UIFocus
                     uiAddNum.Value++;
                 }
         }
-        if (UpdatePreconditionStateAction!=null)
+        if (UpdatePreconditionStateAction != null)
             UpdatePreconditionStateAction();
         SkillLittleSettingState = true;
     }
@@ -298,21 +302,27 @@ public class UIFocusSkillLittleLattice : UIFocus
         int oldPoint;
         if (playerState.SkillPoint.TryGetValue(enumSkillType, out oldPoint))
         {
-            if (oldPoint <= 0)//技能如果已经小于等于0了,则不能在减了
+            //if (oldPoint <= 0)//技能如果已经小于等于0了,则不能在减了
+            if (uiAddNum.Value <= 0)
                 return false;
             if (uiAddNum.Value <= oldPoint)//如果技能小于等于之前的加点数据,则不能再减了
                 return false;
             if (uiAddNum.Value == 1)//需要判断如果该技能等0(减去1后)时,是否会影响后置技能(组加点以及前置加点)
             {
                 SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == enumSkillType).FirstOrDefault();
-                if (skillBaseStruct!=null)
+                if (skillBaseStruct != null)
                 {
-                    EnumSkillZone skillZone = skillBaseStruct.skillZone;//当前技能所在的组 
-                    int nowSkillZonePoint = 0;
-                    zonePointDic.TryGetValue(skillZone,out nowSkillZonePoint);//获取当前技能组的点数 
-                    int mustSkillZonePoint = 0;
-                    zoneMustPointDic.TryGetValue(skillZone,out mustSkillZonePoint);//获取需求技能组的点数
-                    return mustSkillZonePoint <= nowSkillZonePoint;
+                    EnumSkillZone[] skillZones = skillBaseStruct.skillZones;//当前技能所在的组数组
+                    foreach (EnumSkillZone skillZone in skillZones)
+                    {
+                        int nowSkillZonePoint = 0;
+                        zonePointDic.TryGetValue(skillZone, out nowSkillZonePoint);//获取当前技能组的点数
+                        int mustSkillZonePoint = 0;
+                        zoneMustPointDic.TryGetValue(skillZone, out mustSkillZonePoint);//获取需求技能组的点数
+                        if (mustSkillZonePoint >= nowSkillZonePoint)
+                            return false;
+                    }
+                    return true;
                 }
                 return false;
             }
@@ -330,7 +340,7 @@ public class UIFocusSkillLittleLattice : UIFocus
     {
         int oldPoint;
         SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == enumSkillType).FirstOrDefault();
-        if (playerState.SkillPoint.TryGetValue(enumSkillType, out oldPoint)&& skillBaseStruct!=null)
+        if (playerState.SkillPoint.TryGetValue(enumSkillType, out oldPoint) && skillBaseStruct != null)
         {
             if (uiAddNum.Value >= skillBaseStruct.maxLevel)//技能如果已经到达最大了,则不能再加了
                 return false;

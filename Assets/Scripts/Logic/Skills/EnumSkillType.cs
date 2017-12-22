@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>
 /// 技能类型枚举
 /// </summary>
+[Serializable]
 public enum EnumSkillType
 {
     /// <summary>
@@ -601,7 +602,11 @@ public enum EnumSkillType
 public enum EnumSkillZone
 {
     None,
-
+    /// <summary>
+    /// 魔法基础组(所有魔法技能都是改组的)
+    /// </summary>
+    [FieldExplan("魔法基础组(所有魔法技能都是改组的)")]
+    MF_Zone,
     /// <summary>
     /// 法术组
     /// </summary>
@@ -657,6 +662,23 @@ public enum EnumSkillZone
     /// </summary>
     [FieldExplan("教皇")]
     JH_MF_Zone,
+
+    /// <summary>
+    /// 元素+信仰
+    /// </summary>
+    [FieldExplan("元素+信仰")]
+    YS_XY_MF_Zone,
+    /// <summary>
+    /// 魔法师+萨满
+    /// </summary>
+    [FieldExplan("魔法师+萨满")]
+    MFS_SM_MF_Zone,
+    /// <summary>
+    /// 萨满+牧师
+    /// </summary>
+    [FieldExplan("萨满+牧师")]
+    SM_MS_MF_Zone,
+
 
     /// <summary>
     /// 战士

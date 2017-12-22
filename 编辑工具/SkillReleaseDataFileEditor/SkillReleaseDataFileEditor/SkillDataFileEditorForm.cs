@@ -829,5 +829,18 @@ namespace SkillDataFileEditor
                 MessageBox.Show("移除失败");
             }
         }
+
+        private void SkillDataFileEditorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("请保证保存了修改内容再关闭此窗体", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;//不退
+            }
+            else
+            {
+                e.Cancel = false;//退
+            }
+        }
     }
 }

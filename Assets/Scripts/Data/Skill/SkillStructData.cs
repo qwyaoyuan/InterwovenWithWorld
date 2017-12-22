@@ -8,9 +8,9 @@ using System.Reflection;
 /// <summary>
 /// 技能结构数据
 /// </summary>
-public class SkillStructData:ILoadable<SkillStructData>
+public class SkillStructData : ILoadable<SkillStructData>
 {
- 
+
     /// <summary>
     /// 技能结构对象数组 
     /// </summary>
@@ -49,6 +49,14 @@ public class SkillStructData:ILoadable<SkillStructData>
                 skillBaseStructs = new SkillBaseStruct[0];
             else
             {
+                //获取其他类型的宏定义
+                Type edfineType = typeof(SkillStructConstString);
+                FieldInfo[] edfineInfos = edfineType.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                Dictionary<string, string> edfineNameToValueDic = edfineInfos.ToDictionary(
+                    temp => temp.Name,
+                    temp => (string)temp.GetValue(null));
+                string[] otherSplit = new string[] { "***" };//截取其他数据时所用的分隔符
+
                 string[] splits = new string[] { "^^^" };
                 string[] skillPaths = skillPathTextAsset.text.Split(new string[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(temp => temp.Split(splits, StringSplitOptions.RemoveEmptyEntries))
@@ -65,21 +73,47 @@ public class SkillStructData:ILoadable<SkillStructData>
                 for (int i = 0; i < ids.Length; i++)
                 {
                     string id = ids[i];
-                    SkillBaseStruct skillBaseStruct = new SkillBaseStruct();
+                    EnumSkillType enumSkillType = skillAnalysisData.GetEnum<EnumSkillType>(id, "skillType");
+                    SkillBaseStruct skillBaseStruct = null;
+                    Type newType = null;
+                    //尝试使用该类型构造一个新的类
+                    try
+                    {
+                        newType = Type.GetType("SkillStruct_" + enumSkillType.ToString());
+                        skillBaseStruct = Activator.CreateInstance(newType) as SkillBaseStruct;
+                    }
+                    catch { }
+                    if (skillBaseStruct == null)
+                        skillBaseStruct = new SkillBaseStruct();
+                    //加载其他属性
+                    if (newType != null)
+                    {
+                        FieldInfo[] otherFieldInfos = newType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+                        foreach (FieldInfo otherFieldInfo in otherFieldInfos)
+                        {
+                            string otherFieldName = otherFieldInfo.Name;
+                            if (edfineNameToValueDic.ContainsKey(otherFieldName))
+                            {
+                                string otherFieldKey = edfineNameToValueDic[otherFieldName];
+                                int[] otherFieldValues = skillAnalysisData.GetValues<int>(id, otherFieldKey);
+                                if (otherFieldValues != null && otherFieldValues.Length > 0)
+                                {
+                                    otherFieldInfo.SetValue(skillBaseStruct, otherFieldValues[0]);
+                                }
+                            }
+                        }
+                    }
+                    //加载常规属性
                     skillBaseStructs[i] = skillBaseStruct;
                     skillBaseStruct.id = id;
                     skillBaseStruct.name = skillAnalysisData.GetValue<string>(id, "skillName");
-                    skillBaseStruct.skillType = skillAnalysisData.GetEnum<EnumSkillType>(id, "skillType");
+                    skillBaseStruct.skillType = enumSkillType;
                     skillBaseStruct.skillMode = skillAnalysisData.GetEnum<EnumReleaseMode>(id, "releaseMode");
-                    skillBaseStruct.skillZone = skillAnalysisData.GetEnum<EnumSkillZone>(id, "skillZone");
-                    string[] particalsNames = skillAnalysisData.GetValues<string>(id, "particleNames").Where(temp => !string.IsNullOrEmpty(temp)).ToArray();
-                    skillBaseStruct.particals = new GameObject[particalsNames.Length];
+                    skillBaseStruct.skillZones = skillAnalysisData.GetEnums<EnumSkillZone>(id, "correlationZone").Where(temp => temp != EnumSkillZone.None).ToArray();
                     //加载技能图标
                     skillBaseStruct.skillSprite = SkillSpriteData.GetSprite(skillBaseStruct.skillType);
                     //计算技能名(现在暂定使用元名字)
                     skillBaseStruct.skillName = skillBaseStruct.name;
-                    //加载粒子 
-
                     //完成加载粒子
                     skillBaseStruct.skillBelief = skillAnalysisData.GetEnum<EnumSkillBelief>(id, "skillBelief");
                     string[] skillStatusEffectStrs = skillAnalysisData.GetValues<string>(id, "skillStatusEffect").Where(temp => !string.IsNullOrEmpty(temp)).ToArray();
@@ -92,19 +126,21 @@ public class SkillStructData:ILoadable<SkillStructData>
                     skillBaseStruct.skillPrecondition = new SkillPrecondition();
                     skillBaseStruct.skillPrecondition.mustSkillZonePointDic = new Dictionary<EnumSkillZone, int>();
                     skillBaseStruct.skillPrecondition.mustSkillPointDic = new Dictionary<EnumSkillType, int>();
-                    EnumSkillZone[] preconditionSkillZones = skillAnalysisData.GetValues<EnumSkillZone>(id,"pSkillZone");//前置技能组数组
-                    int[] preconditionSkillZoneNums = skillAnalysisData.GetValues<int>(id,"pSkillZoneNum");//前置技能组加点
+                    EnumSkillZone[] preconditionSkillZones = skillAnalysisData.GetEnums<EnumSkillZone>(id, "correlationBeforeZone");//前置技能组数组
+                    int[] preconditionSkillZoneNums = skillAnalysisData.GetValues<int>(id, "correlationBeforeZoneCount");//前置技能组加点
                     int preconditionSkillZoneCount = preconditionSkillZones.Length < preconditionSkillZoneNums.Length ? preconditionSkillZones.Length : preconditionSkillZoneNums.Length;
                     for (int j = 0; j < preconditionSkillZoneCount; j++)
                     {
-                        skillBaseStruct.skillPrecondition.mustSkillZonePointDic.Add(preconditionSkillZones[j], preconditionSkillZoneNums[j]);
+                        if (preconditionSkillZones[j] != EnumSkillZone.None)
+                            skillBaseStruct.skillPrecondition.mustSkillZonePointDic.Add(preconditionSkillZones[j], preconditionSkillZoneNums[j]);
                     }
-                    EnumSkillType[] preconditionSkills = skillAnalysisData.GetValues<EnumSkillType>(id, "pSkill");//前置技能数组
-                    int[] preconditionSkillNums = skillAnalysisData.GetValues<int>(id, "pSkillNum");//前置技能加点
+                    EnumSkillType[] preconditionSkills = skillAnalysisData.GetEnums<EnumSkillType>(id, "correlationBeforeSkill");//前置技能数组
+                    int[] preconditionSkillNums = skillAnalysisData.GetValues<int>(id, "correlationBeforeSkillCount");//前置技能加点
                     int preconditionSkillCount = preconditionSkillZones.Length < preconditionSkillNums.Length ? preconditionSkillZones.Length : preconditionSkillNums.Length;
                     for (int j = 0; j < preconditionSkillCount; j++)
                     {
-                        skillBaseStruct.skillPrecondition.mustSkillPointDic.Add(preconditionSkills[j], preconditionSkillNums[j]);
+                        if (preconditionSkills[j] != EnumSkillType.None)
+                            skillBaseStruct.skillPrecondition.mustSkillPointDic.Add(preconditionSkills[j], preconditionSkillNums[j]);
                     }
                     //技能的技能等级以及属性
                     skillBaseStruct.maxLevel = skillAnalysisData.GetValue<int>(id, "skillLevel");

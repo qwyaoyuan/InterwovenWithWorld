@@ -309,9 +309,9 @@ public enum EnumStatusAction
     [FieldExplan("元素抗性变化（主要适用于防御计算）")]
     ElementResistance,
     /// <summary>
-    /// 元素亲和性变化(主要适用于攻击计算)
+    /// 元素亲和性变化(主要适用于buff时间)
     /// </summary>
-    [FieldExplan("元素亲和性变化(主要适用于攻击计算)")]
+    [FieldExplan("元素亲和性变化(主要适用于buff时间)")]
     ElementAffine,
     /// <summary>
     /// 魔法亲和性变化

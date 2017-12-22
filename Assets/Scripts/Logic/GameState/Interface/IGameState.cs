@@ -8,6 +8,12 @@ using UnityEngine;
 /// </summary>
 public interface IGameState : IBaseState
 {
+
+    /// <summary>
+    /// 在加载存档后调用来初始化数据
+    /// </summary>
+    void LoadArchive();
+
     /// <summary>
     /// 游戏运行状态
     /// </summary>

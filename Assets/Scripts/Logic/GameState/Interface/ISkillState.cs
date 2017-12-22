@@ -31,4 +31,16 @@ public interface ISkillState : IBaseState
     /// <param name="skillBaseStruct"></param>
     /// <returns>是否可以释放该技能</returns>
     bool ReleaseNormalSkill(SkillBaseStruct skillBaseStruct);
+    /// <summary>
+    /// 是否开始蓄力
+    /// </summary>
+    bool IsSkillStartHolding { get; }
+    /// <summary>
+    /// 技能蓄力时间
+    /// </summary>
+    float SkillStartHoldingTime { get;  }
+    /// <summary>
+    /// 公共冷却时间
+    /// </summary>
+    float PublicCoolingTime { get; }
 }

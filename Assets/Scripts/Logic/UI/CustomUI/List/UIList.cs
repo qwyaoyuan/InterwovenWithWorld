@@ -62,12 +62,13 @@ public class UIList : MonoBehaviour
 
     private void Awake()
     {
-        if (showRect)
+        if (showRect && !backRect)
         {
             backRect = showRect.parent.GetComponent<RectTransform>();
         }
-        itemsList = new List<GameObject>();
-        Init();
+        if (itemsList == null)
+            itemsList = new List<GameObject>();
+        UpdateUI();
     }
 
     private void Start()
@@ -369,7 +370,7 @@ public class UIList : MonoBehaviour
         if (!showRect)
             return;
         float showHieght = showRect.rect.height;
-        if(!backRect)
+        if (!backRect)
             backRect = showRect.parent.GetComponent<RectTransform>();
         if (!backRect)
             return;
