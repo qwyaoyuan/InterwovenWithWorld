@@ -304,6 +304,12 @@ public class MonsterManagerEditor : EditorWindow
                 if (GUILayout.Button(monsterDataInfo.Briefly))
                 {
                     selectMonsterID = monsterDataInfo.ID;
+                    //在这里重新赋值区域位置
+                    if (rangeObj != null)
+                    {
+                        rangeObj.transform.position = monsterDataInfo.Center;
+                        rangeObj.transform.localScale = new Vector3(monsterDataInfo.Range * 2, monsterDataInfo.Range * 2, monsterDataInfo.Range * 2);
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
             }

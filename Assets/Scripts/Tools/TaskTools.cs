@@ -56,23 +56,31 @@ public class TaskTools : IEntrance
                 switch (runTaskStructHandle.RunTaskType)
                 {
                     case EnumRunTaskType.Frame:
-                        if (runTaskStructHandle.Frame > 0)
-                            runTaskStructHandle.Frame -= runTaskStructHandle.SpeedRate;
-                        else continue;
-                        if (runTaskStructHandle.Frame <= 0)
+                        float nowFrame = runTaskStructHandle.NowFrame;
+                        runTaskStructHandle.NowFrame -= runTaskStructHandle.SpeedRate;
+                        if (nowFrame > 0)
+                            continue;
+                        else
                         {
-                            removeTaskList.Add(runTaskStruct);
+                            if (!runTaskStructHandle.HasNext)//不存在下一次直接移除
+                                removeTaskList.Add(runTaskStruct);
+                            else if (runTaskStructHandle.Conditions != null && !runTaskStructHandle.Conditions())//存在则判断条件存在且条件不通过,移除
+                                removeTaskList.Add(runTaskStruct);
                             if (runTaskStructHandle.Callback != null)
                                 runTaskStructHandle.Callback();
                         }
                         break;
                     case EnumRunTaskType.Time:
-                        if (runTaskStructHandle.Time > 0)
-                            runTaskStructHandle.Time -= runTaskStructHandle.SpeedRate * Time.deltaTime;
-                        else continue;
-                        if (runTaskStructHandle.Time <= 0)
+                        float nowTime = runTaskStructHandle.NowTime;
+                        runTaskStructHandle.NowTime -= runTaskStructHandle.SpeedRate * Time.deltaTime;
+                        if (nowTime > 0)
+                            continue;
+                        else
                         {
-                            removeTaskList.Add(runTaskStruct);
+                            if (!runTaskStructHandle.HasNext)//不存在下一次直接移除
+                                removeTaskList.Add(runTaskStruct);
+                            else if (runTaskStructHandle.Conditions != null && !runTaskStructHandle.Conditions())//存在则判断条件存在且条件不通过,移除
+                                removeTaskList.Add(runTaskStruct);
                             if (runTaskStructHandle.Callback != null)
                                 runTaskStructHandle.Callback();
                         }
@@ -184,6 +192,16 @@ public class RunTaskStruct
     Action Callback;
 
     /// <summary>
+    /// 执行次数
+    /// </summary>
+    int executionCount;
+
+    /// <summary>
+    /// 判断执行条件函数
+    /// </summary>
+    Func<bool> Conditions;
+
+    /// <summary>
     /// 构造函数 
     /// </summary>
     /// <param name="id">任务的id</param>
@@ -248,7 +266,10 @@ public class RunTaskStruct
     /// </summary>
     /// <param name="frame">等待帧数</param>
     /// <param name="Callback">回调函数</param>
-    public void StartTask(int? frame = null, Action Callback = null)
+    /// <param name="executionCount">执行次数,大于零表示自行次数,小于等于0表示不限制次数</param>
+    /// <param name="executeNow">是否立即执行</param>
+    /// <param name="Conditions">判断执行条件,如果返回为真并且存在下次调用则下次会继续调用,否则下次将不再调用</param>
+    public void StartTask(int? frame = null, Action Callback = null, int executionCount = 1, bool executeNow = true, Func<bool> Conditions = null)
     {
         if (frame != null)
         {
@@ -257,7 +278,9 @@ public class RunTaskStruct
         }
         if (Callback != null)
             this.Callback = Callback;
-        runTaskStructHandle.StartTask();
+        this.executionCount = executionCount;
+        this.Conditions = Conditions;
+        runTaskStructHandle.StartTask(executeNow);
     }
 
     /// <summary>
@@ -265,7 +288,10 @@ public class RunTaskStruct
     /// </summary>
     /// <param name="time">等待时间</param>
     /// <param name="Callback">回调函数</param>
-    public void StartTask(float? time = null, Action Callback = null)
+    /// <param name="executionCount">执行次数,大于零表示自行次数,小于等于0表示不限制次数</param>
+    /// <param name="executeNow">是否立即执行</param>
+    /// <param name="Conditions">判断执行条件,如果返回为真并且存在下次调用则下次会继续调用,否则下次将不再调用</param>
+    public void StartTask(float? time = null, Action Callback = null, int executionCount = 1, bool executeNow = true, Func<bool> Conditions = null)
     {
         if (time != null)
         {
@@ -274,8 +300,11 @@ public class RunTaskStruct
         }
         if (Callback != null)
             this.Callback = Callback;
-        runTaskStructHandle.StartTask();
+        this.executionCount = executionCount;
+        this.Conditions = Conditions;
+        runTaskStructHandle.StartTask(executeNow);
     }
+
 
     /// <summary>
     /// 暂停执行任务
@@ -299,6 +328,15 @@ public class RunTaskStruct
     /// </summary>
     public class RunTaskStructHandle
     {
+
+        /// <summary>
+        /// 临时时间
+        /// </summary>
+        float tempTime;
+        /// <summary>
+        /// 临时帧
+        /// </summary>
+        float tempFrame;
         /// <summary>
         /// 目标
         /// </summary>
@@ -320,10 +358,21 @@ public class RunTaskStruct
         /// <summary>
         /// 开始任务
         /// </summary>
-        public void StartTask()
+        /// <param name="executeNow">是否立即执行</param>
+        public void StartTask(bool executeNow)
         {
             if (runTaskStateAction != null)
                 runTaskStateAction(target, true);
+            if (executeNow)
+            {
+                tempTime = -1;
+                tempFrame = -1;
+            }
+            else
+            {
+                tempTime = target.time;
+                tempFrame = target.frame;
+            }
         }
 
         /// <summary>
@@ -348,32 +397,38 @@ public class RunTaskStruct
         }
 
         /// <summary>
-        /// 获取或设置时间
+        /// 获取或设置当前时间
         /// </summary>
-        public float Time
+        public float NowTime
         {
             get
             {
-                return target.time;
+                float _tempTime = tempTime;
+                if (tempTime < 0)
+                    tempTime = target.time;
+                return _tempTime;
             }
             set
             {
-                target.time = value;
+                tempTime = value;
             }
         }
 
         /// <summary>
-        /// 获取或设置帧
+        /// 获取或设置当前帧
         /// </summary>
-        public float Frame
+        public float NowFrame
         {
             get
             {
-                return target.frame;
+                float _tempFrame = tempTime;
+                if (tempFrame < 0)
+                    tempFrame = target.frame;
+                return _tempFrame;
             }
             set
             {
-                target.frame = value;
+                tempFrame = value;
             }
         }
 
@@ -397,6 +452,37 @@ public class RunTaskStruct
             get
             {
                 return target.Callback;
+            }
+        }
+
+        /// <summary>
+        /// 获取判断条件函数
+        /// </summary>
+        public Func<bool> Conditions
+        {
+            get
+            {
+                return target.Conditions;
+            }
+        }
+
+        /// <summary>
+        /// 获取是否存在下一次调用
+        /// </summary>
+        public bool HasNext
+        {
+            get
+            {
+                if (target.executionCount > 0)//当前值大于0
+                {
+                    target.executionCount--;//调用次数减1
+                    if (target.executionCount <= 0)//如果减去后的值小于等于0,则没有下一次调用
+                        return false;
+                    else//否则还可以继续调用
+                        return true;
+                }
+                else //如果当前值小于0则一直存在下一次调用
+                    return true;
             }
         }
     }

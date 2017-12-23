@@ -1,1 +1,1 @@
-﻿{"$type":"System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib","602":"WindErosion","100000101":"Fireball"}
+﻿{"$type":"System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.String, mscorlib]], mscorlib","602":"WindErosion","100000101":"Fireball","100000104":"FieryBlast"}

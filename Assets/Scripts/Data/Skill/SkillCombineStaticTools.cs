@@ -549,7 +549,7 @@ public static class SkillCombineStaticTools
         Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
         if (sprites == null || sprites.Length == 0)
             return null;
-        var sizes = sprites.Select(temp => new { width = temp.textureRect.width , height = temp.textureRect.height });
+        var sizes = sprites.Select(temp => new { width = temp.textureRect.width, height = temp.textureRect.height });
         int width = (int)sizes.OrderBy(temp => temp.width).FirstOrDefault().width;
         int height = (int)sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
         if (width == 0 || height == 0)
@@ -864,10 +864,11 @@ public static class SkillCombineStaticTools
     /// <returns></returns>
     public static GameObject GetCombineSkillsPartical(int key)
     {
-        EnumSkillType[] enumSkillTypes = GetCombineSkills(key);
-        if (combineSkillKeyToParticalNameDic != null && combineSkillKeyToParticalNameDic.ContainsKey(key))
+        IEnumerable<EnumSkillType> enumSkillTypes = GetCombineSkills(key).Where(temp => temp > EnumSkillType.MagicCombinedLevel1Start && temp < EnumSkillType.MagicCombinedLevel2End);
+        int thisKey = GetCombineSkillKey(enumSkillTypes);
+        if (combineSkillKeyToParticalNameDic != null && combineSkillKeyToParticalNameDic.ContainsKey(thisKey))
         {
-            string particalName = combineSkillKeyToParticalNameDic[key];
+            string particalName = combineSkillKeyToParticalNameDic[thisKey];
             return ParticalManager.GetPartical(particalName);
         }
         return null;

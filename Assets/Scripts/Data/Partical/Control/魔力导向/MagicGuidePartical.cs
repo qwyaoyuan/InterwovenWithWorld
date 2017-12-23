@@ -67,7 +67,9 @@ public class MagicGuidePartical : ParticalControlEntry
     {
         CollisionHitCallbackStruct data = new CollisionHitCallbackStruct() { targetObj = target, hitPoint = target ? target.transform.position : Vector3.zero };
         //真正的回调
-        bool result = CollisionCallback(data);
+        bool result = false;
+        if(CollisionCallback!=null)
+            result = CollisionCallback(data);
         //如果结果判定可以触发效果则触发
         if (result  && CollisionCallback != null)
         {
@@ -85,13 +87,13 @@ public class MagicGuidePartical : ParticalControlEntry
         }
     }
 
-    public GameObject testObj;
+    //public GameObject testObj;
 
-    private void Start()
-    {
-        //魔力导向的配置
+    //private void Start()
+    //{
+        ////魔力导向的配置
         //Init(Vector3.up, Vector3.forward, new Color(1f, 1f, 1f, 0.02f), ~1, temp => true, 1, testObj);
 
-        Init(Vector3.up, Vector3.forward, new Color(1, 0, 0, 1), ~1, temp => true, 1f, testObj);
-    }
+        //Init(Vector3.up, Vector3.forward, new Color(1, 0, 0, 1), ~1, temp => true, 1f, testObj);
+    //}
 }

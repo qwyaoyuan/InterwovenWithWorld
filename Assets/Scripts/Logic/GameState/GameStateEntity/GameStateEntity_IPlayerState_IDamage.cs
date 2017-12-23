@@ -20,9 +20,11 @@ public partial class GameState
         List<ParticalInitParamData> resultList = new List<ParticalInitParamData>();
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
         //这三个是基础数据
+        particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up;
         particalInitParamData.lifeTime = 5;
         particalInitParamData.checkCollisionIntervalTime = 1;
         particalInitParamData.targetObjs = new GameObject[0];
+        particalInitParamData.forward = playerObj.transform.forward;
 
         //下面的是变化数据
         //颜色
@@ -65,7 +67,7 @@ public partial class GameState
         GameObject selectTargetObj = null;//魔力导向选中的对象
         if (combine_firstSkill != null)
         {
-            switch (combine_secondSkill.skillType)
+            switch (combine_firstSkill.skillType)
             {
                 case EnumSkillType.FS01://奥数弹
                     particalInitParamData.range = 20;//表示距离
@@ -82,7 +84,12 @@ public partial class GameState
                     if (selectObjs != null && selectObjs.Length > 0)
                         selectTargetObj = selectObjs[0];
                     if (selectTargetObj)
+                    {
                         particalInitParamData.range = Vector3.Distance(selectTargetObj.transform.position, playerObj.transform.position);//表示距离
+                        particalInitParamData.targetObjs = new GameObject[] { selectTargetObj };
+                        //测试
+                        particalInitParamData.CollisionCallBack = temp => true;
+                    }
                     else
                         particalInitParamData.range = 10;
                     break;
@@ -93,15 +100,15 @@ public partial class GameState
         }
         resultList.Add(particalInitParamData);
         //第三阶段的连续魔力导向有点特殊
-        SkillBaseStruct combine_thirdSkill = skills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel3Start && temp.skillType < EnumSkillType.MagicCombinedLevel3End);
+        SkillBaseStruct combine_thirdSkill = skills.Where(temp => temp != null).FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel3Start && temp.skillType < EnumSkillType.MagicCombinedLevel3End);
         if (combine_thirdSkill != null && combine_thirdSkill.skillType == EnumSkillType.MFS06)
         {
             //查找周围距离查找到的怪物的最近的怪物
             if (selectTargetObj)
             {
-                GameObject[] nextObjs = iMonsterCollection.GetMonsters(playerObj, -1, 10);
+                GameObject[] nextObjs = iMonsterCollection.GetMonsters(selectTargetObj, -1, 100);//测试用100 默认是10
                 Queue<GameObject> queueNextObj = new Queue<GameObject>();
-                queueNextObj.Enqueue(playerObj);
+                queueNextObj.Enqueue(selectTargetObj);
                 foreach (var item in nextObjs)
                 {
                     queueNextObj.Enqueue(item);
@@ -111,9 +118,11 @@ public partial class GameState
                     GameObject firstObj = queueNextObj.Dequeue();//第一个怪物
                     GameObject secondObj = queueNextObj.Peek();//第二个怪物
                     ParticalInitParamData temp_particalInitParamData = particalInitParamData;
-                    temp_particalInitParamData.position = firstObj.transform.position + Vector3.up;
                     temp_particalInitParamData.forward = (secondObj.transform.position - firstObj.transform.position).normalized;
+                    temp_particalInitParamData.position = firstObj.transform.position + temp_particalInitParamData.forward;
                     temp_particalInitParamData.range = Vector3.Distance(firstObj.transform.position, secondObj.transform.position);
+                    temp_particalInitParamData.targetObjs = new GameObject[] { secondObj };
+                    temp_particalInitParamData.CollisionCallBack = (temp) => true;
                     resultList.Add(temp_particalInitParamData);
                 }
             }

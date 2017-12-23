@@ -315,7 +315,8 @@ public class UIEntrance : MonoBehaviour
         keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { id = 199, key = (int)EnumInputType.A, keyContactType = EnumKeyContactType.Skill, name = "释放魔法" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Up, new KeyContactStruct() {id = 1001,key = (int)EnumInputType.Up,keyContactType= EnumKeyContactType.Skill,name = "奥术弹" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Right, new KeyContactStruct() { id = 1101, key = (int)EnumInputType.Right, keyContactType = EnumKeyContactType.Skill, name = "火元素" });
-
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Left, new KeyContactStruct() { id = 1004, key = (int)EnumInputType.Left, keyContactType = EnumKeyContactType.Skill, name = "魔力导向" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Down, new KeyContactStruct() { id = 1201, key = (int)EnumInputType.Down, keyContactType = EnumKeyContactType.Skill, name = "连续魔力导向" });
         /**********/
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))
