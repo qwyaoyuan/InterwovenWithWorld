@@ -347,11 +347,12 @@ public class MonsterManagerEditor : EditorWindow
                 rangeObj.transform.position = monsterDataInfo.Center;
                 rangeObj.transform.localScale = new Vector3(monsterDataInfo.Range * 2, monsterDataInfo.Range * 2, monsterDataInfo.Range * 2);
             }
+            monsterDataInfo.Offset = EditorGUILayout.FloatField("高度偏差值:", monsterDataInfo.Offset);
             monsterDataInfo.Experience = EditorGUILayout.IntField("经验值:", monsterDataInfo.Experience);
             GameObject monsterPrefab = EditorGUILayout.ObjectField("怪物预设体:", monsterDataInfo.MonsterPrefab, typeof(GameObject), false) as GameObject;
             if (monsterPrefab == null)
                 monsterDataInfo.monsterPrefabName = "";
-            else
+            else if (!string.Equals(monsterPrefab.name, monsterDataInfo.monsterPrefabName))
             {
                 string monsterPrefabName = monsterPrefab.name;
                 if (monsterPrefabDic.ContainsKey(monsterPrefabName))
@@ -434,7 +435,7 @@ public class MonsterManagerEditor : EditorWindow
                         //还有其他的在后面添加.....
                     }
                 }
-                
+
             }
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();

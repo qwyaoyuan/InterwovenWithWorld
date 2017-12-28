@@ -135,6 +135,10 @@ public class MonsterDataInfo
     /// </summary>
     public float Range;
     /// <summary>
+    /// 高度偏差值
+    /// </summary>
+    public float Offset;
+    /// <summary>
     /// 怪物的AI类型
     /// </summary>
     public EnumMonsterAIType AIType;
@@ -177,7 +181,7 @@ public class MonsterDataInfo
     {
         get
         {
-            if (_MonsterPrefab == null)
+            if (_MonsterPrefab == null || !string.Equals(_MonsterPrefab.name, monsterPrefabName))
             {
                 if (!string.IsNullOrEmpty(monsterPrefabName))
                     _MonsterPrefab = Resources.Load<GameObject>(monsterPrefabDirectoryPath + "/" + monsterPrefabName);

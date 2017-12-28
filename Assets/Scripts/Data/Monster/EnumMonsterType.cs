@@ -17,6 +17,11 @@ public enum EnumMonsterType
     /// </summary>
 	[FieldExplan("骷髅王")]
     SkullKing,
+    /// <summary>
+    /// 骷髅
+    /// </summary>
+    [FieldExplan("骷髅")]
+    Skull,
 }
 
 /// <summary>
@@ -39,4 +44,24 @@ public enum EnumMonsterAIType
     /// </summary>
     [FieldExplan("Boss")]
     Boss,
+}
+
+
+/// <summary>
+/// boss的行动状态
+/// </summary>
+public enum EnumBossActionType
+{
+    /// <summary>
+    /// 待机
+    /// </summary>
+    Standby,
+    /// <summary>
+    /// 攻击
+    /// </summary>
+    Attack,
+    /// <summary>
+    /// 防御
+    /// </summary>
+    Defense
 }
