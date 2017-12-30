@@ -150,7 +150,10 @@ public class SkillStructData : ILoadable<SkillStructData>
                     FieldInfo[] skillAttributeStructFieldInfos = skillAttributeStructType.GetFields();
                     foreach (FieldInfo fieldInfo in skillAttributeStructFieldInfos)
                     {
-                        object[] skillAttributeStructValue = skillAnalysisData.GetValues(fieldInfo.FieldType, id, fieldInfo.Name);
+                        FieldExplanAttribute fieldExplan = fieldInfo.GetCustomAttributes(typeof(FieldExplanAttribute), false).OfType<FieldExplanAttribute>().FirstOrDefault();
+                        if (fieldExplan == null)
+                            continue;
+                        object[] skillAttributeStructValue = skillAnalysisData.GetValues(fieldInfo.FieldType, id, fieldExplan.GetExplan(1));//explan的第一个下标表示说明
                         if (skillAttributeStructValue.Length == skillBaseStruct.maxLevel)
                         {
                             skillAttributeStructDic.Add(fieldInfo.Name, skillAttributeStructValue);

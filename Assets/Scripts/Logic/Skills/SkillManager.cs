@@ -106,17 +106,11 @@ public class SkillManager : IInput
                 //如果按下魔法释放键,则释放组合盘中的魔法
                 else if (skillID == (int)EnumSkillType.MagicRelease)
                 {
-                    if (iSkillState.StartCombineSkillRelease())
-                    {
-                        //设置蓄力动作
-                    }
+                    iSkillState.StartCombineSkillRelease();
                 }
                 else//非组合技能直接释放
                 {
-                    if (iSkillState.ReleaseNormalSkill(skillStructData.SearchSkillDatas(temp => (int)temp.skillType == skillID).FirstOrDefault()))
-                    {
-                        //设置动作
-                    }
+                    iSkillState.ReleaseNormalSkill(skillStructData.SearchSkillDatas(temp => (int)temp.skillType == skillID).FirstOrDefault());
                 }
             }
         }
@@ -158,11 +152,7 @@ public class SkillManager : IInput
                 int skillID = keyContactStruct.id;
                 if (skillID == (int)EnumSkillType.MagicRelease)//松开释放按钮
                 {
-
-                    if (iSkillState.EndCombineSkillRelease())
-                    {
-                        //设置释放动作
-                    }
+                    iSkillState.EndCombineSkillRelease();
                 }
             }
         }

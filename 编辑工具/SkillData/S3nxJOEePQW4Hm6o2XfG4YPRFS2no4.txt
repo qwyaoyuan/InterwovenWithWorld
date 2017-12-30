@@ -1,7 +1,7 @@
 ﻿ZHS04
 skillID^^^[ZHS04]
 skillName^^^[信仰赋予]
-releaseMode^^^[Special_Release]
+releaseMode^^^[Special_Circle]
 skillType^^^[ZHS04]
 skillExplan^^^[召唤师对于魔力流动的强大操纵能力能够建立自己与附近友军之间的魔力通路。令其获得与自身相同的魔法抗性与魔法亲和性。]
 skillStatusEffect^^^[5???[None]|||[None]|||[None]|||[None]|||[None]|||]
@@ -32,3 +32,4 @@ correlationBeforeZoneCount^^^[3???[10]|||[35]|||[]|||]
 correlationBeforeSkill^^^[6???[None]|||[None]|||[None]|||[None]|||[None]|||[None]|||]
 correlationBeforeZone^^^[3???[MFS_SM_MF_Zone]|||[MF_Zone]|||[None]|||]
 correlationZone^^^[6???[MF_Zone]|||[ZHS_MF_Zone]|||[None]|||[None]|||[None]|||[None]|||]
+SkillSpecialLevel^^^[1???[]|||]

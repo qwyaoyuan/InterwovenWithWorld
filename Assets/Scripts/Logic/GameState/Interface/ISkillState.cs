@@ -38,9 +38,109 @@ public interface ISkillState : IBaseState
     /// <summary>
     /// 技能蓄力时间
     /// </summary>
-    float SkillStartHoldingTime { get;  }
+    float SkillStartHoldingTime { get; }
     /// <summary>
     /// 公共冷却时间
     /// </summary>
     float PublicCoolingTime { get; }
+
+    //----------光环技能状态-----------//
+    /// <summary>
+    /// 获取指定光环技能数据
+    /// </summary>
+    /// <param name="skillType">技能类型</param>
+    /// <returns></returns>
+    SpecialSkillStateStruct GetSpecialSkillStateStruct(EnumSkillType skillType);
+    /// <summary>
+    /// 获取当前正在发生变化的光环技能
+    /// </summary>
+    EnumSkillType SpecialSkillStateChanged { get; }
+}
+
+/// <summary>
+/// 一些特殊技能状态对象
+/// </summary>
+public struct SpecialSkillStateStruct
+{
+    /// <summary>
+    /// 技能类型
+    /// </summary>
+    private EnumSkillType _skillType;
+    /// <summary>
+    /// 是否打开
+    /// </summary>
+    private bool _isOpen;
+    /// <summary>
+    /// 技能等级
+    /// </summary>
+    private int _skillLevel;
+    /// <summary>
+    /// 技能对象
+    /// </summary>
+    private SkillBaseStruct _skillBaseStruct;
+    /// <summary>
+    /// 数据发生变更后回掉
+    /// </summary>
+    Action<SpecialSkillStateStruct> _ChangeCallback;
+
+    /// <summary>
+    /// 是否打开
+    /// </summary>
+    public bool IsOpen
+    {
+        get { return _isOpen; }
+        set
+        {
+            bool tempIsOpen = _isOpen;
+            _isOpen = value;
+            if (tempIsOpen != IsOpen)
+            {
+                if (_ChangeCallback != null)
+                    _ChangeCallback(this);
+            }
+        }
+    }
+    /// <summary>
+    /// 技能等级
+    /// </summary>
+    public int SkillLevel
+    {
+        get { return _skillLevel; }
+        set
+        {
+            int tempSkillLevel = _skillLevel;
+            _skillLevel = value;
+            if (tempSkillLevel != _skillLevel)
+            {
+                if (_ChangeCallback != null)
+                    _ChangeCallback(this);
+            }
+        }
+    }
+    /// <summary>
+    /// 技能对象 
+    /// </summary>
+    public SkillBaseStruct SkillBaseStruct
+    {
+        get{ return _skillBaseStruct; }
+    }
+    /// <summary>
+    /// 技能类型
+    /// </summary>
+    public EnumSkillType SkillType
+    {
+        get
+        {
+            return _skillType;
+        }
+    }
+
+    public SpecialSkillStateStruct(EnumSkillType skillType, bool isOpen, int skillLevel, SkillBaseStruct skillBaseStruct, Action<SpecialSkillStateStruct> ChangeCallback)
+    {
+        this._skillType = skillType;
+        this._isOpen = isOpen;
+        this._skillLevel = skillLevel;
+        this._skillBaseStruct = skillBaseStruct;
+        this._ChangeCallback = ChangeCallback;
+    }
 }

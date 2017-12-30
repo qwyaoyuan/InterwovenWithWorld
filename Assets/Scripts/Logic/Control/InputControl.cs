@@ -46,7 +46,6 @@ public class InputControl : IEntrance
 
         inputList = new List<IInput>();
         inputList.Add(UIManager.Instance);
-        //inputList.Add(SettingManager.Instance);
         inputList.Add(MoveManager.Instance);
         inputList.Add(InteractiveManager.Instance);
         inputList.Add(SkillManager.Instance);

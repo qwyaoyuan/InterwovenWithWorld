@@ -39,7 +39,10 @@ public class StatusData : ILoadable<StatusData>
         get
         {
             if (dataDic != null && dataDic.ContainsKey(statusEffect))
+            {
+                dataDic[statusEffect].EffectType = statusEffect;
                 return dataDic[statusEffect];
+            }
             return null;
         }
     }
@@ -94,6 +97,12 @@ public class StatusDataInfo
     [JsonProperty]
     private Dictionary<int, StatusLevelDataInfo> levelToDataDic;
 
+    /// <summary>
+    /// 对象的类型
+    /// </summary>
+    [JsonIgnore]
+    public EnumStatusEffect EffectType;
+
     public StatusDataInfo()
     {
         levelToDataDic = new Dictionary<int, StatusLevelDataInfo>();
@@ -133,7 +142,10 @@ public class StatusDataInfo
             level = Mathf.Clamp(level, 0, MaxLevel);
             if (levelToDataDic.ContainsKey(level))
                 return levelToDataDic[level];
-            return levelToDataDic.Select(temp => temp.Value).FirstOrDefault();
+            StatusLevelDataInfo result = levelToDataDic.Select(temp => temp.Value).FirstOrDefault();
+            if (result != null)
+                result.EffectType = EffectType;
+            return result;
         }
     }
 
@@ -144,6 +156,12 @@ public class StatusDataInfo
         /// 状态在当前等级的说明
         /// </summary>
         public string LevelExplane { get; set; }
+
+        /// <summary>
+        /// 对象的类型
+        /// </summary>
+        [JsonIgnore]
+        public EnumStatusEffect EffectType;
 
         /// <summary>
         /// 状态对应的数据
@@ -163,7 +181,8 @@ public class StatusDataInfo
 /// 状态效果的基础数据结构
 /// 如果有些是特殊状态且不需要数据则没有对应的类
 /// </summary>
-[Serializable] public class StatusActionDataInfo_Base
+[Serializable]
+public class StatusActionDataInfo_Base
 { }
 /// <summary>
 /// 移动速度变化

@@ -36,6 +36,7 @@ public class MonsterControl : MonoBehaviour
         }
         NavMeshAgent navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
         navMeshAgent.radius = 0.2f;
+        navMeshAgent.height = 1.8f;
         blackboard = GetComponent<Blackboard>();
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         if (blackboard != null)
@@ -58,6 +59,8 @@ public class MonsterControl : MonoBehaviour
                     blackboard.SetValue("GoOnPatrolPointList", goOnPatrolList);
                     break;
                 case EnumMonsterAIType.Boss:
+                    blackboard.SetValue("StartPoint", transform.position);
+                    //blackboard.SetValue("Target", iPlayerState.PlayerObj);
                     break;
             }
         }

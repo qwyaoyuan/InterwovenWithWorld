@@ -23,6 +23,10 @@ public struct BuffState
     /// buff等级
     /// </summary>
     public int level;
+    /// <summary>
+    /// 倍率
+    /// </summary>
+    public float multiplying;
 
     public BuffState(EnumStatusEffect statusEffect,int level,object data)
     {
@@ -30,6 +34,7 @@ public struct BuffState
         Time = 0;
         this.level = level;
         tempData = data;
+        multiplying = 1;
     }
 
     public override bool Equals(object obj)

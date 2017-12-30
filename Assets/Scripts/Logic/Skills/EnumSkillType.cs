@@ -416,20 +416,60 @@ public enum EnumSkillType
     [FieldExplan("光明信仰基础")]
     XYX01,
     /// <summary>
+    /// 光明信仰基础_对友军
+    /// </summary>
+    [FieldExplan("光明信仰基础_对友军")]
+    XYX01_Self,
+    /// <summary>
+    /// 光明信仰基础_对敌军
+    /// </summary>
+    [FieldExplan("光明信仰基础_对敌军")]
+    XYX01_Target,
+    /// <summary>
     /// 黑暗信仰基础
     /// </summary>
     [FieldExplan("黑暗信仰基础")]
     XYX02,
+    /// <summary>
+    /// 黑暗信仰基础_对友军
+    /// </summary>
+    [FieldExplan("黑暗信仰基础_对友军")]
+    XYX02_Self,
+    /// <summary>
+    /// 黑暗信仰基础_对敌军
+    /// </summary>
+    [FieldExplan("黑暗信仰基础_对敌军")]
+    XYX02_Target,
     /// <summary>
     /// 生物信仰基础
     /// </summary>
     [FieldExplan("生物信仰基础")]
     XYX03,
     /// <summary>
+    /// 生物信仰基础_对友军
+    /// </summary>
+    [FieldExplan("生物信仰基础_对友军")]
+    XYX03_Self,
+    /// <summary>
+    /// 生物信仰基础_对敌军
+    /// </summary>
+    [FieldExplan("生物信仰基础_对敌军")]
+    XYX03_Target,
+    /// <summary>
+    /// 生物信仰基础_无指向
+    /// </summary>
+    [FieldExplan("生物信仰基础_无指向")]
+    XYX03_None,
+    /// <summary>
     /// 自然信仰基础
     /// </summary>
     [FieldExplan("自然信仰基础")]
     XYX04,
+    /// <summary>
+    /// 自然信仰基础_对敌军
+    /// </summary>
+    [FieldExplan("自然信仰基础_对敌军")]
+    XYX04_Target,
     MagicCombinedLevel2End = 1200,
     #endregion
     #region 需要结合的技能(3阶段)

@@ -19,13 +19,13 @@ public partial class GameState
     {
         List<ParticalInitParamData> resultList = new List<ParticalInitParamData>();
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
-        //这三个是基础数据
+        //这几个是基础数据
         particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up;
         particalInitParamData.lifeTime = 5;
         particalInitParamData.checkCollisionIntervalTime = 1;
         particalInitParamData.targetObjs = new GameObject[0];
         particalInitParamData.forward = playerObj.transform.forward;
-
+        particalInitParamData.color = new Color(0.5f, 0.5f, 0.5f, 0.1f);
         //下面的是变化数据
         //颜色
         SkillBaseStruct combine_secondSkill = skills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
@@ -52,15 +52,40 @@ public partial class GameState
                     particalInitParamData.color = new Color(0.5f, 0, 0.5f, 1);
                     break;
                 case EnumSkillType.DSM03://光明元素
+                case EnumSkillType.XYX01_Target://光明信仰基础_对敌军
                     particalInitParamData.color = Color.white;
                     break;
                 case EnumSkillType.DSM04://黑暗元素
+                case EnumSkillType.XYX02_Target://黑暗信仰基础_对敌军
                     particalInitParamData.color = Color.black;
+                    break;
+                case EnumSkillType.XYX03_Target://生物信仰基础_对敌军
+                    particalInitParamData.color = new Color(0, 1, 0.2f, 1);
+                    break;
+                case EnumSkillType.XYX04_Target://自然信仰基础_对敌军
+                    //颜色选择为当前环境对应的元素
+                    IEnvironment iEnvironment = GameState.Instance.GetEntity<IEnvironment>();
+                    switch (iEnvironment.TerrainEnvironmentType)
+                    {
+                        case EnumEnvironmentType.Plain:
+                            particalInitParamData.color = new Color(0.5f, 0, 0.5f, 1);
+                            break;
+                        case EnumEnvironmentType.Swamp:
+                            particalInitParamData.color = Color.blue;
+                            break;
+                        case EnumEnvironmentType.Desert:
+                            particalInitParamData.color = Color.yellow;
+                            break;
+                        case EnumEnvironmentType.Forest:
+                            particalInitParamData.color = Color.green;
+                            break;
+                        case EnumEnvironmentType.Volcano:
+                            particalInitParamData.color = Color.red;
+                            break;
+                    }
                     break;
             }
         }
-        else
-            particalInitParamData.color = new Color(0.5f, 0.5f, 0.5f, 0.1f);
         //技能最基础表现形式
         SkillBaseStruct combine_firstSkill = skills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel1Start && temp.skillType < EnumSkillType.MagicCombinedLevel1End);
         IMonsterCollection iMonsterCollection = GameState.Instance.GetEntity<IMonsterCollection>();

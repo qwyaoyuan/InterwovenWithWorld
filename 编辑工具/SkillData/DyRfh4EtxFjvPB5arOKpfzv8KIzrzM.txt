@@ -1,7 +1,7 @@
 ﻿MS05
 skillID^^^[MS05]
 skillName^^^[后方支援]
-releaseMode^^^[Special_Release]
+releaseMode^^^[Special_Circle]
 skillType^^^[MS05]
 skillExplan^^^[与友军单体（但不能为不死者与人类精灵）建立联系，双方共享全部的增益减益效果。非不死族根据光明信仰，不死族根据黑暗信仰的纯度，决定共享后的效果具体的加成与衰减幅度。]
 skillStatusEffect^^^[5???[None]|||[None]|||[None]|||[None]|||[None]|||]
@@ -32,3 +32,4 @@ correlationBeforeZoneCount^^^[3???[]|||[]|||[]|||]
 correlationBeforeSkill^^^[6???[MS01]|||[None]|||[None]|||[None]|||[None]|||[None]|||]
 correlationBeforeZone^^^[3???[None]|||[None]|||[None]|||]
 correlationZone^^^[6???[MF_Zone]|||[MS_MF_Zone]|||[SM_MS_MF_Zone]|||[None]|||[None]|||[None]|||]
+SkillSpecialLevel^^^[1???[]|||]

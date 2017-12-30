@@ -14,3 +14,4 @@ ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlTyp
 ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Uint32^^^Tag:::黑暗信仰强度(Dark)^^^Label:::黑暗信仰强度(Dark)^^^
 ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Uint32^^^Tag:::生物信仰强度(Life)^^^Label:::生物信仰强度(Life)^^^
 ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Uint32^^^Tag:::自然信仰强度(Nature)^^^Label:::自然信仰强度(Nature)^^^
+ChildControlType:::SkillDataFileEditor.TypeTextBox^^^IsArray:::True^^^ControlType:::SkillDataFileEditor.AutoArrayControl^^^ChildCount:::0^^^TypeTag:::System.Uint32^^^Tag:::SkillSpecialLevel^^^Label:::技能效果等级^^^

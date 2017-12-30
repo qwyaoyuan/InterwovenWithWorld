@@ -22,6 +22,11 @@ public enum EnumMonsterType
     /// </summary>
     [FieldExplan("骷髅")]
     Skull,
+    /// <summary>
+    /// 土匪
+    /// </summary>
+    [FieldExplan("土匪")]
+    Bandit
 }
 
 /// <summary>

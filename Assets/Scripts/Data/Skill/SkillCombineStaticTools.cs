@@ -29,6 +29,8 @@ public class SkillCombineNextNodeStruct
     /// </summary>
     public List<SkillCombineNextNodeStruct> nextNodes { get; private set; }
 
+
+
     public SkillCombineNextNodeStruct(EnumSkillType enumSkillType, SkillCombineNextNodeStruct parent)
     {
         this.enumSkillType = enumSkillType;
@@ -53,9 +55,67 @@ public class SkillCombineNextNodeStruct
     public bool CanUseThisCombine()
     {
         //主要用于检测当前的技能链组合是否可行
+        //在二阶段魔法中
+        if (level == 2)
+        {
+            //信仰基础只适用于解锁技能以及计算技能前后置,组合技能交给他们解锁的技能
+            if (enumSkillType == EnumSkillType.XYX01 ||
+                enumSkillType == EnumSkillType.XYX02 ||
+                enumSkillType == EnumSkillType.XYX03 ||
+                enumSkillType == EnumSkillType.XYX04)
+                return false;
+            if (enumSkillType == EnumSkillType.XYX01_Self)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS01)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX02_Self)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS01)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX02_Target)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS02 ||
+                    parent.enumSkillType == EnumSkillType.FS04 ||
+                    parent.enumSkillType == EnumSkillType.MFS05)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX03_Self)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS01)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX03_Target)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS01)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX03_None)
+            {
+                if (parent.enumSkillType != EnumSkillType.FS02)
+                    return false;
+            }
+            if (enumSkillType == EnumSkillType.XYX04_Target)
+            {
+                if (parent.enumSkillType == EnumSkillType.FS01)
+                    return false;
+            }
+        }
         //在三阶段魔法中
         if (level == 3)
         {
+            //需要判断二阶段的技能是魔法还是信仰,是否与本阶段吻合
+            if (enumSkillType <= EnumSkillType.YSX06)//魔法系
+            {
+                if (parent.enumSkillType >= EnumSkillType.XYX01)//信仰系
+                    return false;
+            }
+            else//信仰系
+            {
+                if (parent.enumSkillType < EnumSkillType.XYX01)//魔法系
+                    return false;
+            }
             //连续魔力导向不能只能和魔力导向进行组合,并且不能和光明元素与黑暗元素进行组合
             if (enumSkillType == EnumSkillType.MFS06)
             {
@@ -63,6 +123,86 @@ public class SkillCombineNextNodeStruct
                     return false;
                 if (parent.enumSkillType == EnumSkillType.DSM03 ||
                     parent.enumSkillType == EnumSkillType.DSM04)
+                    return false;
+            }
+            //魔力虹吸只能和光明(敌)和黑暗(敌)组合
+            if (enumSkillType == EnumSkillType.SM03)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX01_Target &&
+                    parent.enumSkillType != EnumSkillType.XYX02_Target)
+                    return false;
+            }
+            //生命虹吸只能和生物(敌)和自然(敌)组合
+            if (enumSkillType == EnumSkillType.SM02)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX03_Target &&
+                    parent.enumSkillType != EnumSkillType.XYX04_Target)
+                    return false;
+            }
+            //崇拜信仰_信仰之翼不能和生物(无)组合
+            if (enumSkillType == EnumSkillType.JH04)
+            {
+                if (parent.enumSkillType == EnumSkillType.XYX03_None)
+                    return false;
+            }
+            //黑暗信仰_死体操纵只能和黑暗(敌)组合
+            if (enumSkillType == EnumSkillType.ZHS02)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX02_Target)
+                    return false;
+            }
+            //生物信仰_召唤只能和生物(无)组合
+            if (enumSkillType == EnumSkillType.SM04)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX03_None)
+                    return false;
+            }
+            //光明信仰_神迹只能和光明(友)组合
+            if (enumSkillType == EnumSkillType.MS02)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX01_Self)
+                    return false;
+            }
+            //光明信仰_净化只能和光明(友)组合
+            if (enumSkillType == EnumSkillType.XYX05)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX01_Self)
+                    return false;
+            }
+            //光明信仰_圣光只能和光明(友)组合
+            if (enumSkillType == EnumSkillType.JS03)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX01_Self)
+                    return false;
+            }
+            //黑暗信仰_瘟疫只能和黑暗(敌)组合
+            if (enumSkillType == EnumSkillType.MS03)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX02_Target)
+                    return false;
+            }
+            //黑暗信仰_凋零只能和黑暗(敌)组合
+            if (enumSkillType == EnumSkillType.XYX08)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX02_Target)
+                    return false;
+            }
+            //黑暗信仰_魔笛只能和黑暗(敌)组合
+            if (enumSkillType == EnumSkillType.JS04)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX02_Target)
+                    return false;
+            }
+            //生物信仰_活力只能和生物(右)组合
+            if (enumSkillType == EnumSkillType.XYX06)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX02_Self)
+                    return false;
+            }
+            //自然信仰_自然之力只能和自然(敌)组合 
+            if (enumSkillType == EnumSkillType.XYX07)
+            {
+                if (parent.enumSkillType != EnumSkillType.XYX04_Target)
                     return false;
             }
         }
@@ -76,6 +216,42 @@ public class SkillCombineNextNodeStruct
                     parent.parent.enumSkillType == EnumSkillType.SM07 ||
                     parent.parent.enumSkillType == EnumSkillType.DSM03 ||
                     parent.parent.enumSkillType == EnumSkillType.DSM04)
+                    return false;
+            }
+            //信仰感召不能和生物(无)组合
+            if (enumSkillType == EnumSkillType.JS08)
+            {
+                if (parent.parent.enumSkillType == EnumSkillType.XYX03_None)
+                    return false;
+            }
+            //虹吸增幅的前置必须有虹吸魔法
+            if (enumSkillType == EnumSkillType.DSM02)
+            {
+                if (parent.enumSkillType != EnumSkillType.SM03 &&
+                    parent.enumSkillType != EnumSkillType.SM02)
+                    return false;
+            }
+            //生物信仰_呼唤只能和生物(无)组合
+            if (enumSkillType == EnumSkillType.ZHS08)
+            {
+                if (parent.parent.enumSkillType != EnumSkillType.XYX03_None)
+                    return false;
+            }
+            //医者自医只能和光明(友) 黑暗(友) 生物(友)组合
+            if (enumSkillType == EnumSkillType.MS06)
+            {
+                if (parent.parent.enumSkillType != EnumSkillType.XYX01_Self &&
+                    parent.parent.enumSkillType != EnumSkillType.XYX02_Self &&
+                    parent.parent.enumSkillType != EnumSkillType.XYX03_Self)
+                    return false;
+            }
+            //信仰冲击只能和光明(敌) 黑暗(敌) 生物(敌) 自然(敌)组合
+            if (enumSkillType == EnumSkillType.MS08)
+            {
+                if (parent.parent.enumSkillType != EnumSkillType.XYX01_Target &&
+                   parent.parent.enumSkillType != EnumSkillType.XYX02_Target &&
+                   parent.parent.enumSkillType != EnumSkillType.XYX03_Target &&
+                   parent.parent.enumSkillType != EnumSkillType.XYX04_Target)
                     return false;
             }
         }
@@ -197,7 +373,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "炎爆术";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "火枪贯通";
                             break;
                     }
@@ -217,7 +393,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "水幕";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "水啸";
                             break;
                     }
@@ -237,7 +413,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "陨落";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "大地咆哮";
                             break;
                     }
@@ -257,7 +433,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "风蚀术";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "风暴";
                             break;
                     }
@@ -277,7 +453,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "冰结咒";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "寒霜吐息";
                             break;
                     }
@@ -297,7 +473,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "雷击术";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "闪电冲击";
                             break;
                     }
@@ -317,7 +493,7 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "光明冲击";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "极光";
                             break;
                     }
@@ -337,8 +513,132 @@ public class SkillCombineNextNodeStruct
                         case EnumSkillType.FS04:
                             defaultName = "黑暗侵蚀";
                             break;
-                        case EnumSkillType.FS05:
+                        case EnumSkillType.MFS05:
                             defaultName = "暗流";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX01_Self://光明信仰基础_对友军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS03:
+                            defaultName = "祝福之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "光明祝福";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "祝福术";
+                            break;
+                        case EnumSkillType.FS05:
+                            defaultName = "祝福脉冲";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX01_Target://光明信仰基础_对敌军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS01:
+                            defaultName = "信仰光球";
+                            break;
+                        case EnumSkillType.FS03:
+                            defaultName = "祝福之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "光爆";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "闪光术";
+                            break;
+                        case EnumSkillType.MFS05:
+                            defaultName = "闪光脉冲";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX02_Self://黑暗信仰基础_对友军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS03:
+                            defaultName = "诅咒之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "黑暗庇护";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "洞察术";
+                            break;
+                        case EnumSkillType.MFS05:
+                            defaultName = "庇佑脉冲";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX02_Target://黑暗信仰基础_对敌军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS01:
+                            defaultName = "信仰黑刃";
+                            break;
+                        case EnumSkillType.FS03:
+                            defaultName = "诅咒之墙";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX03_Self://生物信仰基础_对友军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS03:
+                            defaultName = "治愈之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "广域回复";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "治疗术";
+                            break;
+                        case EnumSkillType.MFS05:
+                            defaultName = "生命脉冲";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX03_Target://生物信仰基础_对敌军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS03:
+                            defaultName = "治愈之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "摄心震荡";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "摄心术";
+                            break;
+                        case EnumSkillType.MFS05:
+                            defaultName = "摄心脉冲";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX03_None://生物信仰基础_无
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS02:
+                            defaultName = "生物召唤";
+                            break;
+                    }
+                    break;
+                case EnumSkillType.XYX04_Target://自然信仰基础_对敌军
+                    switch (parent.enumSkillType)
+                    {
+                        case EnumSkillType.FS03:
+                            defaultName = "空军之墙";
+                            break;
+                        case EnumSkillType.FS02:
+                            defaultName = "自然惩戒";
+                            break;
+                        case EnumSkillType.FS04:
+                            defaultName = "自然惩戒";
+                            break;
+                        case EnumSkillType.MFS05:
+                            defaultName = "自然惩戒";
                             break;
                     }
                     break;
@@ -436,6 +736,48 @@ public class SkillCombineNextNodeStruct
                             break;
                     }
                     break;
+                case EnumSkillType.SM03://魔力虹吸
+                    defaultName += "_魔力虹吸" ;
+                    break;
+                case EnumSkillType.SM02://生命虹吸
+                    defaultName += "_生命虹吸";
+                    break;
+                case EnumSkillType.JS07://神秘信仰_特化
+                    defaultName += "_特化";
+                    break;
+                case EnumSkillType.JH04://崇拜信仰_信仰之翼
+                    defaultName += "_信仰之翼";
+                    break;
+                case EnumSkillType.ZHS02://黑暗信仰_死体操控
+                    defaultName += "_死体操纵";
+                    break;
+                case EnumSkillType.SM04://生物信仰_召唤
+                    defaultName += "_召唤";
+                    break;
+                case EnumSkillType.MS02://光明信仰_神迹
+                    defaultName += "_神迹";
+                    break;
+                case EnumSkillType.XYX05://光明信仰_净化
+                    defaultName += "_净化";
+                    break;
+                case EnumSkillType.JS03://光明信仰_圣光
+                    defaultName += "_圣光";
+                    break;
+                case EnumSkillType.MS03://黑暗信仰_瘟疫
+                    defaultName += "_瘟疫";
+                    break;
+                case EnumSkillType.XYX08://黑暗信仰_凋零
+                    defaultName += "_凋零";
+                    break;
+                case EnumSkillType.JS04://黑暗信仰_魔笛
+                    defaultName += "_魔笛";
+                    break;
+                case EnumSkillType.XYX06://生物信仰_活力
+                    defaultName += "_活力";
+                    break;
+                case EnumSkillType.XYX07://自然信仰_自然之力
+                    defaultName += "_自然之力";
+                    break;
             }
         }
         //4阶段
@@ -468,6 +810,24 @@ public class SkillCombineNextNodeStruct
                     break;
                 case EnumSkillType.DFS04://神速咏唱
                     defaultName += "神速";
+                    break;
+                case EnumSkillType.JS08://信仰感召
+                    defaultName += "(信仰感召)";
+                    break;
+                case EnumSkillType.JH08://崇拜信仰_传承
+                    defaultName += "(传承)";
+                    break;
+                case EnumSkillType.DSM02://虹吸增幅
+                    defaultName += "(增幅)";
+                    break;
+                case EnumSkillType.ZHS08://生物信仰_呼唤
+                    defaultName += "(呼唤)";
+                    break;
+                case EnumSkillType.MS06://医者自医
+                    defaultName += "(医者自医)";
+                    break;
+                case EnumSkillType.MS08://信仰冲击
+                    defaultName += "(信仰冲击)";
                     break;
             }
         }

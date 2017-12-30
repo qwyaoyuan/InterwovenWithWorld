@@ -327,4 +327,60 @@ public partial class GameState
     }
     #endregion
 
+    /// <summary>
+    /// 清理Debuff
+    /// </summary>
+    public void ClearDebuff(params EnumStatusEffect[] effects)
+    {
+        if (effects == null || effects.Length == 0)//如果空或者零表示清掉全部
+            effects = new EnumStatusEffect[]
+            {
+                EnumStatusEffect.bd1,
+                EnumStatusEffect.cd1,
+                EnumStatusEffect.dr1,
+                EnumStatusEffect.dl3,
+                EnumStatusEffect.js4,
+                EnumStatusEffect.mh3,
+                EnumStatusEffect.wl1,
+                EnumStatusEffect.xr2,
+                EnumStatusEffect.zd2,
+                EnumStatusEffect.zz3
+            };
+        foreach (EnumStatusEffect effect in effects)
+        {
+            switch (effect)
+            {
+                case EnumStatusEffect.bd1:
+                    _Bingdong = null;
+                    break;
+                case EnumStatusEffect.cd1:
+                    _Chidun = null;
+                    break;
+                case EnumStatusEffect.dr1:
+                    _Dianran = null;
+                    break;
+                case EnumStatusEffect.dl3:
+                    _Diaoling = null;
+                    break;
+                case EnumStatusEffect.js4:
+                    _Jiansu = null;
+                    break;
+                case EnumStatusEffect.mh3:
+                    _Mihuo = null;
+                    break;
+                case EnumStatusEffect.wl1:
+                    _Wuli = null;
+                    break;
+                case EnumStatusEffect.xr2:
+                    _Xuruo = null;
+                    break;
+                case EnumStatusEffect.zd2:
+                    _Zhongdu = null;
+                    break;
+                case EnumStatusEffect.zz3:
+                    _Zuzhou = null;
+                    break;
+            }
+        }
+    }
 }

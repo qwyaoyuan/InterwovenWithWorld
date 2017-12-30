@@ -19,6 +19,10 @@ public interface IPlayerState : IBaseState,
     Camera PlayerCamera { get; set; }
 
     /// <summary>
+    /// 当前选择的目标 
+    /// </summary>
+    GameObject SelectObj { get; set; }
+    /// <summary>
     /// 更新属性
     /// </summary>
     void UpdateAttribute();

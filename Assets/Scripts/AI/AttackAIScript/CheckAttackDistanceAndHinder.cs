@@ -39,6 +39,11 @@ namespace NodeCanvas.Tasks.Conditions
         /// </summary>
         public LayerMask rayCastMask;
 
+        /// <summary>
+        /// 忽略Y轴的距离
+        /// </summary>
+        public bool ignoreDisY;
+
         protected override string info
         {
             get
@@ -50,8 +55,15 @@ namespace NodeCanvas.Tasks.Conditions
 
         protected override bool OnCheck()
         {
+            Vector3 agentVec = agent.position;
+            Vector3 targetVec = target.value.transform.position;
+            if (ignoreDisY)
+            {
+                agentVec.y = 0;
+                targetVec.y = 0;
+            }
             //计算距离
-            float distance = Vector3.Distance(agent.position, target.value.transform.position);
+            float distance = Vector3.Distance(agentVec, targetVec);
             bool distanceResult = distance + differenceThreshold < attackData.value.AttackDistance;
             //计算射线
             Vector3 firstRayForward = (target.value.transform.position - agent.position).normalized;

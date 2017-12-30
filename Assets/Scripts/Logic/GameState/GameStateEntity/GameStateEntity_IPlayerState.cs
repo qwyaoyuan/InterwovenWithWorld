@@ -62,6 +62,25 @@ public partial class GameState : IPlayerState
     }
 
     /// <summary>
+    /// 当前选择的目标
+    /// </summary>
+    private GameObject _SelectObj;
+    /// <summary>
+    /// 当前选择的目标 
+    /// </summary>
+    public GameObject SelectObj
+    {
+        get { return _SelectObj; }
+        set
+        {
+            GameObject tempSelectObj = _SelectObj;
+            _SelectObj = value;
+            if (!GameObject.Equals(tempSelectObj, _SelectObj))
+                Call<IPlayerState, GameObject>(temp => temp.SelectObj);
+        }
+    }
+
+    /// <summary>
     /// 更新自身属性
     /// 在等级变化 装备变化时触发
     /// 主要更新的是HP MP上限,防御攻击等等随等级装备变化的属性等

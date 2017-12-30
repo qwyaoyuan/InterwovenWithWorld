@@ -51,4 +51,8 @@ public interface IDebuffState : IBaseState
     /// 流血
     /// </summary>
     BuffState LiuXue { get; }
+    /// <summary>
+    /// 清理Debuff
+    /// </summary>
+    void ClearDebuff(params EnumStatusEffect[] effects);
 }

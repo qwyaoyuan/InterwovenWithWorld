@@ -200,6 +200,24 @@ public partial class GameState : IGameState
         }
     }
 
+    /// <summary>
+    /// 选择目标的模式
+    /// </summary>
+    private EnumSelectTargetModel _SelectTargetModel;
+    /// <summary>
+    /// 选择目标的模式
+    /// </summary>
+    public EnumSelectTargetModel SelectTargetModel
+    {
+        get { return _SelectTargetModel; }
+        set
+        {
+            EnumSelectTargetModel tempSelectTargetModel = _SelectTargetModel;
+            _SelectTargetModel = value;
+            if (tempSelectTargetModel != _SelectTargetModel)
+                Call<IGameState, EnumSelectTargetModel>(temp => temp.SelectTargetModel);
+        }
+    }
 
     #endregion
 

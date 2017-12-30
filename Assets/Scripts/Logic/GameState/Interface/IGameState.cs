@@ -58,6 +58,30 @@ public interface IGameState : IBaseState
     /// </summary>
     Vector2 CameraYAngleRange { get; set; }
 
+    /// <summary>
+    /// 选择目标的模式
+    /// </summary>
+    EnumSelectTargetModel SelectTargetModel { get; set; }
+
+}
+
+/// <summary>
+/// 游戏的选择目标模式
+/// </summary>
+public enum EnumSelectTargetModel
+{
+    /// <summary>
+    /// 不选择,此时也不锁定
+    /// </summary>
+    None,
+    /// <summary>
+    /// 选择怪物,此时按View的上下左右可以切换选择的目标
+    /// </summary>
+    SelectMonster,
+    /// <summary>
+    /// 选择玩家自己
+    /// </summary>
+    SelectSelf
 }
 
 /// <summary>

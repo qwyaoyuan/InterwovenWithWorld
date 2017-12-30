@@ -140,10 +140,45 @@ public class UISkillLittle : MonoBehaviour
         {
             UIFocusSkillLittleLattice _uiFocus = uiSkillLattice as UIFocusSkillLittleLattice;
             if (playerState.SkillPoint.ContainsKey((EnumSkillType)_uiFocus.skillID))
+            {
+                if (playerState.SkillPoint[(EnumSkillType)_uiFocus.skillID] != _uiFocus.TempPoint)
+                    skillChanged = true;
                 playerState.SkillPoint[(EnumSkillType)_uiFocus.skillID] = _uiFocus.TempPoint;
+            }
             else
+            {
                 playerState.SkillPoint.Add((EnumSkillType)_uiFocus.skillID, _uiFocus.TempPoint);
+                skillChanged = true;
+            }
         }
+        Action<EnumSkillType, int> SetEnumSkillPointAction = (enumSkillType, point) => 
+        {
+            if (playerState.SkillPoint.ContainsKey(enumSkillType))
+                playerState.SkillPoint[enumSkillType] = point;
+            else playerState.SkillPoint.Add(enumSkillType, point);
+        };
+        //信仰一的点数需要特殊处理
+        if (playerState.SkillPoint.ContainsKey(EnumSkillType.XYX01))
+        {
+            SetEnumSkillPointAction(EnumSkillType.XYX01_Self, playerState.SkillPoint[EnumSkillType.XYX01]);
+            SetEnumSkillPointAction(EnumSkillType.XYX01_Target, playerState.SkillPoint[EnumSkillType.XYX01]);
+        }
+        if (playerState.SkillPoint.ContainsKey(EnumSkillType.XYX02))
+        {
+            SetEnumSkillPointAction(EnumSkillType.XYX02_Self, playerState.SkillPoint[EnumSkillType.XYX02]);
+            SetEnumSkillPointAction(EnumSkillType.XYX02_Target, playerState.SkillPoint[EnumSkillType.XYX02]);
+        }
+        if (playerState.SkillPoint.ContainsKey(EnumSkillType.XYX03))
+        {
+            SetEnumSkillPointAction(EnumSkillType.XYX03_Self, playerState.SkillPoint[EnumSkillType.XYX03]);
+            SetEnumSkillPointAction(EnumSkillType.XYX03_Target, playerState.SkillPoint[EnumSkillType.XYX03]);
+            SetEnumSkillPointAction(EnumSkillType.XYX03_None, playerState.SkillPoint[EnumSkillType.XYX03]);
+        }
+        if (playerState.SkillPoint.ContainsKey(EnumSkillType.XYX04))
+        {
+            SetEnumSkillPointAction(EnumSkillType.XYX04_Target, playerState.SkillPoint[EnumSkillType.XYX04]);
+        }
+        //如果更改则调用事件
         if (skillChanged)
         {
             iPlayerStateRun.SkillLevelChanged = true;

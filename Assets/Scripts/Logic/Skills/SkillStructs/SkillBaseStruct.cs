@@ -90,74 +90,79 @@ public class SkillAttributeStruct
     /// <summary>
     /// 最大耗魔上限
     /// </summary>
-    public int MaxMP;
+    [FieldExplan("最大耗魔上限", "MaxMP")] public int MaxMP;
     /// <summary>
     /// 法力上限加成百分比
     /// </summary>
-    public int MP;
+    [FieldExplan("法力上限加成百分比", "MP")] public int MP;
     /// <summary>
     /// 法伤
     /// </summary>
-    public int DMG;
+    [FieldExplan("法伤", "DMG")] public int DMG;
     /// <summary>
     /// 特效影响力(伤害-->点燃 减抗性等)
     /// </summary>
-    public int ERST;
+    [FieldExplan("特效影响力(伤害-->点燃 减抗性等)", "ERST")] public int ERST;
     /// <summary>
     /// 驻留时间(持续时间-->特效 buff 屏障 范围伤害持续)
     /// </summary>
-    public int RETI;
+    [FieldExplan("驻留时间(持续时间-->特效 buff 屏障 范围伤害持续)", "RETI")] public int RETI;
     /// <summary>
     /// 物理伤害附加
     /// </summary>
-    public int PHYAD;
+    [FieldExplan("物理伤害附加", "PHYAD")] public int PHYAD;
     /// <summary>
     /// 魔法伤害附加
     /// </summary>
-    public int MPAD;
+    [FieldExplan("魔法伤害附加", "MPAD")] public int MPAD;
     /// <summary>
     /// 伤害穿透
     /// </summary>
-    public int PEDMG;
+    [FieldExplan("伤害穿透", "PEDMG")] public int PEDMG;
     /// <summary>
     /// HP附加
     /// </summary>
-    [Obsolete("该属性已经过时",true)]
+    [Obsolete("该属性已经过时", true)]
+    [FieldExplan("HP附加", "ADDHP")]
     public int ADDHP;
     /// <summary>
     /// MP附加
     /// </summary>
-    public int ADDMP;
+    [FieldExplan("MP附加", "ADDMP")] public int ADDMP;
     /// <summary>
     /// 魔法攻击力加成百分比
     /// </summary>
-    public int MpAttack;
+    [FieldExplan("魔法攻击力加成百分比", "MpAttack")] public int MpAttack;
     /// <summary>
     /// 魔法防御力加成百分比
     /// </summary>
-    public int MpDefence;
+    [FieldExplan("魔法防御力加成百分比", "MpDefence")] public int MpDefence;
     /// <summary>
     /// 魔法回复速度加成
     /// </summary>
-    public int MpReload;
+    [FieldExplan("魔法回复速度加成", "MpReload")] public int MpReload;
     /// <summary>
     /// 魔法亲和性
     /// </summary>
-    public int MagicFit;
+    [FieldExplan("魔法亲和性", "MagicFit")] public int MagicFit;
     /// <summary>
     /// 光明信仰强度
     /// </summary>
-    public int Light;
+    [FieldExplan("光明信仰强度", "光明信仰强度")] public int Light;
     /// <summary>
     /// 黑暗信仰强度
     /// </summary>
-    public int Dark;
+    [FieldExplan("黑暗信仰强度", "黑暗信仰强度")] public int Dark;
     /// <summary>
     /// 生物信仰强度
     /// </summary>
-    public int Life;
+    [FieldExplan("生物信仰强度", "生物信仰强度")] public int Life;
     /// <summary>
     /// 自然信仰强度
     /// </summary>
-    public int Nature;
+    [FieldExplan("自然信仰强度", "自然信仰强度")] public int Nature;
+    /// <summary>
+    /// 技能特效等级 0 表示岁当前技能等级  -1表示没有特效  大于0表示有特效且等级为该数值
+    /// </summary>
+    [FieldExplan("技能特效等级", "SkillSpecialLevel")] public int SkillSpecialLevel;
 }

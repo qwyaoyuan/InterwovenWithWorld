@@ -10,37 +10,37 @@ public interface IBuffState : IBaseState
     /// <summary>
     /// 活力
     /// </summary>
-    BuffState Huoli { get; }
+    BuffState Huoli { get; set; }
     /// <summary>
     /// 加速
     /// </summary>
-    BuffState Jiasu { get; }
+    BuffState Jiasu { get; set; }
     /// <summary>
     /// 净化
     /// </summary>
-    BuffState Jinghua { get; }
+    BuffState Jinghua { get; set; }
     /// <summary>
     /// 敏捷
     /// </summary>
-    BuffState Minjie { get; }
+    BuffState Minjie { get; set; }
     /// <summary>
     /// 强力
     /// </summary>
-    BuffState Qiangli { get; }
+    BuffState Qiangli { get; set; }
     /// <summary>
     /// 驱散
     /// </summary>
-    BuffState Qusan { get; }
+    BuffState Qusan { get; set; }
     /// <summary>
     /// 睿智
     /// </summary>
-    BuffState Ruizhi { get; }
+    BuffState Ruizhi { get; set; }
     /// <summary>
     /// 吸血-物理
     /// </summary>
-    BuffState XixueWuli { get; }
+    BuffState XixueWuli { get; set; }
     /// <summary>
     /// 吸血-魔法
     /// </summary>
-    BuffState XixueMofa { get; }
+    BuffState XixueMofa { get; set; }
 }
