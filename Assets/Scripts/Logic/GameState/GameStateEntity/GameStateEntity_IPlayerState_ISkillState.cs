@@ -563,7 +563,9 @@ public partial class GameState
             EnumSkillType tempSpecialSkillStateChanged = _SpecialSkillStateChanged;
             _SpecialSkillStateChanged = value;
             if (tempSpecialSkillStateChanged != _SpecialSkillStateChanged)
+            {
                 Call<ISkillState, EnumSkillType>(temp => temp.SpecialSkillStateChanged);
+            }
             _SpecialSkillStateChanged = EnumSkillType.None;
         }
     }

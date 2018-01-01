@@ -57,8 +57,8 @@ public class UIPlayerState : MonoBehaviour
         GameState.Instance.Registor<IBuffState>(IState_Callback);
         GameState.Instance.Registor<IDebuffState>(IState_Callback);
         GameState.Instance.Registor<ISpecialState>(IState_Callback);
-        GameState.Instance.Registor<IAttributeState>(IAttributeState_Callback);
-        IAttributeState iAttributeState = GameState.Instance.GetEntity<IAttributeState>();
+        GameState.Instance.Registor<IPlayerAttributeState>(IAttributeState_Callback);
+        IPlayerAttributeState iAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
         ChangeHPShow(iAttributeState);
         ChangeMPShow(iAttributeState);
     }
@@ -181,15 +181,15 @@ public class UIPlayerState : MonoBehaviour
     /// </summary>
     /// <param name="iAttributeState"></param>
     /// <param name="fieldName"></param>
-    private void IAttributeState_Callback(IAttributeState iAttributeState, string fieldName)
+    private void IAttributeState_Callback(IPlayerAttributeState iAttributeState, string fieldName)
     {
-        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.HP))||
-            string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.MaxHP)))
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.HP))||
+            string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.MaxHP)))
         {
             ChangeHPShow(iAttributeState);
         }
-        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.Mana)) ||
-           string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.MaxMana)))
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.Mana)) ||
+           string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.MaxMana)))
         {
             ChangeMPShow(iAttributeState);
         }
@@ -199,7 +199,7 @@ public class UIPlayerState : MonoBehaviour
     /// 改变血条
     /// </summary>
     /// <param name="iAttributeState"></param>
-    private void ChangeHPShow(IAttributeState iAttributeState)
+    private void ChangeHPShow(IPlayerAttributeState iAttributeState)
     {
         float bili = iAttributeState.HP / iAttributeState.MaxHP;
         bili = Mathf.Clamp(bili, 0, 1);
@@ -211,7 +211,7 @@ public class UIPlayerState : MonoBehaviour
     /// 改变魔法条
     /// </summary>
     /// <param name="iAttributeState"></param>
-    private void ChangeMPShow(IAttributeState iAttributeState)
+    private void ChangeMPShow(IPlayerAttributeState iAttributeState)
     {
         float bili = iAttributeState.Mana / iAttributeState.MaxMana;
         bili = Mathf.Clamp(bili, 0, 1);

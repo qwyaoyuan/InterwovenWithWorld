@@ -36,3 +36,9 @@ public struct AttackHurtStruct
     /// </summary>
     public GameObject hurtFromObj;
 }
+
+/// <summary>
+/// 计算伤害的静态类
+/// </summary>
+public static class CalculateHurt
+{ }

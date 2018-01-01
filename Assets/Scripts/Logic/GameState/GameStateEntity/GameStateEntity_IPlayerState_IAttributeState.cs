@@ -1,568 +1,824 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 /// <summary>
-/// 实现了IPlayerState->IAttributeState接口的GameState类的一个分支实体
+/// 实现了IPlayerState->IPlayerAttributeState接口的GameState类的一个分支实体
+/// 下标0表示自身
 /// </summary>
 public partial class GameState
 {
+    /// <summary>
+    /// 保存临时属性的字典
+    /// </summary>
+    private Dictionary<int, IAttributeState> iAttributeStateDic;
+    /// <summary>
+    /// 属性操作句柄的当前下标
+    /// </summary>
+    int iAttributeHandleIndex;
+
+    /// <summary>
+    /// 用于初始化角色属性的对象 
+    /// </summary>
+    partial void Start_IPlayerState_IAttribute()
+    {
+        iAttributeStateDic = new Dictionary<int, IAttributeState>();
+        iAttributeHandleIndex = 0;
+        //构建自身的基础属性(下标是0)
+        CreateAttributeHandle(0);
+        //构建技能的属性(注意技能的属性从负数开始)
+        //有些技能只存在特殊效果,而且这些特殊效果不涉及这些属性,则这些特殊效果在具体的位置处理
+        //被动技能  注:光环技能不需要初始化,因为光环是动态的
+        CreateAttributeHandle(-(int)EnumSkillType.FS05);
+        CreateAttributeHandle(-(int)EnumSkillType.FS06);
+        CreateAttributeHandle(-(int)EnumSkillType.FS07);
+        CreateAttributeHandle(-(int)EnumSkillType.FS08);
+        CreateAttributeHandle(-(int)EnumSkillType.FS10);
+        CreateAttributeHandle(-(int)EnumSkillType.YSX05);
+        CreateAttributeHandle(-(int)EnumSkillType.YSX08);
+        CreateAttributeHandle(-(int)EnumSkillType.MFS03);
+        CreateAttributeHandle(-(int)EnumSkillType.MFS07);
+        CreateAttributeHandle(-(int)EnumSkillType.SM01);
+        CreateAttributeHandle(-(int)EnumSkillType.SM05);
+        CreateAttributeHandle(-(int)EnumSkillType.MS07);
+        CreateAttributeHandle(-(int)EnumSkillType.DFS01);
+        CreateAttributeHandle(-(int)EnumSkillType.DFS02);
+        CreateAttributeHandle(-(int)EnumSkillType.DSM01);
+        CreateAttributeHandle(-(int)EnumSkillType.DSM09);
+        CreateAttributeHandle(-(int)EnumSkillType.JS01);
+        CreateAttributeHandle(-(int)EnumSkillType.JS02);
+        CreateAttributeHandle(-(int)EnumSkillType.JH01);
+        CreateAttributeHandle(-(int)EnumSkillType.JH02);
+        CreateAttributeHandle(-(int)EnumSkillType.JH03);
+    }
+
+    #region 用于操纵附加状态的功能
+    /// <summary>
+    /// 创建一个状态句柄,返回句柄的id
+    /// </summary>
+    /// <returns>如果返回的句柄小于定于0则表示失败了(小于等于0的句柄被用于内部)</returns>
+    public int CreateAttributeHandle()
+    {
+        int testCount = 0;//当前尝试次数
+        ReTest:
+        iAttributeHandleIndex++;
+        testCount++;//每次执行尝试次数加1
+        if (CreateAttributeHandle(iAttributeHandleIndex))
+        {
+            return iAttributeHandleIndex;
+        }
+        else if (testCount < 100)//如果尝试次数小于100则可以继续尝试
+        {
+            if (iAttributeHandleIndex == int.MaxValue)
+            {
+                iAttributeHandleIndex = 0;
+                goto ReTest;
+            }
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// 使用指定的句柄id创建一个状态
+    /// 如果存在这个句柄了,则不会创建(这个一般不要用)
+    /// </summary>
+    /// <param name="index">句柄ID</param>
+    /// <returns>返回是否创建成功</returns>
+    public bool CreateAttributeHandle(int index)
+    {
+        if (iAttributeStateDic == null)
+            iAttributeStateDic = new Dictionary<int, IAttributeState>();
+        if (iAttributeStateDic.ContainsKey(index))
+            return false;
+        IAttributeState iAttributeState = new AttributeStateAdditional();
+        iAttributeStateDic.Add(index, iAttributeState);
+        //添加回调
+        iAttributeState.Registor<IAttributeState>((target, fieldName) =>
+        {
+            Call<IPlayerAttributeState>(fieldName);
+        });
+        return true;
+    }
+
+    /// <summary>
+    /// 通过句柄获取对应的状态对象
+    /// </summary>
+    /// <param name="handle">状态句柄</param>
+    /// <returns></returns>
+    public IAttributeState GetAttribute(int handle)
+    {
+        if (iAttributeStateDic != null && iAttributeStateDic.ContainsKey(handle))
+            return iAttributeStateDic[handle];
+        return null;
+    }
+
+    /// <summary>
+    /// 获取合计的属性
+    /// </summary>
+    /// <returns></returns>
+    public IAttributeState GetResultAttribute()
+    {
+        AttributeStateAdditional result = new AttributeStateAdditional();
+        //使用反射进行数据整合
+        Type t = typeof(IAttributeState);
+        PropertyInfo[] infos = t.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        foreach (PropertyInfo info in infos)
+        {
+            MethodInfo setInfo = info.GetSetMethod();
+            MethodInfo getInfo = info.GetGetMethod();
+            object value = getInfo.Invoke(this, null);
+            setInfo.Invoke(result, new object[] { value });
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 移除一个状态,注意只能移除大于零的句柄
+    /// </summary>
+    /// <param name="handle"></param>
+    public void RemoveAttribute(int handle)
+    {
+        if (handle > 0 && iAttributeStateDic != null && iAttributeStateDic.ContainsKey(handle))
+        {
+            iAttributeStateDic.Remove(handle);
+            Call<IPlayerAttributeState, Action<int>>(temp => temp.RemoveAttribute);//通知属性变动
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 没有任何作用
+    /// </summary>
+    public void Init()
+    { }
 
     #region IAttributeState 属性状态
     #region 基础属性
     /// <summary>
     /// 敏捷
-    /// </summary>
-    float _Quick;
-    /// <summary>
-    /// 敏捷
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float Quick
     {
-        get { return _Quick; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Quick).Sum();
+        }
         set
         {
-            float tempQuick = _Quick;
-            _Quick = value;
-            if (tempQuick != _Quick)
-                Call<IAttributeState, float>(temp => temp.Quick);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.Quick = value;
+            }
         }
     }
 
     /// <summary>
     /// 专注
-    /// </summary>
-    float _Dedicated;
-    /// <summary>
-    /// 专注
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float Dedicated
     {
-        get { return _Dedicated; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Dedicated).Sum();
+        }
         set
         {
-            float tempDedicated = _Dedicated;
-            _Dedicated = value;
-            if (tempDedicated != _Dedicated)
-                Call<IAttributeState, float>(temp => temp.Dedicated);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.Dedicated = value;
+            }
         }
     }
 
     /// <summary>
     /// 精神
-    /// </summary>
-    float _Mental;
-    /// <summary>
-    /// 精神
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float Mental
     {
-        get { return _Mental; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Mental).Sum();
+        }
         set
         {
-            float tempMental = _Mental;
-            _Mental = value;
-            if (_Mental != tempMental)
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
             {
-                Call<IAttributeState, float>(temp => temp.Mental);
+                iAttributeBaseState.Mental = value;
             }
         }
     }
 
     /// <summary>
     /// 力量
-    /// </summary>
-    float _Power;
-    /// <summary>
-    /// 力量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float Power
     {
-        get { return _Power; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Power).Sum();
+        }
         set
         {
-            float tempPower = _Power;
-            _Power = value;
-            if (tempPower != _Power)
-                Call<IAttributeState, float>(temp => temp.Power);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.Power = value;
+            }
         }
     }
     #endregion
     #region 常规属性
     /// <summary>
     /// 血量
-    /// </summary>
-    float _HP;
-    /// <summary>
-    /// 血量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float HP
     {
-        get { return _HP; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.HP).Sum();
+        }
         set
         {
-            float tempHP = _HP;
-            _HP = value;
-            if (tempHP != _HP)
-                Call<IAttributeState, float>(temp => temp.HP);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.HP = value;
+            }
         }
     }
 
     /// <summary>
     /// 最大血量
-    /// </summary>
-    float _MaxHP;
-    /// <summary>
-    /// 最大血量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MaxHP
     {
-        get { return _MaxHP; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MaxHP).Sum();
+        }
         set
         {
-            float tempMaxHP = _MaxHP;
-            _MaxHP = value;
-            if (tempMaxHP != _MaxHP)
-                Call<IAttributeState, float>(temp => temp.MaxHP);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MaxHP = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔力量
-    /// </summary>
-    float _Mana;
-    /// <summary>
-    /// 魔力量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float Mana
     {
-        get { return _Mana; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Mana).Sum();
+        }
         set
         {
-            float tempMana = _Mana;
-            _Mana = value;
-            if (tempMana != _Mana)
-                Call<IAttributeState, float>(temp => temp.Mana);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.Mana = value;
+            }
         }
     }
 
     /// <summary>
     /// 最大魔力量
-    /// </summary>
-    float _MaxMana;
-    /// <summary>
-    /// 最大魔力量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MaxMana
     {
-        get { return _MaxMana; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MaxMana).Sum();
+        }
         set
         {
-            float tempMaxMana = _MaxMana;
-            _MaxMana = value;
-            if (tempMaxMana != _MaxMana)
-                Call<IAttributeState, float>(temp => temp.MaxMana);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MaxMana = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 最大耗魔上限
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MaxUseMana
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MaxUseMana).Sum();
+        }
+
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MaxUseMana = value;
+            }
         }
     }
 
     /// <summary>
     /// 视野范围
-    /// </summary>
-    float _View;
-    /// <summary>
-    /// 视野范围
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float View
     {
-        get { return _View; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.View).Sum();
+        }
         set
         {
-            float tempView = _View;
-            _View = value;
-            if (tempView != _View)
-                Call<IAttributeState, float>(temp => temp.View);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.View = value;
+            }
         }
     }
 
     /// <summary>
     /// 移动速度
-    /// </summary>
-    float _MoveSpeed;
-    /// <summary>
-    /// 移动速度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MoveSpeed
     {
-        get { return _MoveSpeed; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MoveSpeed).Sum();
+        }
         set
         {
-            float tempMoveSpeed = _MoveSpeed;
-            _MoveSpeed = value;
-            if (tempMoveSpeed != _MoveSpeed)
-                Call<IAttributeState, float>(temp => temp.MoveSpeed);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MoveSpeed = value;
+            }
         }
     }
 
     /// <summary>
     /// 攻击速度
-    /// </summary>
-    float _AttackSpeed;
-    /// <summary>
-    /// 攻击速度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float AttackSpeed
     {
-        get { return _AttackSpeed; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.AttackSpeed).Sum();
+        }
         set
         {
-            float tempAttackSpeed = _AttackSpeed;
-            _AttackSpeed = value;
-            if (tempAttackSpeed != _AttackSpeed)
-                Call<IAttributeState, float>(temp => temp.AttackSpeed);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.AttackSpeed = value;
+            }
         }
     }
 
     /// <summary>
     /// 命中率
-    /// </summary>
-    float _HitRate;
-    /// <summary>
-    ///命中率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float HitRate
     {
-        get { return _HitRate; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.HitRate).Sum();
+        }
         set
         {
-            float tempHitRate = _HitRate;
-            _HitRate = value;
-            if (tempHitRate != _HitRate)
-                Call<IAttributeState, float>(temp => temp.HitRate);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.HitRate = value;
+            }
         }
     }
 
     /// <summary>
     /// 闪避率
-    /// </summary>
-    float _EvadeRate;
-    /// <summary>
-    /// 闪避率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float EvadeRate
     {
-        get { return _EvadeRate; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.EvadeRate).Sum();
+        }
         set
         {
-            float tempEvadeRate = _EvadeRate;
-            _EvadeRate = value;
-            if (tempEvadeRate != _EvadeRate)
-                Call<IAttributeState, float>(temp => temp.EvadeRate);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.EvadeRate = value;
+            }
         }
     }
 
     /// <summary>
     /// 暴击率
-    /// </summary>
-    float _CritRate;
-    /// <summary>
-    /// 暴击率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float CritRate
     {
-        get { return _CritRate; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.CritRate).Sum();
+        }
         set
         {
-            float tempCritRate = _CritRate;
-            _CritRate = value;
-            if (tempCritRate != _CritRate)
-                Call<IAttributeState, float>(temp => temp.CritRate);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.CritRate = value;
+            }
         }
     }
     #endregion
     #region 回复
     /// <summary>
     /// 生命恢复速度
-    /// </summary>
-    float _LifeRecovery;
-    /// <summary>
-    /// 生命恢复速度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float LifeRecovery
     {
-        get { return _LifeRecovery; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.LifeRecovery).Sum();
+        }
         set
         {
-            float tempLifeRecovery = _LifeRecovery;
-            _LifeRecovery = value;
-            if (tempLifeRecovery != _LifeRecovery)
-                Call<IAttributeState, float>(temp => temp.LifeRecovery);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.LifeRecovery = value;
+            }
         }
     }
 
     /// <summary>
     /// 法力恢复速度
-    /// </summary>
-    float _ManaRecovery;
-    /// <summary>
-    /// 法力恢复速度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float ManaRecovery
     {
-        get { return _ManaRecovery; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ManaRecovery).Sum();
+        }
         set
         {
-            float tempManaRecovery = _ManaRecovery;
-            _ManaRecovery = value;
-            if (tempManaRecovery != _ManaRecovery)
-                Call<IAttributeState, float>(temp => temp.ManaRecovery);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ManaRecovery = value;
+            }
         }
     }
     #endregion
     #region 攻击与防御属性
     /// <summary>
     /// 道具攻击力
-    /// </summary>
-    float _ItemAttacking;
-    /// <summary>
-    /// 道具攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float ItemAttacking
     {
-        get { return _ItemAttacking; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ItemAttacking).Sum();
+        }
         set
         {
-            float tempItemAttacking = _ItemAttacking;
-            _ItemAttacking = value;
-            if (tempItemAttacking != _ItemAttacking)
-                Call<IAttributeState, float>(temp => temp.ItemAttacking);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ItemAttacking = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔法攻击力
-    /// </summary>
-    float _MagicAttacking;
-    /// <summary>
-    /// 魔法攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicAttacking
     {
-        get { return _MagicAttacking; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAttacking).Sum();
+        }
         set
         {
-            float tempMagicAttacking = _MagicAttacking;
-            _MagicAttacking = value;
-            if (tempMagicAttacking != _MagicAttacking)
-                Call<IAttributeState, float>(temp => temp.MagicAttacking);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAttacking = value;
+            }
         }
     }
 
     /// <summary>
     /// 物理攻击力
-    /// </summary>
-    float _PhysicsAttacking;
-    /// <summary>
-    /// 物理攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float PhysicsAttacking
     {
-        get { return _PhysicsAttacking; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAttacking).Sum();
+        }
         set
         {
-            float tempPhysicsAttacking = _PhysicsAttacking;
-            _PhysicsAttacking = value;
-            if (tempPhysicsAttacking != _PhysicsAttacking)
-                Call<IAttributeState, float>(temp => temp.PhysicsAttacking);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsAttacking = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔法附加伤害
-    /// </summary>
-    float _MagicAdditionalDamage;
-    /// <summary>
-    /// 魔法附加伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicAdditionalDamage
     {
-        get { return _MagicAdditionalDamage; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAdditionalDamage).Sum();
+        }
         set
         {
-            float tempMagicAdditionalDamage = _MagicAdditionalDamage;
-            _MagicAdditionalDamage = value;
-            if (tempMagicAdditionalDamage != _MagicAdditionalDamage)
-                Call<IAttributeState, float>(temp => temp.MagicAdditionalDamage);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAdditionalDamage = value;
+            }
         }
     }
 
     /// <summary>
-    /// 物理附加伤害
-    /// </summary>
-    float _PhysicsAdditionalDamage;
-    /// <summary>
-    /// 物理附加伤害
+    /// 物理伤害附加
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float PhysicsAdditionalDamage
     {
-        get { return _PhysicsAdditionalDamage; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAdditionalDamage).Sum();
+        }
         set
         {
-            float tempPhysicsAdditionalDamage = _PhysicsAdditionalDamage;
-            _PhysicsAdditionalDamage = value;
-            if (tempPhysicsAdditionalDamage != _PhysicsAdditionalDamage)
-                Call<IAttributeState, float>(temp => temp.PhysicsAdditionalDamage);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsAdditionalDamage = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔法攻击穿透
-    /// </summary>
-    float _MagicPenetrate;
-    /// <summary>
-    /// 魔法攻击穿透
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicPenetrate
     {
-        get { return _MagicPenetrate; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicPenetrate).Sum();
+        }
         set
         {
-            float tempMagicPenetrate = _MagicPenetrate;
-            _MagicPenetrate = value;
-            if (tempMagicPenetrate != _MagicPenetrate)
-                Call<IAttributeState, float>(temp => temp.MagicPenetrate);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicPenetrate = value;
+            }
         }
     }
 
     /// <summary>
     /// 物理攻击穿透
-    /// </summary>
-    float _PhysicsPenetrate;
-    /// <summary>
-    /// 物理攻击穿透
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float PhysicsPenetrate
     {
-        get { return _PhysicsPenetrate; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsPenetrate).Sum();
+        }
         set
         {
-            float tempPhysicsPenetrate = _PhysicsPenetrate;
-            _PhysicsPenetrate = value;
-            if (tempPhysicsPenetrate != _PhysicsPenetrate)
-                Call<IAttributeState, float>(temp => temp.PhysicsPenetrate);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsPenetrate = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔法最终伤害
-    /// </summary>
-    float _MagicFinalDamage;
-    /// <summary>
-    /// 魔法最终伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicFinalDamage
     {
-        get { return _MagicFinalDamage; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicFinalDamage).Sum();
+        }
         set
         {
-            float tempMagicFinalDamage = _MagicFinalDamage;
-            _MagicFinalDamage = value;
-            if (tempMagicFinalDamage != _MagicFinalDamage)
-                Call<IAttributeState, float>(temp => temp.MagicFinalDamage);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicFinalDamage = value;
+            }
         }
     }
 
     /// <summary>
     /// 物理最终伤害
-    /// </summary>
-    float _PhysicsFinalDamage;
-    /// <summary>
-    /// 物理最终伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float PhysicsFinalDamage
     {
-        get { return PhysicsFinalDamage; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsFinalDamage).Sum();
+        }
         set
         {
-            float tempPhysicsFinalDamage = _PhysicsFinalDamage;
-            _PhysicsFinalDamage = value;
-            if (tempPhysicsFinalDamage != _PhysicsFinalDamage)
-                Call<IAttributeState, float>(temp => temp.PhysicsFinalDamage);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsFinalDamage = value;
+            }
         }
     }
 
     /// <summary>
     /// 元素亲和
-    /// </summary>
-    float _ElementAffine;
-    /// <summary>
-    /// 元素亲和
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float ElementAffine
     {
-        get { return _ElementAffine; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ElementAffine).Sum();
+        }
         set
         {
-            float tempElementAffine = _ElementAffine;
-            _ElementAffine = value;
-            if (tempElementAffine != _ElementAffine)
-                Call<IAttributeState, float>(temp => temp.ElementAffine);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ElementAffine = value;
+            }
         }
     }
 
     /// <summary>
     /// 魔法亲和
-    /// </summary>
-    float _MagicAffine;
-    /// <summary>
-    /// 魔法亲和
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicAffine
     {
-        get { return _MagicAffine; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAffine).Sum();
+        }
         set
         {
-            float tempMagicAffine = _MagicAffine;
-            _MagicAffine = value;
-            if (tempMagicAffine != _MagicAffine)
-                Call<IAttributeState, float>(temp => temp.MagicAffine);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAffine = value;
+            }
         }
     }
 
     /// <summary>
-    /// 魔法抗性
-    /// </summary>
-    float _MagicResistance;
-    /// <summary>
-    /// 魔法抗性
+    /// 魔法抗性（魔法防御）
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float MagicResistance
     {
-        get { return _MagicResistance; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicResistance).Sum();
+        }
         set
         {
-            float tempMagicResistance = _MagicResistance;
-            _MagicResistance = value;
-            if (tempMagicResistance != _MagicResistance)
-                Call<IAttributeState, float>(temp => temp.MagicResistance);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicResistance = value;
+            }
         }
     }
 
     /// <summary>
-    /// 物理抗性
-    /// </summary>
-    float _PhysicsResistance;
-    /// <summary>
-    /// 物理抗性
+    /// 物理抗性（物理防御）
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
     public float PhysicsResistance
     {
-        get { return _PhysicsResistance; }
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsResistance).Sum();
+        }
         set
         {
-            float tempPhysicsResistance = _PhysicsResistance;
-            _PhysicsResistance = value;
-            if (tempPhysicsResistance != _PhysicsResistance)
-                Call<IAttributeState, float>(temp => temp.PhysicsResistance);
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsResistance = value;
+            }
         }
     }
 
@@ -574,30 +830,31 @@ public partial class GameState
     {
         get
         {
-            if (_ElementResistances == null)
+            if (iAttributeStateDic != null)
             {
-                //根据元素类型建立数组
-
-                //------------------//
+                var tempDatas = iAttributeStateDic.Values.Select(temp => temp.ElementResistances).Where(temp => temp.Length != 0);
+                var lengthData = tempDatas.Select(temp => temp.Length).Distinct();
+                if (lengthData.Count() == 1 && lengthData.First() > 0)
+                {
+                    int length = lengthData.First();
+                    float[] result = new float[length];
+                    foreach (var _tempData in tempDatas)
+                    {
+                        for (int i = 0; i < length; i++)
+                        {
+                            result[i] += _tempData[i];
+                        }
+                    }
+                }
             }
-            return _ElementResistances.Clone() as float[];
+            return new float[0];
         }
         set
         {
-            if (_ElementResistances == null)
-                _ElementResistances = ElementResistances;
-            if (_ElementResistances != null && value != null && value.Length == _ElementResistances.Length)
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
             {
-                bool valueChanged = false;
-                int length = value.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    if (_ElementResistances[i] != value[i])
-                        valueChanged = true;
-                    _ElementResistances[i] = value[i];
-                }
-                if (valueChanged)
-                    Call<IAttributeState, float[]>(temp => temp.ElementResistances);
+                iAttributeBaseState.ElementResistances = value;
             }
         }
     }
@@ -613,30 +870,135 @@ public partial class GameState
     {
         get
         {
-            if (_StateResistances == null)
+            if (iAttributeStateDic != null)
             {
-                //根据状态类型建立数组
-
-                //------------------//
+                var tempDatas = iAttributeStateDic.Values.Select(temp => temp.StateResistances).Where(temp => temp.Length != 0);
+                var lengthData = tempDatas.Select(temp => temp.Length).Distinct();
+                if (lengthData.Count() == 1 && lengthData.First() > 0)
+                {
+                    int length = lengthData.First();
+                    float[] result = new float[length];
+                    foreach (var _tempData in tempDatas)
+                    {
+                        for (int i = 0; i < length; i++)
+                        {
+                            result[i] += _tempData[i];
+                        }
+                    }
+                }
             }
-            return _StateResistances.Clone() as float[];
+            return new float[0];
         }
         set
         {
-            if (_StateResistances == null)
-                _StateResistances = StateResistances;
-            if (_StateResistances != null && value != null && value.Length == _StateResistances.Length)
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
             {
-                bool valueChanged = false;
-                int length = value.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    if (_StateResistances[i] != value[i])
-                        valueChanged = true;
-                    _StateResistances[i] = value[i];
-                }
-                if (valueChanged)
-                    Call<IAttributeState, float[]>(temp => temp.StateResistances);
+                iAttributeBaseState.StateResistances = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 特效影响力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float EffectResideTime
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.EffectResideTime).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.EffectResideTime = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 光明信仰强度
+    /// </summary>
+    public float LightFaith
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.LightFaith).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.LightFaith = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 黑信仰强度
+    /// </summary>
+    public float DarkFaith
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.DarkFaith).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.DarkFaith = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 生物信仰强度
+    /// </summary>
+    public float LifeFaith {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.LifeFaith).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.LifeFaith = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 自然信仰强度
+    /// </summary>
+    public float NaturalFaith {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.NaturalFaith).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.NaturalFaith = value;
             }
         }
     }

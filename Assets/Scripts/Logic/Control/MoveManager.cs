@@ -33,7 +33,7 @@ public class MoveManager : IInput
         buffOrDebuffStateList_Move = new Dictionary<string, float>();
         iGameState = GameState.Instance.GetEntity<IGameState>();
         iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
-        iPlayerAttributeState = GameState.Instance.GetEntity<IAttributeState>();
+        iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
         iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         GameState.Instance.Registor<ISpecialState>(CallbackSpecialState);
         GameState.Instance.Registor<IBuffState>(CallbackBuffState);
@@ -53,7 +53,7 @@ public class MoveManager : IInput
     /// <summary>
     /// 玩家的属性
     /// </summary>
-    IAttributeState iPlayerAttributeState;
+    IPlayerAttributeState iPlayerAttributeState;
 
     /// <summary>
     /// 动画状态

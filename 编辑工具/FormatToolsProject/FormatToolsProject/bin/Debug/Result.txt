@@ -1,204 +1,286 @@
 ﻿    /// <summary>
-    /// 入门法师
+    /// 道具攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("入门法师")]
-    FS05,
+    public float ItemAttacking
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ItemAttacking).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ItemAttacking = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 法术力场
+    /// 魔法攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("法术力场")]
-    FS06,
+    public float MagicAttacking
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAttacking).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAttacking = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 进阶法师
+    /// 物理攻击力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("进阶法师")]
-    FS07,
+    public float PhysicsAttacking
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAttacking).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsAttacking = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 法力之源
+    /// 魔法附加伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("法力之源")]
-    FS08,
+    public float MagicAdditionalDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAdditionalDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAdditionalDamage = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 快速咏唱
+    /// 物理伤害附加
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("快速咏唱")]
-    FS09,
+    public float PhysicsAdditionalDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAdditionalDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsAdditionalDamage = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 高阶法师
+    /// 魔法攻击穿透
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("高阶法师")]
-    FS10,
+    public float MagicPenetrate
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicPenetrate).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicPenetrate = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 元素精通
+    /// 物理攻击穿透
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("元素精通")]
-    YSX05,
+    public float PhysicsPenetrate
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsPenetrate).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsPenetrate = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 元素低语
+    /// 魔法最终伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("元素低语")]
-    YSX08,
+    public float MagicFinalDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicFinalDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicFinalDamage = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 魔偶制成
+    /// 物理最终伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("魔偶制成")]
-    MFS01,
+    public float PhysicsFinalDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsFinalDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsFinalDamage = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 魔法精通
+    /// 元素亲和
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("魔法精通")]
-    MFS03,
+    public float ElementAffine
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ElementAffine).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ElementAffine = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 精灵交谈
+    /// 魔法亲和
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("精灵交谈")]
-    MFS07,
+    public float MagicAffine
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicAffine).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicAffine = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 元素信仰基础
+    /// 魔法抗性（魔法防御）
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("元素信仰基础")]
-    SM01,
+    public float MagicResistance
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicResistance).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicResistance = value;
+            }
+        }
+    }
 
     /// <summary>
-    /// 初阶萨满
+    /// 物理抗性（物理防御）
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    [FieldExplan("初阶萨满")]
-    SM05,
-
-    /// <summary>
-    /// 自然聆听
-    /// </summary>
-    [FieldExplan("自然聆听")]
-    SM08,
-
-    /// <summary>
-    /// 神灵信奉
-    /// </summary>
-    [FieldExplan("神灵信奉")]
-    MS01,
-
-    /// <summary>
-    /// 信徒
-    /// </summary>
-    [FieldExplan("信徒")]
-    MS07,
-
-    /// <summary>
-    /// 大法师
-    /// </summary>
-    [FieldExplan("大法师")]
-    DFS01,
-
-    /// <summary>
-    /// 法术精通
-    /// </summary>
-    [FieldExplan("法术精通")]
-    DFS02,
-
-    /// <summary>
-    /// 附加元素
-    /// </summary>
-    [FieldExplan("附加元素")]
-    DFS03,
-
-    /// <summary>
-    /// 元素力场
-    /// </summary>
-    [FieldExplan("元素力场")]
-    DFS07,
-
-    /// <summary>
-    /// 高速咏唱
-    /// </summary>
-    [FieldExplan("高速咏唱")]
-    DFS08,
-
-    /// <summary>
-    /// 高阶法术陷阱
-    /// </summary>
-    [FieldExplan("高阶法术陷阱")]
-    ZHS01,
-
-    /// <summary>
-    /// 高阶魔偶
-    /// </summary>
-    [FieldExplan("高阶魔偶")]
-    ZHS03,
-
-    /// <summary>
-    /// 魔偶指令
-    /// </summary>
-    [FieldExplan("魔偶指令")]
-    ZHS06,
-
-    /// <summary>
-    /// 操控者
-    /// </summary>
-    [FieldExplan("操控者")]
-    ZHS07,
-
-    /// <summary>
-    /// 神圣元素
-    /// </summary>
-    [FieldExplan("神圣元素")]
-    DSM01,
-
-    /// <summary>
-    /// 萨满之矛
-    /// </summary>
-    [FieldExplan("萨满之矛")]
-    DSM07,
-
-    /// <summary>
-    /// 萨满精神
-    /// </summary>
-    [FieldExplan("萨满精神")]
-    DSM09,
-
-    /// <summary>
-    /// 光明祭司
-    /// </summary>
-    [FieldExplan("光明祭司")]
-    JS01,
-
-    /// <summary>
-    /// 黑暗祭司
-    /// </summary>
-    [FieldExplan("黑暗祭司")]
-    JS02,
-
-    /// <summary>
-    /// 神秘信仰
-    /// </summary>
-    [FieldExplan("神秘信仰")]
-    JS06,
-
-    /// <summary>
-    /// 高阶生物信仰
-    /// </summary>
-    [FieldExplan("高阶生物信仰")]
-    JH01,
-
-    /// <summary>
-    /// 高阶自然信仰
-    /// </summary>
-    [FieldExplan("高阶自然信仰")]
-    JH02,
-
-    /// <summary>
-    /// 神灵笃信
-    /// </summary>
-    [FieldExplan("神灵笃信")]
-    JH03,
+    public float PhysicsResistance
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsResistance).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsResistance = value;
+            }
+        }
+    }
 

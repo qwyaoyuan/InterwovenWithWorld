@@ -160,7 +160,7 @@ public class SkillAttributeStruct
     /// <summary>
     /// 自然信仰强度
     /// </summary>
-    [FieldExplan("自然信仰强度", "自然信仰强度")] public int Nature;
+    [FieldExplan("自然信仰强度", "自然信仰强度")] public int Natural;
     /// <summary>
     /// 技能特效等级 0 表示岁当前技能等级  -1表示没有特效  大于0表示有特效且等级为该数值
     /// </summary>

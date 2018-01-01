@@ -7,7 +7,7 @@ using UnityEngine;
 /// 比如是Buff与Debuff 动画的状态 玩家当前的属性（将所有属性叠加后）
 /// </summary>
 public interface IPlayerState : IBaseState,
-    IAttributeState, IBuffState, IDebuffState, ISpecialState, IAnimatorState, ISkillState,IDamage
+    IPlayerAttributeState, IBuffState, IDebuffState, ISpecialState, IAnimatorState, ISkillState,IDamage
 {
     /// <summary>
     /// 玩家操纵角色的游戏对象

@@ -50,7 +50,9 @@ public partial class GameState : IEntrance, IBaseState
             }
         }
         //其他的开始方法
+        Start_IPlayerState();
         Start_IMonsterCollection();
+        Start_IPlayerState_IAttribute();
     }
 
     public void Update()
@@ -121,6 +123,7 @@ public partial class GameState : IEntrance, IBaseState
         return (T)(object)this;
     }
 
+
     /// <summary>
     /// 获取字段名
     /// 也可以传入一个函数,但是注意如果函数和自动重名则会认为这是一个
@@ -129,7 +132,7 @@ public partial class GameState : IEntrance, IBaseState
     /// <typeparam name="U"></typeparam>
     /// <param name="expr"></param>
     /// <returns></returns>
-    public string GetFieldName<T, U>(Expression<Func<T, U>> expr)
+    public static string GetFieldNameStatic<T, U>(Expression<Func<T, U>> expr)
     {
         string propertyName = string.Empty;
         if (expr.Body is MemberExpression)
@@ -157,13 +160,72 @@ public partial class GameState : IEntrance, IBaseState
     }
 
     /// <summary>
-    /// 回调
+    /// 获取字段名
+    /// 也可以传入一个函数,但是注意如果函数和自动重名则会认为这是一个
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="U"></typeparam>
+    /// <param name="expr"></param>
+    /// <returns></returns>
+    public string GetFieldName<T, U>(Expression<Func<T, U>> expr)
+    {
+        return GetFieldNameStatic<T, U>(expr);
+        /*
+        string propertyName = string.Empty;
+        if (expr.Body is MemberExpression)
+        {
+            propertyName = ((MemberExpression)expr.Body).Member.Name;
+        }
+        else if (expr.Body is UnaryExpression)
+        {
+            Expression expressionOperand = (expr.Body as UnaryExpression).Operand;
+            if (expressionOperand is MethodCallExpression)
+            {
+                MethodCallExpression methodCallExpression = expressionOperand as MethodCallExpression;
+                if (methodCallExpression.Arguments.Count == 3)
+                {
+                    Expression expression1 = methodCallExpression.Arguments[2];
+                    MethodInfo methodInfo = (expression1 as ConstantExpression).Value as MethodInfo;
+                    if (methodInfo != null)
+                    {
+                        propertyName = methodInfo.Name;
+                    }
+                }
+            }
+        }
+        return propertyName;
+        */
+    }
+
+    /// <summary>
+    /// 回调(通过表达式获取名字)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="fieldName"></param>
     private void Call<T, U>(Expression<Func<T, U>> expr) where T : IBaseState
     {
         string propertyName = GetFieldName(expr);
+        List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
+        if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
+        {
+            foreach (KeyValuePair<object, Action<IBaseState, string>> item in actionList)
+            {
+                try
+                {
+                    item.Value(this, propertyName);
+                }
+                catch { }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 回调(通过名字)
+    /// </summary>
+    /// <typeparam propertyName="T"></typeparam>
+    /// <param name="name"></param>
+    private void Call<T>(string propertyName) where T : IBaseState
+    {
         List<KeyValuePair<object, Action<IBaseState, string>>> actionList = null;
         if (callBackDic.TryGetValue(typeof(T), out actionList) && actionList != null)
         {
@@ -218,6 +280,16 @@ public partial class GameState : IEntrance, IBaseState
     /// 怪物集合的开始方法
     /// </summary>
     partial void Start_IMonsterCollection();
+
+    /// <summary>
+    /// 角色属性的开始方法
+    /// </summary>
+    partial void Start_IPlayerState_IAttribute();
+
+    /// <summary>
+    /// 角色状态的开始方法
+    /// </summary>
+    partial void Start_IPlayerState();
 
     #endregion
 }

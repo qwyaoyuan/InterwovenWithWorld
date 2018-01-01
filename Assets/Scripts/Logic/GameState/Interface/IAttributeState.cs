@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 角色或怪物的属性（血量 攻击 防御等）
 /// </summary>
 public interface IAttributeState : IBaseState
 {
+    /// <summary>
+    /// 初始化属性
+    /// </summary>
+    void Init();
+
     #region 这些属性会影响到下面的计算 而这些属性由角色自身以及装备累加计算
     /// <summary>
     /// 敏捷
@@ -43,6 +49,10 @@ public interface IAttributeState : IBaseState
     /// 最大魔力量
     /// </summary>
     float MaxMana { get; set; }
+    /// <summary>
+    /// 最大耗魔上限
+    /// </summary>
+    float MaxUseMana { get; set; }
     /// <summary>
     /// 视野范围
     /// </summary>
@@ -118,14 +128,17 @@ public interface IAttributeState : IBaseState
     /// </summary>
     float PhysicsFinalDamage { get; set; }
     /// <summary>
-    /// 元素亲和
+    /// 元素亲和(特效影响力)
     /// </summary>
     float ElementAffine { get; set; }
+    /// <summary>
+    /// 特效驻留时间
+    /// </summary>
+    float EffectResideTime { get; set; }
     /// <summary>
     /// 魔法亲和
     /// </summary>
     float MagicAffine { get; set; }
-
     /// <summary>
     /// 魔法抗性（魔法防御）
     /// </summary>
@@ -134,6 +147,22 @@ public interface IAttributeState : IBaseState
     /// 物理抗性（物理防御）
     /// </summary>
     float PhysicsResistance { get; set; }
+    /// <summary>
+    /// 光明信仰强度
+    /// </summary>
+    float LightFaith { get; set; }
+    /// <summary>
+    /// 黑暗信仰强度
+    /// </summary>
+    float DarkFaith { get; set; }
+    /// <summary>
+    /// 生物信仰强度
+    /// </summary>
+    float LifeFaith { get; set; }
+    /// <summary>
+    /// 自然信仰强度
+    /// </summary>
+    float NaturalFaith { get; set; }
     /// <summary>
     /// 元素抗性,根据元素类型枚举的顺序
     /// </summary>
