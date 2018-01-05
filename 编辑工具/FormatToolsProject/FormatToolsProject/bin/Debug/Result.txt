@@ -1,286 +1,323 @@
-﻿    /// <summary>
-    /// 道具攻击力
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float ItemAttacking
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.ItemAttacking).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.ItemAttacking = value;
-            }
-        }
-    }
+﻿private float _CritDamageRatio;
+/// <summary>
+/// 暴击倍率(角色本身为1.5倍)
+/// </summary>
+public float CritDamageRatio
+{
+   get{return _CritDamageRatio;}
+   set
+   {
+      float tempCritDamageRatio = _CritDamageRatio;
+      _CritDamageRatio = value;
+      if(tempCritDamageRatio != _CritDamageRatio)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.CritDamageRatio);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法攻击力
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicAttacking
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicAttacking).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicAttacking = value;
-            }
-        }
-    }
+private float _SpellTrapDamage;
+/// <summary>
+/// 法术陷阱伤害
+/// </summary>
+public float SpellTrapDamage
+{
+   get{return _SpellTrapDamage;}
+   set
+   {
+      float tempSpellTrapDamage = _SpellTrapDamage;
+      _SpellTrapDamage = value;
+      if(tempSpellTrapDamage != _SpellTrapDamage)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.SpellTrapDamage);
+      }
+   }
+}
 
-    /// <summary>
-    /// 物理攻击力
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float PhysicsAttacking
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAttacking).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.PhysicsAttacking = value;
-            }
-        }
-    }
+private float _SpellTrapEffectProbability;
+/// <summary>
+/// 法术陷阱特效产生几率
+/// </summary>
+public float SpellTrapEffectProbability
+{
+   get{return _SpellTrapEffectProbability;}
+   set
+   {
+      float tempSpellTrapEffectProbability = _SpellTrapEffectProbability;
+      _SpellTrapEffectProbability = value;
+      if(tempSpellTrapEffectProbability != _SpellTrapEffectProbability)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.SpellTrapEffectProbability);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法附加伤害
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicAdditionalDamage
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicAdditionalDamage).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicAdditionalDamage = value;
-            }
-        }
-    }
+private float _DamageToTheUndead;
+/// <summary>
+/// 对不死族伤害提升(百分比倍率)
+/// </summary>
+public float DamageToTheUndead
+{
+   get{return _DamageToTheUndead;}
+   set
+   {
+      float tempDamageToTheUndead = _DamageToTheUndead;
+      _DamageToTheUndead = value;
+      if(tempDamageToTheUndead != _DamageToTheUndead)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.DamageToTheUndead);
+      }
+   }
+}
 
-    /// <summary>
-    /// 物理伤害附加
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float PhysicsAdditionalDamage
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.PhysicsAdditionalDamage).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.PhysicsAdditionalDamage = value;
-            }
-        }
-    }
+private float _ChaosOfTheUndead;
+/// <summary>
+/// 对不死族附加混乱几率
+/// </summary>
+public float ChaosOfTheUndead
+{
+   get{return _ChaosOfTheUndead;}
+   set
+   {
+      float tempChaosOfTheUndead = _ChaosOfTheUndead;
+      _ChaosOfTheUndead = value;
+      if(tempChaosOfTheUndead != _ChaosOfTheUndead)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ChaosOfTheUndead);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法攻击穿透
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicPenetrate
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicPenetrate).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicPenetrate = value;
-            }
-        }
-    }
+private float _TreatmentVolume;
+/// <summary>
+/// 治疗量
+/// </summary>
+public float TreatmentVolume
+{
+   get{return _TreatmentVolume;}
+   set
+   {
+      float tempTreatmentVolume = _TreatmentVolume;
+      _TreatmentVolume = value;
+      if(tempTreatmentVolume != _TreatmentVolume)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.TreatmentVolume);
+      }
+   }
+}
 
-    /// <summary>
-    /// 物理攻击穿透
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float PhysicsPenetrate
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.PhysicsPenetrate).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.PhysicsPenetrate = value;
-            }
-        }
-    }
+private float _TrapDefense;
+/// <summary>
+/// 对陷阱的防御力
+/// </summary>
+public float TrapDefense
+{
+   get{return _TrapDefense;}
+   set
+   {
+      float tempTrapDefense = _TrapDefense;
+      _TrapDefense = value;
+      if(tempTrapDefense != _TrapDefense)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.TrapDefense);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法最终伤害
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicFinalDamage
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicFinalDamage).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicFinalDamage = value;
-            }
-        }
-    }
+private float _MysticalBeliefIntensity;
+/// <summary>
+/// 神秘信仰强度
+/// </summary>
+public float MysticalBeliefIntensity
+{
+   get{return _MysticalBeliefIntensity;}
+   set
+   {
+      float tempMysticalBeliefIntensity = _MysticalBeliefIntensity;
+      _MysticalBeliefIntensity = value;
+      if(tempMysticalBeliefIntensity != _MysticalBeliefIntensity)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.MysticalBeliefIntensity);
+      }
+   }
+}
 
-    /// <summary>
-    /// 物理最终伤害
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float PhysicsFinalDamage
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.PhysicsFinalDamage).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.PhysicsFinalDamage = value;
-            }
-        }
-    }
+private float _MysticalBeliefSpecialEffects;
+/// <summary>
+/// 神秘信仰特效产生几率
+/// </summary>
+public float MysticalBeliefSpecialEffects
+{
+   get{return _MysticalBeliefSpecialEffects;}
+   set
+   {
+      float tempMysticalBeliefSpecialEffects = _MysticalBeliefSpecialEffects;
+      _MysticalBeliefSpecialEffects = value;
+      if(tempMysticalBeliefSpecialEffects != _MysticalBeliefSpecialEffects)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.MysticalBeliefSpecialEffects);
+      }
+   }
+}
 
-    /// <summary>
-    /// 元素亲和
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float ElementAffine
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.ElementAffine).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.ElementAffine = value;
-            }
-        }
-    }
+private float _ImproveWorshipFaith;
+/// <summary>
+/// 崇拜信仰强度
+/// </summary>
+public float ImproveWorshipFaith
+{
+   get{return _ImproveWorshipFaith;}
+   set
+   {
+      float tempImproveWorshipFaith = _ImproveWorshipFaith;
+      _ImproveWorshipFaith = value;
+      if(tempImproveWorshipFaith != _ImproveWorshipFaith)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ImproveWorshipFaith);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法亲和
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicAffine
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicAffine).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicAffine = value;
-            }
-        }
-    }
+private float _AbnormalStateResistance;
+/// <summary>
+/// 异常状态抗性
+/// </summary>
+public float AbnormalStateResistance
+{
+   get{return _AbnormalStateResistance;}
+   set
+   {
+      float tempAbnormalStateResistance = _AbnormalStateResistance;
+      _AbnormalStateResistance = value;
+      if(tempAbnormalStateResistance != _AbnormalStateResistance)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.AbnormalStateResistance);
+      }
+   }
+}
 
-    /// <summary>
-    /// 魔法抗性（魔法防御）
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float MagicResistance
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicResistance).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.MagicResistance = value;
-            }
-        }
-    }
+private float _ElementStandStrength;
+/// <summary>
+/// 元素立场强度
+/// </summary>
+public float ElementStandStrength
+{
+   get{return _ElementStandStrength;}
+   set
+   {
+      float tempElementStandStrength = _ElementStandStrength;
+      _ElementStandStrength = value;
+      if(tempElementStandStrength != _ElementStandStrength)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ElementStandStrength);
+      }
+   }
+}
 
-    /// <summary>
-    /// 物理抗性（物理防御）
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float PhysicsResistance
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.PhysicsResistance).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.PhysicsResistance = value;
-            }
-        }
-    }
+private float _ExemptionChantingTime;
+/// <summary>
+/// 咏唱时间减免(百分比)
+/// </summary>
+public float ExemptionChantingTime
+{
+   get{return _ExemptionChantingTime;}
+   set
+   {
+      float tempExemptionChantingTime = _ExemptionChantingTime;
+      _ExemptionChantingTime = value;
+      if(tempExemptionChantingTime != _ExemptionChantingTime)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ExemptionChantingTime);
+      }
+   }
+}
+
+private float _ReduceCoolingTime;
+/// <summary>
+/// 冷却时间减免(百分比)
+/// </summary>
+public float ReduceCoolingTime
+{
+   get{return _ReduceCoolingTime;}
+   set
+   {
+      float tempReduceCoolingTime = _ReduceCoolingTime;
+      _ReduceCoolingTime = value;
+      if(tempReduceCoolingTime != _ReduceCoolingTime)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ReduceCoolingTime);
+      }
+   }
+}
+
+private float _AccelerateToUndead;
+/// <summary>
+/// 对不死族加速
+/// </summary>
+public float AccelerateToUndead
+{
+   get{return _AccelerateToUndead;}
+   set
+   {
+      float tempAccelerateToUndead = _AccelerateToUndead;
+      _AccelerateToUndead = value;
+      if(tempAccelerateToUndead != _AccelerateToUndead)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.AccelerateToUndead);
+      }
+   }
+}
+
+private float _ExperienceValuePlus;
+/// <summary>
+/// 经验值加成(与基础经验乘算)
+/// </summary>
+public float ExperienceValuePlus
+{
+   get{return _ExperienceValuePlus;}
+   set
+   {
+      float tempExperienceValuePlus = _ExperienceValuePlus;
+      _ExperienceValuePlus = value;
+      if(tempExperienceValuePlus != _ExperienceValuePlus)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.ExperienceValuePlus);
+      }
+   }
+}
+
+private float _GooodsDropRate;
+/// <summary>
+/// 物品掉落率(与基础掉落率乘算)
+/// </summary>
+public float GooodsDropRate
+{
+   get{return _GooodsDropRate;}
+   set
+   {
+      float tempGooodsDropRate = _GooodsDropRate;
+      _GooodsDropRate = value;
+      if(tempGooodsDropRate != _GooodsDropRate)
+      {
+         UpdateAttribute();
+         Call<IAttributeState, float >(temp => temp.GooodsDropRate);
+      }
+   }
+}
 

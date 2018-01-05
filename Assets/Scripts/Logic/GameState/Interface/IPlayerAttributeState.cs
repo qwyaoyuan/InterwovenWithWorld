@@ -38,5 +38,15 @@ public interface IPlayerAttributeState : IAttributeState
     /// </summary>
     /// <param name="handle"></param>
     void RemoveAttribute(int handle);
+
+    /// <summary>
+    /// 从技能对象中取出数据设置到状态对象中
+    /// </summary>
+    /// <param name="iAttributeState">要设置数据的状态对象</param>
+    /// <param name="baseAttributeState">玩家的基础状态对象</param>
+    /// <param name="skillAttributeStruct">技能属性对象</param>
+    void SetIAttributeStateDataBySkillData(IAttributeState iAttributeState, IAttributeState baseAttributeState, SkillAttributeStruct skillAttributeStruct);
+
+
 }
 

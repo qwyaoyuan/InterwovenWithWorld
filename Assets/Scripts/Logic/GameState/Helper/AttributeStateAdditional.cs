@@ -41,6 +41,54 @@ public class AttributeStateAdditional : IAttributeState
         }
     }
 
+    public static IAttributeState operator +(AttributeStateAdditional a, IAttributeState b)
+    {
+        if (a == null || b == null)
+            return null;
+        AttributeStateAdditional result = new AttributeStateAdditional();
+        Type t = typeof(IAttributeState);
+        PropertyInfo[] infos = t.GetProperties();
+        foreach (PropertyInfo info in infos)
+        {
+            MethodInfo getMethod = info.GetGetMethod();
+            MethodInfo setMethod = info.GetSetMethod();
+            if (getMethod != null && setMethod != null)
+            {
+                if (info.PropertyType.Equals(typeof(float)))
+                {
+                    float a_v = (float)getMethod.Invoke(a, null);
+                    float b_v = (float)getMethod.Invoke(b, null);
+                    float r_v = a_v + b_v;
+                    setMethod.Invoke(result, new object[] { r_v });
+                }
+            }
+        }
+        //处理数组的相加
+        float[] aElementResistances = a.ElementResistances;
+        float[] bElementResistances = b.ElementResistances;
+        if (aElementResistances.Length == bElementResistances.Length)
+        {
+            float[] elementResistances = new float[result.ElementResistances.Length];
+            for (int i = 0; i < result.ElementResistances.Length; i++)
+            {
+                elementResistances[i] = aElementResistances[i] + bElementResistances[i];
+            }
+            result.ElementResistances = elementResistances;
+        }
+        float[] aStateResistances = a.StateResistances;
+        float[] bStateResistances = b.StateResistances;
+        if (aStateResistances.Length == bStateResistances.Length)
+        {
+            float[] stateResistances = new float[result.StateResistances.Length];
+            for (int i = 0; i < result.StateResistances.Length; i++)
+            {
+                stateResistances[i] = aStateResistances[i] + bStateResistances[i];
+            }
+            result.StateResistances = stateResistances;
+        }
+        return result;
+    }
+
     /// <summary>
     /// 更新属性
     /// </summary>
@@ -64,25 +112,6 @@ public class AttributeStateAdditional : IAttributeState
             {
                 UpdateAttribute();
                 Call<IAttributeState, float>(temp => temp.Quick);
-            }
-        }
-    }
-
-    private float _Dedicated;
-    /// <summary>
-    /// 专注
-    /// </summary>
-    public float Dedicated
-    {
-        get { return _Dedicated; }
-        set
-        {
-            float tempDedicated = _Dedicated;
-            _Dedicated = value;
-            if (tempDedicated != _Dedicated)
-            {
-                UpdateAttribute();
-                Call<IAttributeState, float>(temp => temp.Dedicated);
             }
         }
     }
@@ -156,7 +185,6 @@ public class AttributeStateAdditional : IAttributeState
             _MaxHP = value;
             if (tempMaxHP != _MaxHP)
             {
-
                 Call<IAttributeState, float>(temp => temp.MaxHP);
             }
         }
@@ -175,7 +203,6 @@ public class AttributeStateAdditional : IAttributeState
             _Mana = value;
             if (tempMana != _Mana)
             {
-
                 Call<IAttributeState, float>(temp => temp.Mana);
             }
         }
@@ -212,7 +239,6 @@ public class AttributeStateAdditional : IAttributeState
             _MaxUseMana = value;
             if (tempMaxUseMana != _MaxUseMana)
             {
-
                 Call<IAttributeState, float>(temp => temp.MaxUseMana);
             }
         }
@@ -231,7 +257,6 @@ public class AttributeStateAdditional : IAttributeState
             _View = value;
             if (tempView != _View)
             {
-
                 Call<IAttributeState, float>(temp => temp.View);
             }
         }
@@ -250,7 +275,6 @@ public class AttributeStateAdditional : IAttributeState
             _MoveSpeed = value;
             if (tempMoveSpeed != _MoveSpeed)
             {
-
                 Call<IAttributeState, float>(temp => temp.MoveSpeed);
             }
         }
@@ -269,7 +293,6 @@ public class AttributeStateAdditional : IAttributeState
             _AttackSpeed = value;
             if (tempAttackSpeed != _AttackSpeed)
             {
-
                 Call<IAttributeState, float>(temp => temp.AttackSpeed);
             }
         }
@@ -288,7 +311,6 @@ public class AttributeStateAdditional : IAttributeState
             _HitRate = value;
             if (tempHitRate != _HitRate)
             {
-
                 Call<IAttributeState, float>(temp => temp.HitRate);
             }
         }
@@ -307,7 +329,6 @@ public class AttributeStateAdditional : IAttributeState
             _EvadeRate = value;
             if (tempEvadeRate != _EvadeRate)
             {
-
                 Call<IAttributeState, float>(temp => temp.EvadeRate);
             }
         }
@@ -326,7 +347,6 @@ public class AttributeStateAdditional : IAttributeState
             _CritRate = value;
             if (tempCritRate != _CritRate)
             {
-
                 Call<IAttributeState, float>(temp => temp.CritRate);
             }
         }
@@ -345,7 +365,6 @@ public class AttributeStateAdditional : IAttributeState
             _LifeRecovery = value;
             if (tempLifeRecovery != _LifeRecovery)
             {
-
                 Call<IAttributeState, float>(temp => temp.LifeRecovery);
             }
         }
@@ -364,8 +383,25 @@ public class AttributeStateAdditional : IAttributeState
             _ManaRecovery = value;
             if (tempManaRecovery != _ManaRecovery)
             {
-
                 Call<IAttributeState, float>(temp => temp.ManaRecovery);
+            }
+        }
+    }
+
+    private float _AttackRigidity;
+    /// <summary>
+    /// 攻击僵直
+    /// </summary>
+    public float AttackRigidity
+    {
+        get { return _AttackRigidity; }
+        set
+        {
+            float tempAttackRigidity = _AttackRigidity;
+            _AttackRigidity = value;
+            if (tempAttackRigidity != _AttackRigidity)
+            {
+                Call<IAttributeState, float>(temp => temp.AttackRigidity);
             }
         }
     }
@@ -383,7 +419,6 @@ public class AttributeStateAdditional : IAttributeState
             _ItemAttacking = value;
             if (tempItemAttacking != _ItemAttacking)
             {
-
                 Call<IAttributeState, float>(temp => temp.ItemAttacking);
             }
         }
@@ -402,7 +437,6 @@ public class AttributeStateAdditional : IAttributeState
             _MagicAttacking = value;
             if (tempMagicAttacking != _MagicAttacking)
             {
-
                 Call<IAttributeState, float>(temp => temp.MagicAttacking);
             }
         }
@@ -421,7 +455,6 @@ public class AttributeStateAdditional : IAttributeState
             _PhysicsAttacking = value;
             if (tempPhysicsAttacking != _PhysicsAttacking)
             {
-
                 Call<IAttributeState, float>(temp => temp.PhysicsAttacking);
             }
         }
@@ -440,7 +473,6 @@ public class AttributeStateAdditional : IAttributeState
             _MagicAdditionalDamage = value;
             if (tempMagicAdditionalDamage != _MagicAdditionalDamage)
             {
-
                 Call<IAttributeState, float>(temp => temp.MagicAdditionalDamage);
             }
         }
@@ -459,7 +491,6 @@ public class AttributeStateAdditional : IAttributeState
             _PhysicsAdditionalDamage = value;
             if (tempPhysicsAdditionalDamage != _PhysicsAdditionalDamage)
             {
-
                 Call<IAttributeState, float>(temp => temp.PhysicsAdditionalDamage);
             }
         }
@@ -478,7 +509,6 @@ public class AttributeStateAdditional : IAttributeState
             _MagicPenetrate = value;
             if (tempMagicPenetrate != _MagicPenetrate)
             {
-
                 Call<IAttributeState, float>(temp => temp.MagicPenetrate);
             }
         }
@@ -497,7 +527,6 @@ public class AttributeStateAdditional : IAttributeState
             _PhysicsPenetrate = value;
             if (tempPhysicsPenetrate != _PhysicsPenetrate)
             {
-
                 Call<IAttributeState, float>(temp => temp.PhysicsPenetrate);
             }
         }
@@ -516,7 +545,6 @@ public class AttributeStateAdditional : IAttributeState
             _MagicFinalDamage = value;
             if (tempMagicFinalDamage != _MagicFinalDamage)
             {
-
                 Call<IAttributeState, float>(temp => temp.MagicFinalDamage);
             }
         }
@@ -535,46 +563,43 @@ public class AttributeStateAdditional : IAttributeState
             _PhysicsFinalDamage = value;
             if (tempPhysicsFinalDamage != _PhysicsFinalDamage)
             {
-
                 Call<IAttributeState, float>(temp => temp.PhysicsFinalDamage);
             }
         }
     }
 
-    private float _ElementAffine;
+    private float _EffectAffine;
     /// <summary>
     /// 元素亲和
     /// </summary>
-    public float ElementAffine
+    public float EffectAffine
     {
-        get { return _ElementAffine; }
+        get { return _EffectAffine; }
         set
         {
-            float tempElementAffine = _ElementAffine;
-            _ElementAffine = value;
-            if (tempElementAffine != _ElementAffine)
+            float tempEffectAffine = _EffectAffine;
+            _EffectAffine = value;
+            if (tempEffectAffine != _EffectAffine)
             {
-
-                Call<IAttributeState, float>(temp => temp.ElementAffine);
+                Call<IAttributeState, float>(temp => temp.EffectAffine);
             }
         }
     }
 
-    private float _MagicAffine;
+    private float _MagicFit;
     /// <summary>
     /// 魔法亲和
     /// </summary>
-    public float MagicAffine
+    public float MagicFit
     {
-        get { return _MagicAffine; }
+        get { return _MagicFit; }
         set
         {
-            float tempMagicAffine = _MagicAffine;
-            _MagicAffine = value;
-            if (tempMagicAffine != _MagicAffine)
+            float tempMagicFit = _MagicFit;
+            _MagicFit = value;
+            if (tempMagicFit != _MagicFit)
             {
-
-                Call<IAttributeState, float>(temp => temp.MagicAffine);
+                Call<IAttributeState, float>(temp => temp.MagicFit);
             }
         }
     }
@@ -592,7 +617,6 @@ public class AttributeStateAdditional : IAttributeState
             _MagicResistance = value;
             if (tempMagicResistance != _MagicResistance)
             {
-
                 Call<IAttributeState, float>(temp => temp.MagicResistance);
             }
         }
@@ -611,7 +635,6 @@ public class AttributeStateAdditional : IAttributeState
             _PhysicsResistance = value;
             if (tempPhysicsResistance != _PhysicsResistance)
             {
-
                 Call<IAttributeState, float>(temp => temp.PhysicsResistance);
             }
         }
@@ -628,7 +651,7 @@ public class AttributeStateAdditional : IAttributeState
             if (_ElementResistances == null)
             {
                 //根据元素类型建立数组
-
+                _ElementResistances = new float[0];
                 //------------------//
             }
             return _ElementResistances.Clone() as float[];
@@ -666,7 +689,7 @@ public class AttributeStateAdditional : IAttributeState
             if (_StateResistances == null)
             {
                 //根据状态类型建立数组
-
+                _StateResistances = new float[0];
                 //------------------//
             }
             return _StateResistances.Clone() as float[];
@@ -782,6 +805,403 @@ public class AttributeStateAdditional : IAttributeState
             }
         }
     }
+
+    private float _CritDamageRatio;
+    /// <summary>
+    /// 暴击倍率(角色本身为1.5倍)
+    /// </summary>
+    public float CritDamageRatio
+    {
+        get { return _CritDamageRatio; }
+        set
+        {
+            float tempCritDamageRatio = _CritDamageRatio;
+            _CritDamageRatio = value;
+            if (tempCritDamageRatio != _CritDamageRatio)
+            {
+                Call<IAttributeState, float>(temp => temp.CritDamageRatio);
+            }
+        }
+    }
+
+    private float _SpellTrapDamage;
+    /// <summary>
+    /// 法术陷阱伤害
+    /// </summary>
+    public float SpellTrapDamage
+    {
+        get { return _SpellTrapDamage; }
+        set
+        {
+            float tempSpellTrapDamage = _SpellTrapDamage;
+            _SpellTrapDamage = value;
+            if (tempSpellTrapDamage != _SpellTrapDamage)
+            {
+                Call<IAttributeState, float>(temp => temp.SpellTrapDamage);
+            }
+        }
+    }
+
+    private float _SpellTrapEffectProbability;
+    /// <summary>
+    /// 法术陷阱特效产生几率
+    /// </summary>
+    public float SpellTrapEffectProbability
+    {
+        get { return _SpellTrapEffectProbability; }
+        set
+        {
+            float tempSpellTrapEffectProbability = _SpellTrapEffectProbability;
+            _SpellTrapEffectProbability = value;
+            if (tempSpellTrapEffectProbability != _SpellTrapEffectProbability)
+            {
+                Call<IAttributeState, float>(temp => temp.SpellTrapEffectProbability);
+            }
+        }
+    }
+
+    private float _DamageToTheUndead;
+    /// <summary>
+    /// 对不死族伤害提升(百分比倍率)
+    /// </summary>
+    public float DamageToTheUndead
+    {
+        get { return _DamageToTheUndead; }
+        set
+        {
+            float tempDamageToTheUndead = _DamageToTheUndead;
+            _DamageToTheUndead = value;
+            if (tempDamageToTheUndead != _DamageToTheUndead)
+            {
+                Call<IAttributeState, float>(temp => temp.DamageToTheUndead);
+            }
+        }
+    }
+
+    private float _ChaosOfTheUndead;
+    /// <summary>
+    /// 对不死族附加混乱几率
+    /// </summary>
+    public float ChaosOfTheUndead
+    {
+        get { return _ChaosOfTheUndead; }
+        set
+        {
+            float tempChaosOfTheUndead = _ChaosOfTheUndead;
+            _ChaosOfTheUndead = value;
+            if (tempChaosOfTheUndead != _ChaosOfTheUndead)
+            {
+                Call<IAttributeState, float>(temp => temp.ChaosOfTheUndead);
+            }
+        }
+    }
+
+    private float _TreatmentVolume;
+    /// <summary>
+    /// 治疗量
+    /// </summary>
+    public float TreatmentVolume
+    {
+        get { return _TreatmentVolume; }
+        set
+        {
+            float tempTreatmentVolume = _TreatmentVolume;
+            _TreatmentVolume = value;
+            if (tempTreatmentVolume != _TreatmentVolume)
+            {
+                Call<IAttributeState, float>(temp => temp.TreatmentVolume);
+            }
+        }
+    }
+
+    private float _TrapDefense;
+    /// <summary>
+    /// 对陷阱的防御力
+    /// </summary>
+    public float TrapDefense
+    {
+        get { return _TrapDefense; }
+        set
+        {
+            float tempTrapDefense = _TrapDefense;
+            _TrapDefense = value;
+            if (tempTrapDefense != _TrapDefense)
+            {
+                Call<IAttributeState, float>(temp => temp.TrapDefense);
+            }
+        }
+    }
+
+    private float _MysticalBeliefIntensity;
+    /// <summary>
+    /// 神秘信仰强度
+    /// </summary>
+    public float MysticalBeliefIntensity
+    {
+        get { return _MysticalBeliefIntensity; }
+        set
+        {
+            float tempMysticalBeliefIntensity = _MysticalBeliefIntensity;
+            _MysticalBeliefIntensity = value;
+            if (tempMysticalBeliefIntensity != _MysticalBeliefIntensity)
+            {
+                Call<IAttributeState, float>(temp => temp.MysticalBeliefIntensity);
+            }
+        }
+    }
+
+    private float _MysticalBeliefSpecialEffects;
+    /// <summary>
+    /// 神秘信仰特效产生几率
+    /// </summary>
+    public float MysticalBeliefSpecialEffects
+    {
+        get { return _MysticalBeliefSpecialEffects; }
+        set
+        {
+            float tempMysticalBeliefSpecialEffects = _MysticalBeliefSpecialEffects;
+            _MysticalBeliefSpecialEffects = value;
+            if (tempMysticalBeliefSpecialEffects != _MysticalBeliefSpecialEffects)
+            {
+                Call<IAttributeState, float>(temp => temp.MysticalBeliefSpecialEffects);
+            }
+        }
+    }
+
+    private float _ImproveWorshipFaith;
+    /// <summary>
+    /// 崇拜信仰强度
+    /// </summary>
+    public float ImproveWorshipFaith
+    {
+        get { return _ImproveWorshipFaith; }
+        set
+        {
+            float tempImproveWorshipFaith = _ImproveWorshipFaith;
+            _ImproveWorshipFaith = value;
+            if (tempImproveWorshipFaith != _ImproveWorshipFaith)
+            {
+                Call<IAttributeState, float>(temp => temp.ImproveWorshipFaith);
+            }
+        }
+    }
+
+    private float _AbnormalStateResistance;
+    /// <summary>
+    /// 异常状态抗性
+    /// </summary>
+    public float AbnormalStateResistance
+    {
+        get { return _AbnormalStateResistance; }
+        set
+        {
+            float tempAbnormalStateResistance = _AbnormalStateResistance;
+            _AbnormalStateResistance = value;
+            if (tempAbnormalStateResistance != _AbnormalStateResistance)
+            {
+                Call<IAttributeState, float>(temp => temp.AbnormalStateResistance);
+            }
+        }
+    }
+
+    private float _ElementStandStrength;
+    /// <summary>
+    /// 元素立场强度
+    /// </summary>
+    public float ElementStandStrength
+    {
+        get { return _ElementStandStrength; }
+        set
+        {
+            float tempElementStandStrength = _ElementStandStrength;
+            _ElementStandStrength = value;
+            if (tempElementStandStrength != _ElementStandStrength)
+            {
+                Call<IAttributeState, float>(temp => temp.ElementStandStrength);
+            }
+        }
+    }
+
+    private float _SameElementEffectAdded;
+    /// <summary>
+    /// 同元素魔法效果加成
+    /// </summary>
+    public float SameElementEffectAdded
+    {
+        get { return _SameElementEffectAdded; }
+        set
+        {
+            float tempSameElementEffectAdded = _SameElementEffectAdded;
+            _SameElementEffectAdded = value;
+            if (tempSameElementEffectAdded != _SameElementEffectAdded)
+            {
+                Call<IAttributeState, float>(temp => temp.SameElementEffectAdded);
+            }
+        }
+    }
+
+    private float _CoolingTime;
+    /// <summary>
+    /// 技能冷却时间
+    /// </summary>
+    public float CoolingTime
+    {
+        get { return _CoolingTime; }
+        set
+        {
+            float tempCoolingTime = _CoolingTime;
+            _CoolingTime = value;
+            if (_CoolingTime != tempCoolingTime)
+            {
+                Call<IAttributeState, float>(temp => temp.CoolingTime);
+            }
+        }
+    }
+
+    private float _MustUsedBaseMana;
+    /// <summary>
+    /// 需要使用的基础耗魔量(主要是组合技能以及需要主动释放的技能存在此选项)
+    /// </summary>
+    public float MustUsedBaseMana
+    {
+        get { return _MustUsedBaseMana; }
+        set
+        {
+            float tempMustUsedBaseMana = _MustUsedBaseMana;
+            _MustUsedBaseMana = value;
+            if (tempMustUsedBaseMana != _MustUsedBaseMana)
+            {
+                Call<IAttributeState, float>(temp => temp.MustUsedBaseMana);
+            }
+        }
+    }
+
+    private float _ExemptionChantingTime;
+    /// <summary>
+    /// 咏唱时间减免(百分比)
+    /// </summary>
+    public float ExemptionChantingTime
+    {
+        get { return _ExemptionChantingTime; }
+        set
+        {
+            float tempExemptionChantingTime = _ExemptionChantingTime;
+            _ExemptionChantingTime = value;
+            if (tempExemptionChantingTime != _ExemptionChantingTime)
+            {
+                Call<IAttributeState, float>(temp => temp.ExemptionChantingTime);
+            }
+        }
+    }
+
+    private float _ReduceCoolingTime;
+    /// <summary>
+    /// 冷却时间减免(百分比)
+    /// </summary>
+    public float ReduceCoolingTime
+    {
+        get { return _ReduceCoolingTime; }
+        set
+        {
+            float tempReduceCoolingTime = _ReduceCoolingTime;
+            _ReduceCoolingTime = value;
+            if (tempReduceCoolingTime != _ReduceCoolingTime)
+            {
+                Call<IAttributeState, float>(temp => temp.ReduceCoolingTime);
+            }
+        }
+    }
+
+    private float _AccelerateToUndead;
+    /// <summary>
+    /// 对不死族加速
+    /// </summary>
+    public float AccelerateToUndead
+    {
+        get { return _AccelerateToUndead; }
+        set
+        {
+            float tempAccelerateToUndead = _AccelerateToUndead;
+            _AccelerateToUndead = value;
+            if (tempAccelerateToUndead != _AccelerateToUndead)
+            {
+                Call<IAttributeState, float>(temp => temp.AccelerateToUndead);
+            }
+        }
+    }
+
+    private float _ExperienceValuePlus;
+    /// <summary>
+    /// 经验值加成(与基础经验乘算)
+    /// </summary>
+    public float ExperienceValuePlus
+    {
+        get { return _ExperienceValuePlus; }
+        set
+        {
+            float tempExperienceValuePlus = _ExperienceValuePlus;
+            _ExperienceValuePlus = value;
+            if (tempExperienceValuePlus != _ExperienceValuePlus)
+            {
+                Call<IAttributeState, float>(temp => temp.ExperienceValuePlus);
+            }
+        }
+    }
+
+    private float _GooodsDropRate;
+    /// <summary>
+    /// 物品掉落率(与基础掉落率乘算)
+    /// </summary>
+    public float GooodsDropRate
+    {
+        get { return _GooodsDropRate; }
+        set
+        {
+            float tempGooodsDropRate = _GooodsDropRate;
+            _GooodsDropRate = value;
+            if (tempGooodsDropRate != _GooodsDropRate)
+            {
+                Call<IAttributeState, float>(temp => temp.GooodsDropRate);
+            }
+        }
+    }
+
+    private float _ExemptionChatingMana;
+    /// <summary>
+    /// 减少该技能的冷却时间
+    /// </summary>
+    public float ExemptionChatingMana
+    {
+        get { return _ExemptionChatingMana; }
+        set
+        {
+            float tempExemptionChatingMana = _ExemptionChatingMana;
+            _ExemptionChatingMana = value;
+            if (tempExemptionChatingMana != _ExemptionChatingMana)
+            {
+                Call<IAttributeState, float>(temp => temp.ExemptionChatingMana);
+            }
+        }
+    }
+
+    private float _ReliefManaAmount;
+    /// <summary>
+    /// 耗魔量减免(百分比)
+    /// </summary>
+    public float ReliefManaAmount
+    {
+        get { return _ReliefManaAmount; }
+        set
+        {
+            float tempReliefManaAmount = _ReliefManaAmount;
+            _ReliefManaAmount = value;
+            if (tempReliefManaAmount != _ReliefManaAmount)
+            {
+                Call<IAttributeState, float>(temp => temp.ReliefManaAmount);
+            }
+        }
+    }
+
 
     /// <summary>
     /// 回调字典

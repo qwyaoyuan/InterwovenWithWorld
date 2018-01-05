@@ -36,6 +36,10 @@ public interface IAnimatorState : IBaseState
     /// 翻滚动画
     /// </summary>
     bool RollAnimator { get; set; }
+    /// <summary>
+    /// 技能动作是否持续
+    /// </summary>
+    bool SkillSustainable { get; set; }
     #endregion
     #region 内部设置 
     /// <summary>

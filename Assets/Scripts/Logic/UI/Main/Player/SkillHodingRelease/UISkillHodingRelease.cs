@@ -74,10 +74,35 @@ public class UISkillHodingRelease : MonoBehaviour
     /// </summary>
     SkillStructData skillStructData;
 
+    /// <summary>
+    /// 玩家技能状态对象
+    /// </summary>
+    ISkillState iSkillState;
+    /// <summary>
+    /// 玩家属性状态
+    /// </summary>
+    IAttributeState iAttributeState;
+
     private void Start()
     {
         GameState.Instance.Registor<ISkillState>(ISkillStateChanged);
+        GameState.Instance.Registor<IAttributeState>(IAttributeStateChanged);
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+        iSkillState = GameState.Instance.GetEntity<ISkillState>();
+        iAttributeState = GameState.Instance.GetEntity<IAttributeState>();
+    }
+
+    /// <summary>
+    /// 玩家属性发生更改 
+    /// </summary>
+    /// <param name="iAttribute"></param>
+    /// <param name="fieldName"></param>
+    private void IAttributeStateChanged(IAttributeState iAttribute, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.ExemptionChantingTime)))//咏唱时间改变
+        {
+            ChangeHoldingImage();
+        }
     }
 
     /// <summary>
@@ -90,30 +115,34 @@ public class UISkillHodingRelease : MonoBehaviour
         //组合技能改变
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, SkillBaseStruct[]>(temp => temp.CombineSkills)))
         {
-            ChangeSpriteLattice(iSkillState);
+            ChangeSpriteLattice();
         }
         //释放技能
         else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, bool>(temp => temp.IsSkillStartHolding)))
         {
-            ChangeHoldingImage(iSkillState);
+            ChangeHoldingImage();
         }
         //蓄力时间
         else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, float>(temp => temp.SkillStartHoldingTime)))
         {
-            ChangeHoldingImage(iSkillState);
+            ChangeHoldingImage();
         }
         //公共冷却时间
         else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, float>(temp => temp.PublicCoolingTime)))
         {
-            ChangeSpriteLattice(iSkillState);
+            ChangeSpriteLattice();
+        }
+        //技能冷却时间
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, Func<int, float>>(temp => temp.GetSkillCoolingTime)))
+        {
+            ChangeSpriteLattice();
         }
     }
 
     /// <summary>
     /// 更新显示
     /// </summary>
-    /// <param name="iSkillState">技能状态对象</param>
-    private void ChangeSpriteLattice(ISkillState iSkillState)
+    private void ChangeSpriteLattice()
     {
         SkillBaseStruct[] skillBaseStructs = iSkillState.CombineSkills;
         Action<Transform, Sprite> SetImageSprite = (trans, sprite) =>//设置技能的图片显示
@@ -141,42 +170,50 @@ public class UISkillHodingRelease : MonoBehaviour
         };
         if (skillBaseStructs != null)
         {
+            int skillID = SkillCombineStaticTools.GetCombineSkillKey(skillBaseStructs);
+            float skillCoolingTime = iSkillState.GetSkillCoolingTime(skillID);//本技能的冷却时间
+            float maxTime = skillCoolingTime > iSkillState.PublicCoolingTime ? skillCoolingTime : iSkillState.PublicCoolingTime;//选取最大的时间作为显示时间
             if (skillBaseStructs.Length > 0 && skillBaseStructs[0] != null)
             {
                 Sprite sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, (int)skillBaseStructs[0].skillType);
                 SetImageSprite(firstImage, sprite);
-                SetImageInnerState(firstInnerImage, iSkillState.PublicCoolingTime);
+                SetImageInnerState(firstInnerImage, maxTime);
             }
             else//清理第一个框
             {
                 SetImageSprite(firstImage, null);
                 SetImageInnerState(firstInnerImage, 0);
             }
+
             if (skillBaseStructs.Length > 1 && skillBaseStructs[1] != null)
             {
                 Sprite sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, (int)skillBaseStructs[1].skillType);
                 SetImageSprite(secondImage, sprite);
-                SetImageInnerState(secondInnerImage, iSkillState.PublicCoolingTime);
+                SetImageInnerState(secondInnerImage, maxTime);
             }
             else//清理第二个框
             {
                 SetImageSprite(secondImage, null);
                 SetImageInnerState(secondInnerImage, 0);
             }
+
             if (skillBaseStructs.Length > 2 && skillBaseStructs[2] != null)
             {
                 Sprite sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, (int)skillBaseStructs[2].skillType);
                 SetImageSprite(thirdImage, sprite);
+                SetImageInnerState(thirdInnerImage, maxTime);
             }
             else//清理第三个框
             {
                 SetImageSprite(thirdImage, null);
                 SetImageInnerState(thirdInnerImage, 0);
             }
+
             if (skillBaseStructs.Length > 3 && skillBaseStructs[3] != null)
             {
                 Sprite sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, (int)skillBaseStructs[3].skillType);
                 SetImageSprite(fourthImage, sprite);
+                SetImageInnerState(fourthInnerImage, maxTime);
             }
             else//清理第四个框
             {
@@ -200,13 +237,20 @@ public class UISkillHodingRelease : MonoBehaviour
     /// <summary>
     /// 更改蓄力图
     /// </summary>
-    /// <param name="iSkillState"></param>
-    private void ChangeHoldingImage(ISkillState iSkillState)
+    private void ChangeHoldingImage()
     {
         hodingImage.enabled = iSkillState.IsSkillStartHolding;
-        float bili = iSkillState.SkillStartHoldingTime / 2f;
-        bili = Mathf.Clamp(bili, 0, 1);
-        hodingImage.fillAmount = bili;
+        if (iSkillState.IsSkillStartHolding)
+        {
+
+            float bili = iSkillState.SkillStartHoldingTime / GameState.BaseSkillStartHoldingTime;
+            bili = Mathf.Clamp(bili, 0, 1);
+            hodingImage.fillAmount = bili;
+        }
+        else
+        {
+            hodingImage.fillAmount = 0;
+        }
     }
 
     void Update()

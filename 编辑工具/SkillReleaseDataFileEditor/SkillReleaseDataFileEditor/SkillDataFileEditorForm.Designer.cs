@@ -57,6 +57,17 @@
             this.Panel_Attribute = new System.Windows.Forms.Panel();
             this.FlowLayoutPanel_Attribute = new System.Windows.Forms.FlowLayoutPanel();
             this.Label_Attribute_SkillMaxLevel = new System.Windows.Forms.Label();
+            this.TabPage_Correlation = new System.Windows.Forms.TabPage();
+            this.AutoArrayControl_BeforeCorrelationSkill_Count = new SkillDataFileEditor.AutoArrayControl();
+            this.AutoArrayControl_BeforeCorrelationZone_Count = new SkillDataFileEditor.AutoArrayControl();
+            this.Label_BeforeSkillCount = new System.Windows.Forms.Label();
+            this.Label_BeforeZoneCount = new System.Windows.Forms.Label();
+            this.Label_BeforeSkill = new System.Windows.Forms.Label();
+            this.Label_BeforeZone = new System.Windows.Forms.Label();
+            this.Label_Correlation_Zone = new System.Windows.Forms.Label();
+            this.AutoArrayControl_BeforeCorrelationSkill_Type = new SkillDataFileEditor.AutoArrayControl();
+            this.AutoArrayControl_BeforeCorrelationZone_Type = new SkillDataFileEditor.AutoArrayControl();
+            this.AutoArrayControl_Correlation_Type = new SkillDataFileEditor.AutoArrayControl();
             this.TabPage_Other = new System.Windows.Forms.TabPage();
             this.ComboBox_Other_Item = new System.Windows.Forms.ComboBox();
             this.Button_Other_Add = new System.Windows.Forms.Button();
@@ -70,32 +81,22 @@
             this.Button_NewProject = new System.Windows.Forms.Button();
             this.Button_SaveProject = new System.Windows.Forms.Button();
             this.Button_LoadProject = new System.Windows.Forms.Button();
-            this.TabPage_Correlation = new System.Windows.Forms.TabPage();
-            this.AutoArrayControl_Correlation_Type = new SkillDataFileEditor.AutoArrayControl();
-            this.Label_Correlation_Zone = new System.Windows.Forms.Label();
-            this.Label_BeforeZone = new System.Windows.Forms.Label();
-            this.AutoArrayControl_BeforeCorrelationZone_Type = new SkillDataFileEditor.AutoArrayControl();
-            this.AutoArrayControl_BeforeCorrelationZone_Count = new SkillDataFileEditor.AutoArrayControl();
-            this.Label_BeforeZoneCount = new System.Windows.Forms.Label();
-            this.AutoArrayControl_BeforeCorrelationSkill_Type = new SkillDataFileEditor.AutoArrayControl();
-            this.Label_BeforeSkill = new System.Windows.Forms.Label();
-            this.Label_BeforeSkillCount = new System.Windows.Forms.Label();
-            this.AutoArrayControl_BeforeCorrelationSkill_Count = new SkillDataFileEditor.AutoArrayControl();
             this.TabControl_Setting.SuspendLayout();
             this.TabPage_Base.SuspendLayout();
             this.TabPage_SkillRelease.SuspendLayout();
             this.TabPage_Attribute.SuspendLayout();
             this.Panel_Attribute.SuspendLayout();
+            this.TabPage_Correlation.SuspendLayout();
             this.TabPage_Other.SuspendLayout();
             this.Panel_Other.SuspendLayout();
             this.Panel_Skill.SuspendLayout();
-            this.TabPage_Correlation.SuspendLayout();
             this.SuspendLayout();
             // 
             // TreeView_Skills
             // 
             this.TreeView_Skills.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.TreeView_Skills.HideSelection = false;
             this.TreeView_Skills.Location = new System.Drawing.Point(1, 51);
             this.TreeView_Skills.Name = "TreeView_Skills";
             this.TreeView_Skills.Size = new System.Drawing.Size(308, 618);
@@ -133,7 +134,7 @@
             this.TabPage_Base.Location = new System.Drawing.Point(4, 25);
             this.TabPage_Base.Name = "TabPage_Base";
             this.TabPage_Base.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Base.Size = new System.Drawing.Size(846, 589);
+            this.TabPage_Base.Size = new System.Drawing.Size(883, 589);
             this.TabPage_Base.TabIndex = 1;
             this.TabPage_Base.Text = "基础数据";
             this.TabPage_Base.UseVisualStyleBackColor = true;
@@ -247,7 +248,7 @@
             this.TabPage_SkillRelease.Location = new System.Drawing.Point(4, 25);
             this.TabPage_SkillRelease.Name = "TabPage_SkillRelease";
             this.TabPage_SkillRelease.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_SkillRelease.Size = new System.Drawing.Size(936, 589);
+            this.TabPage_SkillRelease.Size = new System.Drawing.Size(883, 589);
             this.TabPage_SkillRelease.TabIndex = 0;
             this.TabPage_SkillRelease.Text = "技能效果";
             this.TabPage_SkillRelease.UseVisualStyleBackColor = true;
@@ -364,7 +365,7 @@
             this.TabPage_Attribute.Location = new System.Drawing.Point(4, 25);
             this.TabPage_Attribute.Name = "TabPage_Attribute";
             this.TabPage_Attribute.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Attribute.Size = new System.Drawing.Size(846, 589);
+            this.TabPage_Attribute.Size = new System.Drawing.Size(883, 589);
             this.TabPage_Attribute.TabIndex = 2;
             this.TabPage_Attribute.Text = "属性";
             this.TabPage_Attribute.UseVisualStyleBackColor = true;
@@ -423,6 +424,173 @@
             this.Label_Attribute_SkillMaxLevel.TabIndex = 0;
             this.Label_Attribute_SkillMaxLevel.Text = "最高等级";
             // 
+            // TabPage_Correlation
+            // 
+            this.TabPage_Correlation.AutoScroll = true;
+            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationSkill_Count);
+            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationZone_Count);
+            this.TabPage_Correlation.Controls.Add(this.Label_BeforeSkillCount);
+            this.TabPage_Correlation.Controls.Add(this.Label_BeforeZoneCount);
+            this.TabPage_Correlation.Controls.Add(this.Label_BeforeSkill);
+            this.TabPage_Correlation.Controls.Add(this.Label_BeforeZone);
+            this.TabPage_Correlation.Controls.Add(this.Label_Correlation_Zone);
+            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationSkill_Type);
+            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationZone_Type);
+            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_Correlation_Type);
+            this.TabPage_Correlation.Location = new System.Drawing.Point(4, 25);
+            this.TabPage_Correlation.Name = "TabPage_Correlation";
+            this.TabPage_Correlation.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPage_Correlation.Size = new System.Drawing.Size(883, 589);
+            this.TabPage_Correlation.TabIndex = 4;
+            this.TabPage_Correlation.Text = "前置关系";
+            this.TabPage_Correlation.UseVisualStyleBackColor = true;
+            // 
+            // AutoArrayControl_BeforeCorrelationSkill_Count
+            // 
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.ChildControlType = "SkillDataFileEditor.TypeTextBox";
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Count = 6;
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.IsChangedValue = false;
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Location = new System.Drawing.Point(670, 388);
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Name = "AutoArrayControl_BeforeCorrelationSkill_Count";
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Size = new System.Drawing.Size(100, 194);
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.TabIndex = 3;
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.Tag = "correlationBeforeSkillCount";
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.TextValues = new string[] {
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""};
+            this.AutoArrayControl_BeforeCorrelationSkill_Count.TypeTag = "System.Int32";
+            // 
+            // AutoArrayControl_BeforeCorrelationZone_Count
+            // 
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AutoArrayControl_BeforeCorrelationZone_Count.ChildControlType = "SkillDataFileEditor.TypeTextBox";
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Count = 3;
+            this.AutoArrayControl_BeforeCorrelationZone_Count.IsChangedValue = false;
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Location = new System.Drawing.Point(667, 257);
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Name = "AutoArrayControl_BeforeCorrelationZone_Count";
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Size = new System.Drawing.Size(100, 100);
+            this.AutoArrayControl_BeforeCorrelationZone_Count.TabIndex = 3;
+            this.AutoArrayControl_BeforeCorrelationZone_Count.Tag = "correlationBeforeZoneCount";
+            this.AutoArrayControl_BeforeCorrelationZone_Count.TextValues = new string[] {
+        "",
+        "",
+        ""};
+            this.AutoArrayControl_BeforeCorrelationZone_Count.TypeTag = "System.Int32";
+            // 
+            // Label_BeforeSkillCount
+            // 
+            this.Label_BeforeSkillCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_BeforeSkillCount.AutoSize = true;
+            this.Label_BeforeSkillCount.Location = new System.Drawing.Point(667, 370);
+            this.Label_BeforeSkillCount.Name = "Label_BeforeSkillCount";
+            this.Label_BeforeSkillCount.Size = new System.Drawing.Size(67, 15);
+            this.Label_BeforeSkillCount.TabIndex = 2;
+            this.Label_BeforeSkillCount.Text = "技能加点";
+            this.Label_BeforeSkillCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Label_BeforeZoneCount
+            // 
+            this.Label_BeforeZoneCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Label_BeforeZoneCount.AutoSize = true;
+            this.Label_BeforeZoneCount.Location = new System.Drawing.Point(664, 239);
+            this.Label_BeforeZoneCount.Name = "Label_BeforeZoneCount";
+            this.Label_BeforeZoneCount.Size = new System.Drawing.Size(52, 15);
+            this.Label_BeforeZoneCount.TabIndex = 2;
+            this.Label_BeforeZoneCount.Text = "组加点";
+            this.Label_BeforeZoneCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Label_BeforeSkill
+            // 
+            this.Label_BeforeSkill.AutoSize = true;
+            this.Label_BeforeSkill.Location = new System.Drawing.Point(9, 370);
+            this.Label_BeforeSkill.Name = "Label_BeforeSkill";
+            this.Label_BeforeSkill.Size = new System.Drawing.Size(127, 15);
+            this.Label_BeforeSkill.TabIndex = 2;
+            this.Label_BeforeSkill.Text = "本技能的前置技能";
+            // 
+            // Label_BeforeZone
+            // 
+            this.Label_BeforeZone.AutoSize = true;
+            this.Label_BeforeZone.Location = new System.Drawing.Point(6, 239);
+            this.Label_BeforeZone.Name = "Label_BeforeZone";
+            this.Label_BeforeZone.Size = new System.Drawing.Size(112, 15);
+            this.Label_BeforeZone.TabIndex = 2;
+            this.Label_BeforeZone.Text = "本技能的前置组";
+            // 
+            // Label_Correlation_Zone
+            // 
+            this.Label_Correlation_Zone.AutoSize = true;
+            this.Label_Correlation_Zone.Location = new System.Drawing.Point(6, 8);
+            this.Label_Correlation_Zone.Name = "Label_Correlation_Zone";
+            this.Label_Correlation_Zone.Size = new System.Drawing.Size(112, 15);
+            this.Label_Correlation_Zone.TabIndex = 1;
+            this.Label_Correlation_Zone.Text = "本技能所在的组";
+            // 
+            // AutoArrayControl_BeforeCorrelationSkill_Type
+            // 
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Count = 6;
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.IsChangedValue = true;
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Location = new System.Drawing.Point(9, 388);
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Name = "AutoArrayControl_BeforeCorrelationSkill_Type";
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Size = new System.Drawing.Size(639, 195);
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.TabIndex = 0;
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.Tag = "correlationBeforeSkill";
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.TextValues = new string[] {
+        "None",
+        "None",
+        "None",
+        "None",
+        "None",
+        "None"};
+            this.AutoArrayControl_BeforeCorrelationSkill_Type.TypeTag = "EnumSkillType";
+            // 
+            // AutoArrayControl_BeforeCorrelationZone_Type
+            // 
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AutoArrayControl_BeforeCorrelationZone_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Count = 3;
+            this.AutoArrayControl_BeforeCorrelationZone_Type.IsChangedValue = true;
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Location = new System.Drawing.Point(6, 257);
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Name = "AutoArrayControl_BeforeCorrelationZone_Type";
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Size = new System.Drawing.Size(639, 100);
+            this.AutoArrayControl_BeforeCorrelationZone_Type.TabIndex = 0;
+            this.AutoArrayControl_BeforeCorrelationZone_Type.Tag = "correlationBeforeZone";
+            this.AutoArrayControl_BeforeCorrelationZone_Type.TextValues = new string[] {
+        "None",
+        "None",
+        "None"};
+            this.AutoArrayControl_BeforeCorrelationZone_Type.TypeTag = "EnumSkillZone";
+            // 
+            // AutoArrayControl_Correlation_Type
+            // 
+            this.AutoArrayControl_Correlation_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AutoArrayControl_Correlation_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
+            this.AutoArrayControl_Correlation_Type.Count = 6;
+            this.AutoArrayControl_Correlation_Type.IsChangedValue = true;
+            this.AutoArrayControl_Correlation_Type.Location = new System.Drawing.Point(3, 28);
+            this.AutoArrayControl_Correlation_Type.Name = "AutoArrayControl_Correlation_Type";
+            this.AutoArrayControl_Correlation_Type.Size = new System.Drawing.Size(874, 196);
+            this.AutoArrayControl_Correlation_Type.TabIndex = 0;
+            this.AutoArrayControl_Correlation_Type.Tag = "correlationZone";
+            this.AutoArrayControl_Correlation_Type.TextValues = new string[] {
+        "None",
+        "None",
+        "None",
+        "None",
+        "None",
+        "None"};
+            this.AutoArrayControl_Correlation_Type.TypeTag = "EnumSkillZone";
+            // 
             // TabPage_Other
             // 
             this.TabPage_Other.Controls.Add(this.ComboBox_Other_Item);
@@ -432,7 +600,7 @@
             this.TabPage_Other.Location = new System.Drawing.Point(4, 25);
             this.TabPage_Other.Name = "TabPage_Other";
             this.TabPage_Other.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Other.Size = new System.Drawing.Size(846, 589);
+            this.TabPage_Other.Size = new System.Drawing.Size(883, 589);
             this.TabPage_Other.TabIndex = 3;
             this.TabPage_Other.Text = "其他";
             this.TabPage_Other.UseVisualStyleBackColor = true;
@@ -567,173 +735,6 @@
             this.Button_LoadProject.UseVisualStyleBackColor = true;
             this.Button_LoadProject.Click += new System.EventHandler(this.Button_LoadProject_Click);
             // 
-            // TabPage_Correlation
-            // 
-            this.TabPage_Correlation.AutoScroll = true;
-            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationSkill_Count);
-            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationZone_Count);
-            this.TabPage_Correlation.Controls.Add(this.Label_BeforeSkillCount);
-            this.TabPage_Correlation.Controls.Add(this.Label_BeforeZoneCount);
-            this.TabPage_Correlation.Controls.Add(this.Label_BeforeSkill);
-            this.TabPage_Correlation.Controls.Add(this.Label_BeforeZone);
-            this.TabPage_Correlation.Controls.Add(this.Label_Correlation_Zone);
-            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationSkill_Type);
-            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_BeforeCorrelationZone_Type);
-            this.TabPage_Correlation.Controls.Add(this.AutoArrayControl_Correlation_Type);
-            this.TabPage_Correlation.Location = new System.Drawing.Point(4, 25);
-            this.TabPage_Correlation.Name = "TabPage_Correlation";
-            this.TabPage_Correlation.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Correlation.Size = new System.Drawing.Size(883, 589);
-            this.TabPage_Correlation.TabIndex = 4;
-            this.TabPage_Correlation.Text = "前置关系";
-            this.TabPage_Correlation.UseVisualStyleBackColor = true;
-            // 
-            // AutoArrayControl_Correlation_Type
-            // 
-            this.AutoArrayControl_Correlation_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AutoArrayControl_Correlation_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
-            this.AutoArrayControl_Correlation_Type.Count = 6;
-            this.AutoArrayControl_Correlation_Type.IsChangedValue = true;
-            this.AutoArrayControl_Correlation_Type.Location = new System.Drawing.Point(3, 28);
-            this.AutoArrayControl_Correlation_Type.Name = "AutoArrayControl_Correlation_Type";
-            this.AutoArrayControl_Correlation_Type.Size = new System.Drawing.Size(874, 196);
-            this.AutoArrayControl_Correlation_Type.TabIndex = 0;
-            this.AutoArrayControl_Correlation_Type.Tag = "correlationZone";
-            this.AutoArrayControl_Correlation_Type.TextValues = new string[] {
-        "None",
-        "None",
-        "None",
-        "None",
-        "None",
-        "None"};
-            this.AutoArrayControl_Correlation_Type.TypeTag = "EnumSkillZone";
-            // 
-            // Label_Correlation_Zone
-            // 
-            this.Label_Correlation_Zone.AutoSize = true;
-            this.Label_Correlation_Zone.Location = new System.Drawing.Point(6, 8);
-            this.Label_Correlation_Zone.Name = "Label_Correlation_Zone";
-            this.Label_Correlation_Zone.Size = new System.Drawing.Size(112, 15);
-            this.Label_Correlation_Zone.TabIndex = 1;
-            this.Label_Correlation_Zone.Text = "本技能所在的组";
-            // 
-            // Label_BeforeZone
-            // 
-            this.Label_BeforeZone.AutoSize = true;
-            this.Label_BeforeZone.Location = new System.Drawing.Point(6, 239);
-            this.Label_BeforeZone.Name = "Label_BeforeZone";
-            this.Label_BeforeZone.Size = new System.Drawing.Size(112, 15);
-            this.Label_BeforeZone.TabIndex = 2;
-            this.Label_BeforeZone.Text = "本技能的前置组";
-            // 
-            // AutoArrayControl_BeforeCorrelationZone_Type
-            // 
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AutoArrayControl_BeforeCorrelationZone_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Count = 3;
-            this.AutoArrayControl_BeforeCorrelationZone_Type.IsChangedValue = true;
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Location = new System.Drawing.Point(6, 257);
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Name = "AutoArrayControl_BeforeCorrelationZone_Type";
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Size = new System.Drawing.Size(639, 100);
-            this.AutoArrayControl_BeforeCorrelationZone_Type.TabIndex = 0;
-            this.AutoArrayControl_BeforeCorrelationZone_Type.Tag = "correlationBeforeZone";
-            this.AutoArrayControl_BeforeCorrelationZone_Type.TextValues = new string[] {
-        "None",
-        "None",
-        "None"};
-            this.AutoArrayControl_BeforeCorrelationZone_Type.TypeTag = "EnumSkillZone";
-            // 
-            // AutoArrayControl_BeforeCorrelationZone_Count
-            // 
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AutoArrayControl_BeforeCorrelationZone_Count.ChildControlType = "SkillDataFileEditor.TypeTextBox";
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Count = 3;
-            this.AutoArrayControl_BeforeCorrelationZone_Count.IsChangedValue = false;
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Location = new System.Drawing.Point(667, 257);
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Name = "AutoArrayControl_BeforeCorrelationZone_Count";
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Size = new System.Drawing.Size(100, 100);
-            this.AutoArrayControl_BeforeCorrelationZone_Count.TabIndex = 3;
-            this.AutoArrayControl_BeforeCorrelationZone_Count.Tag = "correlationBeforeZoneCount";
-            this.AutoArrayControl_BeforeCorrelationZone_Count.TextValues = new string[] {
-        "",
-        "",
-        ""};
-            this.AutoArrayControl_BeforeCorrelationZone_Count.TypeTag = "System.Int32";
-            // 
-            // Label_BeforeZoneCount
-            // 
-            this.Label_BeforeZoneCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_BeforeZoneCount.AutoSize = true;
-            this.Label_BeforeZoneCount.Location = new System.Drawing.Point(664, 239);
-            this.Label_BeforeZoneCount.Name = "Label_BeforeZoneCount";
-            this.Label_BeforeZoneCount.Size = new System.Drawing.Size(52, 15);
-            this.Label_BeforeZoneCount.TabIndex = 2;
-            this.Label_BeforeZoneCount.Text = "组加点";
-            this.Label_BeforeZoneCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // AutoArrayControl_BeforeCorrelationSkill_Type
-            // 
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.ChildControlType = "SkillDataFileEditor.EnumTypeComboBox";
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Count = 6;
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.IsChangedValue = true;
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Location = new System.Drawing.Point(9, 388);
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Name = "AutoArrayControl_BeforeCorrelationSkill_Type";
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Size = new System.Drawing.Size(639, 195);
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.TabIndex = 0;
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.Tag = "correlationBeforeSkill";
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.TextValues = new string[] {
-        "None",
-        "None",
-        "None",
-        "None",
-        "None",
-        "None"};
-            this.AutoArrayControl_BeforeCorrelationSkill_Type.TypeTag = "EnumSkillType";
-            // 
-            // Label_BeforeSkill
-            // 
-            this.Label_BeforeSkill.AutoSize = true;
-            this.Label_BeforeSkill.Location = new System.Drawing.Point(9, 370);
-            this.Label_BeforeSkill.Name = "Label_BeforeSkill";
-            this.Label_BeforeSkill.Size = new System.Drawing.Size(127, 15);
-            this.Label_BeforeSkill.TabIndex = 2;
-            this.Label_BeforeSkill.Text = "本技能的前置技能";
-            // 
-            // Label_BeforeSkillCount
-            // 
-            this.Label_BeforeSkillCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label_BeforeSkillCount.AutoSize = true;
-            this.Label_BeforeSkillCount.Location = new System.Drawing.Point(667, 370);
-            this.Label_BeforeSkillCount.Name = "Label_BeforeSkillCount";
-            this.Label_BeforeSkillCount.Size = new System.Drawing.Size(67, 15);
-            this.Label_BeforeSkillCount.TabIndex = 2;
-            this.Label_BeforeSkillCount.Text = "技能加点";
-            this.Label_BeforeSkillCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // AutoArrayControl_BeforeCorrelationSkill_Count
-            // 
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.ChildControlType = "SkillDataFileEditor.TypeTextBox";
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Count = 6;
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.IsChangedValue = false;
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Location = new System.Drawing.Point(670, 388);
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Name = "AutoArrayControl_BeforeCorrelationSkill_Count";
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Size = new System.Drawing.Size(100, 194);
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.TabIndex = 3;
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.Tag = "correlationBeforeSkillCount";
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.TextValues = new string[] {
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""};
-            this.AutoArrayControl_BeforeCorrelationSkill_Count.TypeTag = "System.Int32";
-            // 
             // SkillDataFileEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -754,12 +755,12 @@
             this.TabPage_Attribute.PerformLayout();
             this.Panel_Attribute.ResumeLayout(false);
             this.Panel_Attribute.PerformLayout();
+            this.TabPage_Correlation.ResumeLayout(false);
+            this.TabPage_Correlation.PerformLayout();
             this.TabPage_Other.ResumeLayout(false);
             this.Panel_Other.ResumeLayout(false);
             this.Panel_Other.PerformLayout();
             this.Panel_Skill.ResumeLayout(false);
-            this.TabPage_Correlation.ResumeLayout(false);
-            this.TabPage_Correlation.PerformLayout();
             this.ResumeLayout(false);
 
         }

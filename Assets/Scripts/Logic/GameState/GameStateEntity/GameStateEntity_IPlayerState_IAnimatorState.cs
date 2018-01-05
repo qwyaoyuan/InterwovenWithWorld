@@ -42,7 +42,7 @@ public partial class GameState
         {
             EnumPhysicAnimatorType tempPhysicAnimatorType = _PhysicAnimatorType;
             _PhysicAnimatorType = value;
-            if (tempPhysicAnimatorType != _PhysicAnimatorType)
+            if (tempPhysicAnimatorType != _PhysicAnimatorType || _PhysicAnimatorType == EnumPhysicAnimatorType.Normal)
                 Call<IAnimatorState, EnumPhysicAnimatorType>(temp => temp.PhysicAnimatorType);
         }
     }
@@ -66,7 +66,7 @@ public partial class GameState
             _PhysicAnimatorSkillType = value;
             //检测该技能是不是物理技能
             int skillNum = (int)_PhysicAnimatorSkillType;
-            if (!(_PhysicAnimatorSkillType > EnumSkillType.SpecialPhysicReleaseStart && _PhysicAnimatorSkillType < EnumSkillType.SpecialPhysicReleaseEnd))
+            if (!(_PhysicAnimatorSkillType > EnumSkillType.SpecialPhysicActionReleaseStart && _PhysicAnimatorSkillType < EnumSkillType.SpecialPhysicReleaseEnd))
                 _PhysicAnimatorSkillType = tempPhysicAnimatorSkillType;
             if (_PhysicAnimatorSkillType != tempPhysicAnimatorSkillType)
                 Call<IAnimatorState, EnumSkillType>(temp => temp.PhysicAnimatorSkillType);
@@ -148,6 +148,25 @@ public partial class GameState
                 Call<IAnimatorState, bool>(temp => temp.RollAnimator);
         }
     }
+
+    /// <summary>
+    /// 技能动作是否持续
+    /// </summary>
+    bool _SkillSustainable;
+    /// <summary>
+    /// 技能动作是否持续
+    /// </summary>
+    public bool SkillSustainable
+    {
+        get { return _SkillSustainable; }
+        set
+        {
+            bool tempSkillSustainable = _SkillSustainable;
+            _SkillSustainable = value;
+            if (tempSkillSustainable != _SkillSustainable)
+                Call<IAnimatorState, bool>(temp => temp.SkillSustainable);
+        }
+    }
     #endregion
     #region 内部设置
     /// <summary>
@@ -164,6 +183,8 @@ public partial class GameState
         {
             bool tempIsMagicActionState = _IsMagicActionState;
             _IsMagicActionState = value;
+            if (!_IsMagicActionState)
+                MagicAnimatorType = EnumMagicAnimatorType.None;
             if (tempIsMagicActionState != _IsMagicActionState)
                 Call<IAnimatorState, bool>(temp => temp.IsMagicActionState);
         }
@@ -183,6 +204,8 @@ public partial class GameState
         {
             bool tempIsPhycisActionState = _IsPhycisActionState;
             _IsPhycisActionState = value;
+            if (!_IsPhycisActionState)
+                PhysicAnimatorType = EnumPhysicAnimatorType.None;
             if (tempIsPhycisActionState != _IsPhycisActionState)
                 Call<IAnimatorState, bool>(temp => temp.IsPhycisActionState);
         }
@@ -221,6 +244,8 @@ public partial class GameState
         {
             bool tempIsSkillState = _IsSkillState;
             _IsSkillState = value;
+            if (!_IsSkillState)
+                PhysicAnimatorType = EnumPhysicAnimatorType.None;
             if (tempIsSkillState != _IsSkillState)
                 Call<IAnimatorState, bool>(temp => temp.IsSkillState);
         }

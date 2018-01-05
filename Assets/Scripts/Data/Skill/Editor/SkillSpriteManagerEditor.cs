@@ -139,6 +139,8 @@ public class SkillSpriteManagerEditor : EditorWindow
 
     void OnGUI()
     {
+        if (skillTypeToExplanDic == null)
+            return;
         EditorGUILayout.BeginHorizontal();
         //左侧选择技能
         EditorGUILayout.BeginVertical(GUILayout.Width(150));

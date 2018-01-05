@@ -13,9 +13,10 @@ public partial class GameState
     /// 根据技能获取粒子的初始化数据
     /// </summary>
     /// <param name="playerObj">对象</param>
+    /// <param name="nowIAttributeState">本次计算所使用的状态数据</param>
     /// <param name="skills">技能数组</param>
     /// <returns></returns>
-    public ParticalInitParamData[] GetParticalInitParamData(GameObject playerObj, params SkillBaseStruct[] skills)
+    public ParticalInitParamData[] GetParticalInitParamData(GameObject playerObj, IAttributeState nowIAttributeState, params SkillBaseStruct[] skills)
     {
         List<ParticalInitParamData> resultList = new List<ParticalInitParamData>();
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
@@ -154,6 +155,31 @@ public partial class GameState
         }
 
         return resultList.ToArray();
+    }
+
+    /// <summary>
+    /// 设置物理技能攻击
+    /// </summary>
+    /// <param name="playerObj">释放技能的对象(玩家操纵的角色)</param>
+    /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
+    /// <param name="skillType">技能类型</param>
+    /// <param name="weaponTypeByPlayerState">武器类型</param>
+    public void SetPhysicSkillAttack(GameObject playerObj, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
+    {
+        if (playerObj == null || nowIAttributeState == null)
+            return;
+        GameObject _PlayerObj = playerObj;
+        IAttributeState _NowIAttributeState = nowIAttributeState;
+        EnumSkillType _SKillType = skillType;
+        EnumWeaponTypeByPlayerState _WeaponTypeByPlayerState = weaponTypeByPlayerState;
+        PhysicSkillInjuryDetection physicSkillInjuryDetection = _PlayerObj.GetComponent<PhysicSkillInjuryDetection>();
+        if (physicSkillInjuryDetection != null)
+        {
+            physicSkillInjuryDetection.CheckAttack(_SKillType, 1, ~0, (innerOrder, target) => 
+            {
+                
+            });
+        }
     }
 }
 

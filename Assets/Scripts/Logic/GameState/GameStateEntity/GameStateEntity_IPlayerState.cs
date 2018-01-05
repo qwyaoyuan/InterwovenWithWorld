@@ -51,7 +51,7 @@ public partial class GameState : IPlayerState
             }
             else//当前如果需要关闭
             {
-                IAttributeState iAttributeState =  iPlayerAttributeState.GetAttribute(handle);
+                IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle);
                 if (iAttributeState != null)
                 {
                     iPlayerAttributeState.RemoveAttribute(handle);
@@ -59,6 +59,14 @@ public partial class GameState : IPlayerState
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 每帧更新
+    /// </summary>
+    partial void Update_IPlayerState()
+    {
+        UpdateCheckChanChangingAttribute();
     }
 
     #region IPlayerState的自身状态
@@ -126,13 +134,263 @@ public partial class GameState : IPlayerState
     }
 
     /// <summary>
+    /// (每一帧都)检测变化的状态
+    /// 比如暴击时产生效果,一定时间内产生效果等属性 
+    /// </summary>
+    private void UpdateCheckChanChangingAttribute()
+    {
+        if (playerState == null)
+            return;
+        SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+        IPlayerAttributeState iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
+        //处理等级以及加点影响的基础属性 
+        IAttributeState iAttributeState_Base = iPlayerAttributeState.GetAttribute(0);
+        //检测武器状态,根据武器状态有些被动的效果会不同
+        //首先与盾牌进行异或运算
+        EnumWeaponTypeByPlayerState weaponType_Right = WeaponTypeByPlayerState ^ EnumWeaponTypeByPlayerState.Shield;//去除盾牌                                                                                                                 
+        int handle_JZQH = -(int)EnumSkillType.ZS04;//近战强化
+        int handle_JZZJ = -(int)EnumSkillType.KZS02;//近战专精 
+        int handle_YCQH = -(int)EnumSkillType.GJS04;//远程强化 
+        int handle_YCZJ = -(int)EnumSkillType.SSS01;//远程专精 
+        switch (weaponType_Right)
+        {
+            //近战强化 近战专精
+            case EnumWeaponTypeByPlayerState.SingleHandedSword:
+            case EnumWeaponTypeByPlayerState.TwoHandedSword:
+            case EnumWeaponTypeByPlayerState.Dagger:
+                //近战强化
+                if (iPlayerAttributeState.GetAttribute(handle_JZQH) == null)
+                {
+                    SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.ZS04, skillStructData);
+                    iPlayerAttributeState.CreateAttributeHandle(handle_JZQH);
+                    IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_JZQH);
+                    SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
+                }
+                //近战专精
+                if (iPlayerAttributeState.GetAttribute(handle_JZZJ) == null)
+                {
+                    SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.KZS02, skillStructData);
+                    iPlayerAttributeState.CreateAttributeHandle(handle_JZZJ);
+                    IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_JZZJ);
+                    SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
+                }
+                break;
+            //远程强化 远程专精
+            case EnumWeaponTypeByPlayerState.Arch:
+            case EnumWeaponTypeByPlayerState.CrossBow:
+                //远程强化
+                if (iPlayerAttributeState.GetAttribute(handle_YCQH) == null)
+                {
+                    SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.GJS04, skillStructData);
+                    iPlayerAttributeState.CreateAttributeHandle(handle_YCQH);
+                    IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_YCQH);
+                    SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
+                }
+                //远程专精
+                if (iPlayerAttributeState.GetAttribute(handle_YCZJ) == null)
+                {
+                    SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.SSS01, skillStructData);
+                    iPlayerAttributeState.CreateAttributeHandle(handle_YCZJ);
+                    IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_YCZJ);
+                    SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
+                }
+                break;
+            default:
+                if (iPlayerAttributeState.GetAttribute(handle_JZQH) != null)
+                    iPlayerAttributeState.RemoveAttribute(handle_JZQH);
+                if (iPlayerAttributeState.GetAttribute(handle_JZZJ) != null)
+                    iPlayerAttributeState.RemoveAttribute(handle_JZZJ);
+                if (iPlayerAttributeState.GetAttribute(handle_YCQH) != null)
+                    iPlayerAttributeState.RemoveAttribute(handle_YCQH);
+                if (iPlayerAttributeState.GetAttribute(handle_YCZJ) != null)
+                    iPlayerAttributeState.RemoveAttribute(handle_YCZJ);
+                break;
+        }
+        //检测距离上一次暴击的时间
+        if (LastCriticalHitTime > 0)
+        {
+            float intervalCriticalHitTime = Time.time - LastCriticalHitTime;//距离上次暴击的时间的间隔
+            //剑意
+            SkillAttributeStruct skillAttributeStruct_JAS02 = GetSkillAttributeStruct(EnumSkillType.JAS02, skillStructData);
+            int handle_JAS02 = -(int)EnumSkillType.JAS02;
+            IAttributeState iAttributeState_JAS02 = iPlayerAttributeState.GetAttribute(handle_JAS02);
+            if (skillAttributeStruct_JAS02 != null)//表示存在该技能或者该技能加点了
+            {
+                int waitTime_JAS02 = skillAttributeStruct_JAS02.ERST;//使用特效影响力表示持续时间
+                if (iAttributeState_JAS02 != null)
+                    if (waitTime_JAS02 > intervalCriticalHitTime)//在效果时间内,则更新攻击速度
+                        iAttributeState_JAS02.AttackSpeed = skillAttributeStruct_JAS02.AttackSpeed;
+                    else//在效果时间外,则归零
+                        iAttributeState_JAS02.CritRate = 0;
+            }
+            else
+            {
+                //如果没有数据则直接归零
+                if (iAttributeState_JAS02 != null)
+                    iAttributeState_JAS02.CritRate = 0;
+            }
+            //巧手夺宝
+            SkillAttributeStruct skillAttributeStruct_DZ01 = GetSkillAttributeStruct(EnumSkillType.DZ01, skillStructData);
+            int handle_DZ01 = -(int)EnumSkillType.DZ01;
+            IAttributeState iAttributeState_DZ01 = iPlayerAttributeState.GetAttribute(handle_DZ01);
+            if (skillAttributeStruct_DZ01 != null)//表示存在该技能或者该技能加点了
+            {
+                int waitTime_DZ01 = skillAttributeStruct_DZ01.ERST;//使用特效影响力表示持续时间
+                if (iAttributeState_DZ01 != null)
+                    if (waitTime_DZ01 > intervalCriticalHitTime)//在效果时间内,则更新附加伤害(根据敏捷附加)
+                    {
+                        iAttributeState_DZ01.PhysicsAdditionalDamage = skillAttributeStruct_DZ01.PHYAD * iAttributeState_Base.Quick / 100;
+                        iAttributeState_DZ01.GooodsDropRate = iAttributeState_Base.GooodsDropRate * skillAttributeStruct_DZ01.GooodsDropRate / 100;
+                    }
+                    else //在效果时间外,则归零
+                    {
+                        iAttributeState_DZ01.PhysicsAdditionalDamage = 0;
+                    }
+            }
+            else
+            {
+                //如果没有数据则直接归零
+                if (iAttributeState_DZ01 != null)
+                    iAttributeState_DZ01.Init();
+            }
+        }
+
+        //检测上一次闪避的时间
+        if (LastDodgeTime > 0)
+        {
+            float intervalDodgeTime = Time.time - LastDodgeTime;//距离上次闪避的时间的间隔
+            //剑意
+            SkillAttributeStruct skillAttributeStruct_JAS02 = GetSkillAttributeStruct(EnumSkillType.JAS02, skillStructData);
+            int handle_JAS02 = -(int)EnumSkillType.JAS02;
+            IAttributeState iAttributeState_JAS02 = iPlayerAttributeState.GetAttribute(handle_JAS02);
+            if (skillAttributeStruct_JAS02 != null)
+            {
+                int waitTime_JAS02 = skillAttributeStruct_JAS02.ERST;//使用特效影响力表示持续时间
+                if (iAttributeState_JAS02 != null)
+                    if (waitTime_JAS02 < intervalDodgeTime)//在效果时间内,则更新攻击速度
+                        iAttributeState_JAS02.PhysicsPenetrate = skillAttributeStruct_JAS02.PYEDMG;
+                    else//在效果时间外,则归零
+                        iAttributeState_JAS02.PhysicsPenetrate = 0;
+            }
+            else
+            {
+                //如果没有数据则直接归零
+                if (iAttributeState_JAS02 != null)
+                    iAttributeState_JAS02.PhysicsPenetrate = 0;
+            }
+        }
+
+        //检测上一次切换武器类型的时间
+        if (LastChangeWeaponTime > 0)
+        {
+            float intervalChangeWeaponTime = Time.time - LastChangeWeaponTime;//距离上次切换武器类型的时间的间隔
+            //巧手
+            SkillAttributeStruct skillAttributeStruct_DZ02 = GetSkillAttributeStruct(EnumSkillType.DZ02, skillStructData);
+            int handle_DZ02 = -(int)EnumSkillType.DZ02;
+            IAttributeState iAttributeState_DZ02 = iPlayerAttributeState.GetAttribute(handle_DZ02);
+            if (skillAttributeStruct_DZ02 != null)
+            {
+                int waitTime_DZ02 = skillAttributeStruct_DZ02.ERST;//使用特效影响力表示持续时间
+                if (iAttributeState_DZ02 != null)
+                    if (waitTime_DZ02 < intervalChangeWeaponTime) //在效果时间内,则更新暴击率和暴击伤害
+                    {
+                        iAttributeState_DZ02.CritRate = skillAttributeStruct_DZ02.IncreasedCritRate;
+                        iAttributeState_DZ02.CritDamageRatio = skillAttributeStruct_DZ02.CritDamagePromotion / 100f;
+                    }
+                    else //在效果时间外,则归零
+                        iAttributeState_DZ02.Init();
+            }
+            else
+            {
+                //如果没有数据则直接归零
+                if (iAttributeState_DZ02 != null)
+                    iAttributeState_DZ02.Init();
+            }
+        }
+
+        //检测距离上一次进入战斗的时间
+        if (LastIntoBattleTime > 0)
+        {
+            //进入战斗后状态消失
+            IAttributeState iAttributeState_YX01 = iPlayerAttributeState.GetAttribute(-(int)EnumSkillType.YX01);
+            SkillAttributeStruct skillAttributeStruct_YX01 = GetSkillAttributeStruct(EnumSkillType.YX01, skillStructData);
+            if (skillAttributeStruct_YX01 != null)
+            {
+                if (iAttributeState_YX01 != null)
+                {
+                    iAttributeState_YX01.MoveSpeed = 0;
+                    iAttributeState_YX01.TrapDefense = skillAttributeStruct_YX01.TrapDefense;
+                    iAttributeState_YX01.AbnormalStateResistance = skillAttributeStruct_YX01.AbnormalStateResistance;
+                }
+            }
+            else
+            {
+                if (iAttributeState_YX01 != null)
+                    iAttributeState_YX01.Init();
+            }
+            //进入战斗后一段时间内获得状态
+            float intervalIntoBattleTime = Time.time - LastIntoBattleTime;//距离上次进入战斗的时间的间隔
+            //游击
+            SkillAttributeStruct skillAttributeStruct_GJS01 = GetSkillAttributeStruct(EnumSkillType.GJS01, skillStructData);
+            int handle_GJS01 = -(int)EnumSkillType.GJS01;
+            IAttributeState iAttributeState_GJS01 = iPlayerAttributeState.GetAttribute(handle_GJS01);
+            if (skillAttributeStruct_GJS01 != null)
+            {
+                int waitTime_GJS01 = skillAttributeStruct_GJS01.ERST;//使用特效影响力表示持续时间
+                if (iAttributeState_GJS01 != null)
+                    if (waitTime_GJS01 < intervalIntoBattleTime)//在效果时间内,则更新攻击速度和移动速度 
+                    {
+                        iAttributeState_GJS01.AttackSpeed = skillAttributeStruct_GJS01.AttackSpeed;
+                        iAttributeState_GJS01.MoveSpeed = skillAttributeStruct_GJS01.MoveSpeedAddtion * iAttributeState_Base.MoveSpeed / 100f;
+                    }
+                    else //在效果时间外,则归零
+                        iAttributeState_GJS01.Init();
+            }
+            else
+            {
+                //如果没有数据则直接归零
+                if (iAttributeState_GJS01 != null)
+                    iAttributeState_GJS01.Init();
+            }
+        }
+        //距离离开战斗的时间
+        else if (LastIntoBattleTime < 0)
+        {
+            //离开战斗后buff消失
+            //游击
+            IAttributeState iAttributeState_GJS01 = iPlayerAttributeState.GetAttribute(-(int)EnumSkillType.GJS01);
+            if (iAttributeState_GJS01 != null)
+                iAttributeState_GJS01.Init();
+            //离开战斗后立刻获得的状态
+            IAttributeState iAttributeState_YX01 = iPlayerAttributeState.GetAttribute(-(int)EnumSkillType.YX01);
+            SkillAttributeStruct skillAttributeStruct_YX01 = GetSkillAttributeStruct(EnumSkillType.YX01, skillStructData);
+            if (skillAttributeStruct_YX01 != null)
+            {
+                if (iAttributeState_YX01 != null)
+                {
+                    iAttributeState_YX01.MoveSpeed = iAttributeState_Base.MoveSpeed * skillAttributeStruct_YX01.MoveSpeedAddtionNotFighting / 100f;
+                    iAttributeState_YX01.TrapDefense = skillAttributeStruct_YX01.TrapDefense;
+                    iAttributeState_YX01.AbnormalStateResistance = skillAttributeStruct_YX01.AbnormalStateResistance;
+                }
+            }
+            else
+            {
+                if (iAttributeState_YX01 != null)
+                    iAttributeState_YX01.Init();
+            }
+            //离开战斗一段时间后获得的状态
+            float intevalOutBattleTime = Time.time + LastIntoBattleTime;//距离上次离开战斗的时间间隔
+        }
+
+    }
+
+    /// <summary>
     /// 更新自身属性
     /// 在等级变化 装备变化时触发
     /// 主要更新的是HP MP上限,防御攻击等等随等级装备变化的属性等
     /// </summary>
     public void UpdateAttribute()
     {
-        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
         SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         IPlayerAttributeState iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
         //处理等级以及加点影响的基础属性 
@@ -152,38 +410,8 @@ public partial class GameState : IPlayerState
             IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle);
             if (iAttributeState != null)//如果没有目标被动则需要修改初始化模块)
             {
-                if (playerState.SkillPoint.ContainsKey(skillType) && playerState.SkillPoint[skillType] > 0)//如果存在该技能并且该技能加点了
-                {
-                    SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == skillType).FirstOrDefault();
-                    if (skillBaseStruct != null)//如果不存在该技能则需要在编辑器查看
-                    {
-                        int skillLevel = playerState.SkillPoint[skillType];
-                        if (skillLevel >= skillBaseStruct.maxLevel)
-                            skillLevel = skillBaseStruct.maxLevel;
-                        SkillAttributeStruct skillAttributeStruct = skillBaseStruct.skillAttributeStructs[skillLevel - 1];
-                        if (skillAttributeStruct != null)//存在该等级的技能属性数据 
-                        {
-                            iAttributeState.MaxUseMana = skillAttributeStruct.MaxMP;//最大耗魔上限
-                            iAttributeState.MaxMana = skillAttributeStruct.MP * iAttributeState_Base.MaxMana / 100f;//百分比的法力上限
-                            iAttributeState.MagicAttacking = skillAttributeStruct.DMG;//魔法攻击力
-                            iAttributeState.ElementAffine = skillAttributeStruct.ERST;//特效影响力(原元素亲和)
-                            iAttributeState.EffectResideTime = skillAttributeStruct.RETI;//特效驻留时间
-                            iAttributeState.PhysicsAdditionalDamage = skillAttributeStruct.PHYAD;//物理伤害附加
-                            iAttributeState.MagicAdditionalDamage = skillAttributeStruct.MPAD;//魔法伤害附加
-                            iAttributeState.MagicPenetrate = skillAttributeStruct.PEDMG;//魔法伤害穿透
-                            iAttributeState.PhysicsPenetrate = skillAttributeStruct.PEDMG;//物理伤害穿透
-                            iAttributeState.Mana += skillAttributeStruct.ADDMP;//MP附加
-                            iAttributeState.MagicAttacking += skillAttributeStruct.MpAttack * iAttributeState_Base.MagicAttacking / 100;//百分比的魔法攻击力
-                            iAttributeState.MagicResistance = skillAttributeStruct.MpDefence * iAttributeState_Base.MagicResistance / 100;//百分比的魔法防御力
-                            iAttributeState.ManaRecovery = skillAttributeStruct.MpReload;//魔法回复速度
-                            iAttributeState.MagicAffine = skillAttributeStruct.MagicFit;//魔法亲和 
-                            iAttributeState.LightFaith = skillAttributeStruct.Light;//光明信仰强度 
-                            iAttributeState.DarkFaith = skillAttributeStruct.Dark;//黑暗信仰强度 
-                            iAttributeState.LifeFaith = skillAttributeStruct.Life;//生物信仰强度 
-                            iAttributeState.NaturalFaith = skillAttributeStruct.Natural;//自然信仰强度
-                        }
-                    }
-                }
+                SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(skillType, skillStructData);
+                SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
             }
         };
         //光环技能 
@@ -195,6 +423,7 @@ public partial class GameState : IPlayerState
         CheckSkillChanged(EnumSkillType.JS05);
         CheckSkillChanged(EnumSkillType.JH05);
         //被动技能
+        //魔法
         CheckSkillChanged(EnumSkillType.FS05);
         CheckSkillChanged(EnumSkillType.FS06);
         CheckSkillChanged(EnumSkillType.FS07);
@@ -216,7 +445,42 @@ public partial class GameState : IPlayerState
         CheckSkillChanged(EnumSkillType.JH01);
         CheckSkillChanged(EnumSkillType.JH02);
         CheckSkillChanged(EnumSkillType.JH03);
+        //物理 (注意这里重构的是需要更新的,有些状态是在特定的状态下才触发的,在单独的函数中处理)
+        CheckSkillChanged(EnumSkillType.WL02);
+        CheckSkillChanged(EnumSkillType.WL03);
+        CheckSkillChanged(EnumSkillType.WL04);
+        CheckSkillChanged(EnumSkillType.ZS01);
+        CheckSkillChanged(EnumSkillType.GJS01);
+        CheckSkillChanged(EnumSkillType.JAS01);
+        CheckSkillChanged(EnumSkillType.YX01);
+        CheckSkillChanged(EnumSkillType.SSS02);
     }
+
+    /// <summary>
+    /// 根据技能类型和技能存档数据获取该技能的当前等级数据
+    /// 返回技能当前等级的数据(如果没有加点或者出错则范围null)
+    /// </summary>
+    /// <param name="skillType">技能类型</param>
+    /// <param name="skillStructData">技能固有数据</param>
+    /// <returns>技能当前等级的数据(如果没有加点或者出错则范围null)</returns>
+    public SkillAttributeStruct GetSkillAttributeStruct(EnumSkillType skillType, SkillStructData skillStructData)
+    {
+        if (playerState.SkillPoint.ContainsKey(skillType) && playerState.SkillPoint[skillType] > 0)//如果存在该技能并且该技能加点了
+        {
+            SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == skillType).FirstOrDefault();
+            if (skillBaseStruct != null)//如果不存在该技能则需要在编辑器查看
+            {
+                int skillLevel = playerState.SkillPoint[skillType];
+                if (skillLevel >= skillBaseStruct.maxLevel)
+                    skillLevel = skillBaseStruct.maxLevel;
+                SkillAttributeStruct skillAttributeStruct = skillBaseStruct.skillAttributeStructs[skillLevel - 1];
+                return skillAttributeStruct;
+            }
+        }
+        return null;
+    }
+
+    
 
     /// <summary>
     /// 等级
@@ -273,8 +537,8 @@ public partial class GameState : IPlayerState
                         {
                             _Experience -= levelDataInfo.Experience;
                             Level += 1;//等级加1
-                            //可能会有经验超出的情况
-                            //后期处理
+                                       //可能会有经验超出的情况
+                                       //后期处理
                         }
                         else//表示已经满级了
                         {
@@ -359,7 +623,52 @@ public partial class GameState : IPlayerState
                 UpdateAttribute();
                 //回调
                 Call<IPlayerState, bool>(temp => temp.EquipmentChanged);
-                _EquipmentChanged = value;
+                _EquipmentChanged = false;
+
+                //设置当前武器类型(远程和近战)
+                var checkWeapons = playerState.PlayerAllGoods.Where(temp => temp.GoodsInfo.EnumGoodsType > EnumGoodsType.Arms && temp.GoodsInfo.EnumGoodsType < EnumGoodsType.HelmetBig);
+                if (checkWeapons.Count() > 0)
+                {
+                    EnumWeaponTypeByPlayerState thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.None;
+                    //再次获取右手武器的信息
+                    PlayGoods rightWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == false).FirstOrDefault();
+                    if (rightWeaponGoods != null)
+                    {
+                        //判断武器的类型
+                        if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.SingleHanedSword && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.TwoHandedSword)//单手剑
+                        {
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.SingleHandedSword;
+                        }
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.TwoHandedSword && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.Arch)//双手剑
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.TwoHandedSword;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.Arch && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.CrossBow)//弓
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Arch;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.CrossBow && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.Shield)//弩
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrossBow;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.Dagger && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.LongRod)//匕首
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Dagger;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.LongRod && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.ShortRod)//长杖
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.LongRod;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.ShortRod && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.CrystalBall)//短杖
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.ShortRod;
+                        else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.CrystalBall && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.HelmetBig)//水晶球
+                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrystalBall;
+                    }
+                    //再次获取左手武器的信息
+                    PlayGoods leftWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == true).FirstOrDefault();
+                    if (leftWeaponGoods != null)
+                    {
+                        //判断如果是盾牌则附加
+                        if (leftWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.Shield && leftWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.Dagger)//盾牌
+                        {
+                            thisWeaponTypeByPlayerState = thisWeaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield;
+                        }
+                    }
+                }
+                else
+                {
+                    WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.None;
+                }
             }
         }
     }
@@ -385,6 +694,108 @@ public partial class GameState : IPlayerState
             }
         }
     }
+
+    #region 战斗状态
+    /// <summary>
+    /// 上次进入战斗状态的时间 
+    /// </summary>
+    private float _LastIntoBattleTime;
+    /// <summary>
+    /// 上次进入战斗状态的时间 
+    /// </summary>
+    public float LastIntoBattleTime
+    {
+        get { return _LastIntoBattleTime; }
+        set
+        {
+            float tempLastIntoBattleTime = _LastIntoBattleTime;
+            _LastIntoBattleTime = value;
+            if (tempLastIntoBattleTime != _LastIntoBattleTime)
+                Call<IPlayerState, float>(temp => temp.LastIntoBattleTime);
+        }
+    }
+
+    /// <summary>
+    /// 上一次暴击的时间
+    /// </summary>
+    private float _LastCriticalHitTime;
+    /// <summary>
+    /// 上一次暴击的时间
+    /// </summary>
+    public float LastCriticalHitTime
+    {
+        get { return _LastCriticalHitTime; }
+        set
+        {
+            float tempLastCriticalHitTime = _LastCriticalHitTime;
+            _LastCriticalHitTime = value;
+            if (tempLastCriticalHitTime != _LastCriticalHitTime)
+                Call<IPlayerState, float>(temp => temp.LastCriticalHitTime);
+        }
+    }
+
+    /// <summary>
+    /// 上一次闪避的时间
+    /// </summary>
+    private float _LastDodgeTime;
+    /// <summary>
+    /// 上一次闪避的时间
+    /// </summary>
+    public float LastDodgeTime
+    {
+        get { return _LastDodgeTime; }
+        set
+        {
+            float tempLastDodgeTime = _LastDodgeTime;
+            _LastDodgeTime = value;
+            if (tempLastDodgeTime != _LastDodgeTime)
+                Call<IPlayerState, float>(temp => temp.LastDodgeTime);
+        }
+    }
+
+    /// <summary>
+    /// 武器的类型(玩家状态使用的枚举)发生变化
+    /// </summary>
+    private EnumWeaponTypeByPlayerState _WeaponTypeByPlayerState;
+    /// <summary>
+    /// 武器的类型(玩家状态使用的枚举)发生变化
+    /// </summary>
+    public EnumWeaponTypeByPlayerState WeaponTypeByPlayerState
+    {
+        get { return _WeaponTypeByPlayerState; }
+        set
+        {
+            EnumWeaponTypeByPlayerState tempWeaponTypeByPlayerState = _WeaponTypeByPlayerState;
+            _WeaponTypeByPlayerState = value;
+            if (_WeaponTypeByPlayerState != tempWeaponTypeByPlayerState)
+            {
+                Call<IPlayerState, EnumWeaponTypeByPlayerState>(temp => temp.WeaponTypeByPlayerState);
+                LastChangeWeaponTime = Time.time;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 上一次切换武器(类型)的时间 
+    /// </summary>
+    private float _LastChangeWeaponTime;
+    /// <summary>
+    /// 上一次切换武器(类型)的时间 
+    /// </summary>
+    public float LastChangeWeaponTime
+    {
+        get { return _LastChangeWeaponTime; }
+        private set
+        {
+            float tempLastChangeWeaponTime = _LastChangeWeaponTime;
+            _LastChangeWeaponTime = value;
+            if (tempLastChangeWeaponTime != _LastChangeWeaponTime)
+                Call<IPlayerState, float>(temp => temp.LastChangeWeaponTime);
+        }
+    }
     #endregion
+    #endregion
+
+
 
 }

@@ -43,6 +43,12 @@ public interface ISkillState : IBaseState
     /// 公共冷却时间
     /// </summary>
     float PublicCoolingTime { get; }
+    /// <summary>
+    /// 获取技能的冷却时间
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    float GetSkillCoolingTime(int skillID);
 
     //----------光环技能状态-----------//
     /// <summary>
@@ -55,10 +61,16 @@ public interface ISkillState : IBaseState
     /// 获取当前正在发生变化的光环技能
     /// </summary>
     EnumSkillType SpecialSkillStateChanged { get; }
+
+    //物理技能相关
+    /// <summary>
+    /// 获取当前物理技能的状态数据
+    /// </summary>
+    PhysicsSKillStateStruct NowPhysicsSkillStateStruct { get; }
 }
 
 /// <summary>
-/// 一些特殊技能状态对象
+/// 一些特殊(光环)技能状态对象
 /// </summary>
 public struct SpecialSkillStateStruct
 {
@@ -143,4 +155,23 @@ public struct SpecialSkillStateStruct
         this._skillBaseStruct = skillBaseStruct;
         this._ChangeCallback = ChangeCallback;
     }
+}
+
+/// <summary>
+/// 物理技能状态整合结构
+/// </summary>
+public class PhysicsSKillStateStruct
+{
+    /// <summary>
+    /// 该技能的类型
+    /// </summary>
+    public EnumSkillType SkillType;
+    /// <summary>
+    /// 释放此技能时的数据状态
+    /// </summary>
+    public IAttributeState AttributeState;
+    /// <summary>
+    /// 蓄力进度(0-1)
+    /// </summary>
+    public float StorageSchedule;
 }

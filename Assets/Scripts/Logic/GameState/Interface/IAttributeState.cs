@@ -19,10 +19,6 @@ public interface IAttributeState : IBaseState
     /// </summary>
     float Quick { get; set; }
     /// <summary>
-    /// 专注
-    /// </summary>
-    float Dedicated { get; set; }
-    /// <summary>
     /// 精神
     /// </summary>
     float Mental { get; set; }
@@ -92,6 +88,10 @@ public interface IAttributeState : IBaseState
 
     #region 攻击与防御属性
     /// <summary>
+    /// 攻击僵直
+    /// </summary>
+    float AttackRigidity { get; set; }
+    /// <summary>
     /// 道具攻击力
     /// </summary>
     float ItemAttacking { get; set; }
@@ -124,29 +124,57 @@ public interface IAttributeState : IBaseState
     /// </summary>
     float MagicFinalDamage { get; set; }
     /// <summary>
+    /// 暴击倍率(角色本身为1.5倍)
+    /// </summary>
+    float CritDamageRatio { get; set; }
+    /// <summary>
+    /// 法术陷阱伤害提升(百分比)
+    /// </summary>
+    float SpellTrapDamage { get; set; }
+    /// <summary>
+    /// 法术陷阱特效产生几率
+    /// </summary>
+    float SpellTrapEffectProbability { get; set; }
+    /// <summary>
+    /// 对不死族伤害提升(百分比倍率)
+    /// </summary>
+    float DamageToTheUndead { get; set; }
+    /// <summary>
+    /// 对不死族附加混乱几率
+    /// </summary>
+    float ChaosOfTheUndead { get; set; }
+    /// <summary>
+    /// 治疗量
+    /// </summary>
+    float TreatmentVolume { get; set; }
+    /// <summary>
     /// 物理最终伤害
     /// </summary>
     float PhysicsFinalDamage { get; set; }
     /// <summary>
-    /// 元素亲和(特效影响力)
+    /// 特效影响力
     /// </summary>
-    float ElementAffine { get; set; }
+    float EffectAffine { get; set; }
     /// <summary>
-    /// 特效驻留时间
+    /// 驻留时间
     /// </summary>
     float EffectResideTime { get; set; }
     /// <summary>
     /// 魔法亲和
     /// </summary>
-    float MagicAffine { get; set; }
+    float MagicFit { get; set; }
     /// <summary>
-    /// 魔法抗性（魔法防御）
+    /// 魔法防御
     /// </summary>
     float MagicResistance { get; set; }
     /// <summary>
-    /// 物理抗性（物理防御）
+    /// 物理防御
     /// </summary>
     float PhysicsResistance { get; set; }
+    /// <summary>
+    /// 对陷阱的防御力
+    /// </summary>
+    float TrapDefense { get; set; }
     /// <summary>
     /// 光明信仰强度
     /// </summary>
@@ -164,6 +192,22 @@ public interface IAttributeState : IBaseState
     /// </summary>
     float NaturalFaith { get; set; }
     /// <summary>
+    /// 神秘信仰强度
+    /// </summary>
+    float MysticalBeliefIntensity { get; set; }
+    /// <summary>
+    /// 神秘信仰特效产生几率
+    /// </summary>
+    float MysticalBeliefSpecialEffects { get; set; }
+    /// <summary>
+    /// 崇拜信仰强度
+    /// </summary>
+    float ImproveWorshipFaith { get; set; }
+    /// <summary>
+    /// 异常状态抗性
+    /// </summary>
+    float AbnormalStateResistance { get; set; }
+    /// <summary>
     /// 元素抗性,根据元素类型枚举的顺序
     /// </summary>
     float[] ElementResistances { get; set; }
@@ -171,5 +215,52 @@ public interface IAttributeState : IBaseState
     /// 状态抗性，按照EnumStatusEffect枚举（状态类型）的顺序
     /// </summary>
     float[] StateResistances { get; set; }
+    /// <summary>
+    /// 元素立场强度
+    /// </summary>
+    float ElementStandStrength { get; set; }
+    /// <summary>
+    /// 同元素魔法效果加成
+    /// </summary>
+    float SameElementEffectAdded { get; set; }
+    /// <summary>
+    /// 技能冷却时间
+    /// </summary>
+    float CoolingTime { get; set; }
+    /// <summary>
+    /// 需要使用的基础耗魔量(主要是组合技能以及需要主动释放的技能存在此选项)
+    /// </summary>
+    float MustUsedBaseMana { get; set; }
+    #endregion
+
+    #region 其他杂项
+    /// <summary>
+    /// 减少该技能的冷却时间
+    /// </summary>
+    float ExemptionChatingMana { get; set; }
+    /// <summary>
+    /// 耗魔量减免(百分比)
+    /// </summary>
+    float ReliefManaAmount { get; set; }
+    /// <summary>
+    /// 咏唱时间减免(百分比)
+    /// </summary>
+    float ExemptionChantingTime { get; set; }
+    /// <summary>
+    /// 公共冷却时间减免(百分比)
+    /// </summary>
+    float ReduceCoolingTime { get; set; }
+    /// <summary>
+    /// 对不死族加速
+    /// </summary>
+    float AccelerateToUndead { get; set; }
+    /// <summary>
+    /// 经验值加成(与基础经验乘算)
+    /// </summary>
+    float ExperienceValuePlus { get; set; }
+    /// <summary>
+    /// 物品掉落率(与基础掉落率乘算)
+    /// </summary>
+    float GooodsDropRate { get; set; }
     #endregion
 }

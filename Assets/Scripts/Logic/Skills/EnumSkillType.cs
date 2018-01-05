@@ -86,11 +86,66 @@ public enum EnumSkillType
     /// <summary>
     /// 物理普通攻击
     /// </summary>
+    [FieldExplan("普通攻击")]
     PhysicAttack = 201,
     /// <summary>
     /// 特殊的直接释放的物理技能序列的开始
     /// </summary>
     SpecialPhysicReleaseStart = 202,
+    /// <summary>
+    /// 魔剑士
+    /// </summary>
+    [FieldExplan("魔剑士")]
+    ZS02,
+    /// <summary>
+    /// 魔矢
+    /// </summary>
+    [FieldExplan("魔矢")]
+    GJS02,
+    /// <summary>
+    /// 风行
+    /// </summary>
+    [FieldExplan("风行")]
+    YX02,
+    /// <summary>
+    /// 暗杀术
+    /// </summary>
+    [FieldExplan("暗杀术")]
+    DZ03,
+    /// <summary>
+    /// 特殊的直接释放物理技能(动作)开始
+    /// </summary>
+    SpecialPhysicActionReleaseStart = 250,
+    /// <summary>
+    /// 重击
+    /// </summary>
+    [FieldExplan("重击")]
+    WL01,
+    /// <summary>
+    /// 冲锋
+    /// </summary>
+    [FieldExplan("冲锋")]
+    ZS03,
+    /// <summary>
+    /// 散射
+    /// </summary>
+    [FieldExplan("散射")]
+    GJS03,
+    /// <summary>
+    /// 战吼
+    /// </summary>
+    [FieldExplan("战吼")]
+    KZS03,
+    /// <summary>
+    /// 燕返
+    /// </summary>
+    [FieldExplan("燕返")]
+    JAS03,
+    /// <summary>
+    /// 狙击术
+    /// </summary>
+    [FieldExplan("狙击术")]
+    SSS03,
     /// <summary>
     /// 特殊的直接释放的物理技能序列的结束
     /// </summary>
@@ -314,7 +369,95 @@ public enum EnumSkillType
     /// </summary>
     [FieldExplan("圣物")]
     JH07,
+
+
+    //--------------------下面的是物理被动--------------------//
+    /// <summary>
+    /// 道具掌握
+    /// </summary>
+    [FieldExplan("道具掌握")]
+    WL02,
+    /// <summary>
+    /// 快速反应
+    /// </summary>
+    [FieldExplan("快速反应")]
+    WL03,
+    /// <summary>
+    /// 身体训练
+    /// </summary>
+    [FieldExplan("身体训练")]
+    WL04,
+    /// <summary>
+    /// 白刃
+    /// </summary>
+    [FieldExplan("白刃")]
+    ZS01,
+    /// <summary>
+    /// 近战强化
+    /// </summary>
+    [FieldExplan("近战强化")]
+    ZS04,
     PassiveEnd = 500,
+    /// <summary>
+    /// 游击
+    /// </summary>
+    [FieldExplan("游击")]
+    GJS01,
+    /// <summary>
+    /// 远程强化
+    /// </summary>
+    [FieldExplan("远程强化")]
+    GJS04,
+    /// <summary>
+    /// 坚韧狂暴
+    /// </summary>
+    [FieldExplan("坚韧狂暴")]
+    KZS01,
+    /// <summary>
+    /// 近战专精
+    /// </summary>
+    [FieldExplan("近战专精")]
+    KZS02,
+    /// <summary>
+    /// 日益精进
+    /// </summary>
+    [FieldExplan("日益精进")]
+    JAS01,
+    /// <summary>
+    /// 剑意
+    /// </summary>
+    [FieldExplan("剑意")]
+    JAS02,
+    /// <summary>
+    /// 灵动敏锐
+    /// </summary>
+    [FieldExplan("灵动敏锐")]
+    YX01,
+    /// <summary>
+    /// 后撤步
+    /// </summary>
+    [FieldExplan("后撤步")]
+    YX03,
+    /// <summary>
+    /// 巧手夺宝
+    /// </summary>
+    [FieldExplan("巧手夺宝")]
+    DZ01,
+    /// <summary>
+    /// 巧手
+    /// </summary>
+    [FieldExplan("巧手")]
+    DZ02,
+    /// <summary>
+    /// 远程专精
+    /// </summary>
+    [FieldExplan("远程专精")]
+    SSS01,
+    /// <summary>
+    /// 鹰眼
+    /// </summary>
+    [FieldExplan("鹰眼")]
+    SSS02,
     #endregion
 
     #region 光环技能
@@ -721,6 +864,11 @@ public enum EnumSkillZone
 
 
     /// <summary>
+    /// 物理组
+    /// </summary>
+    [FieldExplan("物理组")]
+    WL_Zone,
+    /// <summary>
     /// 战士
     /// </summary>
     [FieldExplan("战士")]
@@ -735,6 +883,11 @@ public enum EnumSkillZone
     /// </summary>
     [FieldExplan("狂战士")]
     KZS_WL_Zone,
+    /// <summary>
+    /// 战士+弓箭手
+    /// </summary>
+    [FieldExplan("战士+弓箭手")]
+    ZS_GJS_WL_Zone,
     /// <summary>
     /// 剑士
     /// </summary>

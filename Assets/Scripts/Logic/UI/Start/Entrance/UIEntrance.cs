@@ -304,11 +304,12 @@ public class UIEntrance : MonoBehaviour
             || (temp < EnumSkillType.MagicCombinedLevel3End && temp > EnumSkillType.MagicCombinedLevel3Start)
             || (temp < EnumSkillType.MagicCombinedLevel4End && temp > EnumSkillType.MagicCombinedLevel4Start)
         ).ToArray();
+        enumSkillTypes = Enum.GetValues(typeof(EnumSkillType)).OfType<EnumSkillType>().Distinct().ToArray();//所有技能加1
         foreach (var item in enumSkillTypes)
         {
             playerState.SkillPoint.Add(item, 1);
         }
-        playerState.SkillPoint.Add(EnumSkillType.MagicRelease, 1);
+        //playerState.SkillPoint.Add(EnumSkillType.MagicRelease, 1);
         playerState.FreedomPoint = 2;
         //添加按键
         KeyContactData keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
@@ -317,6 +318,7 @@ public class UIEntrance : MonoBehaviour
         keyContactData.SetKeyContactStruct((int)EnumInputType.Right, new KeyContactStruct() { id = 1101, key = (int)EnumInputType.Right, keyContactType = EnumKeyContactType.Skill, name = "火元素" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Left, new KeyContactStruct() { id = 1004, key = (int)EnumInputType.Left, keyContactType = EnumKeyContactType.Skill, name = "魔力导向" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Down, new KeyContactStruct() { id = 1201, key = (int)EnumInputType.Down, keyContactType = EnumKeyContactType.Skill, name = "连续魔力导向" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.X, new KeyContactStruct() { id = 201, key = (int)EnumInputType.X, keyContactType = EnumKeyContactType.Skill, name = "普通攻击" });
         /**********/
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))

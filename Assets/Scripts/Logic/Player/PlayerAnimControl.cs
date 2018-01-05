@@ -51,17 +51,20 @@ public class PlayerAnimControl : MonoBehaviour
     {
         switch (name)
         {
+            case "Skill"://技能动作状态
+                iAnimatorState.IsSkillState = state;
+                break;
             case "Phycis":
                 iAnimatorState.IsPhycisActionState = state;
                 //当从物理动作(普通攻击)中退出时,设置其阶段为0
-                if(!state)
+                if (!state)
                     iAnimatorState.PhycisActionNowType = 0;
                 break;
             case "Magic":
                 iAnimatorState.IsMagicActionState = state;
                 break;
-                //当动作进入攻击1 攻击2 攻击3时分别设置对应的物理动作(普通攻击)阶段为对应的阶段
-                //当退出动作时设置动作为0(无攻击)
+            //当动作进入攻击1 攻击2 攻击3时分别设置对应的物理动作(普通攻击)阶段为对应的阶段
+            //当退出动作时设置动作为0(无攻击)
             case "PhycisType1":
                 if (state)
                     iAnimatorState.PhycisActionNowType = 1;
@@ -163,6 +166,7 @@ public class PlayerAnimControl : MonoBehaviour
             {
                 case EnumPhysicAnimatorType.Normal:
                     playerAnimator.SetTrigger("Phycis");
+                    playerAnimator.SetTrigger("ChangeMode");
                     //根据当前的物理攻击状态随机一个动作
                     if (iAnimatorState.PhycisActionNowType == 0)
                         playerAnimator.SetFloat("PhycisType1", (int)(Random.Range(0, 10)));
@@ -172,10 +176,15 @@ public class PlayerAnimControl : MonoBehaviour
                         playerAnimator.SetFloat("PhycisType3", (int)(Random.Range(0, 10)));
                     break;
                 case EnumPhysicAnimatorType.Skill:
-                    //根据技能设置动作
+                    playerAnimator.SetTrigger("Skill");
+                    playerAnimator.SetTrigger("ChangeMode");
+                    playerAnimator.SetBool("SkillSustainable", iAnimatorState.SkillSustainable);//技能保持持续(主要是有些技能可能会有持续动
+                    playerAnimator.SetInteger("SkillType", (int)iAnimatorState.PhysicAnimatorSkillType - (int)EnumSkillType.SpecialPhysicActionReleaseStart);
                     break;
                 default:
                     playerAnimator.ResetTrigger("Phycis");
+                    playerAnimator.ResetTrigger("Skill");
+                    playerAnimator.SetBool("SkillSustainable", false);//技能取消持续(主要是有些技能可能会有持续动作)
                     break;
             }
         }

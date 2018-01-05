@@ -32,6 +32,7 @@ public partial class GameState
         //构建技能的属性(注意技能的属性从负数开始)
         //有些技能只存在特殊效果,而且这些特殊效果不涉及这些属性,则这些特殊效果在具体的位置处理
         //被动技能  注:光环技能不需要初始化,因为光环是动态的
+        #region 魔法
         CreateAttributeHandle(-(int)EnumSkillType.FS05);
         CreateAttributeHandle(-(int)EnumSkillType.FS06);
         CreateAttributeHandle(-(int)EnumSkillType.FS07);
@@ -53,6 +54,28 @@ public partial class GameState
         CreateAttributeHandle(-(int)EnumSkillType.JH01);
         CreateAttributeHandle(-(int)EnumSkillType.JH02);
         CreateAttributeHandle(-(int)EnumSkillType.JH03);
+        #endregion
+        #region 物理
+        CreateAttributeHandle(-(int)EnumSkillType.WL02);
+        CreateAttributeHandle(-(int)EnumSkillType.WL03);
+        CreateAttributeHandle(-(int)EnumSkillType.WL04);
+        CreateAttributeHandle(-(int)EnumSkillType.ZS01);
+        CreateAttributeHandle(-(int)EnumSkillType.WL02);
+        CreateAttributeHandle(-(int)EnumSkillType.ZS04);
+        CreateAttributeHandle(-(int)EnumSkillType.GJS01);
+        CreateAttributeHandle(-(int)EnumSkillType.GJS04);
+        CreateAttributeHandle(-(int)EnumSkillType.KZS01);
+        CreateAttributeHandle(-(int)EnumSkillType.KZS02);
+        CreateAttributeHandle(-(int)EnumSkillType.JAS01);
+        CreateAttributeHandle(-(int)EnumSkillType.JAS02);
+        CreateAttributeHandle(-(int)EnumSkillType.YX01);
+        CreateAttributeHandle(-(int)EnumSkillType.YX03);
+        CreateAttributeHandle(-(int)EnumSkillType.DZ01);
+        CreateAttributeHandle(-(int)EnumSkillType.DZ02);
+        CreateAttributeHandle(-(int)EnumSkillType.SSS01);
+        CreateAttributeHandle(-(int)EnumSkillType.SSS02);
+        #endregion
+
     }
 
     #region 用于操纵附加状态的功能
@@ -136,16 +159,90 @@ public partial class GameState
     }
 
     /// <summary>
-    /// 移除一个状态,注意只能移除大于零的句柄
+    /// 移除一个状态,注意只能移除大于零的句柄(光环除外)
     /// </summary>
     /// <param name="handle"></param>
     public void RemoveAttribute(int handle)
     {
-        if (handle > 0 && iAttributeStateDic != null && iAttributeStateDic.ContainsKey(handle))
+        if (iAttributeStateDic != null && iAttributeStateDic.ContainsKey(handle))
         {
             iAttributeStateDic.Remove(handle);
             Call<IPlayerAttributeState, Action<int>>(temp => temp.RemoveAttribute);//通知属性变动
         }
+    }
+
+    /// <summary>
+    /// 从技能对象中取出数据设置到状态对象中
+    /// </summary>
+    /// <param name="iAttributeState">要设置数据的状态对象</param>
+    /// <param name="baseAttributeState">玩家的基础状态对象</param>
+    /// <param name="skillAttributeStruct">技能属性对象</param>
+    public void SetIAttributeStateDataBySkillData(IAttributeState iAttributeState, IAttributeState baseAttributeState, SkillAttributeStruct skillAttributeStruct)
+    {
+        if (iAttributeState == null || baseAttributeState == null || skillAttributeStruct == null)
+        {
+            if (iAttributeState != null)
+                iAttributeState.Init();
+            return;
+        }
+        iAttributeState.Power = skillAttributeStruct.StrengthAdded;//力量加成
+        iAttributeState.Quick = skillAttributeStruct.AgileBonus;//敏捷加成
+        iAttributeState.Power += skillAttributeStruct.LiftingForceRatio * baseAttributeState.Power / 100f;//力量百分比提升
+        iAttributeState.Mental = skillAttributeStruct.RaiseSpiritRatio * baseAttributeState.Mental / 100f;//精神百分比提升
+        iAttributeState.MagicAttacking = skillAttributeStruct.DMG * baseAttributeState.MagicAttacking / 100f;//魔法攻击力
+        iAttributeState.PhysicsAttacking = skillAttributeStruct.PDMG * baseAttributeState.PhysicsAttacking / 100f;//物理攻击力
+        iAttributeState.EffectAffine = skillAttributeStruct.ERST;//特效影响力
+        iAttributeState.AttackRigidity = skillAttributeStruct.Catalepsy;//僵直
+        iAttributeState.EffectResideTime = skillAttributeStruct.RETI;//特效驻留时间
+        iAttributeState.PhysicsAdditionalDamage = skillAttributeStruct.PHYAD;//物理伤害附加
+        iAttributeState.MagicAdditionalDamage = skillAttributeStruct.MPAD;//魔法伤害附加
+        iAttributeState.EvadeRate = skillAttributeStruct.DodgeRate / 100f;//闪避率
+        iAttributeState.MagicPenetrate = skillAttributeStruct.PEDMG;//魔法伤害穿透
+        iAttributeState.PhysicsPenetrate = skillAttributeStruct.PEDMG;//物理伤害穿透
+        iAttributeState.MaxUseMana = skillAttributeStruct.MaxMP;//最大耗魔上限
+        iAttributeState.MaxMana += skillAttributeStruct.MP * baseAttributeState.MaxMana / 100f;//百分比的法力上限
+        iAttributeState.MagicFit = skillAttributeStruct.MagicFit;//魔法亲和 
+        iAttributeState.MagicAttacking += skillAttributeStruct.MpAttack * baseAttributeState.MagicAttacking / 100f;//百分比的魔法攻击力
+        iAttributeState.MagicResistance += skillAttributeStruct.MpDefence * baseAttributeState.MagicResistance / 100f;//百分比的魔法防御力
+        iAttributeState.PhysicsAttacking += skillAttributeStruct.PhyAttack * baseAttributeState.PhysicsAttacking / 100f;//物理攻击力百分比加成
+        iAttributeState.PhysicsResistance += skillAttributeStruct.PhyDefense * baseAttributeState.PhysicsResistance / 100f;//物理防御力百分比加成
+        iAttributeState.ManaRecovery += skillAttributeStruct.MpReload;//魔法回复速度
+        iAttributeState.LightFaith = skillAttributeStruct.Light;//光明信仰强度 
+        iAttributeState.DarkFaith = skillAttributeStruct.Dark;//黑暗信仰强度 
+        iAttributeState.LifeFaith = skillAttributeStruct.Life;//生物信仰强度 
+        iAttributeState.NaturalFaith = skillAttributeStruct.Natural;//自然信仰强度
+        iAttributeState.ExemptionChatingMana = skillAttributeStruct.ExemptionChatingMana;//减少技能冷却时间
+        iAttributeState.SameElementEffectAdded = skillAttributeStruct.SameElementEffectAdded / 100f;//同元素魔法效果加成
+        iAttributeState.ReliefManaAmount = skillAttributeStruct.ReliefManaAmount / 100f;//耗魔量减免(百分比)
+        iAttributeState.AbnormalStateResistance = skillAttributeStruct.AbnormalStateResistance;//异常状态抗性
+        iAttributeState.MoveSpeed = skillAttributeStruct.MoveSpeedAddtion * baseAttributeState.MoveSpeed / 100f;//移动速度(百分比增加量)
+        iAttributeState.ExemptionChantingTime = skillAttributeStruct.ExemptionChatingTime / 100f;//咏唱时间减免(百分比)
+        iAttributeState.ReduceCoolingTime = skillAttributeStruct.ReduceCoolingTime / 100f;//公共冷却时间减免(百分比)
+        iAttributeState.CritRate = skillAttributeStruct.IncreasedCritRate / 100f;//暴击率
+        iAttributeState.TrapDefense = skillAttributeStruct.TrapDefense;//对陷阱防御力
+        iAttributeState.SpellTrapDamage += skillAttributeStruct.SpellTrapDamagePromotion / 100f;//法术陷阱伤害提升(百分比)
+        iAttributeState.SpellTrapEffectProbability = skillAttributeStruct.SpellTrapEffectProbability / 100f;//法术陷阱产生特效几率
+        iAttributeState.DamageToTheUndead = skillAttributeStruct.DamageToTheUndead / 100f;//对不死族伤害提升(百分比倍率)
+        iAttributeState.ChaosOfTheUndead = skillAttributeStruct.ChaosOfTheUndead / 100f;//对不死族附加混乱几率
+        iAttributeState.TreatmentVolume = skillAttributeStruct.TreatmentVolume;//治疗量 //治疗量需要一个公式来计算
+        iAttributeState.MysticalBeliefIntensity = skillAttributeStruct.MysticalBeliefIntensity;//神秘信仰强度
+        iAttributeState.MysticalBeliefSpecialEffects = skillAttributeStruct.MysticalBeliefSpecialEffects / 100f;//神秘信仰特效产生几率
+        iAttributeState.LightFaith += baseAttributeState.LightFaith * skillAttributeStruct.IncreaseFaithA / 100f;//提升信仰1->光明信仰强度
+        iAttributeState.DarkFaith += baseAttributeState.DarkFaith * skillAttributeStruct.IncreaseFaithA / 100f;//提升信仰1->黑暗信仰强度
+        iAttributeState.LifeFaith += baseAttributeState.LifeFaith * skillAttributeStruct.IncreaseFaithA / 100f;//提升信仰1->生物信仰强度
+        iAttributeState.NaturalFaith += baseAttributeState.NaturalFaith * skillAttributeStruct.IncreaseFaithA / 100f;//提升信仰1->自然信仰强度
+        iAttributeState.ImproveWorshipFaith = skillAttributeStruct.ImproveWorshipFaith;//崇拜信仰强度
+        iAttributeState.AccelerateToUndead = skillAttributeStruct.AccelerateToUndead / 100f;//对不死族加速比率
+        //根据信仰强度差值获得额外魔法效果加成以及魔法三(包括)以上魔法伤害加成的数据计算在具体的魔法释放处进行处理
+        iAttributeState.ElementStandStrength = skillAttributeStruct.ElementStandStrength;//元素立场强度
+        //非战斗状态移动速度提升在具体的技能出进行计算
+        iAttributeState.ExperienceValuePlus = skillAttributeStruct.ExperienceValuePlus / 100f;//经验值加成比率
+        iAttributeState.AttackSpeed = skillAttributeStruct.AttackSpeed / 100f;//攻击速度(百分比)
+        iAttributeState.GooodsDropRate = baseAttributeState.GooodsDropRate * skillAttributeStruct.GooodsDropRate / 100f;//物品掉落率加成(百分比);
+        iAttributeState.HitRate = skillAttributeStruct.HitRate / 100f;//命中率(百分比)
+        iAttributeState.View = skillAttributeStruct.ViewMul * baseAttributeState.View / 100f;//视野加成
+        iAttributeState.MustUsedBaseMana = skillAttributeStruct.MustUsedBaseMana;//技能基础耗魔
+        iAttributeState.CoolingTime = skillAttributeStruct.CoolingTime;//冷却时间
     }
 
     #endregion
@@ -176,28 +273,6 @@ public partial class GameState
             if (iAttributeBaseState != null)
             {
                 iAttributeBaseState.Quick = value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 专注
-    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
-    /// </summary>
-    public float Dedicated
-    {
-        get
-        {
-            if (iAttributeStateDic == null)
-                return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.Dedicated).Sum();
-        }
-        set
-        {
-            IAttributeState iAttributeBaseState = GetAttribute(0);
-            if (iAttributeBaseState != null)
-            {
-                iAttributeBaseState.Dedicated = value;
             }
         }
     }
@@ -537,6 +612,27 @@ public partial class GameState
     #endregion
     #region 攻击与防御属性
     /// <summary>
+    /// 攻击僵直
+    /// </summary>
+    public float AttackRigidity
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.AttackRigidity).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.AttackRigidity = value;
+            }
+        }
+    }
+
+    /// <summary>
     /// 道具攻击力
     /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
@@ -738,20 +834,20 @@ public partial class GameState
     /// 元素亲和
     /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    public float ElementAffine
+    public float EffectAffine
     {
         get
         {
             if (iAttributeStateDic == null)
                 return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.ElementAffine).Sum();
+            return iAttributeStateDic.Values.Select(temp => temp.EffectAffine).Sum();
         }
         set
         {
             IAttributeState iAttributeBaseState = GetAttribute(0);
             if (iAttributeBaseState != null)
             {
-                iAttributeBaseState.ElementAffine = value;
+                iAttributeBaseState.EffectAffine = value;
             }
         }
     }
@@ -760,20 +856,20 @@ public partial class GameState
     /// 魔法亲和
     /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
-    public float MagicAffine
+    public float MagicFit
     {
         get
         {
             if (iAttributeStateDic == null)
                 return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MagicAffine).Sum();
+            return iAttributeStateDic.Values.Select(temp => temp.MagicFit).Sum();
         }
         set
         {
             IAttributeState iAttributeBaseState = GetAttribute(0);
             if (iAttributeBaseState != null)
             {
-                iAttributeBaseState.MagicAffine = value;
+                iAttributeBaseState.MagicFit = value;
             }
         }
     }
@@ -966,7 +1062,8 @@ public partial class GameState
     /// <summary>
     /// 生物信仰强度
     /// </summary>
-    public float LifeFaith {
+    public float LifeFaith
+    {
         get
         {
             if (iAttributeStateDic == null)
@@ -986,7 +1083,8 @@ public partial class GameState
     /// <summary>
     /// 自然信仰强度
     /// </summary>
-    public float NaturalFaith {
+    public float NaturalFaith
+    {
         get
         {
             if (iAttributeStateDic == null)
@@ -1002,6 +1100,488 @@ public partial class GameState
             }
         }
     }
+
+    /// <summary>
+    /// 暴击倍率(角色本身为1.5倍)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float CritDamageRatio
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.CritDamageRatio).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.CritDamageRatio = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 法术陷阱伤害
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float SpellTrapDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.SpellTrapDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.SpellTrapDamage = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 法术陷阱特效产生几率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float SpellTrapEffectProbability
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.SpellTrapEffectProbability).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.SpellTrapEffectProbability = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对不死族伤害提升(百分比倍率)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float DamageToTheUndead
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.DamageToTheUndead).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.DamageToTheUndead = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对不死族附加混乱几率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ChaosOfTheUndead
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ChaosOfTheUndead).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ChaosOfTheUndead = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 治疗量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float TreatmentVolume
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.TreatmentVolume).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.TreatmentVolume = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对陷阱的防御力
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float TrapDefense
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.TrapDefense).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.TrapDefense = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 神秘信仰强度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MysticalBeliefIntensity
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MysticalBeliefIntensity).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MysticalBeliefIntensity = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 神秘信仰特效产生几率
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MysticalBeliefSpecialEffects
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MysticalBeliefSpecialEffects).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MysticalBeliefSpecialEffects = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 崇拜信仰强度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ImproveWorshipFaith
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ImproveWorshipFaith).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ImproveWorshipFaith = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 异常状态抗性
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float AbnormalStateResistance
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.AbnormalStateResistance).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.AbnormalStateResistance = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 元素立场强度
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ElementStandStrength
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ElementStandStrength).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ElementStandStrength = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 同元素魔法效果加成
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float SameElementEffectAdded
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.SameElementEffectAdded).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.SameElementEffectAdded = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 技能冷却时间
+    /// </summary>
+    public float CoolingTime
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MustUsedBaseMana).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.CoolingTime = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 需要使用的基础耗魔量(主要是组合技能以及需要主动释放的技能存在此选项)
+    /// </summary>
+    public float MustUsedBaseMana
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MustUsedBaseMana).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MustUsedBaseMana = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 减少该技能的冷却时间
+    /// </summary>
+    public float ExemptionChatingMana
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ExemptionChatingMana).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ExemptionChatingMana = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 耗魔量减免(百分比)
+    /// </summary>
+    public float ReliefManaAmount
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ReliefManaAmount).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ReliefManaAmount = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 咏唱时间减免(百分比)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ExemptionChantingTime
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ExemptionChantingTime).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ExemptionChantingTime = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 冷却时间减免(百分比)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ReduceCoolingTime
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ReduceCoolingTime).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ReduceCoolingTime = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 对不死族加速
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float AccelerateToUndead
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.AccelerateToUndead).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.AccelerateToUndead = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 经验值加成(与基础经验乘算)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float ExperienceValuePlus
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.ExperienceValuePlus).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.ExperienceValuePlus = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 物品掉落率(与基础掉落率乘算)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float GooodsDropRate
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.GooodsDropRate).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.GooodsDropRate = value;
+            }
+        }
+    }
+
+
     #endregion
     #endregion
 

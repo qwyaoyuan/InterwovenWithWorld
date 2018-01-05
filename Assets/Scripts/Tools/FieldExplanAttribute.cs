@@ -26,7 +26,7 @@ public class FieldExplanAttribute : Attribute
     /// <returns></returns>
     public string GetExplan()
     {
-        return GetExplan(-1);
+        return GetExplan(0);
     }
 
     /// <summary>
@@ -36,8 +36,8 @@ public class FieldExplanAttribute : Attribute
     /// <returns></returns>
     public string GetExplan(int index)
     {
-        if (explans != null && explans.Length > index + 1)
-            return explans[index + 1];
+        if (explans != null && explans.Length > index)
+            return explans[index];
         return "";
     }
 }

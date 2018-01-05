@@ -53,11 +53,13 @@ public partial class GameState : IEntrance, IBaseState
         Start_IPlayerState();
         Start_IMonsterCollection();
         Start_IPlayerState_IAttribute();
+        Start_IPlayerState_ISkillState();
     }
 
     public void Update()
     {
         Update_INowTaskState();
+        Update_IPlayerState();
         Update_IPlayerState_ISkillState();
     }
 
@@ -267,6 +269,11 @@ public partial class GameState : IEntrance, IBaseState
     partial void Load_IGameState();
 
     /// <summary>
+    /// (技能状态)的开始方法
+    /// </summary>
+    partial void Start_IPlayerState_ISkillState();
+
+    /// <summary>
     /// (技能状态)加载函数时调用 
     /// </summary>
     partial void Load_IPlayerState_ISkillState();
@@ -290,6 +297,11 @@ public partial class GameState : IEntrance, IBaseState
     /// 角色状态的开始方法
     /// </summary>
     partial void Start_IPlayerState();
+
+    /// <summary>
+    /// 角色状态的更新方法
+    /// </summary>
+    partial void Update_IPlayerState();
 
     #endregion
 }
