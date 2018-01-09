@@ -18,12 +18,20 @@ public interface IDamage : IBaseState
     /// <returns></returns>
     ParticalInitParamData[] GetParticalInitParamData(GameObject playerObj, IAttributeState nowIAttributeState, params SkillBaseStruct[] skills);
     /// <summary>
+    /// 设置普通攻击
+    /// </summary>
+    /// <param name="iPlayerState">玩家状态对象</param>
+    /// <param name="attackOrder">攻击的编号</param>
+    /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
+    /// <param name="weaponTypeByPlayerState">武器类型</param>
+    void SetNormalAttack(IPlayerState iPlayerState, int attackOrder, IAttributeState nowIAttributeState, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
+    /// <summary>
     /// 设置物理技能攻击
     /// </summary>
-    /// <param name="playerObj">释放技能的对象(玩家操纵的角色)</param>
+    /// <param name="iPlayerState">玩家状态对象</param>
     /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
     /// <param name="skillType">技能类型</param>
     /// <param name="weaponTypeByPlayerState">武器类型</param>
-    void SetPhysicSkillAttack(GameObject playerObj, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
+    void SetPhysicSkillAttack(IPlayerState iPlayerState, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
 }
 

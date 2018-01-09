@@ -115,6 +115,25 @@ public partial class GameState : IPlayerState
     }
 
     /// <summary>
+    /// 物理检测脚本
+    /// </summary>
+    private PhysicSkillInjuryDetection _PhysicSkillInjuryDetection;
+    /// <summary>
+    /// 物理检测脚本
+    /// </summary>
+    public PhysicSkillInjuryDetection PhysicSkillInjuryDetection
+    {
+        get { return _PhysicSkillInjuryDetection; }
+        set
+        {
+            PhysicSkillInjuryDetection tempPhysicSkillInjuryDetection = _PhysicSkillInjuryDetection;
+            _PhysicSkillInjuryDetection = value;
+            if (!object.Equals(tempPhysicSkillInjuryDetection, _PhysicSkillInjuryDetection))
+                Call<IPlayerState, PhysicSkillInjuryDetection>(temp => temp.PhysicSkillInjuryDetection);
+        }
+    }
+
+    /// <summary>
     /// 当前选择的目标
     /// </summary>
     private GameObject _SelectObj;
@@ -691,6 +710,75 @@ public partial class GameState : IPlayerState
                 //回掉
                 Call<IPlayerState, bool>(temp => temp.GoodsChanged);
                 _GoodsChanged = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 当前的按键应该遵循的状态
+    /// </summary>
+    private EnumKeyContactDataZone _KeyContactDataZone;
+    /// <summary>
+    /// 当前的按键应该遵循的状态
+    /// </summary>
+    public EnumKeyContactDataZone KeyContactDataZone
+    {
+        get { return _KeyContactDataZone; }
+        private set
+        {
+            EnumKeyContactDataZone tempKeyContactDataZone = _KeyContactDataZone;
+            _KeyContactDataZone = value;
+            if (tempKeyContactDataZone != _KeyContactDataZone)
+                Call<IPlayerState, EnumKeyContactDataZone>(temp => temp.KeyContactDataZone);
+        }
+    }
+
+    /// <summary>
+    /// 触碰到目标的结构(主要是NPC 素材等)
+    /// </summary>
+    private TouchTargetStruct _TouchTargetStruct;
+    /// <summary>
+    /// 触碰到目标的结构(主要是NPC 素材等)
+    /// </summary>
+    public TouchTargetStruct TouchTargetStruct
+    {
+        get
+        {
+            return _TouchTargetStruct;
+        }
+        set
+        {
+            TouchTargetStruct tempTouchTargetStruct = _TouchTargetStruct;
+            _TouchTargetStruct = value;
+            if (!TouchTargetStruct.Equals(tempTouchTargetStruct, _TouchTargetStruct))
+                Call<IPlayerState, TouchTargetStruct>(temp => temp.TouchTargetStruct);
+            //判断此时的按键应该遵循什么状态
+            IGameState iGameState = GetEntity<IGameState>();
+            if (iGameState != null)
+            {
+                EnumGameRunType gameRunType = iGameState.GameRunType;
+                switch (gameRunType)
+                {
+                    case EnumGameRunType.Safe:
+                    case EnumGameRunType.Unsafa:
+                        switch (_TouchTargetStruct.TouchTargetType)
+                        {
+                            case TouchTargetStruct.EnumTouchTargetType.None:
+                                KeyContactDataZone = EnumKeyContactDataZone.Normal;
+                                break;
+                            case TouchTargetStruct.EnumTouchTargetType.NPC:
+                                KeyContactDataZone = EnumKeyContactDataZone.Dialogue;
+                                break;
+                            case TouchTargetStruct.EnumTouchTargetType.Stuff:
+                                KeyContactDataZone = EnumKeyContactDataZone.Collect;
+                                break;
+                        }
+                        break;
+                    default:
+                        KeyContactDataZone = EnumKeyContactDataZone.Normal;
+                        break;
+
+                }
             }
         }
     }

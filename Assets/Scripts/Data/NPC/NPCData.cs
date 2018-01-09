@@ -114,7 +114,7 @@ public class NPCDataInfo
     /// 保存npc预设提的路径
     /// </summary>
     [JsonIgnore]
-    public static string npcPrefabDirectoryPath = "Prefabs";
+    public static string npcPrefabDirectoryPath = "Prefabs/NPC";
 
     /// <summary>
     /// npc的类型
@@ -224,8 +224,20 @@ public class NPCDataInfo
     /// </summary>
     public string OtherValue;
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// 将NPCObjPrefab设置为false
+    /// </summary>
+    public void InitNPCObjPrefab()
+    {
+        npcObjPrefab = null;
+    }
+#endif
+
     public void Load()
     {
+        if (string.IsNullOrEmpty(npcPrefabName))
+            npcObjPrefab = null;
         if (npcObjPrefab == null)
             if (!string.IsNullOrEmpty(npcPrefabName))
                 npcObjPrefab = Resources.Load<GameObject>(npcPrefabDirectoryPath + "/" + npcPrefabName);
@@ -247,7 +259,7 @@ public class NPCDataInfo
 /// <summary>
 /// npc的数据(用于挂在在对象身上)
 /// </summary>
-public class NPCDataInfoMono : MonoBehaviour
+public class NPCDataInfoMono : DataInfoType<NPCDataInfo>
 {
     public NPCDataInfo NPCDataInfo;
 }

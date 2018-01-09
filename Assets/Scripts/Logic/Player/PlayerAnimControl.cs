@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -43,6 +44,46 @@ public class PlayerAnimControl : MonoBehaviour
     }
 
     /// <summary>
+    /// 离开物理普通攻击函数
+    /// </summary>
+    IEnumerator LeavePhysicInvoke()
+    {
+        yield return new WaitForSeconds(0.15f);
+        if (iAnimatorState != null)
+        {
+            iAnimatorState.IsPhycisActionState = false;
+            //当从物理动作(普通攻击)中退出时,设置其阶段为0
+            iAnimatorState.PhycisActionNowType = 0;
+        }
+    }
+
+    /// <summary>
+    /// 离开技能动作函数
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator LeaveSkillInvoke()
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (iAnimatorState != null)
+        {
+            iAnimatorState.IsSkillState = false;
+        }
+    }
+
+    /// <summary>
+    /// 离开魔法动作函数
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator LeaveMagicInvoke()
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (iAnimatorState != null)
+        {
+            iAnimatorState.IsMagicActionState = false;
+        }
+    }
+
+    /// <summary>
     /// 动画进入或离开某状态
     /// </summary>
     /// <param name="name">动画名(手动输入的)</param>
@@ -51,37 +92,53 @@ public class PlayerAnimControl : MonoBehaviour
     {
         switch (name)
         {
-            case "Skill"://技能动作状态
-                iAnimatorState.IsSkillState = state;
-                break;
-            case "Phycis":
-                iAnimatorState.IsPhycisActionState = state;
-                //当从物理动作(普通攻击)中退出时,设置其阶段为0
-                if (!state)
+            case "Dizzy"://如果陷入眩晕则重置普通攻击状态
+                if (state)
+                {
                     iAnimatorState.PhycisActionNowType = 0;
+                    iAnimatorState.IsPhycisActionState = false;
+                    iAnimatorState.IsSkillState = false;
+                    iAnimatorState.IsMagicActionState = false;
+                    playerAnimator.SetLayerWeight(1, 0f);
+                }
                 break;
-            case "Magic":
-                iAnimatorState.IsMagicActionState = state;
+            case "SkillIn":
+                StopCoroutine("LeaveSkillInvoke");
+                iAnimatorState.IsSkillState = true;
+                break;
+            case "SkillOut":
+                if (state)
+                    StartCoroutine("LeaveSkillInvoke");
+                break;
+            case "PhycisIn":
+                StopCoroutine("LeavePhysicInvoke");
+                iAnimatorState.IsPhycisActionState = true;
+                break;
+            case "PhycisOut":
+                if (state)
+                    StartCoroutine("LeavePhysicInvoke");
+                break;
+            case "MagicIn":
+                StopCoroutine("LeaveMagicInvoke");
+                iAnimatorState.IsMagicActionState = true;
+                break;
+            case "MagicOut":
+                if (state)
+                    StartCoroutine("LeaveMagicInvoke");
                 break;
             //当动作进入攻击1 攻击2 攻击3时分别设置对应的物理动作(普通攻击)阶段为对应的阶段
             //当退出动作时设置动作为0(无攻击)
             case "PhycisType1":
                 if (state)
                     iAnimatorState.PhycisActionNowType = 1;
-                else
-                    iAnimatorState.PhycisActionNowType = 0;
                 break;
             case "PhycisType2":
                 if (state)
                     iAnimatorState.PhycisActionNowType = 2;
-                else
-                    iAnimatorState.PhycisActionNowType = 0;
                 break;
             case "PhycisType3":
                 if (state)
                     iAnimatorState.PhycisActionNowType = 3;
-                else
-                    iAnimatorState.PhycisActionNowType = 0;
                 break;
             default:
                 break;
@@ -150,12 +207,15 @@ public class PlayerAnimControl : MonoBehaviour
                     playerAnimator.SetBool("Sing", true);
                     playerAnimator.SetTrigger("Magic");
                     playerAnimator.SetTrigger("ChangeMode");
+                    playerAnimator.SetLayerWeight(1, 0.5f);
                     break;
                 case EnumMagicAnimatorType.Shot:
                     playerAnimator.SetBool("Sing", false);
+                    playerAnimator.SetLayerWeight(1, 0f);
                     break;
                 default:
                     playerAnimator.SetBool("Sing", false);
+                    playerAnimator.SetLayerWeight(1, 0f);
                     break;
             }
         }
@@ -169,11 +229,11 @@ public class PlayerAnimControl : MonoBehaviour
                     playerAnimator.SetTrigger("ChangeMode");
                     //根据当前的物理攻击状态随机一个动作
                     if (iAnimatorState.PhycisActionNowType == 0)
-                        playerAnimator.SetFloat("PhycisType1", (int)(Random.Range(0, 10)));
+                        playerAnimator.SetFloat("PhycisType1", (int)(UnityEngine.Random.Range(0, 10)));
                     else if (iAnimatorState.PhycisActionNowType == 1)
-                        playerAnimator.SetFloat("PhycisType2", (int)(Random.Range(0, 10)));
+                        playerAnimator.SetFloat("PhycisType2", (int)(UnityEngine.Random.Range(0, 10)));
                     else if (iAnimatorState.PhycisActionNowType == 2)
-                        playerAnimator.SetFloat("PhycisType3", (int)(Random.Range(0, 10)));
+                        playerAnimator.SetFloat("PhycisType3", (int)(UnityEngine.Random.Range(0, 10)));
                     break;
                 case EnumPhysicAnimatorType.Skill:
                     playerAnimator.SetTrigger("Skill");

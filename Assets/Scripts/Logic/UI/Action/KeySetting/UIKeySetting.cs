@@ -321,7 +321,7 @@ public class UIKeySetting : MonoBehaviour
             SkillBaseStruct skillBaseStruct = skillStructData.SearchSkillDatas(temp => temp.skillType == item.Key).FirstOrDefault();
             if (skillBaseStruct != null)
             {
-                KeyContactStruct tempKeyContactStruct;
+                KeyContactStruct tempKeyContactStruct = new KeyContactStruct();
                 tempKeyContactStruct.id = (int)item.Key;
                 tempKeyContactStruct.key = 0;
                 tempKeyContactStruct.keyContactType = EnumKeyContactType.Skill;
@@ -334,7 +334,7 @@ public class UIKeySetting : MonoBehaviour
         {
             if (item != null && item.Count(temp => temp == EnumSkillType.None) < 4)
             {
-                KeyContactStruct tempKeyContactStruct;
+                KeyContactStruct tempKeyContactStruct = new KeyContactStruct();
                 tempKeyContactStruct.id = SkillCombineStaticTools.GetCombineSkillKey(item);
                 tempKeyContactStruct.key = 0;
                 tempKeyContactStruct.keyContactType = EnumKeyContactType.Skill;
@@ -348,7 +348,7 @@ public class UIKeySetting : MonoBehaviour
             ((int)temp.GoodsInfo.EnumGoodsType > (int)EnumGoodsType.Elixir && (int)temp.GoodsInfo.EnumGoodsType < (int)EnumGoodsType.Elixir + 1000000)
             ))
         {
-            KeyContactStruct tempKeyContactStruct;
+            KeyContactStruct tempKeyContactStruct = new KeyContactStruct();
             tempKeyContactStruct.id = item.ID;
             tempKeyContactStruct.key = 0;
             tempKeyContactStruct.keyContactType = EnumKeyContactType.Prap;

@@ -12,7 +12,7 @@ public class KeyContactData
     /// <summary>
     /// 按键与技能物品之间对应关系的对象字典（key表示按键组合后的数字）
     /// </summary>
-    private Dictionary<int, KeyContactStruct> keyContactStructs;
+    private Dictionary<EnumKeyContactDataZone, Dictionary<int, KeyContactStruct>> keyContactStructs;
 
     /*与EnumInputType的L1 R1 L2 R2对应的数值*/
     private const int L1 = 16;
@@ -25,7 +25,7 @@ public class KeyContactData
     /// </summary>
     public KeyContactData()
     {
-        keyContactStructs = new Dictionary<int, KeyContactStruct>();
+        keyContactStructs = new Dictionary<EnumKeyContactDataZone, Dictionary<int, KeyContactStruct>>();
     }
 
     /// <summary>
@@ -33,11 +33,16 @@ public class KeyContactData
     /// </summary>
     /// <param name="key">组合后的按键数字，注意不可以复合组合</param>
     /// <param name="target">对应的数据对象</param>
-    public void SetKeyContactStruct(int key, KeyContactStruct target)
+    /// <param name="keyContactDataZone">按键分组(默认为常规)</param>
+    public void SetKeyContactStruct(int key, KeyContactStruct target, EnumKeyContactDataZone keyContactDataZone = EnumKeyContactDataZone.Normal)
     {
-        if (keyContactStructs.ContainsKey(key))
-            keyContactStructs[key] = target;
-        else keyContactStructs.Add(key, target);
+        if (target.key == 0)
+            target.key = key;
+        if (!keyContactStructs.ContainsKey(keyContactDataZone))
+            keyContactStructs.Add(keyContactDataZone, new Dictionary<int, KeyContactStruct>());
+        if (keyContactStructs[keyContactDataZone].ContainsKey(key))
+            keyContactStructs[keyContactDataZone][key] = target;
+        else keyContactStructs[keyContactDataZone].Add(key, target);
     }
 
     /// <summary>
@@ -45,16 +50,19 @@ public class KeyContactData
     /// </summary>
     /// <param name="key">组合后的按键数字</param>
     /// <param name="selecter">选择器</param>
+    /// <param name="keyContactDataZone">按键分组(默认为常规)</param>
     /// <returns></returns>
-    public KeyContactStruct[] GetKeyContactStruct(int key, Func<KeyContactStruct, bool> selecter = null)
+    public KeyContactStruct[] GetKeyContactStruct(int key, Func<KeyContactStruct, bool> selecter = null, EnumKeyContactDataZone keyContactDataZone = EnumKeyContactDataZone.Normal)
     {
         Func<int, KeyContactStruct> GetSpecificTarget = (_key) =>
         {
-            if (keyContactStructs.ContainsKey(_key))
-                return keyContactStructs[key];
+            if (!keyContactStructs.ContainsKey(keyContactDataZone))
+                keyContactStructs.Add(keyContactDataZone, new Dictionary<int, KeyContactStruct>());
+            if (keyContactStructs[keyContactDataZone].ContainsKey(_key))
+                return keyContactStructs[keyContactDataZone][key];
             else
             {
-                KeyContactStruct tempKeyContactStruct;
+                KeyContactStruct tempKeyContactStruct = new KeyContactStruct();
                 tempKeyContactStruct.keyContactType = EnumKeyContactType.None;
                 tempKeyContactStruct.id = -1;
                 tempKeyContactStruct.key = _key;
@@ -78,7 +86,7 @@ public class KeyContactData
             bool r1 = ((addFunctionKey / R1) % 2) == 1;//是否按下了R1键
             bool l2 = ((addFunctionKey / L2) % 2) == 1;//是否按下了L2键
             bool r2 = ((addFunctionKey / R2) % 2) == 1;//是否按下了R2键
-            
+
             if (l1)
                 tempKeyContactStructs.Add(GetSpecificTarget(L1 + baseFunctionKey));
             if (r1)
@@ -95,4 +103,24 @@ public class KeyContactData
             tempKeyContactStructs.RemoveAll(temp => !selecter(temp));
         return tempKeyContactStructs.ToArray();
     }
+}
+
+
+/// <summary>
+/// 按键组合分组类型
+/// </summary>
+public enum EnumKeyContactDataZone
+{
+    /// <summary>
+    /// 常规的状态(用于存储技能 道具 )
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// 采集功能
+    /// </summary>
+    Collect,
+    /// <summary>
+    /// 对话
+    /// </summary>
+    Dialogue
 }

@@ -845,6 +845,314 @@ public enum EnumGoodsType
 
     #endregion
 
+
+    #region 测试用
+    /// <summary>
+    ///铁矿石
+    /// </summary>
+    [FieldExplan("铁矿石")]
+    TKS = 1110001,
+    /// <summary>
+    ///魔晶石矿
+    /// </summary>
+    [FieldExplan("魔晶石矿")]
+    MJSK = 1110002,
+    /// <summary>
+    ///钢玉矿石
+    /// </summary>
+    [FieldExplan("钢玉矿石")]
+    GYKS = 1110003,
+    /// <summary>
+    ///精金矿石
+    /// </summary>
+    [FieldExplan("精金矿石")]
+    JJKS = 1110004,
+    /// <summary>
+    ///龙纹晶矿
+    /// </summary>
+    [FieldExplan("龙纹晶矿")]
+    LWJK = 1110005,
+    /// <summary>
+    ///秘银矿石
+    /// </summary>
+    [FieldExplan("秘银矿石")]
+    MYKS = 1110006,
+    /// <summary>
+    ///红宝石
+    /// </summary>
+    [FieldExplan("红宝石")]
+    HBS = 1111001,
+    /// <summary>
+    ///蓝宝石
+    /// </summary>
+    [FieldExplan("蓝宝石")]
+    LBS = 1111002,
+    /// <summary>
+    ///黄宝石
+    /// </summary>
+    [FieldExplan("黄宝石")]
+    HBS1 = 1111003,
+    /// <summary>
+    ///绿宝石
+    /// </summary>
+    [FieldExplan("绿宝石")]
+    LBS1 = 1111004,
+    /// <summary>
+    ///星光水晶
+    /// </summary>
+    [FieldExplan("星光水晶")]
+    XGSJ = 1111005,
+    /// <summary>
+    ///钢锭
+    /// </summary>
+    [FieldExplan("钢锭")]
+    GD = 1112001,
+    /// <summary>
+    ///钛金铸锭
+    /// </summary>
+    [FieldExplan("钛金铸锭")]
+    XJZD = 1112002,
+    /// <summary>
+    ///钢玉锭
+    /// </summary>
+    [FieldExplan("钢玉锭")]
+    GYD = 1112003,
+    /// <summary>
+    ///精金锭
+    /// </summary>
+    [FieldExplan("精金锭")]
+    JJD = 1112004,
+    /// <summary>
+    ///龙纹锭
+    /// </summary>
+    [FieldExplan("龙纹锭")]
+    LWD = 1112005,
+    /// <summary>
+    ///秘银锭
+    /// </summary>
+    [FieldExplan("秘银锭")]
+    MYD = 1112006,
+    /// <summary>
+    ///柔软毛皮
+    /// </summary>
+    [FieldExplan("柔软毛皮")]
+    RRMP = 1210001,
+    /// <summary>
+    ///坚韧毛皮
+    /// </summary>
+    [FieldExplan("坚韧毛皮")]
+    JRMP = 1210002,
+    /// <summary>
+    ///竹木
+    /// </summary>
+    [FieldExplan("竹木")]
+    ZM = 1311001,
+    /// <summary>
+    ///杉木
+    /// </summary>
+    [FieldExplan("杉木")]
+    SM = 1311002,
+    /// <summary>
+    ///橡木
+    /// </summary>
+    [FieldExplan("橡木")]
+    XM = 1311003,
+    /// <summary>
+    ///桦木
+    /// </summary>
+    [FieldExplan("桦木")]
+    XM1 = 1311004,
+    /// <summary>
+    ///檀木
+    /// </summary>
+    [FieldExplan("檀木")]
+    TM = 1311005,
+    /// <summary>
+    ///铁剑
+    /// </summary>
+    [FieldExplan("铁剑")]
+    TJ = 2110001,
+    /// <summary>
+    ///硬钢剑
+    /// </summary>
+    [FieldExplan("硬钢剑")]
+    YGJ = 2110002,
+    /// <summary>
+    ///钛金剑
+    /// </summary>
+    [FieldExplan("钛金剑")]
+    XJJ = 2110003,
+    /// <summary>
+    ///钢玉打刀
+    /// </summary>
+    [FieldExplan("钢玉打刀")]
+    GYDD = 2110004,
+    /// <summary>
+    ///精金长剑
+    /// </summary>
+    [FieldExplan("精金长剑")]
+    JJCJ = 2110005,
+    /// <summary>
+    ///龙纹长剑
+    /// </summary>
+    [FieldExplan("龙纹长剑")]
+    LWCJ = 2110006,
+    /// <summary>
+    ///铁制大剑
+    /// </summary>
+    [FieldExplan("铁制大剑")]
+    TZDJ = 2111001,
+    /// <summary>
+    ///硬钢大剑
+    /// </summary>
+    [FieldExplan("硬钢大剑")]
+    YGDJ = 2111002,
+    /// <summary>
+    ///钛金大剑
+    /// </summary>
+    [FieldExplan("钛金大剑")]
+    XJDJ = 2111003,
+    /// <summary>
+    ///钢玉太刀
+    /// </summary>
+    [FieldExplan("钢玉太刀")]
+    GYTD = 2111004,
+    /// <summary>
+    ///精金大剑
+    /// </summary>
+    [FieldExplan("精金大剑")]
+    JJDJ = 2111005,
+    /// <summary>
+    ///龙纹大剑
+    /// </summary>
+    [FieldExplan("龙纹大剑")]
+    LWDJ = 2111006,
+    /// <summary>
+    ///反曲竹弓
+    /// </summary>
+    [FieldExplan("反曲竹弓")]
+    FQZG = 2112001,
+    /// <summary>
+    ///王国长杉弓
+    /// </summary>
+    [FieldExplan("王国长杉弓")]
+    WGCSG = 2112002,
+    /// <summary>
+    ///精钢弓
+    /// </summary>
+    [FieldExplan("精钢弓")]
+    JGG = 2112003,
+    /// <summary>
+    ///钢玉弓
+    /// </summary>
+    [FieldExplan("钢玉弓")]
+    GYG = 2112004,
+    /// <summary>
+    ///龙纹弓
+    /// </summary>
+    [FieldExplan("龙纹弓")]
+    LWG = 2112005,
+    /// <summary>
+    ///橡木盾
+    /// </summary>
+    [FieldExplan("橡木盾")]
+    XMD = 2114001,
+    /// <summary>
+    ///覆铜桦木盾
+    /// </summary>
+    [FieldExplan("覆铜桦木盾")]
+    FTXMD = 2114002,
+    /// <summary>
+    ///铁皮桦木盾
+    /// </summary>
+    [FieldExplan("铁皮桦木盾")]
+    TPXMD = 2114003,
+    /// <summary>
+    ///钢玉盾
+    /// </summary>
+    [FieldExplan("钢玉盾")]
+    GYD1 = 2114004,
+    /// <summary>
+    ///龙纹精金盾
+    /// </summary>
+    [FieldExplan("龙纹精金盾")]
+    LWJJD = 2114005,
+    /// <summary>
+    ///龙纹秘银盾
+    /// </summary>
+    [FieldExplan("龙纹秘银盾")]
+    LWMYD = 2114006,
+    /// <summary>
+    ///短钢剑
+    /// </summary>
+    [FieldExplan("短钢剑")]
+    DGJ = 2115001,
+    /// <summary>
+    ///钛金短剑
+    /// </summary>
+    [FieldExplan("钛金短剑")]
+    XJDJ1 = 2115002,
+    /// <summary>
+    ///精金短剑
+    /// </summary>
+    [FieldExplan("精金短剑")]
+    JJDJ1 = 2115003,
+    /// <summary>
+    ///龙纹短剑
+    /// </summary>
+    [FieldExplan("龙纹短剑")]
+    LWDJ1 = 2115004,
+    /// <summary>
+    ///衬钢锁子甲
+    /// </summary>
+    [FieldExplan("衬钢锁子甲")]
+    CGSZJ = 2311001,
+    /// <summary>
+    ///秘银锁子甲
+    /// </summary>
+    [FieldExplan("秘银锁子甲")]
+    MYSZJ = 2311002,
+    /// <summary>
+    ///占星法袍
+    /// </summary>
+    [FieldExplan("占星法袍")]
+    ZXFP = 2312001,
+    /// <summary>
+    ///宫廷法袍
+    /// </summary>
+    [FieldExplan("宫廷法袍")]
+    GTFP = 2312002,
+    /// <summary>
+    ///大地魔偶
+    /// </summary>
+    [FieldExplan("大地魔偶")]
+    DDMO = 3210002,
+    /// <summary>
+    ///烈焰魔偶
+    /// </summary>
+    [FieldExplan("烈焰魔偶")]
+    LYMO = 3210003,
+    /// <summary>
+    ///土魔偶
+    /// </summary>
+    [FieldExplan("土魔偶")]
+    TMO = 3211001,
+    /// <summary>
+    ///藤蔓陷阱
+    /// </summary>
+    [FieldExplan("藤蔓陷阱")]
+    TMXX = 3310001,
+    /// <summary>
+    ///个性者药剂
+    /// </summary>
+    [FieldExplan("个性者药剂")]
+    GXZYJ = 4210001,
+    /// <summary>
+    ///上古恶魔之书
+    /// </summary>
+    [FieldExplan("上古恶魔之书")]
+    SGEMZS = 5113001,
+    #endregion
 }
 
 /// <summary>

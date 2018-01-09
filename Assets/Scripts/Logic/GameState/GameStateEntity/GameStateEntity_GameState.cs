@@ -118,6 +118,13 @@ public partial class GameState : IGameState
                 {
                     npcDataInfo.Load();//切换场景是有时候会导致游戏对象被删除,需要重新Load
                 }
+                //初始化采集点与采集点的位置
+                StuffData stuffData = DataCenter.Instance.GetMetaData<StuffData>();
+                StuffDataInfo[] stuffDataInfos = stuffData.GetStuffDataInfos(sceneName);
+                foreach (StuffDataInfo stuffDataInfo in stuffDataInfos)
+                {
+                    stuffDataInfo.Load();//切换场景是有时候会导致游戏对象被删除,需要重新Load
+                }
                 //创建玩家操纵的游戏对象
                 GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
                 GameObject.Instantiate(playerPrefab);

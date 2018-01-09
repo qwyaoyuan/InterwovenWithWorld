@@ -268,6 +268,18 @@ public class UIEntrance : MonoBehaviour
         {
             DataCenter.Instance.Save(1, "存档", "默认存档");
             DataCenter.Instance.LoadArchive(1);
+            //设置默认数据
+            //设置默认的按键 1:1_183
+            KeyContactData keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
+            //设置采集键
+            Sprite collectSprite = SpriteManager.GetSrpite("1:1_183");
+            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "采集", Sprite = collectSprite }, EnumKeyContactDataZone.Collect);
+            //设置对话键
+            Sprite talkSprite = SpriteManager.GetSrpite("1:1_165");
+            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交谈", Sprite = talkSprite }, EnumKeyContactDataZone.Dialogue);
+            //再次保存
+            DataCenter.Instance.Save(1, "存档", "默认存档");
+            //获取数据并切换场景
             GetArchiveData();
         }
     }
@@ -314,11 +326,12 @@ public class UIEntrance : MonoBehaviour
         //添加按键
         KeyContactData keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
         keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { id = 199, key = (int)EnumInputType.A, keyContactType = EnumKeyContactType.Skill, name = "释放魔法" });
-        keyContactData.SetKeyContactStruct((int)EnumInputType.Up, new KeyContactStruct() {id = 1001,key = (int)EnumInputType.Up,keyContactType= EnumKeyContactType.Skill,name = "奥术弹" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Up, new KeyContactStruct() { id = 1001, key = (int)EnumInputType.Up, keyContactType = EnumKeyContactType.Skill, name = "奥术弹" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Right, new KeyContactStruct() { id = 1101, key = (int)EnumInputType.Right, keyContactType = EnumKeyContactType.Skill, name = "火元素" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Left, new KeyContactStruct() { id = 1004, key = (int)EnumInputType.Left, keyContactType = EnumKeyContactType.Skill, name = "魔力导向" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Down, new KeyContactStruct() { id = 1201, key = (int)EnumInputType.Down, keyContactType = EnumKeyContactType.Skill, name = "连续魔力导向" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.X, new KeyContactStruct() { id = 201, key = (int)EnumInputType.X, keyContactType = EnumKeyContactType.Skill, name = "普通攻击" });
+        keyContactData.SetKeyContactStruct((int)EnumInputType.Y, new KeyContactStruct() { id = (int)EnumSkillType.JAS03, /*key = (int)EnumInputType.Y,*/ keyContactType = EnumKeyContactType.Skill, name = "燕返" });
         /**********/
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))

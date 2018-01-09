@@ -708,7 +708,7 @@ public partial class GameState
                 int physicSkillID = (int)skillBaseStruct.skillType;
                 SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct((EnumSkillType)physicSkillID, skillStructData);
                 //魔法值必须够用才行 
-                if (baseAttributeState.Mana > skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-physicSkillID))
+                if (baseAttributeState.Mana >= skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-physicSkillID))
                 {
                     //共有设置
                     IAttributeState physic_AttributeState = iPlayerState.GetAttribute(-physicSkillID);
@@ -718,7 +718,7 @@ public partial class GameState
                     //私有设置
                     //判断武器是否复合
                     EnumWeaponTypeByPlayerState weaponTypeByPlayerState = iPlayerState.WeaponTypeByPlayerState;//武器类型
-                    weaponTypeByPlayerState = weaponTypeByPlayerState ^ EnumWeaponTypeByPlayerState.Shield;//去除盾牌
+                    weaponTypeByPlayerState = weaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌
                     switch (skillBaseStruct.skillType)
                     {
                         case EnumSkillType.WL01://重击
@@ -740,7 +740,7 @@ public partial class GameState
                                   && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword
                                    && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
                             {
-                                return false;
+                                //return false;
                             }
                             break;
                         default:
@@ -772,7 +772,7 @@ public partial class GameState
                     iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Skill;
                     //交给IDamge脚本处理伤害以及开关粒子
                     IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
-                    iDamage.SetPhysicSkillAttack(iPlayerState.PlayerObj, thisPhysicsAttributeState, skillBaseStruct.skillType, weaponTypeByPlayerState);
+                    iDamage.SetPhysicSkillAttack(iPlayerState, thisPhysicsAttributeState, skillBaseStruct.skillType, weaponTypeByPlayerState);
                 }
             }
             //如果是物理普通攻击 (必须等普通攻击的冷却归零)
@@ -792,7 +792,14 @@ public partial class GameState
                     default:
                         return false;
                 }
+                IAttributeState thisAttackAttributeState = iPlayerState.GetResultAttribute();
+                EnumWeaponTypeByPlayerState weaponTypeByPlayerState = iPlayerState.WeaponTypeByPlayerState;//武器类型
+                weaponTypeByPlayerState = weaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌
+                //设置攻击动作
                 iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Normal;
+                //交给IDamage脚本处理伤害以及开关粒子
+                IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
+                iDamage.SetNormalAttack(iPlayerState, iAnimatorState.PhycisActionNowType + 1, thisAttackAttributeState, weaponTypeByPlayerState);
             }
             return true;
         }

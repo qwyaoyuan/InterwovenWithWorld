@@ -17,6 +17,10 @@ public interface IPlayerState : IBaseState,
     /// 玩家的摄像机
     /// </summary>
     Camera PlayerCamera { get; set; }
+    /// <summary>
+    /// 物理检测脚本
+    /// </summary>
+    PhysicSkillInjuryDetection PhysicSkillInjuryDetection { get; set; }
 
     /// <summary>
     /// 当前选择的目标 
@@ -50,7 +54,14 @@ public interface IPlayerState : IBaseState,
     /// 物品发生变化
     /// </summary>
     bool GoodsChanged { get; set; }
-
+    /// <summary>
+    /// 当前的按键应该遵循的状态
+    /// </summary>
+    EnumKeyContactDataZone KeyContactDataZone { get; }
+    /// <summary>
+    /// 触碰到目标的结构(主要是NPC 素材等)
+    /// </summary>
+    TouchTargetStruct TouchTargetStruct { get; set; }
     //--------------战斗状态----------------//
     /// <summary>
     /// 上一次进入战斗状态的时间
@@ -79,7 +90,7 @@ public interface IPlayerState : IBaseState,
     /// 默认为赋值,且只在初始化时设置为负值
     /// 如果切换则会修改改时间并通知注册方
     /// </summary>
-    float LastChangeWeaponTime { get;  }
+    float LastChangeWeaponTime { get; }
 
     //--------------------辅助函数--------------------
     /// <summary>
@@ -137,3 +148,54 @@ public enum EnumWeaponTypeByPlayerState
     /// </summary>
     CrystalBall = 256,
 }
+
+/// <summary>
+/// 触碰到对方的结果
+/// </summary>
+public struct TouchTargetStruct
+{
+    /// <summary>
+    /// 触碰到对方的类型
+    /// </summary>
+    public EnumTouchTargetType TouchTargetType;
+    /// <summary>
+    /// 在那个地图上
+    /// </summary>
+    public string TerrainName;
+    /// <summary>
+    /// 对方的id
+    /// </summary>
+    public int ID;
+
+    /// <summary>
+    /// 接触到对方的类型
+    /// 用于判断前方是npc还是素材或者都没有
+    /// </summary>
+    public enum EnumTouchTargetType
+    {
+        /// <summary>
+        /// 没有碰触到任何东西
+        /// </summary>
+        None,
+        /// <summary>
+        /// 触碰到NPC
+        /// </summary>
+        NPC,
+        /// <summary>
+        /// 触碰到素材原料
+        /// </summary>
+        Stuff
+    }
+
+    public static bool Equals(TouchTargetStruct source, TouchTargetStruct target)
+    {
+        if (source.TouchTargetType != target.TouchTargetType)
+            return false;
+        if (source.ID != target.ID)
+            return false;
+        if (!string.Equals(source.TerrainName, target.TerrainName))
+            return false;
+        return true;
+    }
+}
+

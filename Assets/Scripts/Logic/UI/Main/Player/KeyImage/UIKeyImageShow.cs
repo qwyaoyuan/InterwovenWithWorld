@@ -47,6 +47,11 @@ public class UIKeyImageShow : MonoBehaviour
     /// </summary>
     ISkillState iSkillState;
 
+    /// <summary>
+    /// 玩家状态
+    /// </summary>
+    IPlayerState iPlayerState;
+
     bool r1Press;
 
     bool r2Press;
@@ -62,6 +67,7 @@ public class UIKeyImageShow : MonoBehaviour
         playerState = DataCenter.Instance.GetEntity<PlayerState>();
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         iSkillState = GameState.Instance.GetEntity<ISkillState>();
+        iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         Show();
     }
 
@@ -109,15 +115,15 @@ public class UIKeyImageShow : MonoBehaviour
         KeyContactStruct keyContactStruct = default(KeyContactStruct);
         //这里存在优化空间
         if (r1Press)
-            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.RB).FirstOrDefault();
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.RB, null, iPlayerState.KeyContactDataZone).FirstOrDefault();
         else if (r2Press)
-            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.RT).FirstOrDefault();
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.RT, null, iPlayerState.KeyContactDataZone).FirstOrDefault();
         else if (l1Press)
-            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LB).FirstOrDefault();
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LB, null, iPlayerState.KeyContactDataZone).FirstOrDefault();
         else if (l2Press)
-            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LT).FirstOrDefault();
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType | (int)EnumInputType.LT, null, iPlayerState.KeyContactDataZone).FirstOrDefault();
         else
-            keyContactStruct = keyContactData.GetKeyContactStruct(InputType).FirstOrDefault();
+            keyContactStruct = keyContactData.GetKeyContactStruct(InputType, null, iPlayerState.KeyContactDataZone).FirstOrDefault();
 
         switch (keyContactStruct.keyContactType)
         {
@@ -148,7 +154,7 @@ public class UIKeyImageShow : MonoBehaviour
                 innerImage.fillAmount = 0;
                 break;
             case EnumKeyContactType.Action:
-                keyImage.sprite = null;
+                keyImage.sprite = keyContactStruct.Sprite;
                 innerImage.fillAmount = 0;
                 break;
         }

@@ -51,7 +51,7 @@ public class NPCManagerEditor : EditorWindow
     bool showNextWindow;
 
     [MenuItem("小工具/NPC编辑器")]
-    static void AddWindown()
+    static void AddWindow()
     {
         NPCManagerEditor npcManagerEditor = EditorWindow.GetWindow<NPCManagerEditor>();
         npcManagerEditor.Show();
@@ -360,12 +360,30 @@ public class EditorNPCDataInfoWindow : EditorWindow
         List<string> names = npcDataDic.Keys.OfType<string>().ToList();
         int index = names.IndexOf(tempNPCDataInfo.npcPrefabName);
         if (tempNPCDataInfo.NPCObj)
+        {
+            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(tempNPCDataInfo.npcPrefabName);
+            if (GUILayout.Button("×", GUILayout.Width(25)))
+            {
+                if (EditorUtility.DisplayDialog("警告!", "是否重新选择预设提?", "是", "否"))
+                {
+                    tempNPCDataInfo.npcPrefabName = "";
+                    tempNPCDataInfo.InitNPCObjPrefab();
+                    GameObject.DestroyImmediate(tempNPCDataInfo.NPCObj);
+                    tempNPCDataInfo.NPCObj = null;
+                    index = -1;
+                    isCreate = false;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+        }
         else
         {
             index = EditorGUILayout.Popup(index, names.ToArray());
             if (index >= 0)
+            {
                 tempNPCDataInfo.npcPrefabName = names[index];
+            }
         }
 
         if (index >= 0)
@@ -380,14 +398,15 @@ public class EditorNPCDataInfoWindow : EditorWindow
         {
             EditorGUILayout.ObjectField("NPC Object:", tempNPCDataInfo.NPCObj, typeof(GameObject), true);
         }
-        if (!isCreate && index >= 0 && GUILayout.Button("Create NPC GameObject"))
+        if (((!isCreate && index >= 0) || (tempNPCDataInfo.NPCObj == null && index >= 0))
+            && GUILayout.Button("Create NPC GameObject"))
         {
             GameObject createObj = GameObject.Instantiate<GameObject>(npcDataDic[tempNPCDataInfo.npcPrefabName]);
             tempNPCDataInfo.NPCObj = createObj;
             isCreate = true;
         }
         Sprite tempSprite = (Sprite)EditorGUILayout.ObjectField("NPC Sprite:", tempNPCDataInfo.NPCSprite, typeof(Sprite), false);
-        if (tempSprite != tempNPCDataInfo.NPCSprite && tempSprite!=null)
+        if (tempSprite != tempNPCDataInfo.NPCSprite && tempSprite != null)
         {
             tempNPCDataInfo.npcSpriteID = SpriteManager.GetName(tempSprite);
             tempNPCDataInfo.NPCSprite = tempSprite;

@@ -158,26 +158,54 @@ public partial class GameState
     }
 
     /// <summary>
+    /// 设置普通攻击
+    /// </summary>
+    /// <param name="iPlayerState">玩家状态对象</param>
+    /// <param name="attackOrder">攻击的编号</param>
+    /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
+    /// <param name="weaponTypeByPlayerState">武器类型</param>
+    public void SetNormalAttack(IPlayerState iPlayerState, int attackOrder, IAttributeState nowIAttributeState, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
+    {
+        if (iPlayerState == null || nowIAttributeState == null)
+            return;
+        IPlayerState _iPlayerState = iPlayerState;
+        IAttributeState _NowIAttributeState = nowIAttributeState;
+        EnumWeaponTypeByPlayerState _WeaponTypeByPlayerState = weaponTypeByPlayerState;
+        _WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.SingleHandedSword;//测试代码
+        int _attackOrder = attackOrder;
+        PhysicSkillInjuryDetection physicSkillInjuryDetection = _iPlayerState.PhysicSkillInjuryDetection;
+        if (physicSkillInjuryDetection != null)
+        {
+            physicSkillInjuryDetection.CheckAttack(EnumSkillType.PhysicAttack, _WeaponTypeByPlayerState, 1, null, (innerOrder, target) =>
+            {
+                Debug.Log(innerOrder + " " + target);
+            },
+            attackOrder
+            );
+        }
+    }
+
+    /// <summary>
     /// 设置物理技能攻击
     /// </summary>
-    /// <param name="playerObj">释放技能的对象(玩家操纵的角色)</param>
+    /// <param name="playerObj">玩家操纵状态对象</param>
     /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
     /// <param name="skillType">技能类型</param>
     /// <param name="weaponTypeByPlayerState">武器类型</param>
-    public void SetPhysicSkillAttack(GameObject playerObj, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
+    public void SetPhysicSkillAttack(IPlayerState iPlayerState, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
     {
-        if (playerObj == null || nowIAttributeState == null)
+        if (iPlayerState == null || nowIAttributeState == null)
             return;
-        GameObject _PlayerObj = playerObj;
+        IPlayerState _iPlayerState = iPlayerState;
         IAttributeState _NowIAttributeState = nowIAttributeState;
         EnumSkillType _SKillType = skillType;
         EnumWeaponTypeByPlayerState _WeaponTypeByPlayerState = weaponTypeByPlayerState;
-        PhysicSkillInjuryDetection physicSkillInjuryDetection = _PlayerObj.GetComponent<PhysicSkillInjuryDetection>();
+        PhysicSkillInjuryDetection physicSkillInjuryDetection = _iPlayerState.PhysicSkillInjuryDetection;
         if (physicSkillInjuryDetection != null)
         {
-            physicSkillInjuryDetection.CheckAttack(_SKillType, 1, ~0, (innerOrder, target) => 
+            physicSkillInjuryDetection.CheckAttack(_SKillType, _WeaponTypeByPlayerState, 1, null, (innerOrder, target) =>
             {
-                
+                Debug.Log(innerOrder + " " + target);
             });
         }
     }
