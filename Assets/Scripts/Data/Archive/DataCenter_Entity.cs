@@ -26,12 +26,18 @@ public partial class DataCenter
     /// </summary>
     private GameRunnedState gameRunnedState;
 
+    /// <summary>
+    /// 新版任务进度
+    /// </summary>
+    private TaskMap.RunTimeTaskData RuntimeTaskMap;
+
     public DataCenter()
     {
         PlayerState = new PlayerState();
         KeyConatactData = new KeyContactData();
         RuntimeTasks = new RuntimeTasksData();
         gameRunnedState = new GameRunnedState();
+        RuntimeTaskMap = new TaskMap.RunTimeTaskData();
     }
 
 
