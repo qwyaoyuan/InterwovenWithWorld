@@ -21,16 +21,32 @@ public partial class DataCenter
     /// </summary>
     private KeyContactData KeyConatactData;
 
-
+    /// <summary>
+    /// 游戏运行过的状态
+    /// </summary>
+    private GameRunnedState gameRunnedState;
 
     public DataCenter()
     {
         PlayerState = new PlayerState();
         KeyConatactData = new KeyContactData();
         RuntimeTasks = new RuntimeTasksData();
+        gameRunnedState = new GameRunnedState();
     }
 
 
+}
+
+/// <summary>
+/// 游戏运行过的状态
+/// </summary>
+public class GameRunnedState
+{
+    /// <summary>
+    /// 启动次数
+    /// 从1-42949之间
+    /// </summary>
+    public int StartTimes;
 }
 
 /// <summary>
@@ -156,7 +172,7 @@ public class PlayerState
             {
                 for (int j = 0; j < texture2D.height; j++)
                 {
-                    float data = maskDatArray[i, j]/255f;
+                    float data = maskDatArray[i, j] / 255f;
                     colors[i * texture2D.height + j] = new Color(data, data, data);
                 }
             }
@@ -220,6 +236,11 @@ public class PlayGoods
     public int Count { get; set; }
 
     /// <summary>
+    /// 物品的品质 
+    /// </summary>
+    public EnumQualityType QualityType { get; set; }
+
+    /// <summary>
     /// 物品的id(并非是物品的类型,是指具体物品的唯一标识)
     /// </summary>
     public int ID { get { return id; } }
@@ -252,12 +273,15 @@ public class PlayGoods
     /// 获取物品的图标,此函数是假定我们的物品Sprite的名称和物品的名称是一致的
     /// </summary>
     /// <returns></returns>
-    public Sprite GetGoodsSprite()
+    [JsonIgnore]
+    public Sprite GetGoodsSprite
     {
-        if (cachedSprite == null)
-            cachedSprite = GoodsInfo.Sprite; //Resources.Load<Sprite>(GoodsInfo.GoodsName);
-        return cachedSprite;
-
+        get
+        {
+            if (cachedSprite == null)
+                cachedSprite = SpriteManager.GetSrpite(GoodsInfo.SpriteName); //Resources.Load<Sprite>(GoodsInfo.GoodsName);
+            return cachedSprite;
+        }
     }
 }
 

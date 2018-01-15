@@ -129,7 +129,7 @@ public class UIFocusKeySettingLattice : UIFocus
                 if (ThisPlayerState == null)
                     break;
                 PlayGoods playGoods = ThisPlayerState.PlayerAllGoods.Where(temp => temp.ID == id).FirstOrDefault();
-                SetTargetImage(playGoods.GoodsInfo.Sprite);
+                SetTargetImage(playGoods.GetGoodsSprite);
                 break;
             default:
                 SetTargetImage(null);

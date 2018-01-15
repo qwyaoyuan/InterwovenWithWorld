@@ -422,6 +422,94 @@ public partial class GameState : IPlayerState
             iAttributeState_Base.Mental = 10 + level * 2 + playerState.Spirit;
             iAttributeState_Base.Power = 10 + level * 2 + playerState.Strength;
         }
+        //处理装备的附加属性
+        IAttributeState iAttributeState_Equip = iPlayerAttributeState.GetAttribute(1);
+        if (iAttributeState_Equip != null)
+        {
+            //获取穿戴中的装备
+            PlayGoods[] playGoodses = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing).ToArray();
+            foreach (PlayGoods playGoods in playGoodses)
+            {
+                List<GoodsAbility> goodsAbilities = playGoods.GoodsInfo.goodsAbilities;
+                foreach (GoodsAbility goodsAbility in goodsAbilities)
+                {
+                    switch (goodsAbility.AbilibityKind)
+                    {
+                        case EnumGoodsAbility.HP:
+                            iAttributeState_Equip.MaxHP += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.MP:
+                            iAttributeState_Equip.MaxMana += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.DEX:
+                            iAttributeState_Equip.Quick += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.WIL:
+                            iAttributeState_Equip.Mental += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.STR:
+                            iAttributeState_Equip.Power += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.MAFF:
+                            iAttributeState_Equip.MagicFit += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.SRES:
+                            iAttributeState_Equip.AbnormalStateResistance += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.Sight:
+                            iAttributeState_Equip.View += (iAttributeState_Base.View * goodsAbility.Value / 100f);
+                            break;
+                        case EnumGoodsAbility.MSPD:
+                            iAttributeState_Equip.MoveSpeed += (iAttributeState_Base.MoveSpeed * goodsAbility.Value / 100);
+                            break;
+                        case EnumGoodsAbility.ASPD:
+                            iAttributeState_Equip.AttackSpeed += (iAttributeState_Base.AttackSpeed * goodsAbility.Value / 100);
+                            break;
+                        case EnumGoodsAbility.AVD:
+                            iAttributeState_Equip.EvadeRate += goodsAbility.Value / 100f;
+                            break;
+                        case EnumGoodsAbility.HIT:
+                            iAttributeState_Equip.HitRate += goodsAbility.Value / 100f;
+                            break;
+                        case EnumGoodsAbility.Critical:
+                            iAttributeState_Equip.CritRate += goodsAbility.Value / 100f;
+                            break;
+                        case EnumGoodsAbility.INT:
+                            iAttributeState_Equip.MagicAttacking += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.RES:
+                            iAttributeState_Equip.MagicResistance += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.ATN:
+                            iAttributeState_Equip.PhysicsAttacking += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.DEF:
+                            iAttributeState_Equip.PhysicsResistance += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.Light:
+                            iAttributeState_Equip.LightFaith += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.Dark:
+                            iAttributeState_Equip.DarkFaith += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.Bioligy:
+                            iAttributeState_Equip.LifeFaith += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.Nature:
+                            iAttributeState_Equip.NaturalFaith += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.EquipATK:
+                            iAttributeState_Equip.BasePhysicDamage += goodsAbility.Value;
+                            break;
+                        case EnumGoodsAbility.EquipDEF:
+                            iAttributeState_Equip.BasePhysicDefense += goodsAbility.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
         //处理被动技能和光环技能等级造成的属性变化,以及处理光环技能开关状态造成的属性变化
         Action<EnumSkillType> CheckSkillChanged = (skillType) =>
         {
@@ -499,7 +587,7 @@ public partial class GameState : IPlayerState
         return null;
     }
 
-    
+
 
     /// <summary>
     /// 等级

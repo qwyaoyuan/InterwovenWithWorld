@@ -26,6 +26,14 @@ public interface IAttributeState : IBaseState
     /// 力量
     /// </summary>
     float Power { get; set; }
+    /// <summary>
+    /// 基础物理护甲
+    /// </summary>
+    float BasePhysicDefense { get; set; }
+    /// <summary>
+    /// 基础物理伤害
+    /// </summary>
+    float BasePhysicDamage { get; set; }
     #endregion
 
     #region 常规属性
@@ -53,6 +61,10 @@ public interface IAttributeState : IBaseState
     /// 视野范围
     /// </summary>
     float View { get; set; }
+    /// <summary>
+    /// 降低被怪物发现的概率(被发现的距离倍率)
+    /// </summary>
+    float SightDef { get; set; }
     /// <summary>
     /// 移动速度
     /// </summary>
@@ -87,6 +99,14 @@ public interface IAttributeState : IBaseState
     #endregion
 
     #region 攻击与防御属性
+    /// <summary>
+    /// 伤害格挡率
+    /// </summary>
+    float EquipBlock { get; set; }
+    /// <summary>
+    /// 暴击率伤害减少率
+    /// </summary>
+    float CriticalDef { get; set; }
     /// <summary>
     /// 攻击僵直
     /// </summary>
@@ -262,5 +282,20 @@ public interface IAttributeState : IBaseState
     /// 物品掉落率(与基础掉落率乘算)
     /// </summary>
     float GooodsDropRate { get; set; }
+    #endregion
+
+    #region 特殊效果
+    /// <summary>
+    /// 幸运加护,获得优质物品概率与获取经验提升
+    /// </summary>
+    float LuckShi { get; set; }
+    /// <summary>
+    /// 庇佑加护,每隔一定时间获得一次免疫致死伤害的能力
+    /// </summary>
+    float GarShi { get; set; }
+    /// <summary>
+    /// 战神加护,每隔一段时间获得一次在进入负面状态时清除自身所有负面效果的能力
+    /// </summary>
+    float WarShi { get; set; }
     #endregion
 }

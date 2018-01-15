@@ -36,6 +36,12 @@ public class UIFocusItemEquipmentLattice : UIFocus
     public object value;
 
     /// <summary>
+    /// 显示的图片
+    /// </summary>
+    [SerializeField]
+    private Image ShowImage;
+
+    /// <summary>
     /// 武器类型
     /// </summary>
     public enum EnumWeaponType
@@ -75,5 +81,26 @@ public class UIFocusItemEquipmentLattice : UIFocus
     {
         //设置没有选中装备
         backLineImage.enabled = false;
+    }
+
+    /// <summary>
+    /// 设置显示的图片(如果设置为空,则取消显示)
+    /// </summary>
+    /// <param name="sprite"></param>
+    public void SetShowImage(Sprite sprite)
+    {
+        if (ShowImage)
+        {
+            if (sprite != null)
+            {
+                ShowImage.sprite = sprite;
+                ShowImage.color = Color.white;
+            }
+            else
+            {
+                ShowImage.sprite = null;
+                ShowImage.color = new Color(1, 1, 1, 0);
+            }
+        }
     }
 }

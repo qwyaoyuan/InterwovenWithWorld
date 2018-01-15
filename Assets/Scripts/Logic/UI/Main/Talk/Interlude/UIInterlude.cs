@@ -90,11 +90,13 @@ public class UIInterlude : MonoBehaviour
 
     /// <summary>
     /// 初始化对话
+    /// 展示的是接取主线任务前的对话
     /// </summary>
     private void InitTalk()
     {
         oldGameRunType = iGameState.GameRunType;
         int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
                        .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
                        .ToArray();
@@ -103,7 +105,7 @@ public class UIInterlude : MonoBehaviour
         {
             this.runTimeTaskInfo = runTimeTaskInfo;
             this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId,
-                temp => temp.enumDialogueType == EnumDialogueType.Task).FirstOrDefault();
+                temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == runTimeTaskInfo.ID).FirstOrDefault();
             if (this.dialogueCodition != null)
             {
                 this.nowDialoguePoint = this.dialogueCodition.topPoint; 

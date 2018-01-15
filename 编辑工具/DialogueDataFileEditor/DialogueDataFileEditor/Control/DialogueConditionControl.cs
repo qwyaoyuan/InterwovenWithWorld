@@ -40,6 +40,7 @@ namespace DialogueDataFileEditor
                 this.dialogueCondition.maxLevel = 99;
                 this.dialogueCondition.minLevel = -1;
                 this.dialogueCondition.overTask = -1;
+                this.dialogueCondition.thisTask = -1;
                 this.dialogueCondition.minGoodAndEvil = -9999;
                 this.dialogueCondition.maxGoodAndEvil = 9999;
                 this.dialogueCondition.race = RoleOfRace.None;
@@ -84,6 +85,8 @@ namespace DialogueDataFileEditor
             TextBox_Text.Text = dialogueCondition.text;
             TextBox_TouchNPCID.Text = dialogueCondition.touchNPCID.ToString();
             ComboBox_DialogueType.SelectedValue = dialogueCondition.enumDialogueType;
+            TextBox_OverTask.Text = dialogueCondition.overTask.ToString();
+            TextBox_ThisTask.Text = dialogueCondition.thisTask.ToString();
             NumericUpDown_Level_Min.Value = dialogueCondition.minLevel;
             NumericUpDown_Level_Max.Value = dialogueCondition.maxLevel;
             NumericUpDown_GoodAndEvil_Min.Value = dialogueCondition.minGoodAndEvil;
@@ -106,6 +109,30 @@ namespace DialogueDataFileEditor
                 else
                     TextBox_TouchNPCID.Text = dialogueCondition.touchNPCID.ToString();
 
+            };
+            TextBox_OverTask.TextChanged += (sender, e) => 
+            {
+                int value;
+                if (int.TryParse(TextBox_OverTask.Text, out value))
+                {
+                    dialogueCondition.overTask = value >= -1 ? value : -1;
+                    if (value < -1)
+                        TextBox_OverTask.Text = "-1";
+                }
+                else
+                    TextBox_OverTask.Text = dialogueCondition.overTask.ToString();
+            };
+            TextBox_ThisTask.TextChanged += (sender, e) => 
+            {
+                int value;
+                if (int.TryParse(TextBox_ThisTask.Text, out value))
+                {
+                    dialogueCondition.thisTask = value > -1 ? value : -1;
+                    if (value < -1)
+                        TextBox_ThisTask.Text = "-1";
+                }
+                else
+                    TextBox_ThisTask.Text = dialogueCondition.thisTask.ToString();
             };
             ComboBox_DialogueType.SelectedIndexChanged += (sender, e) =>
             {
@@ -195,7 +222,7 @@ namespace DialogueDataFileEditor
         /// <summary>
         /// 展开后的大小
         /// </summary>
-        public Size OpenSize => new Size(200, 169);
+        public Size OpenSize => new Size(200, 225);
         /// <summary>
         /// 收起后的大小 
         /// </summary>

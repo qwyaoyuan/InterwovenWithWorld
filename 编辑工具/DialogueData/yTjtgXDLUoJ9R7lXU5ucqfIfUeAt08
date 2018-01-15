@@ -6,6 +6,7 @@ enumDialogueType==>Ask
 maxLevel==>99
 minLevel==>-1
 overTask==>-1
+thisTask==>-1
 minGoodAndEvil==>-9999
 maxGoodAndEvil==>9999
 race==>None
@@ -19,6 +20,7 @@ enumDialogueType==>Normal
 maxLevel==>99
 minLevel==>-1
 overTask==>-1
+thisTask==>-1
 minGoodAndEvil==>-9999
 maxGoodAndEvil==>9999
 race==>None

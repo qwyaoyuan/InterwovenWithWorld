@@ -201,6 +201,7 @@ public partial class DataCenter
 
         }
         //存档
+        this.gameRunnedState.StartTimes++;//运行次数+1
         string json = JsonConvert.SerializeObject(this, new JsonSerializerSettings() { ContractResolver = new MyContractResolver(), PreserveReferencesHandling = PreserveReferencesHandling.Objects });
 
         File.WriteAllText(Path.Combine(archivePath, id + archiveExt), json);

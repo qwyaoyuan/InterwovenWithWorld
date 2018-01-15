@@ -266,7 +266,7 @@ public class UIList : MonoBehaviour
         if (itemsList != null)
             foreach (GameObject item in itemsList)
                 if (item != null)
-                    try { GameObject.DestroyImmediate(item); } catch { }
+                    try { GameObject.Destroy(item); } catch { }
         itemsList = new List<GameObject>();
         UpdateUI();
     }
@@ -355,6 +355,7 @@ public class UIList : MonoBehaviour
         int removeCount = itemsList.RemoveAll(temp => object.Equals(temp.GetComponent<UIListItem>(), target));
         if (removeCount > 0)
         {
+            GameObject.Destroy(target.gameObject);
             UpdateUI();
             return true;
         }

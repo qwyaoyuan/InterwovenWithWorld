@@ -332,6 +332,14 @@ public class UIEntrance : MonoBehaviour
         keyContactData.SetKeyContactStruct((int)EnumInputType.Down, new KeyContactStruct() { id = 1201, key = (int)EnumInputType.Down, keyContactType = EnumKeyContactType.Skill, name = "连续魔力导向" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.X, new KeyContactStruct() { id = 201, key = (int)EnumInputType.X, keyContactType = EnumKeyContactType.Skill, name = "普通攻击" });
         keyContactData.SetKeyContactStruct((int)EnumInputType.Y, new KeyContactStruct() { id = (int)EnumSkillType.JAS03, /*key = (int)EnumInputType.Y,*/ keyContactType = EnumKeyContactType.Skill, name = "燕返" });
+        //添加装备
+        int playGoodsID = NowTimeToID.GetNowID(DataCenter.Instance.GetEntity<GameRunnedState>());
+        Goods goods = new Goods(EnumGoodsType.XJJ, "测试武器", 1, 10, "123");
+        goods.goodsAbilities.Add(new GoodsAbility() { AbilibityKind = EnumGoodsAbility.ASPD, Value = 10 });
+        goods.SpriteName = "1:1_226";
+
+        PlayGoods playGoods = new PlayGoods(playGoodsID, goods, GoodsLocation.Package);
+        playerState.PlayerAllGoods.Add(playGoods);
         /**********/
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))

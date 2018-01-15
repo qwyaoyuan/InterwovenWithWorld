@@ -147,7 +147,7 @@ public class UIKeyImageShow : MonoBehaviour
                 PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => (int)temp.GoodsInfo.EnumGoodsType == keyContactStruct.id).FirstOrDefault();
                 if (playGoods != null)
                 {
-                    keyImage.sprite = playGoods.GetGoodsSprite();
+                    keyImage.sprite = playGoods.GetGoodsSprite;
                 }
                 else
                     keyImage.sprite = null;

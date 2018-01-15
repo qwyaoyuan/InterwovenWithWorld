@@ -106,6 +106,7 @@ public class MoveManager : IInput
     /// </summary>
     /// <param name="tempBuffState"></param>
     /// <param name="buffStateName"></param>
+    [Obsolete("因为速度已经整合到状态中,不需要在这里计算了")]
     private void SetStateListMove(BuffState tempBuffState, string buffStateName)
     {
         // 重新计算移动速度加成值(衰减值)
@@ -113,18 +114,6 @@ public class MoveManager : IInput
 
         if (tempBuffState.Time > 0)//如果存在buff则添加到集合中
         {
-            if (!buffOrDebuffStateList_Move.ContainsKey(buffStateName))//如果不存在再添加,否则会重复添加
-            {
-                //从tempData中取出和移动相关的数据数据
-                throw new Exception("未实现");
-                //buffStateList_Move.Add(buffStateName, tempBuffState.tempData?);
-                ReCalculateMoveSpeed();
-            }
-            else
-            {
-                throw new Exception("未实现");
-                //如果存在则检测当前数值和更改后的数值是否相同,如果不相同则替换然后重新计算速度加成值
-            }
         }
         else//如果异常时间到了则从集合中移除
         {

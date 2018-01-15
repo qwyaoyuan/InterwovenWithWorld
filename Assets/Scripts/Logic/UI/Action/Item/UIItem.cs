@@ -23,6 +23,14 @@ public class UIItem : MonoBehaviour
     private void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
+        foreach (UIFocus uiFocus in uiFocusPath.UIFocuesArray)
+        {
+            IUIItemSelectGoods iUIItmeSelectGoods = uiFocus as IUIItemSelectGoods;
+            if (iUIItmeSelectGoods != null)
+            {
+                iUIItmeSelectGoods.RegistorSelectGoodsID(SelectGoodsID);
+            }
+        }
     }
 
     private void OnEnable()
@@ -39,6 +47,22 @@ public class UIItem : MonoBehaviour
     private void OnDisable()
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
+    }
+
+    /// <summary>
+    /// 选择了指定id的物品
+    /// </summary>
+    /// <param name="goodsID"></param>
+    private void SelectGoodsID(int goodsID)
+    {
+        foreach (UIFocus uiFocus in uiFocusPath.UIFocuesArray)
+        {
+            IUIItemSelectGoods iUIItmeSelectGoods = uiFocus as IUIItemSelectGoods;
+            if (iUIItmeSelectGoods != null)
+            {
+                iUIItmeSelectGoods.SelectID(goodsID);
+            }
+        }
     }
 
     /// <summary>

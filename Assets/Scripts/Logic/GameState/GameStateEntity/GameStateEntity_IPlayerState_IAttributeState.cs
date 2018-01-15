@@ -29,6 +29,8 @@ public partial class GameState
         iAttributeHandleIndex = 0;
         //构建自身的基础属性(下标是0)
         CreateAttributeHandle(0);
+        //构建装备属性(下表是1)
+        CreateAttributeHandle(1);
         //构建技能的属性(注意技能的属性从负数开始)
         //有些技能只存在特殊效果,而且这些特殊效果不涉及这些属性,则这些特殊效果在具体的位置处理
         //被动技能  注:光环技能不需要初始化,因为光环是动态的
@@ -75,7 +77,6 @@ public partial class GameState
         CreateAttributeHandle(-(int)EnumSkillType.SSS01);
         CreateAttributeHandle(-(int)EnumSkillType.SSS02);
         #endregion
-
     }
 
     #region 用于操纵附加状态的功能
@@ -320,6 +321,49 @@ public partial class GameState
             }
         }
     }
+
+    /// <summary>
+    /// 基础物理护甲
+    /// </summary>
+    public float BasePhysicDefense
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.BasePhysicDefense).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.BasePhysicDefense = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 基础物理伤害
+    /// </summary>
+    public float BasePhysicDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.BasePhysicDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.BasePhysicDamage = value;
+            }
+        }
+    }
+
     #endregion
     #region 常规属性
     /// <summary>
@@ -451,6 +495,28 @@ public partial class GameState
             if (iAttributeBaseState != null)
             {
                 iAttributeBaseState.View = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 降低被怪物发现的概率(被发现的距离倍率)
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float SightDef
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.SightDef).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.SightDef = value;
             }
         }
     }
@@ -611,6 +677,48 @@ public partial class GameState
     }
     #endregion
     #region 攻击与防御属性
+    /// <summary>
+    /// 伤害格挡率
+    /// </summary>
+    public float EquipBlock
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.EquipBlock).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.EquipBlock = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 暴击率伤害减少率
+    /// </summary>
+    public float CriticalDef
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.CriticalDef).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.CriticalDef = value;
+            }
+        }
+    }
+
     /// <summary>
     /// 攻击僵直
     /// </summary>
@@ -1407,7 +1515,8 @@ public partial class GameState
             }
         }
     }
-
+    #endregion
+    #region 其他杂项
     /// <summary>
     /// 需要使用的基础耗魔量(主要是组合技能以及需要主动释放的技能存在此选项)
     /// </summary>
@@ -1580,8 +1689,70 @@ public partial class GameState
             }
         }
     }
+    #endregion
+    #region 特殊效果
+    /// <summary>
+    /// 幸运加护,获得优质物品概率与获取经验提升
+    /// </summary>
+    public float LuckShi
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.LuckShi).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.LuckShi = value;
+            }
+        }
+    }
 
+    /// <summary>
+    /// 庇佑加护,每隔一定时间获得一次免疫致死伤害的能力
+    /// </summary>
+    public float GarShi
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.GarShi).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.GarShi = value;
+            }
+        }
+    }
 
+    /// <summary>
+    /// 战神加护,每隔一段时间获得一次在进入负面状态时清除自身所有负面效果的能力
+    /// </summary>
+    public float WarShi
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.WarShi).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.WarShi = value;
+            }
+        }
+    }
     #endregion
     #endregion
 

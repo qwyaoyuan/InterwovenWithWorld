@@ -67,6 +67,11 @@ public class SkillManager : IInput
     IGameState iGameState;
 
     /// <summary>
+    /// 角色状态
+    /// </summary>
+    IPlayerState iPlayerState;
+
+    /// <summary>
     /// 初始化数据对象
     /// </summary>
     private void InitDataTarget()
@@ -75,6 +80,7 @@ public class SkillManager : IInput
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         iSkillState = GameState.Instance.GetEntity<ISkillState>();
         iGameState = GameState.Instance.GetEntity<IGameState>();
+        iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
     }
 
 
@@ -84,6 +90,8 @@ public class SkillManager : IInput
         if (keyContactData == null)
             return;
         if (iGameState.GameRunType != EnumGameRunType.Safe && iGameState.GameRunType != EnumGameRunType.Unsafa)
+            return;
+        if (iPlayerState.KeyContactDataZone != EnumKeyContactDataZone.Normal)//如果此时不是释放技能的键位,则不需要下面的判断
             return;
         KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
         if (keyContactStructs.Length > 0)
@@ -118,6 +126,7 @@ public class SkillManager : IInput
         {
             iSkillState.CombineSkills = null;
         }
+
     }
 
     public void KeyPress(int key)
@@ -143,6 +152,8 @@ public class SkillManager : IInput
         if (keyContactData == null)
             return;
         if (iGameState.GameRunType != EnumGameRunType.Safe && iGameState.GameRunType != EnumGameRunType.Unsafa)
+            return;
+        if (iPlayerState.KeyContactDataZone != EnumKeyContactDataZone.Normal)//如果此时不是释放技能的键位,则不需要下面的判断
             return;
         KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Skill);
         if (keyContactStructs.Length > 0)

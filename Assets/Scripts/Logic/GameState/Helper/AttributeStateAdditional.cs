@@ -154,6 +154,38 @@ public class AttributeStateAdditional : IAttributeState
         }
     }
 
+    private float _BasePhysicDefense;
+    /// <summary>
+    /// 基础物理护甲
+    /// </summary>
+    public float BasePhysicDefense
+    {
+        get { return _BasePhysicDefense; }
+        set
+        {
+            float tempBasePhysicDefense = _BasePhysicDefense;
+            _BasePhysicDefense = value;
+            if (tempBasePhysicDefense != _BasePhysicDefense)
+                Call<IAttributeState, float>(temp => temp.BasePhysicDefense);
+        }
+    }
+
+    private float _BasePhysicDamage;
+    /// <summary>
+    /// 基础物理伤害
+    /// </summary>
+    public float BasePhysicDamage
+    {
+        get { return _BasePhysicDamage; }
+        set
+        {
+            float tempBasePhysicDamage = _BasePhysicDamage;
+            _BasePhysicDamage = value;
+            if (tempBasePhysicDamage != _BasePhysicDamage)
+                Call<IAttributeState, float>(temp => temp.BasePhysicDamage);
+        }
+    }
+
     private float _HP;
     /// <summary>
     /// 血量
@@ -259,6 +291,22 @@ public class AttributeStateAdditional : IAttributeState
             {
                 Call<IAttributeState, float>(temp => temp.View);
             }
+        }
+    }
+
+    private float _SightDef;
+    /// <summary>
+    /// 降低被怪物发现的概率(被发现的距离倍率)
+    /// </summary>
+    public float SightDef
+    {
+        get { return _SightDef; }
+        set
+        {
+            float tempSightDef = _SightDef;
+            _SightDef = value;
+            if (_SightDef != tempSightDef)
+                Call<IAttributeState, float>(temp => temp.SightDef);
         }
     }
 
@@ -384,6 +432,46 @@ public class AttributeStateAdditional : IAttributeState
             if (tempManaRecovery != _ManaRecovery)
             {
                 Call<IAttributeState, float>(temp => temp.ManaRecovery);
+            }
+        }
+    }
+
+    private float _EquipBlock;
+    /// <summary>
+    /// 伤害格挡率
+    /// </summary>
+    public float EquipBlock
+    {
+        get { return _EquipBlock; }
+        set
+        {
+
+            float tempEquipBlock = _EquipBlock;
+            _EquipBlock = value;
+            if (tempEquipBlock != _EquipBlock)
+            {
+                Call<IAttributeState, float>(temp => temp.EquipBlock);
+            }
+        }
+    }
+
+    private float _CriticalDef;
+    /// <summary>
+    /// 暴击率伤害减少率
+    /// </summary>
+    public float CriticalDef
+    {
+        get
+        {
+            return _CriticalDef;
+        }
+        set
+        {
+            float tempCriticalDef = _CriticalDef;
+            _CriticalDef = value;
+            if (tempCriticalDef != _CriticalDef)
+            {
+                Call<IAttributeState, float>(temp => temp.CriticalDef);
             }
         }
     }
@@ -1202,6 +1290,59 @@ public class AttributeStateAdditional : IAttributeState
         }
     }
 
+    private float _LuckShi;
+    /// <summary>
+    /// 幸运加护,获得优质物品概率与获取经验提升
+    /// </summary>
+    public float LuckShi
+    {
+        get { return _LuckShi; }
+        set
+        {
+            float tempLuckShi = _LuckShi;
+            _LuckShi = value;
+            if (tempLuckShi != _LuckShi)
+            {
+                Call<IAttributeState, float>(temp => temp.LuckShi);
+            }
+        }
+    }
+
+    private float _GarShi;
+    /// <summary>
+    /// 庇佑加护,每隔一定时间获得一次免疫致死伤害的能力
+    /// </summary>
+    public float GarShi
+    {
+        get { return _GarShi; }
+        set
+        {
+            float tempGarShi = _GarShi;
+            _GarShi = value;
+            if (tempGarShi != _GarShi)
+            {
+                Call<IAttributeState, float>(temp => temp.GarShi);
+            }
+        }
+    }
+
+    private float _WarShi;
+    /// <summary>
+    /// 战神加护,每隔一段时间获得一次在进入负面状态时清除自身所有负面效果的能力
+    /// </summary>
+    public float WarShi
+    {
+        get { return _WarShi; }
+        set
+        {
+            float tempWarShi = _WarShi;
+            _WarShi = value;
+            if (tempWarShi != _WarShi)
+            {
+                Call<IAttributeState, float>(temp => temp.WarShi);
+            }
+        }
+    }
 
     /// <summary>
     /// 回调字典

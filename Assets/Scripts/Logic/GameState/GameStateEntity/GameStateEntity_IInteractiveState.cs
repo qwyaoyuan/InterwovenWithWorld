@@ -19,7 +19,7 @@ public partial class GameState : IInteractiveState
     /// </summary>
     public GameObject InterludeObj
     {
-        get { return _InterludeObj;  }
+        get { return _InterludeObj; }
         set
         {
             GameObject tempInterludeObj = _InterludeObj;
@@ -74,31 +74,32 @@ public partial class GameState : IInteractiveState
                     //如果任务没有完成则需要后面的检测
                     //接取任务的npcid与点击npcid相同并且存在的任务没有被完成也没有被接取
                     RunTimeTaskInfo[] runTimeTaskInfos = runtimeTaskData.GetAllToDoList()
-                        .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == _ClickInteractiveNPCID && temp.IsOver ==false && temp.IsStart==false)
+                        .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == _ClickInteractiveNPCID && temp.IsOver == false && temp.IsStart == false)
                         .ToArray();
                     //存在主线任务则展开主线
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.PrincipalLine).Count()>0)
+                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.PrincipalLine).Count() > 0)
                     {
                         if (InterludeObj != null)
                             InterludeObj.SetActive(true);
                         return;
                     }
                     //如果存在支线则展开支线
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.BranchLine).Count()>0)
+                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.BranchLine).Count() > 0)
                     {
                         if (QueryObj != null)
                             QueryObj.SetActive(true);
                         return;
                     }
                     //如果存在重复任务则展开重复任务
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.Repeat).Count()>0)
+                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.Repeat).Count() > 0)
                     {
                         if (QueryObj != null)
                             QueryObj.SetActive(true);
                         return;
                     }
+                    //如果不存在任何任务则在任务头顶显示文字
                     break;
-            }          
+            }
         }
     }
 
@@ -118,6 +119,63 @@ public partial class GameState : IInteractiveState
             _SynthesisObj = value;
             if (_SynthesisObj != tempSynthesisObj && _SynthesisObj != null)
                 Call<IInteractiveState, GameObject>(temp => temp.SynthesisObj);
+        }
+    }
+
+    /// <summary>
+    /// 点击的采集点ID
+    /// </summary>
+    private int _ClickInteractiveStuffID;
+    /// <summary>
+    ///点击的采集点ID
+    /// </summary>
+    public int ClickInteractiveStuffID
+    {
+        get { return _ClickInteractiveStuffID; }
+        set
+        {
+            switch (GameRunType)
+            {
+                case EnumGameRunType.Safe:
+                case EnumGameRunType.Unsafa:
+                    _ClickInteractiveStuffID = value;
+                    //点击一次获得一个物品
+                    StuffData stuffData = DataCenter.Instance.GetMetaData<StuffData>();
+                    IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+                    PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+                    if (stuffData == null || iGameState == null || playerState == null)
+                        return;
+                    //首先判断采集点是否存在物品
+                    StuffDataInfo stuffDataInfo = stuffData.GetStuffDataInfo(iGameState.SceneName, _ClickInteractiveStuffID);
+                    if (stuffDataInfo == null)
+                        return;
+                    int residualCount = stuffDataInfo.ResidualCount();
+                    if (residualCount > 0)
+                    {
+                        stuffDataInfo.Collect(residualCount);
+                        stuffDataInfo.Update();
+                        PlayGoods playGoods = playerState.PlayerAllGoods.FirstOrDefault(temp => temp.GoodsInfo.EnumGoodsType == stuffDataInfo.StuffType);
+                        if (playGoods == null)
+                        {
+                            int id = NowTimeToID.GetNowID(DataCenter.Instance.GetMetaData<GameRunnedState>());
+                            if (playerState.PlayerAllGoods.Count(temp => temp.ID == id) == 0)
+                            {
+                                GoodsMetaInfoMations goodsMetaInfoMations = DataCenter.Instance.GetMetaData<GoodsMetaInfoMations>();
+                                Goods goods = goodsMetaInfoMations[stuffDataInfo.StuffType];
+                                if (goods != null)
+                                {
+                                    playGoods = new PlayGoods(id, goods.Clone(true), GoodsLocation.Package);
+                                    playerState.PlayerAllGoods.Add(playGoods);
+                                }
+                            }
+                        }
+                        if (playGoods != null)
+                        {
+                            playGoods.Count += residualCount;
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

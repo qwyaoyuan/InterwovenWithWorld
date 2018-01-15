@@ -17,6 +17,7 @@ namespace SynthesisDataFileEditor
         {
             InitializeComponent();
             synthesisDataAnalysis = new SynthesisDataAnalysis();
+            GoodsStaticTools.GetParentGoodsType(EnumGoodsType.Amulet);
         }
 
         /// <summary>

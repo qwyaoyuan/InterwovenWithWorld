@@ -263,6 +263,13 @@ public class DialogueCondition
     /// </summary>
     public int overTask;
     /// <summary>
+    /// 是否需要本次任务
+    /// -1表示不计算本次任务的情况
+    /// 主要用于提取本次任务对话时的情况
+    /// 如果overTask和thisTask值相同,则表示这个对话是任务结束时的对话
+    /// </summary>
+    public int thisTask;
+    /// <summary>
     /// 最小善恶值
     /// 如果为null表示不计算最小善恶值
     /// </summary>
@@ -294,6 +301,7 @@ public class DialogueCondition
         result += "maxLevel" + relationValueSplit[0] + maxLevel + relationLineSplit[0];
         result += "minLevel" + relationValueSplit[0] + minLevel + relationLineSplit[0];
         result += "overTask" + relationValueSplit[0] + overTask + relationLineSplit[0];
+        result += "thisTask" + relationValueSplit[0] + thisTask + relationLineSplit[0];
         result += "minGoodAndEvil" + relationValueSplit[0] + minGoodAndEvil + relationLineSplit[0];
         result += "maxGoodAndEvil" + relationValueSplit[0] + maxGoodAndEvil + relationLineSplit[0];
         result += "race" + relationValueSplit[0] + race.ToString() + relationLineSplit[0];
@@ -340,6 +348,9 @@ public class DialogueCondition
                     break;
                 case "overTask":
                     int.TryParse(values[1].Trim(), out overTask);
+                    break;
+                case "thisTask":
+                    int.TryParse(values[1].Trim(), out thisTask);
                     break;
                 case "minGoodAndEvil":
                     int.TryParse(values[1].Trim(), out minGoodAndEvil);

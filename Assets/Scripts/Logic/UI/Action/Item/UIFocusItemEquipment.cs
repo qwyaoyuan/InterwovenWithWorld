@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.UI;
 /// 道具界面的中间装备栏焦点对象
 /// 当接收焦点后，负责通知给他的子节点
 /// </summary>
-public class UIFocusItemEquipment : UIFocus
+public class UIFocusItemEquipment : UIFocus, IUIItemSelectGoods
 {
     /// <summary>
     /// 装备格子的路径
@@ -35,6 +36,11 @@ public class UIFocusItemEquipment : UIFocus
     /// </summary>
     IPlayerState iPlayerStateRun;
 
+    /// <summary>
+    /// 选择物体后的回调
+    /// </summary>
+    Action<int> SelectGoodsIDAction;
+
     private void Awake()
     {
         equipentsLatticePath = GetComponent<UIFocusPath>();
@@ -58,6 +64,21 @@ public class UIFocusItemEquipment : UIFocus
     }
 
     /// <summary>
+    /// 注册选择物体后的回调
+    /// </summary>
+    /// <param name="SelectGoodsIDAction"></param>
+    public void RegistorSelectGoodsID(Action<int> SelectGoodsIDAction)
+    {
+        this.SelectGoodsIDAction = SelectGoodsIDAction;
+    }
+
+    /// <summary>
+    /// 不需要外部去处理如何选择
+    /// </summary>
+    /// <param name="goodsID"></param>
+    public void SelectID(int goodsID) { }
+
+    /// <summary>
     /// 重新设置格子的显示与数据
     /// </summary>
     private void ResetLatticeValueAndShow()
@@ -67,7 +88,7 @@ public class UIFocusItemEquipment : UIFocus
         foreach (UIFocusItemEquipmentLattice equipmentLattice in allLttices)
         {
             if (equipmentLattice == null)
-                return;
+                continue;
             PlayGoods[] firstCheck = WearingPlayGoods.Where(temp => (int)temp.GoodsInfo.EnumGoodsType > equipmentLattice.minType && (int)temp.GoodsInfo.EnumGoodsType < equipmentLattice.maxType).ToArray();
             if (firstCheck.Length > 0)
             {
@@ -76,7 +97,7 @@ public class UIFocusItemEquipment : UIFocus
                     case UIFocusItemEquipmentLattice.EnumWeaponType.None://不是左右主手武器则直接显示
                         PlayGoods playGoods_None = firstCheck.First();
                         equipmentLattice.value = playGoods_None;
-                        equipmentLattice.GetComponent<Image>().sprite = playGoods_None.GetGoodsSprite();
+                        equipmentLattice.SetShowImage(playGoods_None.GetGoodsSprite);
                         break;
                     case UIFocusItemEquipmentLattice.EnumWeaponType.LeftOneHanded://副手武器
                         PlayGoods[] leftOneHanded = firstCheck.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == true).ToArray();
@@ -84,12 +105,12 @@ public class UIFocusItemEquipment : UIFocus
                         {
                             PlayGoods playGoods_LeftOneHanded = leftOneHanded.First();
                             equipmentLattice.value = playGoods_LeftOneHanded;
-                            equipmentLattice.GetComponent<Image>().sprite = playGoods_LeftOneHanded.GetGoodsSprite();
+                            equipmentLattice.SetShowImage(playGoods_LeftOneHanded.GetGoodsSprite);
                         }
                         else
                         {
                             equipmentLattice.value = null;
-                            equipmentLattice.GetComponent<Image>().sprite = null;
+                            equipmentLattice.SetShowImage(null);
                         }
                         break;
                     case UIFocusItemEquipmentLattice.EnumWeaponType.RightOneHanded:
@@ -98,12 +119,12 @@ public class UIFocusItemEquipment : UIFocus
                         {
                             PlayGoods playGoods_RightOneHanded = rightOneHanded.First();
                             equipmentLattice.value = playGoods_RightOneHanded;
-                            equipmentLattice.GetComponent<Image>().sprite = playGoods_RightOneHanded.GetGoodsSprite();
+                            equipmentLattice.SetShowImage(playGoods_RightOneHanded.GetGoodsSprite);
                         }
                         else
                         {
                             equipmentLattice.value = null;
-                            equipmentLattice.GetComponent<Image>().sprite = null;
+                            equipmentLattice.SetShowImage(null);
                         }
                         break;
                 }
@@ -111,7 +132,7 @@ public class UIFocusItemEquipment : UIFocus
             else
             {
                 equipmentLattice.value = null;
-                equipmentLattice.GetComponent<Image>().sprite = null;
+                equipmentLattice.SetShowImage(null);
             }
         }
     }
@@ -137,12 +158,32 @@ public class UIFocusItemEquipment : UIFocus
         if (equipentsLatticePath)
         {
             nowLattice = equipentsLatticePath.GetFirstFocus() as UIFocusItemEquipmentLattice;
+            if (nowLattice)
+                nowLattice.SetForcus();
+            SelectNowLattice();
             try
             {
                 UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
             }
             catch { }
             UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
+        }
+    }
+
+    /// <summary>
+    /// 选择了该格子
+    /// </summary>
+    private void SelectNowLattice()
+    {
+        if (nowLattice != null)
+        {
+            //设置选择了物体
+            PlayGoods playGoods = nowLattice.value as PlayGoods;
+            if (SelectGoodsIDAction != null)
+                if (playGoods != null)
+                    SelectGoodsIDAction(playGoods.ID);
+                else
+                    SelectGoodsIDAction(-1);
         }
     }
 
@@ -163,9 +204,15 @@ public class UIFocusItemEquipment : UIFocus
             //当左右移动时需要判断下一个目标是不是空，如果是空，则允许上层移动焦点,如果不为空则本身移动
             //当上下移动时，不需要判断，如果为空则不处理，则下方也不会处理，如果不为空则移动
             case UIFocusPath.MoveType.LEFT:
-            case UIFocusPath.MoveType.RIGHT:
+                //case UIFocusPath.MoveType.RIGHT://暂时没有向右移动失去焦点的功能
                 if (!tempLattice)
+                {
+                    if (nowLattice)
+                    {
+                        nowLattice.LostForcus();
+                    }
                     return true;
+                }
                 break;
         }
         return false;
@@ -186,6 +233,7 @@ public class UIFocusItemEquipment : UIFocus
             nowLattice = tempLattice;
             nowLattice.SetForcus();
         }
+        SelectNowLattice();
     }
 
     /// <summary>
@@ -239,6 +287,8 @@ public class UIFocusItemEquipment : UIFocus
                     nowLattice.LostForcus();
                 nowLattice = currentLattice;
                 nowLattice.SetForcus();
+                //设置选择了物体
+                SelectNowLattice();
                 switch (pe.button)
                 {
                     case PointerEventData.InputButton.Right:

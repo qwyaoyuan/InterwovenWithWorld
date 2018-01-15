@@ -28,11 +28,6 @@ public enum EnumGoodsType
     MineralLittle = 1110000,
 
     #region 具体的矿石
-    /// <summary>
-    /// 铁矿石
-    /// </summary>
-    [FieldExplan("铁矿石")]
-    TieKuangShi = 1110001,
     #endregion
 
     #endregion
@@ -58,11 +53,6 @@ public enum EnumGoodsType
     IngotCasting = 1112000,
 
     #region 具体的铸锭
-    /// <summary>
-    /// 毛胚
-    /// </summary>
-    [FieldExplan("毛胚")]
-    MaoPei = 1112001,
     #endregion
 
     #endregion
@@ -235,11 +225,6 @@ public enum EnumGoodsType
     SingleHanedSword = 2110000,
 
     #region 具体的单手剑
-    /// <summary>
-    /// 铁剑
-    /// </summary>
-    [FieldExplan("铁剑")]
-    TieJian = 2110001,
     #endregion
 
     #endregion
@@ -846,7 +831,7 @@ public enum EnumGoodsType
     #endregion
 
 
-    #region 测试用
+    #region 具体的类型(都放外面了)
     /// <summary>
     ///铁矿石
     /// </summary>
@@ -1225,14 +1210,14 @@ public static class GoodsStaticTools
             .OrderBy(temp => temp.value)
             .ToArray();
         root.Childs = new List<GoodsNode>();
-        for (int i = 0; i < 10; i++)//第一层
+        for (int i = 1; i < 10; i++)//第一层
         {
             #region 第一层
             int layer1Min = layer1 * i;
             int layer1Max = layer1 * (i + 1);
             var layer1TempDataStruct = tempDataStruct.Where(temp => temp.value >= layer1Min && temp.value < layer1Max)
                 .Select(temp => new { type = temp.type, value = temp.value % layer1, baseValue = temp.value })
-                .ToArray();
+                .OrderBy(temp => temp.value).ToArray();
             if (layer1TempDataStruct.Length == 0)
                 continue;
             GoodsNode layer1TreeNode = new GoodsNode();
@@ -1242,14 +1227,14 @@ public static class GoodsStaticTools
             root.Childs.Add(layer1TreeNode);
             layer1TreeNode.Parent = root;
             #endregion
-            for (int j = 0; j < 10; j++)//第二层
+            for (int j = 1; j < 10; j++)//第二层
             {
                 #region 第二层
                 int layer2Min = layer2 * j;
                 int layer2Max = layer2 * (j + 1);
-                var layer2TempDataStruct = layer1TempDataStruct.Where(temp => temp.value > layer2Min && temp.value < layer2Max)
+                var layer2TempDataStruct = layer1TempDataStruct.Where(temp => temp.value >= layer2Min && temp.value < layer2Max)
                     .Select(temp => new { type = temp.type, value = temp.value % layer2, baseValue = temp.baseValue })
-                    .ToArray();
+                    .OrderBy(temp=>temp.value).ToArray();
                 if (layer2TempDataStruct.Length == 0)
                     continue;
                 GoodsNode layer2TreeNode = new GoodsNode();
@@ -1259,14 +1244,14 @@ public static class GoodsStaticTools
                 layer1TreeNode.Childs.Add(layer2TreeNode);
                 layer2TreeNode.Parent = layer1TreeNode;
                 #endregion
-                for (int k = 0; k < 100; k++)//第三层
+                for (int k = 1; k < 100; k++)//第三层
                 {
                     #region 第三层
                     int layer3Min = layer3 * k;
                     int layer3Max = layer3 * (k + 1);
                     var layer3TempDataStruct = layer2TempDataStruct.Where(temp => temp.value >= layer3Min && temp.value < layer3Max)
                         .Select(temp => new { type = temp.type, value = temp.value % layer3, baseValue = temp.baseValue })
-                        .ToArray();
+                        .OrderBy(temp => temp.value).ToArray();
                     if (layer3TempDataStruct.Length == 0)
                         continue;
                     GoodsNode layer3TreeNode = new GoodsNode();

@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 224857115152285208}
   - component: {fileID: 222938937566634658}
   - component: {fileID: 114641749127526158}
-  - component: {fileID: 114167647518977948}
+  - component: {fileID: 114228421019905346}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -209,7 +209,8 @@ MonoBehaviour:
   scrollbar: {fileID: 114349525821613462}
   tempItemObj: {fileID: 1070972516881082}
   scrollMoveRate: 10
---- !u!114 &114167647518977948
+  CanClickListItem: 1
+--- !u!114 &114228421019905346
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -217,10 +218,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1839209300553004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!114 &114261374592432254
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -259,7 +259,7 @@ public class NPCDataInfo
 /// <summary>
 /// npc的数据(用于挂在在对象身上)
 /// </summary>
-public class NPCDataInfoMono : DataInfoType<NPCDataInfo>
+public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
 {
     public NPCDataInfo NPCDataInfo;
 }

@@ -17,7 +17,7 @@ public interface IInteractiveState : IBaseState
     /// </summary>
     GameObject QueryObj { get; set; }
 	/// <summary>
-    /// 点击的的NPC
+    /// 点击的NPC
     /// 在设置时判断使用那个UI来展示
     /// </summary>
     int ClickInteractiveNPCID { get; set; }
@@ -25,4 +25,8 @@ public interface IInteractiveState : IBaseState
     /// 合成面板
     /// </summary>
     GameObject SynthesisObj { get; set; }
+    /// <summary>
+    /// 点击的采集点ID
+    /// </summary>
+    int ClickInteractiveStuffID { get; set; }
 }

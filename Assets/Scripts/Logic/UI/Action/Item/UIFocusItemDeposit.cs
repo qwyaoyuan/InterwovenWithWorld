@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 /// <summary>
 /// 道具界面的左侧存储栏
 /// </summary>
-public class UIFocusItemDeposit : UIFocus
+public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
 {
     /// <summary>
     /// 获取焦点状态
@@ -33,12 +34,32 @@ public class UIFocusItemDeposit : UIFocus
     /// </summary>
     IPlayerState iPlayerStateRun;
 
+    /// <summary>
+    /// 选择物体后的回调
+    /// </summary>
+    Action<int> SelectGoodsIDAction;
+
     private void Awake()
     {
         //获取List控件
         uiDepostiList = GetComponent<UIList>();
         uiDepostiList.ItemClickHandle += UiDepostiList_ItemClickHandle;
     }
+
+    /// <summary>
+    /// 注册选择物体后的回调
+    /// </summary>
+    /// <param name="SelectGoodsIDAction"></param>
+    public void RegistorSelectGoodsID(Action<int> SelectGoodsIDAction)
+    {
+        this.SelectGoodsIDAction = SelectGoodsIDAction;
+    }
+
+    /// <summary>
+    /// 不需要外部去处理如何选择
+    /// </summary>
+    /// <param name="goodsID"></param>
+    public void SelectID(int goodsID) { }
 
     /// <summary>
     /// 集合中的条目被点击
@@ -51,6 +72,10 @@ public class UIFocusItemDeposit : UIFocus
             focusUIListItem.childImage.enabled = false;
         focusUIListItem = target;
         focusUIListItem.childImage.enabled = true;
+        //设置选择了该物体
+        PlayGoods playGoods = (PlayGoods)focusUIListItem.value;
+        if (SelectGoodsIDAction != null)
+            SelectGoodsIDAction(playGoods.ID);
         //处理功能
         switch (mouseType)
         {
@@ -102,6 +127,24 @@ public class UIFocusItemDeposit : UIFocus
     public override void SetForcus()
     {
         focused = true;
+        //如果当前没有选择焦点的选项则设置一个 
+        if (!focusUIListItem && uiDepostiList)
+            focusUIListItem = uiDepostiList.FirstShowItem();
+        if (focusUIListItem && uiDepostiList)
+        {
+            uiDepostiList.ShowItem(focusUIListItem);
+            if (focusUIListItem.childImage)
+                focusUIListItem.childImage.enabled = true;
+            //设置选择了该物体
+            PlayGoods playGoods = (PlayGoods)focusUIListItem.value;
+            if (SelectGoodsIDAction != null)
+                SelectGoodsIDAction(playGoods.ID);
+        }
+        else//否则就没有选择
+        {
+            if (SelectGoodsIDAction != null)
+                SelectGoodsIDAction(-1);
+        }
     }
 
     /// <summary>
@@ -210,6 +253,10 @@ public class UIFocusItemDeposit : UIFocus
             focusUIListItem = tempArrays[index];
             if (focusUIListItem && focusUIListItem.childImage)
                 focusUIListItem.childImage.enabled = true;
+            //设置选择了该物体
+            PlayGoods playGoods = (PlayGoods)focusUIListItem.value;
+            if (SelectGoodsIDAction != null)
+                SelectGoodsIDAction(playGoods.ID);
         }
     }
 
@@ -256,7 +303,7 @@ public class UIFocusItemDeposit : UIFocus
         }
     }
 
-   
+
 
     /// <summary>
     /// 开始道具的功能
@@ -332,7 +379,7 @@ public class UIFocusItemDeposit : UIFocus
                 //如果是其他装备(防具等)
                 else
                 {
-                    EnumGoodsType? armorType = GoodsStaticTools.GetParentGoodsType(playGoods.GoodsInfo.EnumGoodsType,2);//从基础的防具类型向上跳到防具的大类(头盔大类 盔甲类 鞋子类)
+                    EnumGoodsType? armorType = GoodsStaticTools.GetParentGoodsType(playGoods.GoodsInfo.EnumGoodsType, 2);//从基础的防具类型向上跳到防具的大类(头盔大类 盔甲类 鞋子类)
                     if (armorType != null && GoodsStaticTools.IsChildGoodsNode(armorType.Value, EnumGoodsType.Equipment))
                     {
                         PlayGoods[] ammors = playerState.PlayerAllGoods.Where(

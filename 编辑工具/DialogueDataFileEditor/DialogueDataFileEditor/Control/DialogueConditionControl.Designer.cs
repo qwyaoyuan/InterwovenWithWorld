@@ -45,6 +45,10 @@
             this.Label_RoleOfRace = new System.Windows.Forms.Label();
             this.ComboBox_RoleOfRace = new System.Windows.Forms.ComboBox();
             this.Button_OpenStop = new System.Windows.Forms.Button();
+            this.Label_OverTask = new System.Windows.Forms.Label();
+            this.TextBox_OverTask = new System.Windows.Forms.TextBox();
+            this.Label_ThisTask = new System.Windows.Forms.Label();
+            this.TextBox_ThisTask = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Level_Min)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Level_Max)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_GoodAndEvil_Min)).BeginInit();
@@ -104,7 +108,7 @@
             // Label_Level
             // 
             this.Label_Level.AutoSize = true;
-            this.Label_Level.Location = new System.Drawing.Point(3, 117);
+            this.Label_Level.Location = new System.Drawing.Point(3, 178);
             this.Label_Level.Name = "Label_Level";
             this.Label_Level.Size = new System.Drawing.Size(67, 15);
             this.Label_Level.TabIndex = 5;
@@ -112,7 +116,7 @@
             // 
             // NumericUpDown_Level_Min
             // 
-            this.NumericUpDown_Level_Min.Location = new System.Drawing.Point(86, 115);
+            this.NumericUpDown_Level_Min.Location = new System.Drawing.Point(86, 176);
             this.NumericUpDown_Level_Min.Minimum = new decimal(new int[] {
             1,
             0,
@@ -125,7 +129,7 @@
             // Label_Level_Between
             // 
             this.Label_Level_Between.AutoSize = true;
-            this.Label_Level_Between.Location = new System.Drawing.Point(148, 125);
+            this.Label_Level_Between.Location = new System.Drawing.Point(148, 186);
             this.Label_Level_Between.Name = "Label_Level_Between";
             this.Label_Level_Between.Size = new System.Drawing.Size(15, 15);
             this.Label_Level_Between.TabIndex = 7;
@@ -133,7 +137,7 @@
             // 
             // NumericUpDown_Level_Max
             // 
-            this.NumericUpDown_Level_Max.Location = new System.Drawing.Point(169, 115);
+            this.NumericUpDown_Level_Max.Location = new System.Drawing.Point(169, 176);
             this.NumericUpDown_Level_Max.Minimum = new decimal(new int[] {
             1,
             0,
@@ -146,7 +150,7 @@
             // Label_GoodAndEvil
             // 
             this.Label_GoodAndEvil.AutoSize = true;
-            this.Label_GoodAndEvil.Location = new System.Drawing.Point(3, 149);
+            this.Label_GoodAndEvil.Location = new System.Drawing.Point(3, 210);
             this.Label_GoodAndEvil.Name = "Label_GoodAndEvil";
             this.Label_GoodAndEvil.Size = new System.Drawing.Size(82, 15);
             this.Label_GoodAndEvil.TabIndex = 5;
@@ -154,7 +158,7 @@
             // 
             // NumericUpDown_GoodAndEvil_Min
             // 
-            this.NumericUpDown_GoodAndEvil_Min.Location = new System.Drawing.Point(86, 147);
+            this.NumericUpDown_GoodAndEvil_Min.Location = new System.Drawing.Point(86, 208);
             this.NumericUpDown_GoodAndEvil_Min.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -171,7 +175,7 @@
             // 
             // NumericUpDown_GoodAndEvil_Max
             // 
-            this.NumericUpDown_GoodAndEvil_Max.Location = new System.Drawing.Point(169, 147);
+            this.NumericUpDown_GoodAndEvil_Max.Location = new System.Drawing.Point(169, 208);
             this.NumericUpDown_GoodAndEvil_Max.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -189,7 +193,7 @@
             // Label_GoodAndEvil_Between
             // 
             this.Label_GoodAndEvil_Between.AutoSize = true;
-            this.Label_GoodAndEvil_Between.Location = new System.Drawing.Point(148, 157);
+            this.Label_GoodAndEvil_Between.Location = new System.Drawing.Point(148, 218);
             this.Label_GoodAndEvil_Between.Name = "Label_GoodAndEvil_Between";
             this.Label_GoodAndEvil_Between.Size = new System.Drawing.Size(15, 15);
             this.Label_GoodAndEvil_Between.TabIndex = 7;
@@ -198,7 +202,7 @@
             // Label_RoleOfRace
             // 
             this.Label_RoleOfRace.AutoSize = true;
-            this.Label_RoleOfRace.Location = new System.Drawing.Point(3, 185);
+            this.Label_RoleOfRace.Location = new System.Drawing.Point(3, 246);
             this.Label_RoleOfRace.Name = "Label_RoleOfRace";
             this.Label_RoleOfRace.Size = new System.Drawing.Size(37, 15);
             this.Label_RoleOfRace.TabIndex = 5;
@@ -208,7 +212,7 @@
             // 
             this.ComboBox_RoleOfRace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_RoleOfRace.FormattingEnabled = true;
-            this.ComboBox_RoleOfRace.Location = new System.Drawing.Point(86, 182);
+            this.ComboBox_RoleOfRace.Location = new System.Drawing.Point(86, 243);
             this.ComboBox_RoleOfRace.Name = "ComboBox_RoleOfRace";
             this.ComboBox_RoleOfRace.Size = new System.Drawing.Size(141, 23);
             this.ComboBox_RoleOfRace.TabIndex = 4;
@@ -222,6 +226,38 @@
             this.Button_OpenStop.Text = "+";
             this.Button_OpenStop.UseVisualStyleBackColor = true;
             this.Button_OpenStop.Click += new System.EventHandler(this.Button_OpenStop_Click);
+            // 
+            // Label_OverTask
+            // 
+            this.Label_OverTask.AutoSize = true;
+            this.Label_OverTask.Location = new System.Drawing.Point(3, 110);
+            this.Label_OverTask.Name = "Label_OverTask";
+            this.Label_OverTask.Size = new System.Drawing.Size(82, 15);
+            this.Label_OverTask.TabIndex = 0;
+            this.Label_OverTask.Text = "已完成主线";
+            // 
+            // TextBox_OverTask
+            // 
+            this.TextBox_OverTask.Location = new System.Drawing.Point(86, 107);
+            this.TextBox_OverTask.Name = "TextBox_OverTask";
+            this.TextBox_OverTask.Size = new System.Drawing.Size(141, 25);
+            this.TextBox_OverTask.TabIndex = 3;
+            // 
+            // Label_ThisTask
+            // 
+            this.Label_ThisTask.AutoSize = true;
+            this.Label_ThisTask.Location = new System.Drawing.Point(3, 141);
+            this.Label_ThisTask.Name = "Label_ThisTask";
+            this.Label_ThisTask.Size = new System.Drawing.Size(67, 15);
+            this.Label_ThisTask.TabIndex = 0;
+            this.Label_ThisTask.Text = "当前任务";
+            // 
+            // TextBox_ThisTask
+            // 
+            this.TextBox_ThisTask.Location = new System.Drawing.Point(86, 138);
+            this.TextBox_ThisTask.Name = "TextBox_ThisTask";
+            this.TextBox_ThisTask.Size = new System.Drawing.Size(141, 25);
+            this.TextBox_ThisTask.TabIndex = 3;
             // 
             // DialogueConditionControl
             // 
@@ -240,13 +276,17 @@
             this.Controls.Add(this.Label_Level);
             this.Controls.Add(this.ComboBox_RoleOfRace);
             this.Controls.Add(this.ComboBox_DialogueType);
+            this.Controls.Add(this.TextBox_ThisTask);
+            this.Controls.Add(this.TextBox_OverTask);
             this.Controls.Add(this.TextBox_TouchNPCID);
             this.Controls.Add(this.TextBox_Text);
+            this.Controls.Add(this.Label_ThisTask);
             this.Controls.Add(this.Label_Text);
+            this.Controls.Add(this.Label_OverTask);
             this.Controls.Add(this.Label_DialogueType);
             this.Controls.Add(this.Label_TouchNPCID);
             this.Name = "DialogueConditionControl";
-            this.Size = new System.Drawing.Size(273, 211);
+            this.Size = new System.Drawing.Size(273, 272);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DialogueConditionControl_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Level_Min)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDown_Level_Max)).EndInit();
@@ -275,5 +315,9 @@
         private System.Windows.Forms.Label Label_RoleOfRace;
         private System.Windows.Forms.ComboBox ComboBox_RoleOfRace;
         private System.Windows.Forms.Button Button_OpenStop;
+        private System.Windows.Forms.Label Label_OverTask;
+        private System.Windows.Forms.TextBox TextBox_OverTask;
+        private System.Windows.Forms.Label Label_ThisTask;
+        private System.Windows.Forms.TextBox TextBox_ThisTask;
     }
 }
