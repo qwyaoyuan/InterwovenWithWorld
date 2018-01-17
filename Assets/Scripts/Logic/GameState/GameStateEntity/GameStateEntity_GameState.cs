@@ -16,7 +16,7 @@ public partial class GameState : IGameState
     {
         //初始化共有数据
         playerState = DataCenter.Instance.GetEntity<PlayerState>();
-        runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        runtimeTaskData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
         levelData = DataCenter.Instance.GetMetaData<LevelData>();
         //其他的加载初始化
         Load_INowTaskState();

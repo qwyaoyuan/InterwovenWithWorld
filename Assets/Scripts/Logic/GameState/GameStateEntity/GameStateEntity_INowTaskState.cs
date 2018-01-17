@@ -13,50 +13,50 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 运行时的任务对象数组(正在执行的)
     /// </summary>
-    List<RunTimeTaskInfo> runTimeTaskInfos_Start;
+    List<TaskMap.RunTimeTaskInfo> runTimeTaskInfos_Start;
     /// <summary>
     /// 运行时的任务对象数组(等待接取的)
     /// </summary>
-    List<RunTimeTaskInfo> runTimeTaskInfos_Wait;
+    List<TaskMap.RunTimeTaskInfo> runTimeTaskInfos_Wait;
 
     /// <summary>
     /// 检测位置的正在执行任务字典
     /// </summary>
-    Dictionary<int, RunTimeTaskInfo> checkPostionRunTimeDic;
+    Dictionary<int, TaskMap.RunTimeTaskInfo> checkPostionRunTimeDic;
     /// <summary>
     /// 检测NPC的正在执行任务字典
     /// </summary>
-    Dictionary<int, RunTimeTaskInfo> checkNPCRunTimeDic;
+    Dictionary<int, TaskMap.RunTimeTaskInfo> checkNPCRunTimeDic;
     /// <summary>
     /// 检测击杀怪物的正在执行任务字典
     /// </summary>
-    Dictionary<int, RunTimeTaskInfo> checkMonsterRunTimeDic;
+    Dictionary<int, TaskMap.RunTimeTaskInfo> checkMonsterRunTimeDic;
     /// <summary>
     /// 检测物品的则会能够在执行任务字典
     /// </summary>
-    Dictionary<int, RunTimeTaskInfo> checkGoodsRunTimeDic;
+    Dictionary<int, TaskMap.RunTimeTaskInfo> checkGoodsRunTimeDic;
 
     /// <summary>
     /// 任务信息对象 
     /// </summary>
-    MetaTasksData metaTasksData;
+    //MetaTasksData metaTasksData;
 
     /// <summary>
     /// 任务接口实现对象的加载函数 
     /// </summary>
     partial void Load_INowTaskState()
     {
-        metaTasksData = DataCenter.Instance.GetMetaData<MetaTasksData>();
+        //metaTasksData = DataCenter.Instance.GetMetaData<MetaTasksData>();
         //当前可以做的任务,包括正在做的和可以接取的
-        List<RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
+        List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
         //从中将其分类
         runTimeTaskInfos_Start = todoList.Where(temp => temp.IsStart).ToList();
         runTimeTaskInfos_Wait = todoList.Where(temp => !temp.IsStart).ToList();
         //将正在做的任务分类(方便检测)
-        checkPostionRunTimeDic = new Dictionary<int, RunTimeTaskInfo>();
-        checkNPCRunTimeDic = new Dictionary<int, RunTimeTaskInfo>();
-        checkMonsterRunTimeDic = new Dictionary<int, RunTimeTaskInfo>();
-        checkGoodsRunTimeDic = new Dictionary<int, RunTimeTaskInfo>();
+        checkPostionRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
+        checkNPCRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
+        checkMonsterRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
+        checkGoodsRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         runTimeTaskInfos_Start.ForEach(temp => SetStartTaskCheckClassify(temp));
     }
 
@@ -64,41 +64,51 @@ public partial class GameState : INowTaskState
     /// 设置正在执行的任务的检测分类
     /// </summary>
     /// <param name="runTimeTaskInfo">正在执行的任务</param>
-    void SetStartTaskCheckClassify(RunTimeTaskInfo runTimeTaskInfo)
+    void SetStartTaskCheckClassify(TaskMap.RunTimeTaskInfo runTimeTaskInfo)
     {
         if (runTimeTaskInfo == null || runTimeTaskInfo.IsOver)
             return;
         //NPC检测(是否存在交任务的npc)
-        if (runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId >= 0)
+        if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId >= 0)
             checkNPCRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
-        //位置检测(与NPC检测互斥,如果存在交任务的npc则不检测位置)
-        else if (runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition != Vector3.zero)
+        //位置检测(与NPC检测互斥,如果存在交任务的npc则不检测位置(但是使用其中的场景))
+        else if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation != null)
             checkPostionRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
         //击杀怪物检测
-        if (runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount.Count > 0)
+        if (runTimeTaskInfo.TaskInfoStruct.NeedKillMonsterCount != null && runTimeTaskInfo.TaskInfoStruct.NeedKillMonsterCount.Count(temp => temp.Value > 0) > 0)
         {
-            MetaTaskInfo metaTaskInfo = metaTasksData[runTimeTaskInfo.ID];
-            foreach (KeyValuePair<int, int> item in metaTaskInfo.MetaTaskNode.NeedKillMonsterCount)
+            if (runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount == null)
+                runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount = new Dictionary<EnumMonsterType, int>();
+            bool mustAdd = false;
+            foreach (KeyValuePair<EnumMonsterType, int> item in runTimeTaskInfo.TaskInfoStruct.NeedKillMonsterCount)
             {
-                if (runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount[item.Key] < item.Value)
+                if (!runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount.ContainsKey(item.Key))
+                    runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount.Add(item.Key, 0);
+                if (runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount[item.Key] < item.Value)
                 {
-                    checkMonsterRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
-                    break;
+                    mustAdd = true;
                 }
             }
+            if (mustAdd)
+                checkMonsterRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
         }
         //获取物品检测
-        if (runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount.Count > 0)
+        if (runTimeTaskInfo.TaskInfoStruct.NeedGetGoodsCount != null && runTimeTaskInfo.TaskInfoStruct.NeedGetGoodsCount.Count(temp => temp.Value > 0) > 0)
         {
-            MetaTaskInfo metaTaskInfo = metaTasksData[runTimeTaskInfo.ID];
-            foreach (KeyValuePair<int, int> item in metaTaskInfo.MetaTaskNode.NeedGetGoodsCount)
+            if (runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount == null)
+                runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount = new Dictionary<EnumGoodsType, int>();
+            bool mustAdd = false;
+            foreach (KeyValuePair<EnumGoodsType, int> item in runTimeTaskInfo.TaskInfoStruct.NeedGetGoodsCount)
             {
-                if (runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount[item.Key] < item.Value)
+                if (!runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount.ContainsKey(item.Key))
+                    runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount.Add(item.Key, 0);
+                if (runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount[item.Key] < item.Value)
                 {
-                    checkGoodsRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
-                    break;
+                    mustAdd = true;
                 }
             }
+            if (mustAdd)
+                checkGoodsRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo); ;
         }
     }
 
@@ -135,7 +145,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测位置数组所用的临时集合
     /// </summary>
-    List<RunTimeTaskInfo> checkPostionDicTempList;
+    List<TaskMap.RunTimeTaskInfo> checkPostionDicTempList;
 
     /// <summary>
     /// 检测任务(关于角色位置)
@@ -145,22 +155,22 @@ public partial class GameState : INowTaskState
         if (checkPostionRunTimeDic == null)
             return false;
         if (checkPostionDicTempList == null)
-            checkPostionDicTempList = new List<RunTimeTaskInfo>();
+            checkPostionDicTempList = new List<TaskMap.RunTimeTaskInfo>();
         if (checkPostionRunTimeDic.Count > 0)
         {
             checkPostionDicTempList.Clear();
             Vector3 playerNowPos = PlayerObj.transform.position;
             playerNowPos.y = 0;//忽略y轴
-            foreach (KeyValuePair<int, RunTimeTaskInfo> checkPostionRunTime in checkPostionRunTimeDic)
+            foreach (KeyValuePair<int, TaskMap.RunTimeTaskInfo> checkPostionRunTime in checkPostionRunTimeDic)
             {
                 //先判断场景是否一致
-                if (!string.IsNullOrEmpty(SceneName) && string.Equals(checkPostionRunTime.Value.RunTimeTaskNode.TaskLocation.SceneName, SceneName))
+                if (!string.IsNullOrEmpty(SceneName) && string.Equals(checkPostionRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.SceneName, SceneName))
                 {
-                    Vector3 targetPos = checkPostionRunTime.Value.RunTimeTaskNode.TaskLocation.ArrivedCenterPos;
+                    Vector3 targetPos = checkPostionRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.ArrivedCenterPos;
                     targetPos.y = 0;
                     Vector3 offsetDis = targetPos - playerNowPos;
                     float sqrDis = Vector3.SqrMagnitude(offsetDis);
-                    if (sqrDis < Mathf.Pow(checkPostionRunTime.Value.RunTimeTaskNode.TaskLocation.Radius, 2))
+                    if (sqrDis < Mathf.Pow(checkPostionRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.Radius, 2))
                     {
                         checkPostionDicTempList.Add(checkPostionRunTime.Value);
                     }
@@ -169,7 +179,7 @@ public partial class GameState : INowTaskState
             if (checkPostionDicTempList.Count > 0)
             {
                 //如果检测出已经完成则判断是否还有其他检测未完成,如果未完成则不要移除(这个是特例,和点击npc完成任务是互斥的)
-                foreach (RunTimeTaskInfo runTimeTaskInfo in checkPostionDicTempList)
+                foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkPostionDicTempList)
                 {
                     checkPostionRunTimeDic.Remove(runTimeTaskInfo.ID);//临时的移除
                     if (HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测位置是特例,因为有可能需要杀完怪后到达指定地点,提前到达是无效的)
@@ -190,7 +200,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测NPC数组所用的临时集合
     /// </summary>
-    List<RunTimeTaskInfo> checkNPCDicTempList;
+    List<TaskMap.RunTimeTaskInfo> checkNPCDicTempList;
 
     /// <summary>
     /// 检测任务(关于NPC)
@@ -201,21 +211,22 @@ public partial class GameState : INowTaskState
         if (checkNPCRunTimeDic == null)
             return false;
         if (checkNPCDicTempList == null)
-            checkNPCDicTempList = new List<RunTimeTaskInfo>();
+            checkNPCDicTempList = new List<TaskMap.RunTimeTaskInfo>();
         if (checkNPCRunTimeDic.Count > 0)
         {
             checkNPCDicTempList.Clear();
-            foreach (KeyValuePair<int, RunTimeTaskInfo> checkNPCRunTime in checkNPCRunTimeDic)
+            foreach (KeyValuePair<int, TaskMap.RunTimeTaskInfo> checkNPCRunTime in checkNPCRunTimeDic)
             {
-                if (checkNPCRunTime.Value.RunTimeTaskNode.DeliveryTaskNpcId == npcID)
+                if (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskNpcId == npcID)
                 {
-                    checkNPCDicTempList.Add(checkNPCRunTime.Value);
+                    if (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation == null && (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.SceneName, SceneName)))
+                        checkNPCDicTempList.Add(checkNPCRunTime.Value);
                 }
             }
             if (checkNPCDicTempList.Count > 0)
             {
                 //如果检测出已经完成则判断是否还有其他检测未完成,如果未完成则不要移除(这个是特例,和到达指定地点完成任务是互斥的)
-                foreach (RunTimeTaskInfo runTimeTaskInfo in checkNPCDicTempList)
+                foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkNPCDicTempList)
                 {
                     checkNPCRunTimeDic.Remove(runTimeTaskInfo.ID);//临时的移除
                     if (HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测npc是特例,因为有可能需要杀完怪后才能提交,提前点击是无效的)
@@ -236,7 +247,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测击杀怪物数组所用的临时集合
     /// </summary>
-    List<RunTimeTaskInfo> checkMonsterDicTempList;
+    List<TaskMap.RunTimeTaskInfo> checkMonsterDicTempList;
 
     /// <summary>
     /// 检测任务(关于击杀怪物)
@@ -247,21 +258,20 @@ public partial class GameState : INowTaskState
         if (checkMonsterRunTimeDic == null)
             return false;
         if (checkMonsterDicTempList == null)
-            checkMonsterDicTempList = new List<RunTimeTaskInfo>();
+            checkMonsterDicTempList = new List<TaskMap.RunTimeTaskInfo>();
         if (checkMonsterRunTimeDic.Count > 0)
         {
             checkMonsterDicTempList.Clear();
-            foreach (KeyValuePair<int, RunTimeTaskInfo> checkMonsterRunTime in checkMonsterRunTimeDic)
+            foreach (KeyValuePair<int, TaskMap.RunTimeTaskInfo> checkMonsterRunTime in checkMonsterRunTimeDic)
             {
-                RunTimeTaskInfo runTimeTaskInfo = checkMonsterRunTime.Value;
-                if (!runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount.ContainsKey(monsterID))//如果该任务不需要判断该怪物
+                TaskMap.RunTimeTaskInfo runTimeTaskInfo = checkMonsterRunTime.Value;
+                if (!runTimeTaskInfo.TaskInfoStruct.NeedKillMonsterCount.ContainsKey((EnumMonsterType)monsterID))//如果该任务不需要判断该怪物
                     continue;
-                MetaTaskInfo metaTaskInfo = metaTasksData[checkMonsterRunTime.Key];
-                runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount[monsterID] += 1;//击杀怪物数量加1
+                runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount[(EnumMonsterType)monsterID] += 1;//击杀怪物数量加1
                 bool isOver = true;
-                foreach (KeyValuePair<int, int> item in metaTaskInfo.MetaTaskNode.NeedKillMonsterCount)
+                foreach (KeyValuePair<EnumMonsterType, int> item in runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount)
                 {
-                    if (runTimeTaskInfo.RunTimeTaskNode.HaveKilledMonsterCount[item.Key] < item.Value)
+                    if (runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount[item.Key] < item.Value)
                     {
                         isOver = false;
                         break;
@@ -272,7 +282,7 @@ public partial class GameState : INowTaskState
             }
             if (checkMonsterDicTempList.Count > 0)
             {
-                foreach (RunTimeTaskInfo runTimeTaskInfo in checkMonsterDicTempList)
+                foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkMonsterDicTempList)
                 {
                     //如果检测出已经完成则移除
                     checkMonsterRunTimeDic.Remove(runTimeTaskInfo.ID);
@@ -290,7 +300,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测物品数组所用的临时集合
     /// </summary>
-    List<RunTimeTaskInfo> checkGoodsDicTempList;
+    List<TaskMap.RunTimeTaskInfo> checkGoodsDicTempList;
 
     /// <summary>
     /// 检测任务(关于物品)
@@ -302,24 +312,23 @@ public partial class GameState : INowTaskState
         if (checkGoodsRunTimeDic == null)
             return false;
         if (checkGoodsDicTempList == null)
-            checkGoodsDicTempList = new List<RunTimeTaskInfo>();
+            checkGoodsDicTempList = new List<TaskMap.RunTimeTaskInfo>();
         if (checkGoodsRunTimeDic.Count > 0)
         {
             checkGoodsDicTempList.Clear();
-            foreach (KeyValuePair<int, RunTimeTaskInfo> checkGoodsRunTime in checkGoodsRunTimeDic)
+            foreach (KeyValuePair<int, TaskMap.RunTimeTaskInfo> checkGoodsRunTime in checkGoodsRunTimeDic)
             {
-                RunTimeTaskInfo runTimeTaskInfo = checkGoodsRunTime.Value;
-                if (!runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount.ContainsKey(goodsID))//如果该任务不需要判断该物品
+                TaskMap.RunTimeTaskInfo runTimeTaskInfo = checkGoodsRunTime.Value;
+                if (!runTimeTaskInfo.TaskInfoStruct.NeedGetGoodsCount.ContainsKey((EnumGoodsType)goodsID))//如果该任务不需要判断该物品
                     continue;
                 PlayGoods playerGoods = playerState.PlayerAllGoods.Where(temp => (int)temp.GoodsInfo.EnumGoodsType == goodsID).FirstOrDefault();
                 if (playerGoods == null)
                     continue;
-                runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount[goodsID] = playerGoods.Count;
-                MetaTaskInfo metaTaskInfo = metaTasksData[checkGoodsRunTime.Key];
+                runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount[(EnumGoodsType)goodsID] = playerGoods.Count;
                 bool isOver = true;
-                foreach (KeyValuePair<int, int> item in metaTaskInfo.MetaTaskNode.NeedGetGoodsCount)
+                foreach (KeyValuePair<EnumGoodsType, int> item in runTimeTaskInfo.TaskInfoStruct.NeedGetGoodsCount)
                 {
-                    if (runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount[item.Key] < item.Value)
+                    if (runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount[item.Key] < item.Value)
                     {
                         isOver = false;
                         break;
@@ -330,7 +339,7 @@ public partial class GameState : INowTaskState
             }
             if (checkGoodsDicTempList.Count > 0)
             {
-                foreach (RunTimeTaskInfo runTimeTaskInfo in checkGoodsDicTempList)
+                foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkGoodsDicTempList)
                 {
                     //如果检测出已完成则移除
                     checkGoodsRunTimeDic.Remove(runTimeTaskInfo.ID);
@@ -338,10 +347,10 @@ public partial class GameState : INowTaskState
                     {
                         OverTaskID = runTimeTaskInfo.ID;
                         //完成以后从物品栏中移除指定的物品
-                        foreach (KeyValuePair<int, int> item in runTimeTaskInfo.RunTimeTaskNode.HaveGetGoodsCount)
+                        foreach (KeyValuePair<EnumGoodsType, int> item in runTimeTaskInfo.TaskInfoStruct.GameGetGoodsCount)
                         {
                             playerState.PlayerAllGoods
-                                .Where(temp => (int)temp.GoodsInfo.EnumGoodsType == item.Key).ToList()
+                                .Where(temp => temp.GoodsInfo.EnumGoodsType == item.Key).ToList()
                                 .ForEach(temp => temp.Count -= item.Value);
                             playerState.PlayerAllGoods.RemoveAll(temp => temp.Count <= 0);
                         }
@@ -382,7 +391,7 @@ public partial class GameState : INowTaskState
     {
         if (!all)//如果不从等待接取集合中移除
         {
-            RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == taskID).FirstOrDefault();
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == taskID).FirstOrDefault();
             if (runTimeTaskInfo != null)
             {
                 if (runTimeTaskInfos_Wait.Count(temp => temp.ID == taskID) <= 0)
@@ -420,7 +429,7 @@ public partial class GameState : INowTaskState
             _StartTask = value;
             if (tempStartTask != _StartTask)
             {
-                RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Wait.Where(temp => temp.ID == _StartTask).FirstOrDefault();
+                TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Wait.Where(temp => temp.ID == _StartTask).FirstOrDefault();
                 if (runTimeTaskInfo != null)
                 {
                     runTimeTaskInfos_Wait.Remove(runTimeTaskInfo);
@@ -448,7 +457,7 @@ public partial class GameState : INowTaskState
             _OverTaskID = value;
             if (tempOverTaskID != _OverTaskID)
             {
-                RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == _OverTaskID).FirstOrDefault();
+                TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == _OverTaskID).FirstOrDefault();
                 if (runTimeTaskInfo == null)
                     return;
                 //内部处理完成后的事项
@@ -463,15 +472,15 @@ public partial class GameState : INowTaskState
                 //任务完成后的后续
                 RemoveTaskByIDAtDicAndList(_OverTaskID);//从数据中移除
                 runTimeTaskInfo.IsOver = true;
-                List<RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
+                List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
                 //因为可能存在互斥任务,该任务完成后其他任务可能就失败了,因此这里检测剩下的任务是否存在与当前任务
                 List<int> mustRemoveMutexTaskList = new List<int>();//需要移除的互斥的任务
-                foreach (RunTimeTaskInfo nowTaskInfo in runTimeTaskInfos_Start)//正在执行的
+                foreach (TaskMap.RunTimeTaskInfo nowTaskInfo in runTimeTaskInfos_Start)//正在执行的
                 {
                     if (todoList.Count(temp => temp.ID == nowTaskInfo.ID) == 0)
                         mustRemoveMutexTaskList.Add(nowTaskInfo.ID);
                 }
-                foreach (RunTimeTaskInfo nowTaskInfo in runTimeTaskInfos_Wait)//等待接取的
+                foreach (TaskMap.RunTimeTaskInfo nowTaskInfo in runTimeTaskInfos_Wait)//等待接取的
                 {
                     if (todoList.Count(temp => temp.ID == nowTaskInfo.ID) == 0)
                         mustRemoveMutexTaskList.Add(nowTaskInfo.ID);
@@ -481,16 +490,33 @@ public partial class GameState : INowTaskState
                     RemoveTaskByIDAtDicAndList(mustRemoveMutexTaskID, true);
                 }
                 //检测新的任务
-                foreach (RunTimeTaskInfo todoTaskInfo in todoList)
+                foreach (TaskMap.RunTimeTaskInfo todoTaskInfo in todoList)
                 {
                     if (!todoTaskInfo.IsStart)//只用处理未开始的
                     {
-                        if (todoTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId < 0)//直接接取
+                        if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId < 0)//直接接取
                         {
-                            todoTaskInfo.IsStart = true;
-                            //将任务添加到分类中
-                            runTimeTaskInfos_Start.Add(todoTaskInfo);
-                            SetStartTaskCheckClassify(todoTaskInfo);
+                            bool canStart = false;
+                            if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
+                                canStart = true;
+                            else
+                            {
+                                Vector3 playerNowPos = PlayerObj.transform.position;
+                                playerNowPos.y = 0;//忽略y轴
+                                Vector3 targetPos = todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.ArrivedCenterPos;
+                                targetPos.y = 0;
+                                Vector3 offsetDis = targetPos - playerNowPos;
+                                float sqrDis = Vector3.SqrMagnitude(offsetDis);
+                                if (sqrDis < Mathf.Pow(todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.Radius, 2))
+                                    canStart = true;
+                            }
+                            if (canStart)
+                            {
+                                todoTaskInfo.IsStart = true;
+                                //将任务添加到分类中
+                                runTimeTaskInfos_Start.Add(todoTaskInfo);
+                                SetStartTaskCheckClassify(todoTaskInfo);
+                            }
                         }
                         else//如果不是直接接取的
                         {
@@ -514,11 +540,11 @@ public partial class GameState : INowTaskState
     /// <param name="taskID"></param>
     public void GiveUPTask(int taskID)
     {
-        RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == taskID && temp.RunTimeTaskNode.TaskType != Enums.TaskType.PrincipalLine).FirstOrDefault();
+        TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == taskID && temp.TaskInfoStruct.TaskType != TaskMap.Enums.EnumTaskType.Main).FirstOrDefault();
         if (runTimeTaskInfo != null)
         {
             RemoveTaskByIDAtDicAndList(runTimeTaskInfo.ID);
-            runTimeTaskInfo.GiveUpTask();
+            runTimeTaskInfo.IsStart = false;
         }
     }
 
@@ -527,13 +553,16 @@ public partial class GameState : INowTaskState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    public RunTimeTaskInfo[] GetWaitTask(string scene)
+    public TaskMap.RunTimeTaskInfo[] GetWaitTask(string scene)
     {
         NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
         if (string.IsNullOrEmpty(scene))
             return runTimeTaskInfos_Wait.ToArray();
         else
-            return runTimeTaskInfos_Wait.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
+            return runTimeTaskInfos_Wait.Where(temp =>
+                ((temp.TaskInfoStruct.ReceiveTaskLocation == null || string.Equals(scene, temp.TaskInfoStruct.ReceiveTaskLocation.SceneName)) && npcData.GetNPCDataInfo(scene, temp.TaskInfoStruct.ReceiveTaskNpcId) != null) ||
+                (temp.TaskInfoStruct.ReceiveTaskLocation != null && string.Equals(scene, temp.TaskInfoStruct.ReceiveTaskLocation.SceneName))
+            ).ToArray();
     }
 
     /// <summary>
@@ -541,13 +570,16 @@ public partial class GameState : INowTaskState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    public RunTimeTaskInfo[] GetStartTask(string scene)
+    public TaskMap.RunTimeTaskInfo[] GetStartTask(string scene)
     {
         NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
         if (string.IsNullOrEmpty(scene))
             return runTimeTaskInfos_Start.ToArray();
         else
-            return runTimeTaskInfos_Start.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
+            return runTimeTaskInfos_Start.Where(temp =>
+            ((temp.TaskInfoStruct.DeliveryTaskLocation == null || string.Equals(scene, temp.TaskInfoStruct.DeliveryTaskLocation.SceneName)) && npcData.GetNPCDataInfo(scene, temp.TaskInfoStruct.DeliveryTaskNpcId) != null) ||
+              (temp.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(scene, temp.TaskInfoStruct.DeliveryTaskLocation.SceneName))
+            ).ToArray();
     }
 
     /// <summary>
@@ -555,14 +587,17 @@ public partial class GameState : INowTaskState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    public RunTimeTaskInfo[] GetEndTask(string scene)
+    public TaskMap.RunTimeTaskInfo[] GetEndTask(string scene)
     {
         NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
-        IEnumerable<RunTimeTaskInfo> taskInfos = runTimeTaskInfos_Start
+        IEnumerable<TaskMap.RunTimeTaskInfo> taskInfos = runTimeTaskInfos_Start
             .Where(temp => !checkMonsterRunTimeDic.ContainsKey(temp.ID) && !checkGoodsRunTimeDic.ContainsKey(temp.ID));
         if (string.IsNullOrEmpty(scene))
             return taskInfos.ToArray();
         else
-            return taskInfos.Where(temp => npcData.GetNPCDataInfo(scene, temp.RunTimeTaskNode.ReceiveTaskNpcId) != null).ToArray();
+            return taskInfos.Where(temp =>
+                ((temp.TaskInfoStruct.DeliveryTaskLocation == null || string.Equals(scene, temp.TaskInfoStruct.DeliveryTaskLocation.SceneName)) && npcData.GetNPCDataInfo(scene, temp.TaskInfoStruct.DeliveryTaskNpcId) != null) ||
+                (temp.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(scene, temp.TaskInfoStruct.DeliveryTaskLocation.SceneName))
+            ).ToArray();
     }
 }

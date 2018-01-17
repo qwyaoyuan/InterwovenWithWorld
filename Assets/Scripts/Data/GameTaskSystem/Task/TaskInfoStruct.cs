@@ -119,11 +119,15 @@ namespace TaskMap
         /// <summary>
         /// 游戏中杀死的怪物数量
         /// </summary>
-        public Dictionary<EnumMonsterType, int> GameSkillMonsterCount { get; set; }
+        public Dictionary<EnumMonsterType, int> GameKillMonsterCount { get; set; }
         /// <summary>
         /// 任务进度
         /// </summary>
         internal Enums.EnumTaskProgress TaskProgress { get;set; }
+        /// <summary>
+        /// 游戏中获得的物品数量
+        /// </summary>
+        public Dictionary<EnumGoodsType, int> GameGetGoodsCount { get; set; }
         #endregion
 
         public TaskInfoStruct()

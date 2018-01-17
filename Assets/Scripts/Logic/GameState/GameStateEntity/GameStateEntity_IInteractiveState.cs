@@ -73,25 +73,25 @@ public partial class GameState : IInteractiveState
                         return;
                     //如果任务没有完成则需要后面的检测
                     //接取任务的npcid与点击npcid相同并且存在的任务没有被完成也没有被接取
-                    RunTimeTaskInfo[] runTimeTaskInfos = runtimeTaskData.GetAllToDoList()
-                        .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == _ClickInteractiveNPCID && temp.IsOver == false && temp.IsStart == false)
+                    TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTaskData.GetAllToDoList()
+                        .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == _ClickInteractiveNPCID && temp.IsOver == false && temp.IsStart == false)
                         .ToArray();
                     //存在主线任务则展开主线
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.PrincipalLine).Count() > 0)
+                    if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).Count() > 0)
                     {
                         if (InterludeObj != null)
                             InterludeObj.SetActive(true);
                         return;
                     }
                     //如果存在支线则展开支线
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.BranchLine).Count() > 0)
+                    if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Spur).Count() > 0)
                     {
                         if (QueryObj != null)
                             QueryObj.SetActive(true);
                         return;
                     }
                     //如果存在重复任务则展开重复任务
-                    if (runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.Repeat).Count() > 0)
+                    if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Repeat).Count() > 0)
                     {
                         if (QueryObj != null)
                             QueryObj.SetActive(true);

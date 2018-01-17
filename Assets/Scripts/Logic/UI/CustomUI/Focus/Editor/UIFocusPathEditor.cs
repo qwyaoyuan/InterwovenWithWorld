@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UI.Focus;
+using System.Linq;
 
 /// <summary>
 /// 扩展焦点
@@ -26,6 +27,8 @@ public class UIFocusPathEditor : Editor
 
     public override void OnInspectorGUI()
     {
+
+
         UIFocus[,] lastValue = new UIFocus[TargetObj.row, TargetObj.column];
         for (int i = 0; i < TargetObj.row; i++)
         {
@@ -68,6 +71,13 @@ public class UIFocusPathEditor : Editor
             }
             EditorGUILayout.EndHorizontal();
         }
+
+        //测试 在窗体中绘制连线
+        if (TargetObj.UIFocuesArray != null && TargetObj.UIFocuesArray.Length >= 2)
+        {
+            
+        }
+       
     }
 
 }

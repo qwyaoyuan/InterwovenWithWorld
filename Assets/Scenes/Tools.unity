@@ -854,15 +854,30 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224046289457101200, guid: 3941dfd12d171b44e8ecf5625b90a653,
+    - target: {fileID: 114046998791643480, guid: 3941dfd12d171b44e8ecf5625b90a653,
         type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 0.2
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224046289457101200, guid: 3941dfd12d171b44e8ecf5625b90a653,
+    - target: {fileID: 224964061420599536, guid: 3941dfd12d171b44e8ecf5625b90a653,
         type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
+      propertyPath: m_AnchoredPosition.x
+      value: -1419.3296
+      objectReference: {fileID: 0}
+    - target: {fileID: 224964061420599536, guid: 3941dfd12d171b44e8ecf5625b90a653,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.49999988
+      objectReference: {fileID: 0}
+    - target: {fileID: 224964061420599536, guid: 3941dfd12d171b44e8ecf5625b90a653,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 921.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 224964061420599536, guid: 3941dfd12d171b44e8ecf5625b90a653,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.4999999
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3941dfd12d171b44e8ecf5625b90a653, type: 2}

@@ -39,7 +39,7 @@ public interface INowTaskState : IBaseState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    RunTimeTaskInfo[] GetWaitTask(string scene);
+    TaskMap.RunTimeTaskInfo[] GetWaitTask(string scene);
 
     /// <summary>
     /// 获取指定场景中的正在执行的任务,如果场景名为空,则返回所有正在执行的任务
@@ -47,7 +47,7 @@ public interface INowTaskState : IBaseState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    RunTimeTaskInfo[] GetStartTask(string scene);
+    TaskMap.RunTimeTaskInfo[] GetStartTask(string scene);
 
     /// <summary>
     /// 获取指定场景中的条件达成但是没有交付的任务,如果场景名为空,则会返回所有条件达成但是没有交付的任务
@@ -55,7 +55,7 @@ public interface INowTaskState : IBaseState
     /// </summary>
     /// <param name="scene"></param>
     /// <returns></returns>
-    RunTimeTaskInfo[] GetEndTask(string scene);
+    TaskMap.RunTimeTaskInfo[] GetEndTask(string scene);
 }
 
 /// <summary>

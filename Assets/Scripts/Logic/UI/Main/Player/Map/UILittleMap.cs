@@ -79,10 +79,10 @@ public class UILittleMap : MonoBehaviour
         }
         //任务
         //等待接取的任务
-        RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(iGameState.SceneName);
-        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Wait)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(iGameState.SceneName);
+        foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Wait)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId);//接取任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId);//接取任务的NPC
             if (npcDataInfo == null)
                 continue;
             //需要传入一个金色的叹号
@@ -97,15 +97,15 @@ public class UILittleMap : MonoBehaviour
             uiMapIconStruct.value = innerValue;
         }
         //正在执行的任务
-        RunTimeTaskInfo[] runTimeTaskInfos_Start = iNowTaskState.GetStartTask(iGameState.SceneName);
-        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Start)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Start = iNowTaskState.GetStartTask(iGameState.SceneName);
+        foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Start)
         {
             Vector2 targetPosition = Vector2.zero;
-            if (runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition != Vector3.zero)
-                targetPosition = new Vector2(runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.x, runTimeTaskInfo.RunTimeTaskNode.NowArrivedPosition.z);
+            if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation!=null && runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId<0)
+                targetPosition = new Vector2(runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation.ArrivedCenterPos.x, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation.ArrivedCenterPos.z);
             else
             {
-                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
                 if (npcDataInfo != null)
                     targetPosition = new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z);
             }
@@ -120,10 +120,10 @@ public class UILittleMap : MonoBehaviour
             uiMapIconStruct.value = innerValue;
         }
         //条件达成但是没有交付的任务
-        RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(iGameState.SceneName);
-        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_End)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(iGameState.SceneName);
+        foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_End)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.RunTimeTaskNode.DeliveryTaskNpcId);//交付任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
             if (npcDataInfo == null)
                 continue;
             //需要传入一个金色的问号

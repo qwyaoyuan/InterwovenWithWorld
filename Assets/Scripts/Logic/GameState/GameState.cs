@@ -28,7 +28,7 @@ public partial class GameState : IEntrance, IBaseState
     /// <summary>
     /// 运行时任务对象
     /// </summary>
-    RuntimeTasksData runtimeTaskData;
+    TaskMap.RunTimeTaskData runtimeTaskData;
     /// <summary>
     /// 等级数据
     /// </summary>
