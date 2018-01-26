@@ -17,12 +17,23 @@ public class UIMain : MonoBehaviour
     /// </summary>
     [SerializeField]
     GameObject queryPanel;
+    /// <summary>
+    ///  对话面板
+    /// </summary>
+    [SerializeField]
+    GameObject talkShowPanel;
 
     /// <summary>
     /// 合成面板
     /// </summary>
     [SerializeField]
     GameObject synthesisPanel;
+
+    /// <summary>
+    /// 商店面板
+    /// </summary>
+    [SerializeField]
+    GameObject shopShowPanel;
 
     /// <summary>
     /// 设置面板预设提
@@ -56,11 +67,18 @@ public class UIMain : MonoBehaviour
     /// </summary>
     IGameState iGameState;
 
+    /// <summary>
+    /// 事件系统
+    /// </summary>
+    GameObject EventSystem;
+
     private void Start()
     {
         iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
         iInteractiveState.InterludeObj = interludePanel;
         iInteractiveState.QueryObj = queryPanel;
+        iInteractiveState.TalkShowObj = talkShowPanel;
+        iInteractiveState.ShopShowObj = shopShowPanel;
 
         iGameState = GameState.Instance.GetEntity<IGameState>();
 
@@ -71,6 +89,15 @@ public class UIMain : MonoBehaviour
         GameObject actionPanelObj = GameObject.Instantiate<GameObject>(actionPanelPrefab);
         actionPanel = actionPanelObj.GetComponent<Canvas>();
         actionPanel.gameObject.SetActive(false);
+        iInteractiveState.ActionObj = actionPanelObj;
+
+        //查找事件系统,如果存在则不用新建
+        EventSystem = GameObject.Find("EventSystem");
+        if (EventSystem == null)
+        {
+            GameObject eventSystemPrefab = Resources.Load<GameObject>("UI/EventSystem");
+            EventSystem = GameObject.Instantiate<GameObject>(eventSystemPrefab);
+        }
     }
 
     private void OnEnable()
@@ -90,6 +117,7 @@ public class UIMain : MonoBehaviour
             switch (arg1)
             {
                 case UIManager.KeyType.START://开启功能界面
+                    iInteractiveState.ClickInteractiveNPCID = -1;
                     actionPanel.gameObject.SetActive(true);
                     break;
                 case UIManager.KeyType.Back://开启设置界面

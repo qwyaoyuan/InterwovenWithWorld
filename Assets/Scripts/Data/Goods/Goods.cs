@@ -14,7 +14,7 @@ public class Goods
     public string GoodsName { get; set; }
     #region 物品基础通用属性
     //物品ID
-    public EnumGoodsType EnumGoodsType { get { return enumGoodsType; } }
+    public EnumGoodsType EnumGoodsType { get { return enumGoodsType; } set { enumGoodsType = value; } }
     //重量
     public int Weight { get; set; }
     //基础价格

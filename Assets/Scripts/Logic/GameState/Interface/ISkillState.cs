@@ -49,6 +49,13 @@ public interface ISkillState : IBaseState
     /// <param name="skillID"></param>
     /// <returns></returns>
     float GetSkillCoolingTime(int skillID);
+    /// <summary>
+    /// 设置技能的冷却时间(注意该函数会触发GetSkillCoolingTime的回调,但不会触发自身的回调)
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    void SetSkillCoolingTime(int skillID,float time);
 
     //----------光环技能状态-----------//
     /// <summary>
@@ -66,7 +73,7 @@ public interface ISkillState : IBaseState
     /// <summary>
     /// 获取当前物理技能的状态数据
     /// </summary>
-    PhysicsSKillStateStruct NowPhysicsSkillStateStruct { get; }
+    PhysicsSkillStateStruct NowPhysicsSkillStateStruct { get; }
 }
 
 /// <summary>
@@ -160,7 +167,7 @@ public struct SpecialSkillStateStruct
 /// <summary>
 /// 物理技能状态整合结构
 /// </summary>
-public class PhysicsSKillStateStruct
+public class PhysicsSkillStateStruct
 {
     /// <summary>
     /// 该技能的类型

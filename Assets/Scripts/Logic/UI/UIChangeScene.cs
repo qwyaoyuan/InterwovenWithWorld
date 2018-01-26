@@ -55,7 +55,6 @@ public class UIChangeScene : MonoBehaviour
     /// <param name="LoadResult"></param>
     public void LoadScene(string sceneName, Action<bool> LoadResult = null)
     {
-
         if (loadSceneCoroutine == null)
         {
             SetObjState(true);
@@ -76,6 +75,41 @@ public class UIChangeScene : MonoBehaviour
                  }
              ));
         }
+    }
+
+    /// <summary>
+    /// 移动对象携程
+    /// </summary>
+    Coroutine movePlayerCoroutine;
+
+    /// <summary>
+    /// 移动角色
+    /// </summary>
+    /// <param name="waitTime">等待时间</param>
+    /// <param name="MoveResult"></param>
+    public void MovePlayer(float waitTime, Action<bool> MoveResult = null)
+    {
+        if (movePlayerCoroutine != null)
+        {
+            StopCoroutine(movePlayerCoroutine);
+            movePlayerCoroutine = null;
+        }
+        SetObjState(true);
+        movePlayerCoroutine = StartCoroutine(MovePlayerAsync(waitTime,
+            (result) =>
+            {
+                movePlayerCoroutine = null;
+                if (MoveResult != null)
+                    try
+                    {
+                        MoveResult(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Log(ex);
+                    }
+                SetObjState(false);
+            }));
     }
 
     /// <summary>
@@ -114,7 +148,27 @@ public class UIChangeScene : MonoBehaviour
             yield return null;
         }
         if (LoadResult != null)
-            LoadResult(asyncOperation!=null);
+            LoadResult(asyncOperation != null);
+    }
+
+    /// <summary>
+    /// 使用携程移动对象
+    /// </summary>
+    /// <param name="waitTime"></param>
+    /// <param name="MoveResult"></param>
+    /// <returns></returns>
+    IEnumerator MovePlayerAsync(float waitTime, Action<bool> MoveResult = null)
+    {
+        float nowTime = 0;
+        while (nowTime < waitTime)
+        {
+            ScheduleImage.fillAmount = waitTime > 0 ? (nowTime / waitTime) : 1;
+            ScheduleText.text = ((int)(ScheduleImage.fillAmount * 100)).ToString();
+            yield return null;
+            nowTime += Time.deltaTime;
+        }
+        if (MoveResult != null)
+            MoveResult(true);
     }
 
 }

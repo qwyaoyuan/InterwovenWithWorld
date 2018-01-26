@@ -20,6 +20,12 @@ public partial class GameState
     {
         List<ParticalInitParamData> resultList = new List<ParticalInitParamData>();
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
+        ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
+        //耗魔量
+        float holdingRate = iSkillState.SkillStartHoldingTime / GameState.BaseSkillStartHoldingTime;//计算蓄力程度
+        float maxUseMana = nowIAttributeState.MaxUseMana;//当前的最大耗魔上限
+        float baseUseMana = nowIAttributeState.MustUsedBaseMana;//基础耗魔值
+        float thisUsedMana = baseUseMana + maxUseMana * holdingRate;//该技能的耗魔值
         //这几个是基础数据
         particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up;
         particalInitParamData.lifeTime = 5;
@@ -27,6 +33,7 @@ public partial class GameState
         particalInitParamData.targetObjs = new GameObject[0];
         particalInitParamData.forward = playerObj.transform.forward;
         particalInitParamData.color = new Color(0.5f, 0.5f, 0.5f, 0.1f);
+        particalInitParamData.layerMask = LayerMask.GetMask("Monster", "Default");
         //下面的是变化数据
         //颜色
         SkillBaseStruct combine_secondSkill = skills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
@@ -97,12 +104,15 @@ public partial class GameState
             {
                 case EnumSkillType.FS01://奥数弹
                     particalInitParamData.range = 20;//表示距离
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
                     break;
                 case EnumSkillType.FS02://奥数震荡
                     particalInitParamData.range = 1;//表示比例
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
                     break;
                 case EnumSkillType.FS03://魔力屏障
                     particalInitParamData.range = 1;//表示比例
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
                     break;
                 case EnumSkillType.FS04://魔力导向
                     //查找前方45度方位内距离自己最近的怪物
@@ -113,8 +123,7 @@ public partial class GameState
                     {
                         particalInitParamData.range = Vector3.Distance(selectTargetObj.transform.position, playerObj.transform.position);//表示距离
                         particalInitParamData.targetObjs = new GameObject[] { selectTargetObj };
-                        //测试
-                        particalInitParamData.CollisionCallBack = temp => true;
+                        particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
                     }
                     else
                         particalInitParamData.range = 10;
@@ -148,13 +157,40 @@ public partial class GameState
                     temp_particalInitParamData.position = firstObj.transform.position + temp_particalInitParamData.forward;
                     temp_particalInitParamData.range = Vector3.Distance(firstObj.transform.position, secondObj.transform.position);
                     temp_particalInitParamData.targetObjs = new GameObject[] { secondObj };
-                    temp_particalInitParamData.CollisionCallBack = (temp) => true;
+                    temp_particalInitParamData.CollisionCallBack = (temp) => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
                     resultList.Add(temp_particalInitParamData);
                 }
             }
         }
 
         return resultList.ToArray();
+    }
+
+    /// <summary>
+    /// 计算魔法组合技能的伤害
+    /// </summary>
+    /// <param name="iAttributeState">伤害计算时使用的属性</param>
+    /// <param name="collisionHitCallbackStruct">碰撞到的对象</param>
+    /// <param name="thisUsedMana">本次技能的耗魔值</param>
+    /// <returns></returns>
+    private bool CalculateCombineMagicHurt(IAttributeState iAttributeState, CollisionHitCallbackStruct collisionHitCallbackStruct, float thisUsedMana)
+    {
+        if (collisionHitCallbackStruct.targetObj == null)
+            return false;
+        InteractiveAsMonster interactiveAsMonster = collisionHitCallbackStruct.targetObj.GetComponent<InteractiveAsMonster>();
+        if (interactiveAsMonster == null)
+            return false;
+        IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
+        {
+            hurtTransferNum = 0,
+            hurtType = EnumHurtType.Magic,
+            attributeState = iAttributeState,
+            thisUsedMana = thisUsedMana,
+            hurtFromObj = iPlayerState.PlayerObj
+        };
+        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        return true;
     }
 
     /// <summary>
@@ -178,7 +214,7 @@ public partial class GameState
         {
             physicSkillInjuryDetection.CheckAttack(EnumSkillType.PhysicAttack, _WeaponTypeByPlayerState, 1, null, (innerOrder, target) =>
             {
-                Debug.Log(innerOrder + " " + target);
+                CalculateNormalActionHurt(_NowIAttributeState, innerOrder, target);
             },
             attackOrder
             );
@@ -186,18 +222,42 @@ public partial class GameState
     }
 
     /// <summary>
+    /// 计算物理普通攻击伤害
+    /// </summary>
+    /// <param name="iAttribute">攻击时的状态数据</param>
+    /// <param name="innerOrder">当前攻击的阶段</param>
+    /// <param name="target">攻击的目标</param>
+    private void CalculateNormalActionHurt(IAttributeState iAttribute, int innerOrder, GameObject target)
+    {
+        if (target == null)
+            return;
+        InteractiveAsMonster interactiveAsMonster = target.GetComponent<InteractiveAsMonster>();
+        if (interactiveAsMonster == null)
+            return;
+        IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
+        {
+            hurtTransferNum = 0,
+            hurtType = EnumHurtType.NormalAction,
+            attributeState = iAttribute,
+            hurtFromObj = iPlayerState.PlayerObj
+        };
+        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+    }
+
+    /// <summary>
     /// 设置物理技能攻击
     /// </summary>
     /// <param name="playerObj">玩家操纵状态对象</param>
-    /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
+    /// <param name="physicsSkillStateStruct">本技能释放时的数据状态</param>
     /// <param name="skillType">技能类型</param>
     /// <param name="weaponTypeByPlayerState">武器类型</param>
-    public void SetPhysicSkillAttack(IPlayerState iPlayerState, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
+    public void SetPhysicSkillAttack(IPlayerState iPlayerState, PhysicsSkillStateStruct physicsSkillStateStruct, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState)
     {
-        if (iPlayerState == null || nowIAttributeState == null)
+        if (iPlayerState == null || physicsSkillStateStruct == null)
             return;
         IPlayerState _iPlayerState = iPlayerState;
-        IAttributeState _NowIAttributeState = nowIAttributeState;
+        PhysicsSkillStateStruct _physicsSkillStateStruct = physicsSkillStateStruct;
         EnumSkillType _SKillType = skillType;
         EnumWeaponTypeByPlayerState _WeaponTypeByPlayerState = weaponTypeByPlayerState;
         PhysicSkillInjuryDetection physicSkillInjuryDetection = _iPlayerState.PhysicSkillInjuryDetection;
@@ -205,9 +265,33 @@ public partial class GameState
         {
             physicSkillInjuryDetection.CheckAttack(_SKillType, _WeaponTypeByPlayerState, 1, null, (innerOrder, target) =>
             {
-                Debug.Log(innerOrder + " " + target);
+                CalculatePhysicSkillHurt(_physicsSkillStateStruct, innerOrder, target);
             });
         }
+    }
+
+    /// <summary>
+    /// 计算物理技能伤害
+    /// </summary>
+    /// <param name="physicsSkillStateStruct">物理技能数据</param>
+    /// <param name="innerOrder">当前攻击的阶段</param>
+    /// <param name="target">攻击的目标</param>
+    private void CalculatePhysicSkillHurt(PhysicsSkillStateStruct physicsSkillStateStruct,int innerOrder, GameObject target)
+    {
+        if (target == null)
+            return ;
+        InteractiveAsMonster interactiveAsMonster = target.GetComponent<InteractiveAsMonster>();
+        if (interactiveAsMonster == null)
+            return ;
+        IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
+        {
+            hurtTransferNum = 0,
+            hurtType = EnumHurtType.PhysicSkill,
+            attributeState = physicsSkillStateStruct.AttributeState,
+            hurtFromObj = iPlayerState.PlayerObj
+        };
+        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
     }
 }
 

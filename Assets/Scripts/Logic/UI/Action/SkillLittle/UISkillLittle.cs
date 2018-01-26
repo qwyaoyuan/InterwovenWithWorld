@@ -36,13 +36,19 @@ public class UISkillLittle : MonoBehaviour
     /// </summary>
     SkillStructData skillStructData;
 
+    /// <summary>
+    /// 技能显示的面板
+    /// </summary>
+    [SerializeField]
+    RectTransform skillsShowPanel;
+
     void Awake()
     {
         skillFocusPath = GetComponent<UIFocusPath>();
         if (skillFocusPath)
         {
             //给每个技能加一个点击事件，处理鼠标点击获取焦点
-            UIFocus[] uiSkillLatticeArray = skillFocusPath.UIFocuesArray;
+            UIFocus[] uiSkillLatticeArray = skillFocusPath.NewUIFocusArray;//skillFocusPath.UIFocuesArray;
             foreach (UIFocus uiSkillLattice in uiSkillLatticeArray)
             {
                 if (!uiSkillLattice)
@@ -61,7 +67,7 @@ public class UISkillLittle : MonoBehaviour
     private void Start()
     {
         //初始化技能控件状态
-        UIFocus[] uiSkillLatticeArray = skillFocusPath.UIFocuesArray;
+        UIFocus[] uiSkillLatticeArray = skillFocusPath.NewUIFocusArray;//skillFocusPath.UIFocuesArray;
         foreach (UIFocus uiSkillLattice in uiSkillLatticeArray)
         {
             if (!uiSkillLattice)
@@ -106,12 +112,13 @@ public class UISkillLittle : MonoBehaviour
         skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         UIFocusSkillLittleLattice.tempUseSkillPoint = 0;
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
+        UIManager.Instance.KeyPressHandle += Instance_KeyPressHandle;
         if (skillFocusPath)
         {
             nowSkillLattice = skillFocusPath.GetFirstFocus() as UIFocusSkillLittleLattice;
             if (nowSkillLattice)
                 nowSkillLattice.SetForcus();
-            UIFocus[] uiSkillLatticeArray = skillFocusPath.UIFocuesArray;
+            UIFocus[] uiSkillLatticeArray = skillFocusPath.NewUIFocusArray; //skillFocusPath.UIFocuesArray;
             foreach (UIFocus uiSkillLattice in uiSkillLatticeArray)
             {
                 if (!uiSkillLattice)
@@ -135,7 +142,7 @@ public class UISkillLittle : MonoBehaviour
         }
         //在退出时保存技能
         bool skillChanged = false;
-        UIFocus[] uiSkillLatticeArray = skillFocusPath.UIFocuesArray;
+        UIFocus[] uiSkillLatticeArray = skillFocusPath.NewUIFocusArray;//skillFocusPath.UIFocuesArray;
         foreach (UIFocus uiSkillLattice in uiSkillLatticeArray)
         {
             UIFocusSkillLittleLattice _uiFocus = uiSkillLattice as UIFocusSkillLittleLattice;
@@ -201,7 +208,7 @@ public class UISkillLittle : MonoBehaviour
             {
                 if (skillFocusPath)
                 {
-                    UIFocusSkillLittleLattice currentSkillLattice = skillFocusPath.GetNextFocus(nowSkillLattice, moveType) as UIFocusSkillLittleLattice;
+                    UIFocusSkillLittleLattice currentSkillLattice = skillFocusPath.GetNewNextFocus(nowSkillLattice, moveType) as UIFocusSkillLittleLattice;//skillFocusPath.GetNextFocus(nowSkillLattice, moveType) as UIFocusSkillLittleLattice;
                     if (currentSkillLattice != null && !object.Equals(currentSkillLattice, nowSkillLattice))
                     {
                         nowSkillLattice.LostForcus();
@@ -235,6 +242,34 @@ public class UISkillLittle : MonoBehaviour
                     break;
 
             }
+    }
+
+    /// <summary>
+    /// 接收持续按下输入
+    /// </summary>
+    /// <param name="keyType"></param>
+    /// <param name="value"></param>
+    private void Instance_KeyPressHandle(UIManager.KeyType keyType, Vector2 value)
+    {
+        if (keyType == UIManager.KeyType.RIGHT_ROCKER)
+        {
+            float x = -value.x * 50;//大于0表示向右推摇杆
+            float y = -value.y * 50;//大于0表示向上推摇杆
+            if (skillsShowPanel != null)
+            {
+                float maxX = skillsShowPanel.offsetMax.x + x;
+                float minX = skillsShowPanel.offsetMin.x + x;
+                if (maxX < 0 || minX > 0)
+                    x = 0;
+                float maxY = skillsShowPanel.offsetMax.y + y;
+                float minY = skillsShowPanel.offsetMin.y + y;
+                if (maxY < 0 || minY > 0)
+                    y = 0;
+                skillsShowPanel.offsetMax += new Vector2(x, y);
+                skillsShowPanel.offsetMin += new Vector2(x, y);
+
+            }
+        }
     }
 
     /// <summary>
@@ -281,7 +316,7 @@ public class UISkillLittle : MonoBehaviour
                 skillZones = skillStructData.SearchSkillDatas(temp => temp.skillType == skillType).FirstOrDefault().skillZones;
             }
             catch { }
-            var tempZonePoints = skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
+            var tempZonePoints = skillFocusPath.NewUIFocusArray.Select(temp=>temp as UIFocusSkillLittleLattice)// skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
                 .Where(temp => temp != null)//从集合中便利所有控件
                 .Select(temp =>//从中选出控件代表的技能以及该技能所在的组
                 new
@@ -323,7 +358,7 @@ public class UISkillLittle : MonoBehaviour
             UIFocusSkillLittleLattice.zoneMustPointDic = new Dictionary<EnumSkillZone, int>();
         UIFocusSkillLittleLattice.skillMustPointDic.Clear();
         UIFocusSkillLittleLattice.zoneMustPointDic.Clear();
-        var tempStructData = skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
+        var tempStructData = skillFocusPath.NewUIFocusArray.Select(temp=>temp as UIFocusSkillLittleLattice)// skillFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillLittleLattice)
             .Where(temp => temp.TempPoint > 0)
             .Select(temp => (EnumSkillType)temp.skillID)
             .Select(temp => skillStructData.SearchSkillDatas(tempSkill => tempSkill.skillType == temp).FirstOrDefault())

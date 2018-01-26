@@ -109,7 +109,7 @@ public class UIEntrance : MonoBehaviour
         {
             Action<UIFocusPath.MoveType> ThisAction = (moveType) =>
             {
-                UIFocus next = uiFocusPath.GetNextFocus(nowFocus, moveType, true);
+                UIFocus next = uiFocusPath.GetNewNextFocus(nowFocus, moveType);// uiFocusPath.GetNextFocus(nowFocus, moveType, true);
                 if (next)
                 {
                     nowFocus = next;
@@ -160,7 +160,7 @@ public class UIEntrance : MonoBehaviour
             //判断键位
             Action<UIFocusPath.MoveType> MoveFocusAction = (moveType) =>
             {
-                UIFocus next = uiFocusPath.GetNextFocus(nowFocus, moveType, true);
+                UIFocus next = uiFocusPath.GetNewNextFocus(nowFocus, moveType);// uiFocusPath.GetNextFocus(nowFocus, moveType, true);
                 if (next)
                 {
                     nowFocus = next;
@@ -172,10 +172,17 @@ public class UIEntrance : MonoBehaviour
                 case UIManager.KeyType.A:
                     if (nowFocus)
                     {
-                        Button nowButton = nowFocus.GetComponent<Button>();
-                        if (nowButton)
+                        //Button nowButton = nowFocus.GetComponent<Button>();
+                        //if (nowButton)
+                        //{
+                        //    EventTrigger eventTrigger = nowButton.GetComponent<EventTrigger>();
+                        //    eventTrigger.OnPointerClick(new PointerEventData(EventSystem.current));
+                        //    //nowButton.onClick.Invoke();
+                        //}
+                        UIFocusButton uiFocusButton = nowFocus as UIFocusButton;
+                        if(uiFocusButton)
                         {
-                            nowButton.onClick.Invoke();
+                            uiFocusButton.ClickThisButton();
                         }
                     }
                     break;
@@ -273,10 +280,10 @@ public class UIEntrance : MonoBehaviour
             KeyContactData keyContactData = DataCenter.Instance.GetEntity<KeyContactData>();
             //设置采集键
             Sprite collectSprite = SpriteManager.GetSrpite("1:1_183");
-            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "采集", Sprite = collectSprite }, EnumKeyContactDataZone.Collect);
+            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "采集", Sprite = collectSprite, id = 1 }, EnumKeyContactDataZone.Collect);
             //设置对话键
             Sprite talkSprite = SpriteManager.GetSrpite("1:1_165");
-            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交谈", Sprite = talkSprite }, EnumKeyContactDataZone.Dialogue);
+            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交谈", Sprite = talkSprite, id = 2 }, EnumKeyContactDataZone.Dialogue);
             //再次保存
             DataCenter.Instance.Save(1, "存档", "默认存档");
             //获取数据并切换场景
@@ -340,12 +347,19 @@ public class UIEntrance : MonoBehaviour
 
         PlayGoods playGoods = new PlayGoods(playGoodsID, goods, GoodsLocation.Package);
         playerState.PlayerAllGoods.Add(playGoods);
-        /**********/
+        playerState.Sprice = 10000;
+        /*****测试代码结束*****/
+
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))
         {
             playerState.Scene = "中央王国";
             playerState.Location = new Vector3(813.9f, 36.64f, 909.7f);
+        }
+        if (playerState.StreetID <= 0)
+        {
+            playerState.StreetID = 2;
+            playerState.StreetScene = "中央王国";
         }
         isLoadedScene = true;
         IGameState iGameState = GameState.Instance.GetEntity<IGameState>();

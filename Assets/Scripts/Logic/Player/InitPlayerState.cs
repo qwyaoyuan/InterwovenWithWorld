@@ -24,31 +24,32 @@ public class InitPlayerState : MonoBehaviour
         GameState.Instance.MoveSpeed = 8;
         GameState.Instance.CameraRotateSpeed = new Vector2(50, 50);
         GameState.Instance.CameraYAngleRange = new Vector2(20, 160);
+        GameState.Instance.CameraDistanceOfPlayer = 10;
+        GameState.Instance.CameraArmOffsetZ = 1;
+        GameState.Instance.CameraPosOffsetY = 7;
+        GameState.Instance.CameraPosOffsetZ = 6;
+        GameState.Instance.ViewModel = EnumViewModel.Free;//自由摄像机模式
         GameState.Instance.GameRunType = EnumGameRunType.Safe;
         GameState.Instance.PhysicSkillInjuryDetection = physicSkillInjuryDetection;
     }
 
-    //private void Start()
-    //{
-    //    characterController = GetComponent<CharacterController>();
-    //}
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //characterController.Move(Vector3.down * Time.deltaTime * 10);//自身持续添加重力
-    //float horizontal = Input.GetAxis("Horizontal");//水平
-    //float vertical = Input.GetAxis("Vertical");//垂直
-    //MoveManager.Instance.Move((new Vector2(horizontal, vertical)).normalized);
-    //float mouseX = Input.GetAxis("Mouse X");
-    //float mouseY = Input.GetAxis("Mouse Y");
-    //MoveManager.Instance.View(new Vector2(-mouseX, -mouseY));
+    private void Update()
+    {
 
-    //if (Input.GetKeyDown(KeyCode.D))
-    //{
-    //    BuffState buffState = GameState.Instance.Xuanyun;
-    //    buffState.Time = buffState.Time > 0 ? 0 : 1;
-    //    GameState.Instance.Xuanyun = buffState;
-    //}
-    //}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            GameState.Instance.ViewModel = EnumViewModel.Solid;
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            GameState.Instance.HP += 100;
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GameState.Instance.HP -= 100;
+        }
+    }
+
+ 
 }

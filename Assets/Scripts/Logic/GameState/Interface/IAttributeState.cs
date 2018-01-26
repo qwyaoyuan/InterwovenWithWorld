@@ -58,6 +58,22 @@ public interface IAttributeState : IBaseState
     /// </summary>
     float MaxUseMana { get; set; }
     /// <summary>
+    /// 精神力计量
+    /// </summary>
+    float Mentality { get; set; }
+    /// <summary>
+    /// 最大精神力计量
+    /// </summary>
+    float MaxMentality { get; set; }
+    /// <summary>
+    /// 心志力计量
+    /// </summary>
+    float MindTraining { get; set; }
+    /// <summary>
+    /// 最大心志力计量
+    /// </summary>
+    float MaxMindTraining { get; set; }
+    /// <summary>
     /// 视野范围
     /// </summary>
     float View { get; set; }
@@ -123,6 +139,10 @@ public interface IAttributeState : IBaseState
     /// 物理攻击力
     /// </summary>
     float PhysicsAttacking { get; set; }
+    /// <summary>
+    /// 物理最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
+    /// </summary>
+    float PhysicsMinHurt { get; set; }
     /// <summary>
     /// 魔法附加伤害 
     /// </summary>

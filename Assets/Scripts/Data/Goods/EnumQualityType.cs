@@ -1,36 +1,36 @@
-/// <summary>
-/// нОф╥ф╥жй
+О╩©/// <summary>
+/// Г┴╘Е⌠│Е⌠│Х╢╗
 /// </summary>
 public enum EnumQualityType
 {
     /// <summary>
-    /// ╟ви╚
+    /// Г≥╫Х┴╡ 0Ф²║
     /// </summary>
-    [FieldExplan("фум╗ё╗╟ви╚ё╘")]
+    [FieldExplan("Ф≥╝И─ О╪┬Г≥╫Х┴╡О╪┴")]
     White,
     /// <summary>
-    /// бли╚
+    /// Г╩©Х┴╡ 1Ф²║
     /// </summary>
-    [FieldExplan("бли╚ё╗╨╠╪Шё╘")]
+    [FieldExplan("Г╩©Х┴╡О╪┬Г╫∙Х╖│О╪┴")]
     Green,
     /// <summary>
-    /// ю╤и╚
+    /// Х⌠²Х┴╡ 2Ф²║
     /// </summary>
-    [FieldExplan("ю╤и╚ё╗о║спё╘")]
+    [FieldExplan("Х⌠²Х┴╡О╪┬Г╗─Ф°┴О╪┴")]
     Blue,
     /// <summary>
-    /// вои╚
+    /// Г╢╚Х┴╡ 3Ф²║
     /// </summary>
-    [FieldExplan("вои╚ё╗╢╚к╣ё╘")]
+    [FieldExplan("Г╢╚Х┴╡О╪┬Д╪═Х╞╢О╪┴")]
     Purple,
     /// <summary>
-    /// ╩фи╚
+    /// И╩└Х┴╡ 4Ф²║
     /// </summary>
-    [FieldExplan("╩фи╚ё╗й╥й╚ё╘")]
+    [FieldExplan("И╩└Х┴╡О╪┬Е▐╡Х╞≈О╪┴")]
     Yellow,
     /// <summary>
-    /// ╨Ли╚ - н╗р╩╣ю╬ъ
+    /// Г╨╒Х┴╡ - Е■╞Д╦─И│⌠Е┘╥
     /// </summary>
-    [FieldExplan("╨Ли╚ё╗н╗р╩ё╘")]
+    [FieldExplan("Г╨╒Х┴╡О╪┬Е■╞Д╦─О╪┴")]
     Red
 }

@@ -174,6 +174,7 @@ namespace TaskMap
                 nodeRelationShip = new NodeRelationShip();
                 nodeRelationShip.StartID = id1;
                 nodeRelationShip.EndID = id2;
+                nodeRelationShip.JudgingStatus = Enums.EnumTaskProgress.Sucessed;
                 nodeRelationShipList.Add(nodeRelationShip);
             }
             return nodeRelationShip;
@@ -202,6 +203,7 @@ namespace TaskMap
                         relationShipZone = new RelationShipZone();
                         relationShipZone.StartIDList = startZone;
                         relationShipZone.EndIDList = endZone;
+                        relationShipZone.JudgingStatus = Enums.EnumTaskProgress.Sucessed;
                         relationShipZone.EditorColor = Color.green;
                         relationShipZoneList.Add(relationShipZone);
                         return true;
@@ -386,24 +388,87 @@ namespace TaskMap
                                 break;
                             case Enums.EnumTaskProgress.NoTake://未接取的任务放入结果集合
                                 bool relationShipPass = true;
-                                //判断该任务的前置是否完成
-                                NodeRelationShip[] nodeRelationShips = GetNodeRelationShip(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Predecessor && temp.EndID == tempNode.ID).ToArray();
-                                //检测是否所有的前置都完成了
-                                foreach (NodeRelationShip nodeRelationShip in nodeRelationShips)
+                                //判断互斥任务状态
+                                NodeRelationShip[] nodeRelationShips_Mutex = GetNodeRelationShip(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Mutex).ToArray();
+                                //检测前置是否完成或者执行中(判断条件为执行中),则不通过检测
+                                foreach (NodeRelationShip nodeRelationShip in nodeRelationShips_Mutex)
                                 {
-                                    MapElement<TaskInfoStruct> targetNode = GetElement(nodeRelationShip.StartID);
-                                    if (targetNode.Value.TaskProgress != Enums.EnumTaskProgress.Sucessed)
+                                    MapElement<TaskInfoStruct> target = GetElement(nodeRelationShip.StartID == tempNode.ID ? nodeRelationShip.EndID : nodeRelationShip.StartID);
+                                    if (target.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (target.Value.TaskProgress == Enums.EnumTaskProgress.Started && nodeRelationShip.JudgingStatus == Enums.EnumTaskProgress.Started))
                                     {
                                         relationShipPass = false;
                                         break;
                                     }
                                 }
-                                //检测前置组是否通过
-                                RelationShipZone[] relationShipZones = GetRelationShipZone(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Predecessor && temp.EndIDList.Contains(tempNode.ID)).ToArray();
-                                foreach (RelationShipZone relationShipZone in relationShipZones)
+                                //判断该任务的前置是否完成
+                                NodeRelationShip[] nodeRelationShips_Predecessor = GetNodeRelationShip(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Predecessor && temp.EndID == tempNode.ID).ToArray();
+                                //检测是否所有的前置都完成了
+                                foreach (NodeRelationShip nodeRelationShip in nodeRelationShips_Predecessor)
                                 {
-                                    int passCount = relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp=>temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed);
+                                    MapElement<TaskInfoStruct> targetNode = GetElement(nodeRelationShip.StartID);
+                                    //如果前置不是(完成或者执行中(判断条件为执行中))则不通过检测
+                                    if (!(targetNode.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (targetNode.Value.TaskProgress == Enums.EnumTaskProgress.Started && nodeRelationShip.JudgingStatus == Enums.EnumTaskProgress.Started)))
+                                    {
+                                        relationShipPass = false;
+                                        break;
+                                    }
+                                }
+                                //判断该任务的前置失败是否没有通过
+                                NodeRelationShip[] nodeRelationShips_SingleExclusion = GetNodeRelationShip(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.SingleExclusion && temp.EndID == tempNode.ID).ToArray();
+                                //检测前置失败的前是是否没有完成或者已经接取(根据内部的bool变量确定)
+                                foreach (NodeRelationShip nodeRelationShip in nodeRelationShips_SingleExclusion)
+                                {
+                                    MapElement<TaskInfoStruct> targetNode = GetElement(nodeRelationShip.StartID);
+                                    //如果前置失败的任务成功了则该任务一定是失败的,不用选取;如果前置失败的任务正在执行并且检测条件也是正在执行,则不用选取
+                                    if (targetNode.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (targetNode.Value.TaskProgress == Enums.EnumTaskProgress.Started && nodeRelationShip.JudgingStatus == Enums.EnumTaskProgress.Started))
+                                    {
+                                        relationShipPass = false;
+                                        break;
+                                    }
+                                }
+                                //检测互斥组是否没有通过
+                                RelationShipZone[] relationShipZones_Mutex = GetRelationShipZone(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Mutex).ToArray();
+                                //检测互斥组是否没有完成或者已经接取(根据内部的bool变量确定)
+                                foreach (RelationShipZone relationShipZone in relationShipZones_Mutex)
+                                {
+                                    bool isStart = relationShipZone.StartIDList.Contains(tempNode.ID);
+                                    List<int> checkIDList = isStart ? relationShipZone.EndIDList : relationShipZone.StartIDList;
+                                    int checkCount = isStart ? relationShipZone.EndPassCount : relationShipZone.StartPassCount;
+                                    MapElement<TaskInfoStruct>[] checkNodes = checkIDList.Select(temp => GetElement(temp)).ToArray();
+                                    int passCount = checkNodes.Where(temp => temp != null).Count(temp =>
+                                       temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (temp.Value.TaskProgress == Enums.EnumTaskProgress.Started && relationShipZone.JudgingStatus == Enums.EnumTaskProgress.Started)
+                                    );
+                                    //如果互斥任务组通过了检测,则该任务不可接取
+                                    if (passCount >= checkCount)
+                                    {
+                                        relationShipPass = false;
+                                        break;
+                                    }
+                                }
+                                //检测前置组是否没有通过
+                                RelationShipZone[] relationShipZones_Predecessor = GetRelationShipZone(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Predecessor && temp.EndIDList.Contains(tempNode.ID)).ToArray();
+                                foreach (RelationShipZone relationShipZone in relationShipZones_Predecessor)
+                                {
+                                    //获取前置组中完成后者正在执行(判断条件为执行中)的任务数量
+                                    int passCount = relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp =>
+                                        temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (temp.Value.TaskProgress == Enums.EnumTaskProgress.Started && relationShipZone.JudgingStatus == Enums.EnumTaskProgress.Started)
+                                    );
+                                    //如果数量小于组要求的通过数则不通过检测
                                     if (passCount < relationShipZone.StartPassCount)
+                                    {
+                                        relationShipPass = false;
+                                        break;
+                                    }
+                                }
+                                //检测前置失败组是否没有通过
+                                RelationShipZone[] relationShipZones_SingleExclusion = GetRelationShipZone(tempNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.SingleExclusion && temp.EndIDList.Contains(tempNode.ID)).ToArray();
+                                foreach (RelationShipZone relationShipZone in relationShipZones_SingleExclusion)
+                                {
+                                    //如果前置失败的任务成功了则该组一定是失败的,不用选取;如果前置失败的任务正在执行并且检测条件也是正在执行,则不用选取 
+                                    int passCount = relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp =>
+                                    temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed || (temp.Value.TaskProgress == Enums.EnumTaskProgress.Started && relationShipZone.JudgingStatus == Enums.EnumTaskProgress.Started)
+                                    );
+                                    if (passCount >= relationShipZone.StartPassCount)
                                     {
                                         relationShipPass = false;
                                         break;
@@ -412,7 +477,10 @@ namespace TaskMap
                                 if (relationShipPass)
                                     resultList.Add(tempNode);
                                 break;
-                            default://失败与正在执行的不做处理
+                            case Enums.EnumTaskProgress.Started:
+                                resultList.Add(tempNode);
+                                break;
+                            default://失败的不做处理
                                 break;
                         }
                         //便利过的放入便利后的集合
@@ -445,7 +513,7 @@ namespace TaskMap
                     if (taskInfoNode.Value.TaskProgress == Enums.EnumTaskProgress.Started)
                     {
                         taskInfoNode.Value.TaskProgress = taskProgress;
-                        //互斥任务设置为faild
+                        //互斥任务或前置失败设置为faild
                         NodeRelationShip[] nodeRelationShips = GetNodeRelationShip(taskInfoNode.ID);
                         foreach (NodeRelationShip nodeRelationShip in nodeRelationShips)
                         {
@@ -456,9 +524,15 @@ namespace TaskMap
                                 if (targetNode != null)
                                     targetNode.Value.TaskProgress = Enums.EnumTaskProgress.Failed;//互斥任务设置为失败
                             }
+                            else if (nodeRelationShip.RelationShip == EnumNodeRelationShip.SingleExclusion && nodeRelationShip.StartID == taskInfoNode.ID)//只有自己是前置的任务时才可以
+                            {
+                                int targetID = nodeRelationShip.EndID;
+                                MapElement<TaskInfoStruct> targetNode = GetElement(targetID);
+                                if (targetNode != null)
+                                    targetNode.Value.TaskProgress = Enums.EnumTaskProgress.Failed;//前置失败任务设置为失败
+                            }
                         }
-                        //组互斥则设置互斥的组中任务为faild
-                        RelationShipZone[] relationShipZones = GetRelationShipZone(taskInfoNode.ID).Where(temp=>temp.RelationShip == EnumNodeRelationShip.Mutex).ToArray();
+
                         Action<IEnumerable<MapElement<TaskInfoStruct>>> SetTaskNodesFialdAction = (taskNodes) =>
                         {
                             foreach (MapElement<TaskInfoStruct> taskNode in taskNodes)
@@ -467,17 +541,41 @@ namespace TaskMap
                                     taskNode.Value.TaskProgress = Enums.EnumTaskProgress.Failed;
                             }
                         };
-                        foreach (RelationShipZone relationShipZone in relationShipZones)
+                        //组互斥则设置互斥的组中任务为faild
+                        RelationShipZone[] relationShipZones_Mutex = GetRelationShipZone(taskInfoNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.Mutex).ToArray();
+                        foreach (RelationShipZone relationShipZone in relationShipZones_Mutex)
                         {
                             if (relationShipZone.StartIDList.Contains(taskInfoNode.ID))//设置end组的任务为faild
                             {
-                                IEnumerable<MapElement<TaskInfoStruct>> tempRemoveTaskNodes = relationShipZone.EndIDList.Select(temp => GetElement(temp)).Where(temp => temp != null);
-                                SetTaskNodesFialdAction(tempRemoveTaskNodes);
+                                //组数量检测通过
+                                if (relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp => temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed) >= relationShipZone.StartPassCount)
+                                {
+                                    IEnumerable<MapElement<TaskInfoStruct>> tempRemoveTaskNodes = relationShipZone.EndIDList.Select(temp => GetElement(temp)).Where(temp => temp != null);
+                                    SetTaskNodesFialdAction(tempRemoveTaskNodes);
+                                }
                             }
                             else//设置start组的任务为faild
                             {
-                                IEnumerable<MapElement<TaskInfoStruct>> tempRemoveTaskNodes = relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null);
-                                SetTaskNodesFialdAction(tempRemoveTaskNodes);
+                                //组数量检测通过
+                                if (relationShipZone.EndIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp => temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed) >= relationShipZone.EndPassCount)
+                                {
+                                    IEnumerable<MapElement<TaskInfoStruct>> tempRemoveTaskNodes = relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null);
+                                    SetTaskNodesFialdAction(tempRemoveTaskNodes);
+                                }
+                            }
+                        }
+                        //组前置失败则设置后置的组中任务为faild
+                        RelationShipZone[] relationShipZones_SingleExclusion = GetRelationShipZone(taskInfoNode.ID).Where(temp => temp.RelationShip == EnumNodeRelationShip.SingleExclusion).ToArray();
+                        foreach (RelationShipZone relationShipZone in relationShipZones_SingleExclusion)
+                        {
+                            if (relationShipZone.StartIDList.Contains(taskInfoNode.ID))//前置组存在该id 
+                            {
+                                //组数量检测通过
+                                if (relationShipZone.StartIDList.Select(temp => GetElement(temp)).Where(temp => temp != null).Count(temp => temp.Value.TaskProgress == Enums.EnumTaskProgress.Sucessed) >= relationShipZone.StartPassCount)
+                                {
+                                    IEnumerable<MapElement<TaskInfoStruct>> tempRemoveTaskNodes = relationShipZone.EndIDList.Select(temp => GetElement(temp)).Where(temp => temp != null);
+                                    SetTaskNodesFialdAction(tempRemoveTaskNodes);
+                                }
                             }
                         }
                         LastFrameNodes = null;
@@ -518,6 +616,12 @@ namespace TaskMap
         /// </summary>
         public EnumNodeRelationShip RelationShip;
 
+        /// <summary>
+        /// 判断状态(主要用于互斥节点,前置和单项排斥节点不受该状态影响)
+        /// 在修改互斥的失败时,用的还是任务成功时的修改状态,但是在选择时,用的则是当前状态(只有成功或接取两种状态)
+        /// </summary>
+        public Enums.EnumTaskProgress JudgingStatus;
+
     }
 
     /// <summary>
@@ -548,6 +652,12 @@ namespace TaskMap
         /// 如果是前置,第一个节点组是第二个节点组的前置
         /// </summary>
         public EnumNodeRelationShip RelationShip;
+
+        /// <summary>
+        /// 判断状态(主要用于互斥节点,前置和单项排斥节点不受该状态影响)
+        /// 在修改互斥的失败时,用的还是任务成功时的修改状态,但是在选择时,用的则是当前状态(只有成功或接取两种状态)
+        /// </summary>
+        public Enums.EnumTaskProgress JudgingStatus;
 
         /// <summary>
         /// 颜色的标尺
@@ -587,10 +697,17 @@ namespace TaskMap
     {
         /// <summary>
         /// 互斥
+        /// 一个节点完成则另一个直接失败,反向亦然
         /// </summary>
         Mutex,
         /// <summary>
+        /// 单项排斥
+        /// 一个节点完成则另一个如果还未完成则失败,只能单项,反向不适用
+        /// </summary>
+        SingleExclusion,
+        /// <summary>
         /// 前置
+        /// 一个节点完成后另一个节点才可以开始,只能单项,反向不适用
         /// </summary>
         Predecessor
 

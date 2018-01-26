@@ -179,5 +179,5 @@ public class SkillManager : IInput
 
     }
 
-
+    public void SetStep(int step) { }
 }

@@ -217,7 +217,8 @@ public class UISkillCombine : MonoBehaviour
                         if (nowUISkilCombineLattice)
                         {
                             UIFocusSkillCombineLattice tempUIFocuesSkillCombineLattice =
-                                uiFocusPath.GetNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
+                                uiFocusPath.GetNewNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
+                                //uiFocusPath.GetNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
                             if (tempUIFocuesSkillCombineLattice)
                             {
                                 nowUISkilCombineLattice.LostForcus();
@@ -330,7 +331,7 @@ public class UISkillCombine : MonoBehaviour
     {
         //需要修改技能组合框的图标以及显示该技能的视频（如果没有则不播放）
         SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => skillTypes.Contains(temp.skillType));
-        UIFocusSkillCombineLattice[] uiFocus = uiFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillCombineLattice).ToArray();
+        UIFocusSkillCombineLattice[] uiFocus = uiFocusPath.NewUIFocusArray.Select(temp => temp as UIFocusSkillCombineLattice).ToArray();//uiFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillCombineLattice).ToArray();
         for (int i = 0; i < uiFocus.Length; i++)
         {
             if (thisUsedSkills.Length > i)

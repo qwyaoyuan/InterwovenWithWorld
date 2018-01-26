@@ -34,6 +34,21 @@ public class InterludesManager : IEntrance
                 Debug.Log("该任务没有过场动画");
             }
         }
+        //完成任务时调用
+        else if (string.Equals(targetName, GameState.Instance.GetFieldName<INowTaskState, int>(temp => temp.OverTaskID)))
+        {
+            InterludesData interludesData = DataCenter.Instance.GetMetaData<InterludesData>();
+            InterludesItemStruct interludesItemStruct = interludesData.GetInterludesItemStructByTaskID(iNowTaskState.OverTaskID, InterludesItemStruct.EnumInterludesShowTime.Over);
+            if (interludesItemStruct != null)
+            {
+                throw new Exception("未实现,需要开始进行过场动画");
+            }
+            else
+            {
+                Debug.Log("该任务没有过场动画");
+            }
+        }
+
     }
 
     public void Update()

@@ -11,12 +11,22 @@ class InteractiveAsMonster : MonoBehaviour, IObjInteractive
 {
     public T GetEntity<T>() where T : IBaseState
     {
-        throw new NotImplementedException();
+        return default(T);
     }
 
+    /// <summary>
+    /// 造成伤害
+    /// </summary>
+    /// <param name="attackHurtStruct"></param>
     public void GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
     {
-        throw new NotImplementedException();
+        MonsterControl monsterControl = GetComponent<MonsterControl>();
+        if (monsterControl != null 
+            && monsterControl.monsterDataInfo != null 
+            && monsterControl.monsterDataInfo.MonsterBaseAttribute != null)
+        {
+            
+        }
     }
 }
 

@@ -38,6 +38,11 @@ public interface IInput
     /// </summary>
     /// <param name="view"></param>
     void View(Vector2 view);
+    /// <summary>
+    /// 设置当前步进
+    /// </summary>
+    /// <param name="step">步进值</param>
+    void SetStep(int step);
 }
 
 

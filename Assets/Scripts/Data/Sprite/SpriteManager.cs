@@ -119,6 +119,7 @@ public class SpriteManager
     /// <returns></returns>
     public static string GetName(Sprite sprite)
     {
+
         if (!loaded)
             Load();
         string name = strToSpriteDic.Where(temp => temp.Value == sprite).Select(temp => temp.Key).FirstOrDefault();

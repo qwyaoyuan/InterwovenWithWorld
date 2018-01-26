@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -81,6 +82,16 @@ public class UIBigMap : MonoBehaviour
     /// </summary>
     RuntimeTasksData runTimeTasksData;
 
+    /// <summary>
+    /// 是否可以传送
+    /// </summary>
+    bool canTransport;
+
+    /// <summary>
+    /// 开始时第一次的按键抬起(此时不可以使用)
+    /// </summary>
+    bool fisrtKeyUP;
+
     private void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
@@ -101,6 +112,7 @@ public class UIBigMap : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
+        fisrtKeyUP = false;
         iGameState = GameState.Instance.GetEntity<IGameState>();
         iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         iMapState = GameState.Instance.GetEntity<IMapState>();
@@ -108,9 +120,20 @@ public class UIBigMap : MonoBehaviour
         npcData = DataCenter.Instance.GetMetaData<NPCData>();
         runTimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
+        UIManager.Instance.KeyPressHandle += Instance_KeyPressHandle;
         bigMapOperateState = EnumBigMapOperateState.OperateMap;
         showSettingPanel.gameObject.SetActive(false);
-        ResetMap();
+        ResetSceneDropDown();
+        ResetMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene, iGameState.SceneName);
+        //判断是否是点击路牌打开的该界面.如果是才可以传送
+        IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+        NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, iInteractiveState.ClickInteractiveNPCID);
+        if (npcDataInfo != null && npcDataInfo.NPCType == EnumNPCType.Street)
+            canTransport = true;
+        else
+        {
+            canTransport = false;
+        }
     }
 
     /// <summary>
@@ -119,19 +142,53 @@ public class UIBigMap : MonoBehaviour
     private void OnDisable()
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
+        UIManager.Instance.KeyPressHandle -= Instance_KeyPressHandle;
     }
+
+    /// <summary>
+    /// 重设场景下拉列表
+    /// </summary>
+    private void ResetSceneDropDown()
+    {
+        UIFocusDropdown thisFocus = uiFocusPath.NewUIFocusArray.Where(temp => string.Equals(temp.Tag, "SceneDropDown")).FirstOrDefault() as UIFocusDropdown;
+        if (thisFocus != null)
+        {
+            if (thisFocus.dropdown.options == null)
+                thisFocus.dropdown.options = new List<UnityEngine.UI.Dropdown.OptionData>();
+            thisFocus.dropdown.options.Clear();
+            SceneData sceneData = DataCenter.Instance.GetMetaData<SceneData>();
+            SceneDataInfo[] sceneDataInfos = sceneData.GetAllSceneData();
+            List<string> sceneNameList = sceneDataInfos.Where(temp => temp.SceneAction == EnumSceneAction.Game).Select(temp => temp.SceneName).ToList();
+            sceneNameList.ForEach(temp =>
+              thisFocus.dropdown.options.Add(new UnityEngine.UI.Dropdown.OptionData(temp))//后期需要添加多语言
+            );
+            int index = sceneNameList.IndexOf(iGameState.SceneName);
+            if (index >= 0)
+            {
+                thisFocus.dropdown.captionText.text = sceneNameList[index];
+                thisFocus.dropdown.value = index;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 地图当前加载的场景名
+    /// </summary>
+    string nowSceneName = "";
 
     /// <summary>
     /// 重新设置地图
     /// </summary>
-    private void ResetMap()
+    private void ResetMap(Sprite mapBackSprite, Sprite maskMapSprite, Rect mapRectAtScene, string sceneName)
     {
+        nowSceneName = sceneName;
         //根据场景初始化地图
-        uiMapControl.InitMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene);
+        uiMapControl.InitMap(mapBackSprite, maskMapSprite, mapRectAtScene);
         //重绘全地图的图标
         uiMapIconStructList = new List<UIMapIconStruct>();
         //npc与路牌
-        NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(iGameState.SceneName);
+        NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(sceneName);
         foreach (NPCDataInfo npcDataInfo in npcDataInfos)
         {
             UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(npcDataInfo.NPCSprite, new Vector2(20, 20), new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
@@ -145,10 +202,10 @@ public class UIBigMap : MonoBehaviour
         }
         //任务
         //等待接取的任务
-        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(iGameState.SceneName);
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Wait = iNowTaskState.GetWaitTask(sceneName);
         foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Wait)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId);//接取任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(sceneName, runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId);//接取任务的NPC
             if (npcDataInfo == null)
                 continue;
             //需要传入一个金色的叹号
@@ -164,7 +221,7 @@ public class UIBigMap : MonoBehaviour
             uiMapIconStructList.Add(uiMapIconStruct);
         }
         //正在执行的任务
-        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Start = iNowTaskState.GetStartTask(iGameState.SceneName);
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_Start = iNowTaskState.GetStartTask(sceneName);
         foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Start)
         {
             Vector2 targetPosition = Vector2.zero;
@@ -172,7 +229,7 @@ public class UIBigMap : MonoBehaviour
                 targetPosition = new Vector2(runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation.ArrivedCenterPos.x, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation.ArrivedCenterPos.z);
             else
             {
-                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
+                NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(sceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
                 if (npcDataInfo != null)
                     targetPosition = new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z);
             }
@@ -188,10 +245,10 @@ public class UIBigMap : MonoBehaviour
             uiMapIconStructList.Add(uiMapIconStruct);
         }
         //条件达成但是没有交付的任务
-        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(iGameState.SceneName);
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos_End = iNowTaskState.GetStartTask(sceneName);
         foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_End)
         {
-            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
+            NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(sceneName, runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId);//交付任务的NPC
             if (npcDataInfo == null)
                 continue;
             //需要传入一个金色的问号
@@ -206,18 +263,54 @@ public class UIBigMap : MonoBehaviour
             uiMapIconStruct.value = innerValue;
             uiMapIconStructList.Add(uiMapIconStruct);
         }
-        //根据玩家位置设置地图中心位置
-        Vector2 playerLocation = new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z);
-        uiMapControl.MoveToTerrainPoint(playerLocation);
+        if (string.Equals(iGameState.SceneName, sceneName))//如果这个场景是玩家所在的场景则设置场景的中心位置为玩家的位置
+        {
+            //根据玩家位置设置地图中心位置
+            Vector2 playerLocation = new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z);
+            uiMapControl.MoveToTerrainPoint(playerLocation);
+        }
+        else
+        {
+            uiMapControl.MoveToTerrainPoint(mapRectAtScene.center);
+        }
     }
 
     /// <summary>
-    /// 按键检测
+    /// 按键检测(主要是左摇杆和右摇杆)
+    /// </summary>
+    /// <param name="keyType"></param>
+    /// <param name="rockValue"></param>
+    private void Instance_KeyPressHandle(UIManager.KeyType keyType, Vector2 rockValue)
+    {
+        switch (bigMapOperateState)
+        {
+            case EnumBigMapOperateState.OperateMap:
+                switch (keyType)
+                {
+                    case UIManager.KeyType.LEFT_ROCKER:
+                        uiMapControl.MoveHandleMapPixel(rockValue * 500);
+                        //uiMapControl.MoveHandleImagePixel(rockValue * 50);
+                        break;
+                    case UIManager.KeyType.RIGHT_ROCKER:
+                        uiMapControl.Scale -= rockValue.y * 0.01f;
+                        break;
+                }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 按键检测(功能键)
     /// </summary>
     /// <param name="keyType"></param>
     /// <param name="rockValue"></param>
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
+        if (!fisrtKeyUP)
+        {
+            fisrtKeyUP = true;
+            return;
+        }
         switch (bigMapOperateState)
         {
             case EnumBigMapOperateState.OperateMap://操作地图
@@ -235,9 +328,6 @@ public class UIBigMap : MonoBehaviour
                         if (nowUIFocus)
                             nowUIFocus.SetForcus();
                         break;
-                    case UIManager.KeyType.LEFT_ROCKER:
-                        uiMapControl.MoveHandle(rockValue);
-                        break;
                 }
                 break;
             case EnumBigMapOperateState.CheckSetting://操作设置
@@ -248,7 +338,7 @@ public class UIBigMap : MonoBehaviour
                 {
                     Action<UIFocusPath.MoveType> MoveUIFocusAction = (moveType) =>
                     {
-                        UIFocus nextUIFocus = uiFocusPath.GetNextFocus(nowUIFocus, moveType);
+                        UIFocus nextUIFocus = uiFocusPath.GetNewNextFocus(nowUIFocus, moveType);//uiFocusPath.GetNextFocus(nowUIFocus, moveType);
                         if (nextUIFocus != null)
                         {
                             nowUIFocus.LostForcus();
@@ -277,6 +367,17 @@ public class UIBigMap : MonoBehaviour
                         case UIManager.KeyType.RIGHT:
                             MoveUIFocusAction(UIFocusPath.MoveType.RIGHT);
                             break;
+                        case UIManager.KeyType.UP:
+                        case UIManager.KeyType.DOWN:
+                            if (string.Equals(nowUIFocus.Tag, "SceneDropDown"))
+                            {
+                                UIFocusDropdown uiFocusDropDown = nowUIFocus as UIFocusDropdown;
+                                if (uiFocusDropDown != null)
+                                {
+                                    uiFocusDropDown.MoveChild(keyType == UIManager.KeyType.UP ? UIFocusPath.MoveType.UP : UIFocusPath.MoveType.DOWN);
+                                }
+                            }
+                            break;
                     }
                 }
                 break;
@@ -291,6 +392,31 @@ public class UIBigMap : MonoBehaviour
         if (nowUIFocus)
             nowUIFocus.LostForcus();
         bigMapOperateState = EnumBigMapOperateState.OperateMap;
+        //根据当前的设置更新状态
+        UIFocusDropdown thisFocus = uiFocusPath.NewUIFocusArray.Where(temp => string.Equals(temp.Tag, "SceneDropDown")).FirstOrDefault() as UIFocusDropdown;
+        if (thisFocus != null)
+        {
+            int index = thisFocus.dropdown.value;
+            if (index >= 0)
+            {
+                SceneData sceneData = DataCenter.Instance.GetMetaData<SceneData>();
+                SceneDataInfo[] sceneDataInfos = sceneData.GetAllSceneData();
+                List<string> sceneNameList = sceneDataInfos.Where(temp => temp.SceneAction == EnumSceneAction.Game).Select(temp => temp.SceneName).ToList();
+                string selectSceneName = sceneNameList[index];
+                if (!string.Equals(nowSceneName, selectSceneName))//当前地图显示的和选择的场景不一致则重新载入
+                {
+                    MapData mapData = DataCenter.Instance.GetMetaData<MapData>();
+                    MapDataInfo mapDataInfo = mapData[selectSceneName];
+                    if (mapDataInfo != null)
+                    {
+                        mapDataInfo.Load();
+                        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+                        Sprite mapMaskSprite = playerState.GetSceneMapMaskSprite(selectSceneName, mapDataInfo.MapSprite);
+                        ResetMap(mapDataInfo.MapSprite, mapMaskSprite, mapDataInfo.SceneRect, selectSceneName);
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -324,7 +450,7 @@ public class UIBigMap : MonoBehaviour
         {
             try
             {
-                object[] innerValue = (object[])flagIconStruct.value;
+                object[] innerValue = (object[])uiMapIconStruct.value;
                 EnumBigMapIconCheck enumBigMapIconCheck = (EnumBigMapIconCheck)innerValue[0];
                 switch (enumBigMapIconCheck)
                 {
@@ -342,6 +468,7 @@ public class UIBigMap : MonoBehaviour
                         break;
                     case EnumBigMapIconCheck.Street:
                         //传送
+                        if (canTransport)//如果可以传送
                         {
                             NPCDataInfo npcDataInfo = (NPCDataInfo)innerValue[1];
                             iGameState.ChangedScene(npcDataInfo.SceneName, npcDataInfo.NPCLocation + Vector3.one);

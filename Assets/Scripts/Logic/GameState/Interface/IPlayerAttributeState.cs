@@ -46,7 +46,5 @@ public interface IPlayerAttributeState : IAttributeState
     /// <param name="baseAttributeState">玩家的基础状态对象</param>
     /// <param name="skillAttributeStruct">技能属性对象</param>
     void SetIAttributeStateDataBySkillData(IAttributeState iAttributeState, IAttributeState baseAttributeState, SkillAttributeStruct skillAttributeStruct);
-
-
 }
 

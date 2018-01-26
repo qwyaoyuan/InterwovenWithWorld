@@ -38,7 +38,11 @@ public class UIQuery : MonoBehaviour
     /// </summary>
     [SerializeField]
     GameObject exampleItemObj;
-
+    /// <summary>
+    /// 更新面板大小的对象
+    /// </summary>
+    [SerializeField]
+    ContentSizeFitter panelContentSizeFitter;
 
     /// <summary>
     /// 对话数据对象
@@ -51,11 +55,11 @@ public class UIQuery : MonoBehaviour
     /// <summary>
     /// 运行时任务管理对象 
     /// </summary>
-    RuntimeTasksData runtimeTasksData;
+    TaskMap.RunTimeTaskData runtimeTasksData;
     /// <summary>
     /// 当前展示的任务信息对象
     /// </summary>
-    RunTimeTaskInfo runTimeTaskInfo;
+    TaskMap.RunTimeTaskInfo runTimeTaskInfo;
     /// <summary>
     /// 当前任务状态对象
     /// </summary>
@@ -79,24 +83,31 @@ public class UIQuery : MonoBehaviour
     List<Transform> showItemList;
 
     /// <summary>
-    /// 之前的游戏状态
-    /// </summary>
-    EnumGameRunType oldGameRunType;
-
-    /// <summary>
     /// 选择的下标 
     /// </summary>
     int selectItemIndex = -1;
 
+    /// <summary>
+    /// 开始时第一次的按键抬起(此时不可以使用)
+    /// </summary>
+    bool fisrtKeyUP;
+
+    /// <summary>
+    /// 不显示的对话节点
+    /// </summary>
+    List<DialoguePoint> dontShowDialoguePointList;
+
     private void OnEnable()
     {
         dialogueStructData = DataCenter.Instance.GetMetaData<DialogueStructData>();
-        runtimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        runtimeTasksData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
         iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
         iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         iGameState = GameState.Instance.GetEntity<IGameState>();
+        iGameState.PushEnumGameRunType(EnumGameRunType.TaskTalk);
         showItemList = new List<Transform>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
+        InitTalk();
     }
 
     /// <summary>
@@ -104,26 +115,27 @@ public class UIQuery : MonoBehaviour
     /// </summary>
     private void InitTalk()
     {
-        oldGameRunType = iGameState.GameRunType;
+        fisrtKeyUP = false;
         int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
-        RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
-                       .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
+                       .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
                        .ToArray();
         //首先选择
-        RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.BranchLine).FirstOrDefault();
+        TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Spur).FirstOrDefault();
         if (runTimeTaskInfo == null)
-            runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.Repeat).FirstOrDefault();
+            runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Repeat).FirstOrDefault();
 
         if (runTimeTaskInfo != null)
         {
             this.runTimeTaskInfo = runTimeTaskInfo;//这个表示当前的任务
-            DialogueCondition[] dialogueConditions = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId,
+            DialogueCondition[] dialogueConditions = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId,
                 temp => temp.enumDialogueType == EnumDialogueType.Ask).ToArray();
-            dialogueCodition = dialogueConditions.Where(temp => DialoguePointHasThisTask(temp.topPoint, this.runTimeTaskInfo.ID.ToString())).FirstOrDefault();
+            DialoguePoint taskPoint;
+            dialogueCodition = dialogueConditions.Where(temp => DialoguePointHasThisTask(temp.topPoint, this.runTimeTaskInfo.ID.ToString(), out taskPoint)).FirstOrDefault();
             if (dialogueCodition != null)//如果存在该任务
             {
                 this.nowDialoguePoint = this.dialogueCodition.topPoint;
-                iGameState.GameRunType = EnumGameRunType.TaskTalk;
+                InitDontShowTalk(dialogueCodition);
                 ShowTalk();
             }
             else
@@ -138,24 +150,85 @@ public class UIQuery : MonoBehaviour
     }
 
     /// <summary>
+    /// 初始化不显示的节点
+    /// </summary>
+    private void InitDontShowTalk(DialogueCondition dialogueCodition)
+    {
+        dontShowDialoguePointList = new List<DialoguePoint>();
+        //查找所有的存在任务id的节点
+        Queue<int> taskIDQueue = new Queue<int>();
+        Queue<DialoguePoint> taskPointQueue = new Queue<DialoguePoint>();
+        PushDialoguePointTask(dialogueCodition.topPoint, taskIDQueue, taskPointQueue);
+        //判断可以接取的任务
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = iNowTaskState.GetWaitTask(null);
+        var waitTaskIDs = runTimeTaskInfos.Select(temp => temp.ID);
+        var waitTaskIDArray = waitTaskIDs.Intersect(taskIDQueue).ToArray();
+        foreach (DialoguePoint dialoguePoint in taskPointQueue)
+        {
+            DialoguePoint tempDP = null;
+            foreach (int taskID in waitTaskIDArray)
+            {
+                if (DialoguePointHasThisTask(dialoguePoint, taskID.ToString(), out tempDP))//如果找到了则直接返回
+                {
+                    break;
+                }
+            }
+            //如果没有找到,则表示节点下没有任务或者只存在过期的任务,放入不显示节点中
+            if (tempDP == null)
+                dontShowDialoguePointList.Add(dialoguePoint);
+        }
+    }
+
+    /// <summary>
+    /// 将任务id push到队列中
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="targetTaskIDs"></param>
+    /// <param name="targetTaskPoints"></param>
+    private void PushDialoguePointTask(DialoguePoint source, Queue<int> targetTaskIDs = null, Queue<DialoguePoint> targetTaskPoints = null)
+    {
+        DialogueValue dialogueValue = dialogueStructData.SearchDialogueValueByID(source.dialogueID);
+        if (targetTaskPoints != null && !targetTaskPoints.Contains(source))
+            targetTaskPoints.Enqueue(source);
+        int taskID;
+        if (!string.IsNullOrEmpty(dialogueValue.otherValue) && int.TryParse(dialogueValue.otherValue, out taskID))
+        {
+            if (targetTaskIDs != null && !targetTaskIDs.Contains(taskID))
+                targetTaskIDs.Enqueue(taskID);
+        }
+        if (source.childDialoguePoints != null && source.childDialoguePoints.Length > 0)//如果存在子节点
+        {
+            foreach (DialoguePoint childPoint in source.childDialoguePoints)
+            {
+                PushDialoguePointTask(childPoint, targetTaskIDs, targetTaskPoints);
+            }
+        }
+    }
+
+    /// <summary>
     /// 判断指定的节点是否存在指定的任务
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="taskID"></param>
+    /// <param name="target">查找的顶层节点</param>
+    /// <param name="taskID">查找任务id</param>
+    /// <param name="taskPoint">查找到的节点</param>
     /// <returns></returns>
-    private bool DialoguePointHasThisTask(DialoguePoint target, string taskID)
+    private bool DialoguePointHasThisTask(DialoguePoint target, string taskID, out DialoguePoint taskPoint)
     {
+        taskPoint = null;
         if (string.IsNullOrEmpty(taskID)) return false;
         DialogueValue dialogueValue = dialogueStructData.SearchDialogueValueByID(target.dialogueID);
         if (!string.IsNullOrEmpty(dialogueValue.otherValue) && string.Equals(dialogueValue.otherValue.Trim(), taskID.Trim()))
+        {
+            taskPoint = target;
             return true;
+        }
         else
         {
             if (target.childDialoguePoints != null && target.childDialoguePoints.Length > 0)//如果存在子节点
             {
                 foreach (DialoguePoint child in target.childDialoguePoints)
                 {
-                    bool result = DialoguePointHasThisTask(child, taskID);
+                    bool result = DialoguePointHasThisTask(child, taskID, out taskPoint);
                     if (result)
                         return true;
                 }
@@ -203,7 +276,7 @@ public class UIQuery : MonoBehaviour
             EventTrigger.Entry entry_Click = new EventTrigger.Entry();
             entry_Click.eventID = EventTriggerType.PointerClick;
             entry_Click.callback = new EventTrigger.TriggerEvent();
-            entry_Click.callback.AddListener(temp => ClickCallback(itemTextTrans));
+            entry_Click.callback.AddListener(temp => ClickCallback(createItemObj.transform));
             eventTrigger.triggers.Add(entry_Click);
             //鼠标进入事件
             EventTrigger.Entry entry_Enter = new EventTrigger.Entry();
@@ -225,30 +298,36 @@ public class UIQuery : MonoBehaviour
         DialoguePoint[] childPoints = nowDialoguePoint.childDialoguePoints;
         foreach (DialoguePoint dialoguePoint in childPoints)//便利添加子选项
         {
+            if (dontShowDialoguePointList.Contains(dialoguePoint))//不显示的不添加
+                continue;
             DialogueValue childDialogueValue = dialogueStructData.SearchDialogueValueByID(dialoguePoint.dialogueID);
             AddItemAction(childDialogueValue.titleValue, temp =>
              {
                  int index = showItemList.IndexOf(temp);
-                 DialoguePoint clickPoint = nowDialoguePoint.childDialoguePoints[index];
+                 DialoguePoint[] nowShowChildsPoints = nowDialoguePoint.childDialoguePoints.Where(point => !dontShowDialoguePointList.Contains(point)).ToArray();
+                 if (index < 0 || index >= nowShowChildsPoints.Length)
+                     return;
+                 
+                 DialoguePoint clickPoint = nowShowChildsPoints[index];
                  if (clickPoint.childDialoguePoints == null || clickPoint.childDialoguePoints.Length == 0)//如果有任务则接取,如果没有则不做处理
-                {
+                 {
                      DialogueValue clickValue = dialogueStructData.SearchDialogueValueByID(clickPoint.dialogueID);
                      if (!string.IsNullOrEmpty(clickValue.otherValue))
                      {
                          int taskID = -1;
                          if (int.TryParse(clickValue.otherValue, out taskID))
                          {
-                             RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(taskID);
-                             if (runTimeTaskInfo.IsOver == false && runTimeTaskInfo.IsStart == false)
+                             TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(taskID);
+                             if (runTimeTaskInfo!=null && runTimeTaskInfo.IsOver == false && runTimeTaskInfo.IsStart == false)
                              {
-                                 iNowTaskState.StartTask =runTimeTaskInfo.ID;
+                                 iNowTaskState.StartTask = runTimeTaskInfo.ID;
                                  gameObject.SetActive(false);
                              }
                          }
                      }
                  }
                  else//继续进入下面节点
-                {
+                 {
                      nowDialoguePoint = clickPoint;
                      ShowTalk();
                  }
@@ -267,6 +346,7 @@ public class UIQuery : MonoBehaviour
                 gameObject.SetActive(false);
             }
         });
+        StartCoroutine(UpdateContentSizeFitter(panelContentSizeFitter));
         //选择第一个下标 
         selectItemIndex = 0;
         SetSelectItemIndex();
@@ -288,17 +368,34 @@ public class UIQuery : MonoBehaviour
             else
                 showItemList[i].transform.GetComponent<Image>().color = new Color(1, 1, 1, 0);
         }
-        
+
+    }
+
+    /// <summary>
+    /// 更新大小显示
+    /// </summary>
+    /// <param name="contentSizeFitter"></param>
+    /// <returns></returns>
+    IEnumerator UpdateContentSizeFitter(ContentSizeFitter contentSizeFitter)
+    {
+        contentSizeFitter.enabled = false;
+        yield return null;
+        contentSizeFitter.enabled = true;
     }
 
     private void OnDisable()
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
-        iGameState.GameRunType = oldGameRunType;
+        iGameState.PopEnumGameRunType();
     }
 
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
+        if (!fisrtKeyUP)
+        {
+            fisrtKeyUP = true;
+            return;
+        }
         switch (keyType)
         {
             case UIManager.KeyType.A:
@@ -315,11 +412,11 @@ public class UIQuery : MonoBehaviour
                     returnEntry.callback.Invoke(null);
                 break;
             case UIManager.KeyType.UP:
-                selectItemIndex++;
+                selectItemIndex--;
                 SetSelectItemIndex();
                 break;
             case UIManager.KeyType.DOWN:
-                selectItemIndex--;
+                selectItemIndex++;
                 SetSelectItemIndex();
                 break;
 

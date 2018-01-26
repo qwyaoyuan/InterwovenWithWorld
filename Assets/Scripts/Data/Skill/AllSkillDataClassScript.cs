@@ -91,6 +91,10 @@ public static class SkillStructConstString
     /// </summary>
     public const string DeblockingTransfer = "解锁特殊技能——传送（萨满）";
     /// <summary>
+    /// 解锁心志条,解锁精神力条
+    /// </summary>
+    public const string DeblockingMentalityMindTraining = "解锁心志条，解锁精神力条";
+    /// <summary>
     /// 形成对应神秘信仰的增强区域，效果随时间逐渐衰减
     /// </summary>
     public const string MysticalBeliefsEnhancedRegional = "形成对应神秘信仰的增强区域，效果随时间逐渐衰减";
@@ -427,6 +431,17 @@ public class SkillStruct_DSM08 : SkillBaseStruct
     /// 解锁特殊技能——传送（萨满）
     /// </summary>
     public int DeblockingTransfer;
+}
+
+/// <summary>
+/// 萨满精神
+/// </summary>
+public class SkillStruct_DSM09 : SkillBaseStruct
+{
+    /// <summary>
+    /// 解锁心志条,解锁精神力条
+    /// </summary>
+    public int DeblockingMentalityMindTraining;
 }
 
 /// <summary>

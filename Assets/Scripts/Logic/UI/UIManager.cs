@@ -33,6 +33,20 @@ public class UIManager : IInput
     public event Action<UIManager.KeyType, Vector2> KeyUpHandle;
 
     /// <summary>
+    /// 当前的步进
+    /// </summary>
+    public int StepByStep { get; private set; }
+
+    /// <summary>
+    /// 设置当前步进
+    /// </summary>
+    /// <param name="step">步进值</param>
+    public void SetStep(int step)
+    {
+        StepByStep = step;
+    }
+
+    /// <summary>
     /// 将EnumInputType类型的数值转换为KeyType类型枚举
     /// </summary>
     /// <param name="key"></param>

@@ -16,7 +16,19 @@ public interface IInteractiveState : IBaseState
     /// 支线的选择展示面板
     /// </summary>
     GameObject QueryObj { get; set; }
-	/// <summary>
+    /// <summary>
+    /// 对话展示的面板
+    /// </summary>
+    GameObject TalkShowObj { get; set; }
+    /// <summary>
+    /// 商店功能的面板
+    /// </summary>
+    GameObject ShopShowObj { get; set; }
+    /// <summary>
+    /// 功能面板
+    /// </summary>
+    GameObject ActionObj { get; set; }
+    /// <summary>
     /// 点击的NPC
     /// 在设置时判断使用那个UI来展示
     /// </summary>

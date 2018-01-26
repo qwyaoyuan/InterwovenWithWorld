@@ -177,5 +177,10 @@ public class SelectTargetManager : IInput
         }
 
     }
+
+    public void SetStep(int step)
+    {
+        
+    }
 }
 

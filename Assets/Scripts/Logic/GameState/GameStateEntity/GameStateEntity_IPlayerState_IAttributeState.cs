@@ -56,6 +56,7 @@ public partial class GameState
         CreateAttributeHandle(-(int)EnumSkillType.JH01);
         CreateAttributeHandle(-(int)EnumSkillType.JH02);
         CreateAttributeHandle(-(int)EnumSkillType.JH03);
+        CreateAttributeHandle(-(int)EnumSkillType.DSM09);
         #endregion
         #region 物理
         CreateAttributeHandle(-(int)EnumSkillType.WL02);
@@ -99,8 +100,8 @@ public partial class GameState
             if (iAttributeHandleIndex == int.MaxValue)
             {
                 iAttributeHandleIndex = 0;
-                goto ReTest;
             }
+            goto ReTest;
         }
         return 0;
     }
@@ -478,6 +479,98 @@ public partial class GameState
     }
 
     /// <summary>
+    /// 精神力计量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float Mentality
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.Mentality).Sum();
+        }
+
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.Mentality = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 最大精神力计量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MaxMentality
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MaxMentality).Sum();
+        }
+
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MaxMentality = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 心志力计量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MindTraining
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MindTraining).Sum();
+        }
+
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MindTraining = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 最大心志力计量
+    /// 注意:获取的是整合后的属性,而设置的是自身的属性 
+    /// </summary>
+    public float MaxMindTraining
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MaxMindTraining).Sum();
+        }
+
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MaxMindTraining = value;
+            }
+        }
+    }
+
+    /// <summary>
     /// 视野范围
     /// 注意:获取的是整合后的属性,而设置的是自身的属性 
     /// </summary>
@@ -805,6 +898,28 @@ public partial class GameState
             }
         }
     }
+
+    /// <summary>
+    /// 物理最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
+    /// </summary>
+    public float PhysicsMinHurt
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.PhysicsMinHurt).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.PhysicsMinHurt = value;
+            }
+        }
+    }
+
 
     /// <summary>
     /// 魔法附加伤害

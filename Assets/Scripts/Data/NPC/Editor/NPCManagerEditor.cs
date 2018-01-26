@@ -317,6 +317,31 @@ public class EditorNPCDataInfoWindow : EditorWindow
     /// </summary>
     bool isCreate;
 
+    /// <summary>
+    /// 存储所有静态道具的类
+    /// </summary>
+    GoodsMetaInfoMations goodsMetaInfoMations;
+    /// <summary>
+    /// 如果是商人则存在的数据是该对象
+    /// </summary>
+    BusinessmanDataInfo businessmanDataInfo;
+    /// <summary>
+    /// 商人编辑列表的滑动条
+    /// </summary>
+    Vector2 businessmanScroll;
+    /// <summary>
+    /// 物品对应说明字典
+    /// </summary>
+    List<KeyValuePair<EnumGoodsType, string>> goodsTypeToExplanList;
+    /// <summary>
+    /// 物品品质对应说明字典
+    /// </summary>
+    List<KeyValuePair<EnumQualityType, string>> goodsQualityTypeToExplanList;
+    /// <summary>
+    /// 物品类型选择添加下标
+    /// </summary>
+    int goodsTypeIndex;
+
     public void SetNPCDataInfo(NPCDataInfo npcDataInfo)
     {
         tempNPCDataInfo = npcDataInfo;
@@ -405,13 +430,96 @@ public class EditorNPCDataInfoWindow : EditorWindow
             tempNPCDataInfo.NPCObj = createObj;
             isCreate = true;
         }
+        if (tempNPCDataInfo.NPCObj != null)
+        {
+            Selection.activeGameObject = tempNPCDataInfo.NPCObj;
+            if (tempNPCDataInfo.NPCObj.GetComponent<TalkShowPosition>() == null)
+                tempNPCDataInfo.NPCObj.AddComponent<TalkShowPosition>();
+            tempNPCDataInfo.NPCObj.GetComponent<TalkShowPosition>().tempNPCDataInfo = tempNPCDataInfo;
+            tempNPCDataInfo.TalkShowOffset = EditorGUILayout.Vector3Field("Talk Show Offset:", tempNPCDataInfo.TalkShowOffset);
+            Vector3 talkShowWorldVec = tempNPCDataInfo.TalkShowOffset + tempNPCDataInfo.NPCObj.transform.position;
+        }
         Sprite tempSprite = (Sprite)EditorGUILayout.ObjectField("NPC Sprite:", tempNPCDataInfo.NPCSprite, typeof(Sprite), false);
         if (tempSprite != tempNPCDataInfo.NPCSprite && tempSprite != null)
         {
             tempNPCDataInfo.npcSpriteID = SpriteManager.GetName(tempSprite);
             tempNPCDataInfo.NPCSprite = tempSprite;
         }
-
+        EditorGUILayout.LabelField("------------------其他数据------------------");
+        switch (tempNPCDataInfo.NPCType)
+        {
+            case EnumNPCType.Businessman://如果是商人,则otherValue的数据是BusinessmanDataInfo类型的数据
+                if (businessmanDataInfo == null)
+                {
+                    businessmanDataInfo = BusinessmanDataInfo.DeSerializeNow<BusinessmanDataInfo>(tempNPCDataInfo.OtherValue);
+                    if (businessmanDataInfo == null)
+                        businessmanDataInfo = new BusinessmanDataInfo();
+                }
+                if (goodsMetaInfoMations == null)
+                {
+                    goodsMetaInfoMations = new GoodsMetaInfoMations();
+                    goodsMetaInfoMations.Load();
+                }
+                if (goodsTypeToExplanList == null)
+                {
+                    goodsTypeToExplanList = new List<KeyValuePair<EnumGoodsType, string>>();
+                    FieldExplanAttribute.SetEnumExplanDic(goodsTypeToExplanList, 0, temp => ((int)temp) % 1000 != 0);
+                }
+                if (goodsQualityTypeToExplanList == null)
+                {
+                    goodsQualityTypeToExplanList = new List<KeyValuePair<EnumQualityType, string>>();
+                    FieldExplanAttribute.SetEnumExplanDic(goodsQualityTypeToExplanList, 0);
+                }
+                //显示商人应该显示的列表
+                businessmanScroll = EditorGUILayout.BeginScrollView(businessmanScroll);
+                {
+                    List<EnumGoodsType> enumGoodsTypes = goodsTypeToExplanList.Select(temp => temp.Key).ToList();
+                    string[] enumGoodsExplans = goodsTypeToExplanList.Select(temp => temp.Value).ToArray();
+                    EditorGUILayout.BeginHorizontal();
+                    goodsTypeIndex = EditorGUILayout.Popup(goodsTypeIndex, enumGoodsExplans);
+                    if (GUILayout.Button("添加该物品"))
+                    {
+                        if (goodsTypeIndex > -1
+                            && goodsTypeIndex < enumGoodsExplans.Length
+                            && !businessmanDataInfo.GoodsDic.ContainsKey(enumGoodsTypes[goodsTypeIndex]))
+                        {
+                            businessmanDataInfo.GoodsDic.Add(enumGoodsTypes[goodsTypeIndex], new BusinessmanDataInfo.GoodsDataInfoInner());
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("提示!", "添加失败!", "确定");
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    List<EnumQualityType> qualityTypes = goodsQualityTypeToExplanList.Select(temp => temp.Key).ToList();
+                    string[] qualityExplans = goodsQualityTypeToExplanList.Select(temp => temp.Value).ToArray();
+                    List<EnumGoodsType> removeGoodsTypes = new List<EnumGoodsType>();
+                    foreach (KeyValuePair<EnumGoodsType, BusinessmanDataInfo.GoodsDataInfoInner> item in businessmanDataInfo.GoodsDic)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        int goodsTypeIndex = enumGoodsTypes.IndexOf(item.Key);
+                        if (goodsTypeIndex > -1)
+                        {
+                            EditorGUILayout.LabelField(enumGoodsExplans[goodsTypeIndex], GUILayout.Width(150));
+                            int _qualityIndex_min = qualityTypes.IndexOf(item.Value.MinQualityType);
+                            int qualityIndex_min = EditorGUILayout.Popup(_qualityIndex_min, qualityExplans, GUILayout.Width(150));
+                            if (_qualityIndex_min != qualityIndex_min && qualityIndex_min > -1)
+                                item.Value.MinQualityType = qualityTypes[qualityIndex_min];
+                            int _qualityIndex_Max = qualityTypes.IndexOf(item.Value.MaxQualityType);
+                            int qualityIndex_max = EditorGUILayout.Popup(_qualityIndex_Max, qualityExplans, GUILayout.Width(150));
+                            if (_qualityIndex_Max != qualityIndex_max && qualityIndex_max > -1)
+                                item.Value.MaxQualityType = qualityTypes[qualityIndex_max];
+                            if (GUILayout.Button("×", GUILayout.Width(25)))
+                                if (EditorUtility.DisplayDialog("请再次确认!", "是否删除?", "确定", "取消"))
+                                    removeGoodsTypes.Add(item.Key);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    removeGoodsTypes.ForEach(temp => businessmanDataInfo.GoodsDic.Remove(temp));
+                }
+                EditorGUILayout.EndScrollView();
+                break;
+        }
         EditorGUILayout.EndVertical();
     }
 
@@ -419,6 +527,12 @@ public class EditorNPCDataInfoWindow : EditorWindow
     {
         if (ResultHandle != null)
         {
+            if (tempNPCDataInfo.NPCObj != null)
+            {
+                TalkShowPosition talkShowPosition = tempNPCDataInfo.NPCObj.GetComponent<TalkShowPosition>();
+                if (talkShowPosition != null)
+                    GameObject.DestroyImmediate(talkShowPosition);
+            }
             if (nowIDList.Contains(tempNPCDataInfo.NPCID) ||
                 string.IsNullOrEmpty(tempNPCDataInfo.npcPrefabName) ||
                 !isCreate)
@@ -427,7 +541,45 @@ public class EditorNPCDataInfoWindow : EditorWindow
                     GameObject.DestroyImmediate(tempNPCDataInfo.NPCObj);
                 tempNPCDataInfo = null;
             }
+            //如果对象是商人,则将心有的数据序列化进去
+            if (tempNPCDataInfo != null && tempNPCDataInfo.NPCType == EnumNPCType.Businessman)
+                tempNPCDataInfo.OtherValue = BusinessmanDataInfo.SerializeNow(businessmanDataInfo);
             ResultHandle(tempNPCDataInfo);
+        }
+    }
+
+}
+
+/// <summary>
+/// 用于显示对话位置控制柄(脚本)
+/// </summary>
+public class TalkShowPosition : MonoBehaviour
+{
+    /// <summary>
+    /// 要创建的NPC数据
+    /// </summary>
+    public NPCDataInfo tempNPCDataInfo;
+}
+
+/// <summary>
+/// 用于显示对话位置控制柄(编辑器)
+/// </summary>
+[CustomEditor(typeof(TalkShowPosition))]
+public class TalkShowPositionEditor : Editor
+{
+    TalkShowPosition targetObj;
+
+    private void Awake()
+    {
+        targetObj = target as TalkShowPosition;
+    }
+
+    private void OnSceneGUI()
+    {
+        if (targetObj != null && targetObj.tempNPCDataInfo != null)
+        {
+            Vector3 vec = Handles.PositionHandle(targetObj.transform.position + targetObj.tempNPCDataInfo.TalkShowOffset, targetObj.transform.rotation);
+            targetObj.tempNPCDataInfo.TalkShowOffset = vec - targetObj.transform.position;
         }
     }
 }

@@ -58,6 +58,8 @@ public partial class GameState : INowTaskState
         checkMonsterRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         checkGoodsRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         runTimeTaskInfos_Start.ForEach(temp => SetStartTaskCheckClassify(temp));
+        //检测当前是否有可接取任务
+        CheckNewTask();
     }
 
     /// <summary>
@@ -182,7 +184,7 @@ public partial class GameState : INowTaskState
                 foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkPostionDicTempList)
                 {
                     checkPostionRunTimeDic.Remove(runTimeTaskInfo.ID);//临时的移除
-                    if (HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测位置是特例,因为有可能需要杀完怪后到达指定地点,提前到达是无效的)
+                    if (!HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测位置是特例,因为有可能需要杀完怪后到达指定地点,提前到达是无效的)
                     {
                         checkPostionRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
                     }
@@ -219,7 +221,7 @@ public partial class GameState : INowTaskState
             {
                 if (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskNpcId == npcID)
                 {
-                    if (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation == null && (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.SceneName, SceneName)))
+                    if (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation == null || (checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(checkNPCRunTime.Value.TaskInfoStruct.DeliveryTaskLocation.SceneName, SceneName)))
                         checkNPCDicTempList.Add(checkNPCRunTime.Value);
                 }
             }
@@ -229,7 +231,7 @@ public partial class GameState : INowTaskState
                 foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkNPCDicTempList)
                 {
                     checkNPCRunTimeDic.Remove(runTimeTaskInfo.ID);//临时的移除
-                    if (HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测npc是特例,因为有可能需要杀完怪后才能提交,提前点击是无效的)
+                    if (!HasCheckTaskID(runTimeTaskInfo.ID))//如果存在其他检测则此处重新添加上(检测npc是特例,因为有可能需要杀完怪后才能提交,提前点击是无效的)
                     {
                         checkNPCRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
                     }
@@ -383,7 +385,7 @@ public partial class GameState : INowTaskState
 
     /// <summary>
     /// 在所有的检测字典以及集合中移除指定的任务 (主要使用与完成以及放弃任务)
-    /// 如果检测到该任务已经失败
+    /// 如果检测到该任务已经失败;如果检测到任务已经完成
     /// </summary>
     /// <param name="taskID">任务id</param>
     /// <param name="all">是否将人物从等待接取集合中移除吗</param>
@@ -432,8 +434,9 @@ public partial class GameState : INowTaskState
                 TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Wait.Where(temp => temp.ID == _StartTask).FirstOrDefault();
                 if (runTimeTaskInfo != null)
                 {
-                    runTimeTaskInfos_Wait.Remove(runTimeTaskInfo);
+                    runTimeTaskInfos_Wait.RemoveAll(temp => temp.ID == runTimeTaskInfo.ID);
                     runTimeTaskInfos_Start.Add(runTimeTaskInfo);
+                    runTimeTaskInfo.IsStart = true;
                     SetStartTaskCheckClassify(runTimeTaskInfo);
                     Call<INowTaskState, int>(temp => temp.StartTask);
                 }
@@ -470,7 +473,7 @@ public partial class GameState : INowTaskState
                 //奖励声望
 
                 //任务完成后的后续
-                RemoveTaskByIDAtDicAndList(_OverTaskID);//从数据中移除
+                RemoveTaskByIDAtDicAndList(_OverTaskID, true);//从数据中移除
                 runTimeTaskInfo.IsOver = true;
                 List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
                 //因为可能存在互斥任务,该任务完成后其他任务可能就失败了,因此这里检测剩下的任务是否存在与当前任务
@@ -489,47 +492,59 @@ public partial class GameState : INowTaskState
                 {
                     RemoveTaskByIDAtDicAndList(mustRemoveMutexTaskID, true);
                 }
-                //检测新的任务
-                foreach (TaskMap.RunTimeTaskInfo todoTaskInfo in todoList)
-                {
-                    if (!todoTaskInfo.IsStart)//只用处理未开始的
-                    {
-                        if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId < 0)//直接接取
-                        {
-                            bool canStart = false;
-                            if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
-                                canStart = true;
-                            else
-                            {
-                                Vector3 playerNowPos = PlayerObj.transform.position;
-                                playerNowPos.y = 0;//忽略y轴
-                                Vector3 targetPos = todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.ArrivedCenterPos;
-                                targetPos.y = 0;
-                                Vector3 offsetDis = targetPos - playerNowPos;
-                                float sqrDis = Vector3.SqrMagnitude(offsetDis);
-                                if (sqrDis < Mathf.Pow(todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.Radius, 2))
-                                    canStart = true;
-                            }
-                            if (canStart)
-                            {
-                                todoTaskInfo.IsStart = true;
-                                //将任务添加到分类中
-                                runTimeTaskInfos_Start.Add(todoTaskInfo);
-                                SetStartTaskCheckClassify(todoTaskInfo);
-                            }
-                        }
-                        else//如果不是直接接取的
-                        {
-                            //判断是否存在于等待截取集合中,不存在则添加
-                            if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)
-                            {
-                                runTimeTaskInfos_Wait.Add(todoTaskInfo);
-                            }
-                        }
-                    }
-                }
+                //检测可以接取的任务
+                CheckNewTask();
                 //调用通知外部任务完成了
                 Call<INowTaskState, int>(temp => temp.OverTaskID);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 检测当前可以直接接取的任务
+    /// </summary>
+    private void CheckNewTask()
+    {
+        List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
+        //检测新的任务
+        foreach (TaskMap.RunTimeTaskInfo todoTaskInfo in todoList)
+        {
+            if (!todoTaskInfo.IsStart)//只用处理未开始的
+            {
+                if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId < 0)//直接接取
+                {
+                    bool canStart = false;
+                    if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
+                        canStart = true;
+                    else
+                    {
+                        Vector3 playerNowPos = PlayerObj.transform.position;
+                        playerNowPos.y = 0;//忽略y轴
+                        Vector3 targetPos = todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.ArrivedCenterPos;
+                        targetPos.y = 0;
+                        Vector3 offsetDis = targetPos - playerNowPos;
+                        float sqrDis = Vector3.SqrMagnitude(offsetDis);
+                        if (sqrDis < Mathf.Pow(todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.Radius, 2))
+                            canStart = true;
+                    }
+                    if (canStart)
+                    {
+                        StartTask = todoTaskInfo.ID;
+                        //todoTaskInfo.IsStart = true;
+                        ////将任务添加到分类中
+                        //runTimeTaskInfos_Start.Add(todoTaskInfo);
+                        //runTimeTaskInfos_Wait.RemoveAll(temp => temp.ID == todoTaskInfo.ID);
+                        //SetStartTaskCheckClassify(todoTaskInfo);
+                    }
+                }
+                else//如果不是直接接取的
+                {
+                    //判断是否存在于等待截取集合中,不存在则添加
+                    if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)
+                    {
+                        runTimeTaskInfos_Wait.Add(todoTaskInfo);
+                    }
+                }
             }
         }
     }

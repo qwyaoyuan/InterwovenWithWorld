@@ -23,7 +23,7 @@ public class UIItem : MonoBehaviour
     private void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
-        foreach (UIFocus uiFocus in uiFocusPath.UIFocuesArray)
+        foreach (UIFocus uiFocus in uiFocusPath.NewUIFocusArray)// uiFocusPath.UIFocuesArray)
         {
             IUIItemSelectGoods iUIItmeSelectGoods = uiFocus as IUIItemSelectGoods;
             if (iUIItmeSelectGoods != null)
@@ -55,7 +55,7 @@ public class UIItem : MonoBehaviour
     /// <param name="goodsID"></param>
     private void SelectGoodsID(int goodsID)
     {
-        foreach (UIFocus uiFocus in uiFocusPath.UIFocuesArray)
+        foreach (UIFocus uiFocus in uiFocusPath.NewUIFocusArray)// uiFocusPath.UIFocuesArray)
         {
             IUIItemSelectGoods iUIItmeSelectGoods = uiFocus as IUIItemSelectGoods;
             if (iUIItmeSelectGoods != null)
@@ -81,7 +81,7 @@ public class UIItem : MonoBehaviour
                 {
                     if (nowUIFocus.CanMoveNext(moveType))
                     {
-                        UIFocus nextUIFocus = uiFocusPath.GetNextFocus(nowUIFocus, moveType);
+                        UIFocus nextUIFocus = uiFocusPath.GetNewNextFocus(nowUIFocus, moveType);//uiFocusPath.GetNextFocus(nowUIFocus, moveType);
                         if (nextUIFocus)
                         {
                             nowUIFocus = nextUIFocus;

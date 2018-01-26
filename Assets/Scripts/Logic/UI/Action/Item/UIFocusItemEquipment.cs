@@ -44,7 +44,7 @@ public class UIFocusItemEquipment : UIFocus, IUIItemSelectGoods
     private void Awake()
     {
         equipentsLatticePath = GetComponent<UIFocusPath>();
-        allLttices = equipentsLatticePath.UIFocuesArray.Select(temp => temp as UIFocusItemEquipmentLattice).ToArray();
+        allLttices = equipentsLatticePath.NewUIFocusArray.Select(temp => temp as UIFocusItemEquipmentLattice).ToArray();// equipentsLatticePath.UIFocuesArray.Select(temp => temp as UIFocusItemEquipmentLattice).ToArray();
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public class UIFocusItemEquipment : UIFocus, IUIItemSelectGoods
     {
         if (!equipentsLatticePath)
             return true;
-        UIFocusItemEquipmentLattice tempLattice = equipentsLatticePath.GetNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;//查询下一个位置
+        UIFocusItemEquipmentLattice tempLattice = equipentsLatticePath.GetNewNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;// equipentsLatticePath.GetNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;//查询下一个位置
         switch (moveType)
         {
             //当左右移动时需要判断下一个目标是不是空，如果是空，则允许上层移动焦点,如果不为空则本身移动
@@ -226,7 +226,7 @@ public class UIFocusItemEquipment : UIFocus, IUIItemSelectGoods
     {
         if (!equipentsLatticePath)
             return;
-        UIFocusItemEquipmentLattice tempLattice = equipentsLatticePath.GetNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;//查询下一个位置
+        UIFocusItemEquipmentLattice tempLattice = equipentsLatticePath.GetNewNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;// equipentsLatticePath.GetNextFocus(nowLattice, moveType) as UIFocusItemEquipmentLattice;//查询下一个位置
         if (tempLattice)
         {
             nowLattice.LostForcus();

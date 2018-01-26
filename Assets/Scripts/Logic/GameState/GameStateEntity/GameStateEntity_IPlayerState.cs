@@ -10,12 +10,21 @@ using UnityEngine;
 public partial class GameState : IPlayerState
 {
     /// <summary>
+    /// 萨满之矛的持续时间
+    /// </summary>
+    float DSM07_TimeDuration;
+
+    /// <summary>
     /// 玩家状态接口实现对象的开始函数
     /// </summary>
     partial void Start_IPlayerState()
     {
         //注册监听光环状态发生变化
         GameState.Instance.Registor<ISkillState>(ISkillState_Changed);
+        //注册监听存档加载变化,监听切换场景
+        GameState.Instance.Registor<IGameState>(IGameState_Changed);
+        //注册监听属性变化
+        GameState.Instance.Registor<IPlayerAttributeState>(IPlayerAttributeState_Changed);
     }
 
     /// <summary>
@@ -25,6 +34,82 @@ public partial class GameState : IPlayerState
     {
         _Level = playerState.Level;
         _Experience = playerState.Experience;
+    }
+
+    /// <summary>
+    /// 注册监听游戏对象发生变化
+    /// </summary>
+    /// <param name="iGameState"></param>
+    /// <param name="fieldName"></param>
+    private void IGameState_Changed(IGameState iGameState, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IGameState, Action>(temp => temp.LoadArchive)))
+        {
+            UpdateAttribute();
+            InitPlayAttributeState();
+        }
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IGameState, Action<string, Vector3, Action<bool>>>(temp => temp.ChangedScene)))
+        {
+            KeyContactDataZone = EnumKeyContactDataZone.Normal;
+        }
+    }
+
+    /// <summary>
+    /// 注册监听角色属性发生变化
+    /// </summary>
+    /// <param name="iPlayerAttributeState"></param>
+    /// <param name="fieldName"></param>
+    private void IPlayerAttributeState_Changed(IPlayerAttributeState iPlayerAttributeState, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.HP)))//监听血量
+        {
+            if (iPlayerAttributeState.MaxHP > 0 && iPlayerAttributeState.HP <= 0)//只有血量大于0才表示初始化完毕,此时如果血量小于等于0表示死了
+            {
+                //如果存在心志力并且心志力满值,则消耗心志力回复hp
+                if (MindTraining > 0 && Mathf.Abs(MindTraining - MaxMindTraining) > 0.1f)
+                {
+                    HP = MaxHP;
+                    MindTraining = 0;
+                    //判断萨满之矛的冷却,如果已经冷却了,则添加状态
+                    ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
+                    float coolingTime = iSkillState.GetSkillCoolingTime((int)EnumSkillType.DSM07);
+                    if (CoolingTime <= 0)
+                    {
+                        SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
+                        SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.DSM07, skillStructData);
+                        if (skillAttributeStruct != null)
+                        {
+                            IAttributeState iAttributeDSM07 = GetAttribute(-(int)EnumSkillType.DSM07);
+                            if (iAttributeDSM07 == null && CreateAttributeHandle(-(int)EnumSkillType.DSM07))
+                            {
+                                iAttributeDSM07 = GetAttribute(-(int)EnumSkillType.DSM07);
+                            }
+                            if (iAttributeDSM07 != null)
+                            {
+                                SetIAttributeStateDataBySkillData(iAttributeDSM07, GetAttribute(0), skillAttributeStruct);
+                                DSM07_TimeDuration = 20;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //回去复活
+                    //获取最后一个路牌的ID
+                    int lastStreetID = playerState.StreetID;
+                    string lastStreetScene = playerState.StreetScene;
+                    //判断获取路牌,如果不存在则查找最初的路牌,如果还不存在则原地复活 
+                    NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+                    NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(lastStreetScene, lastStreetID);
+                    if (npcDataInfo == null)
+                        npcDataInfo = npcData.GetNPCDataInfo(temp => temp.NPCType == EnumNPCType.Street).FirstOrDefault();
+                    IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+                    iGameState.ChangedScene(npcDataInfo != null ? lastStreetScene : iGameState.SceneName, npcDataInfo != null ? (npcDataInfo.NPCLocation + Vector3.forward) : PlayerObj.transform.position);
+                    //修改血量
+                    HP = MaxHP;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -193,6 +278,10 @@ public partial class GameState : IPlayerState
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_JZZJ);
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
+                //移除远程强化
+                iPlayerAttributeState.RemoveAttribute(handle_YCQH);
+                //移除远程专精 
+                iPlayerAttributeState.RemoveAttribute(handle_YCZJ);
                 break;
             //远程强化 远程专精
             case EnumWeaponTypeByPlayerState.Arch:
@@ -213,18 +302,34 @@ public partial class GameState : IPlayerState
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_YCZJ);
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
+                //移除近战强化
+                iPlayerAttributeState.RemoveAttribute(handle_JZQH);
+                //移除近战专精 
+                iPlayerAttributeState.RemoveAttribute(handle_JZZJ);
                 break;
             default:
-                if (iPlayerAttributeState.GetAttribute(handle_JZQH) != null)
-                    iPlayerAttributeState.RemoveAttribute(handle_JZQH);
-                if (iPlayerAttributeState.GetAttribute(handle_JZZJ) != null)
-                    iPlayerAttributeState.RemoveAttribute(handle_JZZJ);
-                if (iPlayerAttributeState.GetAttribute(handle_YCQH) != null)
-                    iPlayerAttributeState.RemoveAttribute(handle_YCQH);
-                if (iPlayerAttributeState.GetAttribute(handle_YCZJ) != null)
-                    iPlayerAttributeState.RemoveAttribute(handle_YCZJ);
+                iPlayerAttributeState.RemoveAttribute(handle_JZQH);
+                iPlayerAttributeState.RemoveAttribute(handle_JZZJ);
+                iPlayerAttributeState.RemoveAttribute(handle_YCQH);
+                iPlayerAttributeState.RemoveAttribute(handle_YCZJ);
                 break;
         }
+
+        //检测萨满精神是否可以使用
+        SkillAttributeStruct skillAttributeStruct_DSM09 = GetSkillAttributeStruct(EnumSkillType.DSM09, skillStructData);
+        SkillStruct_DSM09 skillStruct_DSM09 = skillStructData.SearchSkillDatas(temp => temp.skillType == EnumSkillType.DSM09).FirstOrDefault() as SkillStruct_DSM09;
+        int handle_DSM09 = -(int)EnumSkillType.DSM09;//萨满精神
+        IAttributeState iAttributeState_DSM09 = GetAttribute(handle_DSM09);
+        if (skillAttributeStruct_DSM09 != null && skillStruct_DSM09 != null)
+        {
+            iAttributeState_DSM09.MaxMentality = 100;
+            iAttributeState_DSM09.MaxMindTraining = 100;
+            //根据精神力计量计算抗性
+            iAttributeState_DSM09.AbnormalStateResistance = iAttributeState_DSM09.Mentality * skillStruct_DSM09.DeblockingMentalityMindTraining / 100;
+        }
+        else
+            iAttributeState_DSM09.Init();
+
         //检测距离上一次暴击的时间
         if (LastCriticalHitTime > 0)
         {
@@ -399,8 +504,36 @@ public partial class GameState : IPlayerState
             }
             //离开战斗一段时间后获得的状态
             float intevalOutBattleTime = Time.time + LastIntoBattleTime;//距离上次离开战斗的时间间隔
+
+            //萨满精神(每个一定时间提升心志力计量和精神力计量)
+            if (skillAttributeStruct_DSM09 != null && skillStruct_DSM09 != null)
+            {
+                float mentality = iAttributeState_DSM09.Mentality + Time.deltaTime * 1;
+                float mindTraining = iAttributeState_DSM09.MindTraining + Time.deltaTime * 1;
+                iAttributeState_DSM09.Mentality = Mathf.Clamp(mentality, 0, 100);
+                iAttributeState_DSM09.MindTraining = Mathf.Clamp(mindTraining, 0, 100);
+            }
         }
 
+        //萨满之矛的检测移除
+        if (DSM07_TimeDuration > 0)
+        {
+            DSM07_TimeDuration -= Time.deltaTime;
+            if (DSM07_TimeDuration <= 0)
+            {
+                //移除萨满之矛状态
+                RemoveAttribute(-(int)EnumSkillType.DSM07);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 用于初始化角色属性状态(主要用于更新玩属性后,有些字段如血量魔法值等需要等值为最大血量和魔法值)
+    /// </summary>
+    public void InitPlayAttributeState()
+    {
+        HP = MaxHP;
+        Mana = MaxMana;
     }
 
     /// <summary>
@@ -421,6 +554,7 @@ public partial class GameState : IPlayerState
             iAttributeState_Base.Quick = 10 + level * 2 + playerState.Agility;
             iAttributeState_Base.Mental = 10 + level * 2 + playerState.Spirit;
             iAttributeState_Base.Power = 10 + level * 2 + playerState.Strength;
+            iAttributeState_Base.MaxHP = 1000;//测试
         }
         //处理装备的附加属性
         IAttributeState iAttributeState_Equip = iPlayerAttributeState.GetAttribute(1);
@@ -612,6 +746,7 @@ public partial class GameState : IPlayerState
                 playerState.Level = _Level;
                 //更新自身属性
                 UpdateAttribute();
+                InitPlayAttributeState();
                 //回调
                 Call<IPlayerState, int>(temp => temp.Level);
             }
@@ -776,6 +911,28 @@ public partial class GameState : IPlayerState
                 {
                     WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.None;
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 金钱发生变化
+    /// </summary>
+    bool _SpriteChanged;
+    /// <summary>
+    /// 金钱发生变化
+    /// </summary>
+    public bool SpriteChanged
+    {
+        get { return _SpriteChanged; }
+        set
+        {
+            if (value)
+            {
+                _SpriteChanged = value;
+                //回调
+                Call<IPlayerState, bool>(temp => temp.SpriteChanged);
+                _SpriteChanged = false;
             }
         }
     }

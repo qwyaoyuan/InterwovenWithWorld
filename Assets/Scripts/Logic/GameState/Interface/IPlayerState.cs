@@ -55,6 +55,10 @@ public interface IPlayerState : IBaseState,
     /// </summary>
     bool GoodsChanged { get; set; }
     /// <summary>
+    /// 金钱发生变化
+    /// </summary>
+    bool SpriteChanged { get; set; }
+    /// <summary>
     /// 当前的按键应该遵循的状态
     /// </summary>
     EnumKeyContactDataZone KeyContactDataZone { get; }
@@ -62,6 +66,11 @@ public interface IPlayerState : IBaseState,
     /// 触碰到目标的结构(主要是NPC 素材等)
     /// </summary>
     TouchTargetStruct TouchTargetStruct { get; set; }
+    /// <summary>
+    /// 用于初始化角色属性状态(主要用于更新玩属性后,有些字段如血量魔法值等需要等值为最大血量和魔法值)
+    /// </summary>
+    void InitPlayAttributeState();
+
     //--------------战斗状态----------------//
     /// <summary>
     /// 上一次进入战斗状态的时间

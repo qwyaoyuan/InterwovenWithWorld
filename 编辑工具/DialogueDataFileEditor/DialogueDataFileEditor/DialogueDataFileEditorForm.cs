@@ -465,18 +465,18 @@ namespace DialogueDataFileEditor
                 while (true)
                 {
                     dialogueConditionFileName = Tools.GetRandomString(30, true, true, true, false, "");
-                    if (!File.Exists(folderPath + "\\" + dialogueConditionFileName))
+                    if (!File.Exists(folderPath + "\\" + dialogueConditionFileName+ ".txt"))
                     {
-                        File.Create(folderPath + "\\" + dialogueConditionFileName).Close();
+                        File.Create(folderPath + "\\" + dialogueConditionFileName+ ".txt").Close();
                         break;
                     }
                 }
                 while (true)
                 {
                     dialogueValueFileName = Tools.GetRandomString(30, true, true, true, false, "");
-                    if (!File.Exists(folderPath + "\\" + dialogueValueFileName))
+                    if (!File.Exists(folderPath + "\\" + dialogueValueFileName+ ".txt"))
                     {
-                        File.Create(folderPath + "\\" + dialogueValueFileName).Close();
+                        File.Create(folderPath + "\\" + dialogueValueFileName+ ".txt").Close();
                         break;
                     }
                 }
@@ -502,19 +502,19 @@ namespace DialogueDataFileEditor
             dialogueValueFileName = "";//对话数据文件名
             using (StreamReader fs = new StreamReader(this.projectPath, Encoding.UTF8))
             {
-                dialogueConditionFileName = fs.ReadLine();
+                dialogueConditionFileName = fs.ReadLine() ;
                 dialogueValueFileName = fs.ReadLine();
             }
             string folderPath = Path.GetDirectoryName(this.projectPath);
             string dialogueConditionStr = "";
             string dialogueValueStr = "";
-            if (!string.IsNullOrEmpty(dialogueConditionFileName) && File.Exists(folderPath + "\\" + dialogueConditionFileName))
+            if (!string.IsNullOrEmpty(dialogueConditionFileName) && File.Exists(folderPath + "\\" + dialogueConditionFileName+ ".txt"))
             {
-                dialogueConditionStr = File.ReadAllText(folderPath + "\\" + dialogueConditionFileName, Encoding.UTF8);
+                dialogueConditionStr = File.ReadAllText(folderPath + "\\" + dialogueConditionFileName+ ".txt", Encoding.UTF8);
             }
-            if (!string.IsNullOrEmpty(dialogueValueFileName) && File.Exists(folderPath + "\\" + dialogueValueFileName))
+            if (!string.IsNullOrEmpty(dialogueValueFileName) && File.Exists(folderPath + "\\" + dialogueValueFileName+ ".txt"))
             {
-                dialogueValueStr = File.ReadAllText(folderPath + "\\" + dialogueValueFileName, Encoding.UTF8);
+                dialogueValueStr = File.ReadAllText(folderPath + "\\" + dialogueValueFileName+ ".txt", Encoding.UTF8);
             }
             if (!string.IsNullOrEmpty(dialogueConditionFileName) && !string.IsNullOrEmpty(dialogueValueFileName))
             {
@@ -653,8 +653,8 @@ namespace DialogueDataFileEditor
             dialogueAnalysisData.GetData(out dialogueConditionStr, out dialogueValueStr);
             //保存
             string folderPath = Path.GetDirectoryName(projectPath);
-            File.WriteAllText(folderPath + "\\" + dialogueConditionFileName, dialogueConditionStr, Encoding.UTF8);
-            File.WriteAllText(folderPath + "\\" + dialogueValueFileName, dialogueValueStr, Encoding.UTF8);
+            File.WriteAllText(folderPath + "\\" + dialogueConditionFileName+ ".txt", dialogueConditionStr, Encoding.UTF8);
+            File.WriteAllText(folderPath + "\\" + dialogueValueFileName+ ".txt", dialogueValueStr, Encoding.UTF8);
         }
 
         /// <summary>

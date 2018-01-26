@@ -24,7 +24,6 @@ public class GoodsAbility
     /// </summary>
     public string Explain { get; set; }
 
-
     public GoodsAbility()
     {
 

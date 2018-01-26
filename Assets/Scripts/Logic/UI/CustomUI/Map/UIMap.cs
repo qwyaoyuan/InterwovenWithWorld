@@ -82,6 +82,8 @@ public class UIMap : MonoBehaviour
     /// </summary>
     public event Action<Vector2> ClickOnMap;
 
+    bool isInit = false;
+
     private void Awake()
     {
         if (mapHandle)
@@ -101,7 +103,8 @@ public class UIMap : MonoBehaviour
             entry.callback.AddListener(MapImage_Click);
             eventTrigger.triggers.Add(entry);
         }
-        Init();
+        if (!isInit)
+            Init();
     }
 
     /// <summary>
@@ -243,6 +246,7 @@ public class UIMap : MonoBehaviour
     /// </summary>
     private void Init()
     {
+        isInit = true;
         handleTriggerGameObjectList = new List<GameObject>();
         if (mapImage != null)
         {
@@ -252,14 +256,12 @@ public class UIMap : MonoBehaviour
                 Transform[] childTranses = Enumerable.Range(0, childsCount).Select(temp => mapImage.transform.GetChild(temp)).ToArray();
                 foreach (Transform childTrans in childTranses)
                 {
+                    Image childImage = childTrans.GetComponent<Image>();
+                    if (childImage != null && childImage == maskImage)//不要删除遮罩图片
+                        continue;
                     Destroy(childTrans.gameObject);
                 }
             }
-            //    for (int i = childsCount - 1; i >= 0; i++)
-            //{
-            //    Transform child = mapImage.transform.GetChild(i);
-            //    DestroyImmediate(child.gameObject);
-            //}
         }
         uiImapIconStructList = new List<UIMapIconStruct>();
     }
@@ -273,7 +275,7 @@ public class UIMap : MonoBehaviour
     /// <param name="stickOnPixel">操控手柄吸附距离</param>
     /// <param name="scale">缩放比例</param>
     /// <param name="minScale">最小的缩放比例</param>
-    public void InitMap(Sprite mapSprite,Sprite maskSprite, Rect sceneRect, float scale = 0.2f, float minScale = 0.05f, int stickOnPixel = 50)
+    public void InitMap(Sprite mapSprite, Sprite maskSprite, Rect sceneRect, float scale = 0.2f, float minScale = 0.05f, int stickOnPixel = 50)
     {
         RectTransform mapRectTrans = GetComponent<RectTransform>();
         float mapWidth = mapRectTrans.rect.width;
@@ -395,16 +397,36 @@ public class UIMap : MonoBehaviour
     }
 
     /// <summary>
-    /// 移动手柄
+    /// 移动手柄(地图图片的像素)
     /// </summary>
     /// <param name="moveDelta"></param>
-    public void MoveHandle(Vector2 moveDelta)
+    public void MoveHandleImagePixel(Vector2 moveDelta)
     {
         if (UseHandle && !moveDelta.Equals(Vector2.zero))
         {
             isMoveHandleState = true;
             lastMoveHandleTime = 0;
             touchIconObj = null;
+            MoveHandleInner(moveDelta);
+        }
+    }
+
+    /// <summary>
+    /// 移动手柄(地图控件的像素)
+    /// </summary>
+    /// <param name="moveDelta"></param>
+    public void MoveHandleMapPixel(Vector2 moveDelta)
+    {
+        if (UseHandle && !moveDelta.Equals(Vector2.zero))
+        {
+            isMoveHandleState = true;
+            lastMoveHandleTime = 0;
+            touchIconObj = null;
+            //进行转换(因为内部用的是背景的像素)
+            Rect backRect = mapHandle.rectTransform.rect;//地图贴图现在显示的大小
+            Rect mapRect = GetComponent<RectTransform>().rect;//地图的大小
+            moveDelta.x *= backRect.width / mapRect.width;
+            moveDelta.y *= backRect.height / mapRect.height;
             MoveHandleInner(moveDelta);
         }
     }
@@ -784,7 +806,7 @@ public class UIMap : MonoBehaviour
             Vector2 rightUpTerrainPos = TranslatePosSceneToTerrain(rightUpScenePos);
             return new Rect(leftDownTerrainPos, rightUpTerrainPos - leftDownTerrainPos);
         }
-        return new Rect(1,1,1,1);
+        return new Rect(1, 1, 1, 1);
     }
 
     /// <summary>

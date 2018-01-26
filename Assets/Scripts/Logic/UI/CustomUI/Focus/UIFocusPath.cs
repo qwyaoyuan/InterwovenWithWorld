@@ -7,8 +7,10 @@ using System;
 /// <summary>
 /// 焦点路径
 /// </summary>
+[Serializable]
 public class UIFocusPath : MonoBehaviour
 {
+    #region 旧版的焦点路径
     /// <summary>
     /// 行
     /// </summary>
@@ -52,6 +54,28 @@ public class UIFocusPath : MonoBehaviour
             return checkFocusStructArray;
         }
     }
+    #endregion
+
+    #region 新版的焦点路径
+    /// <summary>
+    /// ui焦点路径
+    /// </summary>
+    public FocusRelaship[] UIFocusArrayRelaships;
+    /// <summary>
+    /// 所有焦点对象
+    /// </summary>
+    public UIFocus[] NewUIFocusArray
+    {
+        get
+        {
+            if (UIFocusArrayRelaships != null)
+            {
+                return UIFocusArrayRelaships.Select(temp => temp.This).ToArray();
+            }
+            return new UIFocus[0];
+        }
+    }
+    #endregion
 
     /// <summary>
     /// 获取第一个焦点
@@ -59,6 +83,8 @@ public class UIFocusPath : MonoBehaviour
     /// <returns></returns>
     public UIFocus GetFirstFocus()
     {
+        if (NewUIFocusArray != null && NewUIFocusArray.Length > 0)
+            return NewUIFocusArray.FirstOrDefault();
         if (UIFocuesArray != null)
             return UIFocuesArray.FirstOrDefault(temp => temp != null && temp.gameObject.activeSelf != false);
         return null;
@@ -71,6 +97,8 @@ public class UIFocusPath : MonoBehaviour
     /// <returns></returns>
     public T GetFirstFocus<T>() where T : UIFocus
     {
+        if (NewUIFocusArray != null && NewUIFocusArray.Length > 0)
+            return NewUIFocusArray.First(temp => temp != null && (temp as T) != null && temp.gameObject.activeSelf != false) as T;
         if (UIFocuesArray != null)
             return UIFocuesArray.First(temp => temp != null && (temp as T) != null && temp.gameObject.activeSelf != false) as T;
         return null;
@@ -83,6 +111,7 @@ public class UIFocusPath : MonoBehaviour
     /// <param name="moveType"></param>
     /// <param name="cycle"></param>
     /// <returns></returns>
+    [Obsolete("已过时,请使用新版的获取焦点")]
     public UIFocus GetNextFocus(UIFocus target, MoveType moveType, EnumFocusCheckModel focusCheckModel, bool cycle = false)
     {
         int index = UIFocuesArray.ToList().FindIndex(temp => target.Equals(temp));
@@ -410,6 +439,40 @@ public class UIFocusPath : MonoBehaviour
     }
 
     /// <summary>
+    /// 检索
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="moveType"></param>
+    /// <returns></returns>
+    public UIFocus GetNewNextFocus(UIFocus target, MoveType moveType)
+    {
+        FocusRelaship focusRelaship = UIFocusArrayRelaships.FirstOrDefault(temp => temp.This == target);
+        if (focusRelaship != null)
+        {
+            Func<UIFocus,MoveType, UIFocus> CheckThisFocus = (innerTarget,innerMoveType) => 
+            {
+                if (innerTarget == null)
+                    return null;
+                if (innerTarget.gameObject.activeSelf)
+                    return innerTarget;
+                return GetNewNextFocus(innerTarget, innerMoveType);
+            };
+            switch (moveType)
+            {
+                case MoveType.LEFT:
+                    return CheckThisFocus(focusRelaship.Left, moveType);
+                case MoveType.RIGHT:
+                    return CheckThisFocus(focusRelaship.Right, moveType);
+                case MoveType.UP:
+                    return CheckThisFocus(focusRelaship.Up, moveType);
+                case MoveType.DOWN:
+                    return CheckThisFocus(focusRelaship.Down, moveType);
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
     /// 根据下标获取对象
     /// </summary>
     /// <param name="x">第一维度</param>
@@ -471,6 +534,19 @@ public class UIFocusPath : MonoBehaviour
         /// 直接移动到指定方向最近的格子
         /// </summary>
         Both,
+    }
+
+    /// <summary>
+    /// 焦点关系
+    /// </summary>
+    [Serializable]
+    public class FocusRelaship
+    {
+        public UIFocus This;
+        public UIFocus Up;
+        public UIFocus Down;
+        public UIFocus Left;
+        public UIFocus Right;
     }
 }
 

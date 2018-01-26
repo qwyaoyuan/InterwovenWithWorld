@@ -30,12 +30,17 @@ public class UITask : MonoBehaviour
     /// <summary>
     /// 运行时任务
     /// </summary>
-    RuntimeTasksData runtimeTaskData;
+    TaskMap.RunTimeTaskData runtimeTaskData;
 
     /// <summary>
     /// 地图的状态对象 
     /// </summary>
     IMapState iMapState;
+
+    /// <summary>
+    /// 当前任务状态
+    /// </summary>
+    INowTaskState iNowTaskState;
 
     private void Awake()
     {
@@ -58,19 +63,19 @@ public class UITask : MonoBehaviour
 
     private void OnEnable()
     {
-        runtimeTaskData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         iMapState = GameState.Instance.GetEntity<IMapState>();
+        iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
 
         uiTaskList.Init();
         //填充任务列表
-        RunTimeTaskInfo[] runTimeTaskInfoArray = runtimeTaskData.GetAllToDoList().Where(temp => temp.IsStart == true).ToArray();
-        foreach (RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfoArray)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfoArray = iNowTaskState.GetStartTask(null); //runtimeTaskData.GetAllToDoList().Where(temp => temp.IsStart == true).ToArray();
+        foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfoArray)
         {
-            RunTimeTaskNode runTimeTaskNode = runTimeTaskInfo.RunTimeTaskNode;//该任务的节点
+            TaskMap.TaskInfoStruct taskInfoStruct = runTimeTaskInfo.TaskInfoStruct;
             UIListItem uiListItem = uiTaskList.NewItem();
             uiListItem.value = runTimeTaskInfo;
-            uiListItem.childText.text = runTimeTaskNode.TaskTitile;
+            uiListItem.childText.text = taskInfoStruct.TaskTitile;
         }
         uiTaskList.UpdateUI();
         nowTaskItem = uiTaskList.FirstShowItem();
@@ -133,9 +138,9 @@ public class UITask : MonoBehaviour
     /// </summary>
     private void MarkTaskToMap()
     {
-        if (!nowTaskItem)
+        if (nowTaskItem)
         {
-            RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as RunTimeTaskInfo;
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as TaskMap.RunTimeTaskInfo;
             if (runTimeTaskInfo != null)
             {
                 if (iMapState.MarkTaskID == runTimeTaskInfo.ID)//如果相等则取消标记
@@ -156,12 +161,12 @@ public class UITask : MonoBehaviour
         else
         {
             //显示任务
-            RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as RunTimeTaskInfo;
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = nowTaskItem.value as TaskMap.RunTimeTaskInfo;
             if (runTimeTaskInfo != null)
             {
-                taskExplanText.text = runTimeTaskInfo.RunTimeTaskNode.TaskExplain;
+                taskExplanText.text = runTimeTaskInfo.TaskInfoStruct.TaskExplain;
                 //根据类型以及其他信息显示完善的数据信息
-                throw new Exception("未完善");
+                //throw new Exception("未完善");
             }
             else
                 taskExplanText.text = "";

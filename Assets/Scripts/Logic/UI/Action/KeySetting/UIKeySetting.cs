@@ -60,7 +60,7 @@ public class UIKeySetting : MonoBehaviour
         if (keySettingFocusPath)
         {
             //给每个键位加一个点击事件，处理鼠标点击获取焦点
-            UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.UIFocuesArray;
+            UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.NewUIFocusArray;//keySettingFocusPath.UIFocuesArray;
             foreach (UIFocus uiKeySettingLattice in uiKeySettingLatticeArray)
             {
                 if (!uiKeySettingLattice)
@@ -136,7 +136,7 @@ public class UIKeySetting : MonoBehaviour
             if (nowKeySettingLattice)
                 nowKeySettingLattice.SetForcus();
             //初始化显示
-            UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.UIFocuesArray;
+            UIFocus[] uiKeySettingLatticeArray = keySettingFocusPath.NewUIFocusArray;// keySettingFocusPath.UIFocuesArray;
             foreach (UIFocus item in uiKeySettingLatticeArray)
             {
                 if (!item)
@@ -233,7 +233,8 @@ public class UIKeySetting : MonoBehaviour
                     if (keySettingFocusPath)
                     {
                         //UIFocusKeySettingLattice currentKeySettingLattice = keySettingFocusPath.GetNextFocus(nowKeySettingLattice, moveType) as UIFocusKeySettingLattice;
-                        UIFocusKeySettingLattice currentKeySettingLattice = keySettingFocusPath.GetNextFocus(nowKeySettingLattice, moveType, UIFocusPath.EnumFocusCheckModel.Vertical) as UIFocusKeySettingLattice;
+                        //UIFocusKeySettingLattice currentKeySettingLattice = keySettingFocusPath.GetNextFocus(nowKeySettingLattice, moveType, UIFocusPath.EnumFocusCheckModel.Vertical) as UIFocusKeySettingLattice;
+                        UIFocusKeySettingLattice currentKeySettingLattice = keySettingFocusPath.GetNewNextFocus(nowKeySettingLattice, moveType) as UIFocusKeySettingLattice;
                         if (currentKeySettingLattice != null && !object.Equals(currentKeySettingLattice, nowKeySettingLattice))
                         {
                             nowKeySettingLattice.LostForcus();

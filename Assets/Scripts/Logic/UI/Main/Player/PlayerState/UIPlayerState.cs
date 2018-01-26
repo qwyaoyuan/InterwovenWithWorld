@@ -58,6 +58,11 @@ public class UIPlayerState : MonoBehaviour
         GameState.Instance.Registor<IDebuffState>(IState_Callback);
         GameState.Instance.Registor<ISpecialState>(IState_Callback);
         GameState.Instance.Registor<IPlayerAttributeState>(IAttributeState_Callback);
+        InitShow();
+    }
+
+    private void InitShow()
+    {
         IPlayerAttributeState iAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
         ChangeHPShow(iAttributeState);
         ChangeMPShow(iAttributeState);

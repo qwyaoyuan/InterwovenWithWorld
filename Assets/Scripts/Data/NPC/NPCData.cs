@@ -36,6 +36,17 @@ public class NPCData : ILoadable<NPCData>
             }
         }
         npcDataInfoCollections = npcDataInfoCollectionList.ToArray();
+        //重新设置一遍他们各自所在的场景
+        foreach (NPCDataInfoCollection npcDataInfoCollection in npcDataInfoCollections)
+        {
+            foreach (NPCDataInfo npcDataInfo in npcDataInfoCollection.NPCDataInfos)
+            {
+                if (string.IsNullOrEmpty(npcDataInfo.SceneName))
+                {
+                    npcDataInfo.SceneName = npcDataInfoCollection.sceneName;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -60,12 +71,27 @@ public class NPCData : ILoadable<NPCData>
     /// </summary>
     /// <param name="npcID">npc id</param>
     /// <returns></returns>
-    public NPCDataInfo GetNPCDataInfo(string sceneName,int npcID)
+    public NPCDataInfo GetNPCDataInfo(string sceneName, int npcID)
     {
         NPCDataInfoCollection npcDataInfoCollection = npcDataInfoCollections.FirstOrDefault(temp => string.Equals(temp.sceneName, sceneName));
         if (npcDataInfoCollection != null)
             return npcDataInfoCollection.NPCDataInfos.Where(temp => temp.NPCID == npcID).FirstOrDefault();
         return null;
+    }
+
+    /// <summary>
+    /// 通过指定的检索条件获取所有复合条件的npc信息
+    /// </summary>
+    /// <param name="CheckFunc"></param>
+    /// <returns></returns>
+    public NPCDataInfo[] GetNPCDataInfo(Func<NPCDataInfo, bool> CheckFunc = null)
+    {
+        if (CheckFunc != null)
+        {
+            return npcDataInfoCollections.Select(temp => temp.NPCDataInfos).Aggregate((temp1, temp2) => temp1.Concat(temp2).ToList()).Where(temp => CheckFunc(temp)).ToArray();
+        }
+        return npcDataInfoCollections.Select(temp => temp.NPCDataInfos).Aggregate((temp1, temp2) => temp1.Concat(temp2).ToList()).ToArray();
+
     }
 
     /// <summary>
@@ -193,6 +219,38 @@ public class NPCDataInfo
         }
     }
     /// <summary>
+    /// npc对话相对中心的偏差(分量x)
+    /// </summary>
+    [JsonProperty]
+    private float talkShowOffsetX;
+    /// <summary>
+    /// npc对话相对中心的偏差(分量y)
+    /// </summary>
+    [JsonProperty]
+    private float talkShowOffsetY;
+    /// <summary>
+    /// npc对话相对中心的偏差(分量z)
+    /// </summary>
+    [JsonProperty]
+    private float talkShowOffsetZ;
+    /// <summary>
+    /// npc对话相对中心的偏差
+    /// </summary>
+    [JsonIgnore]
+    public Vector3 TalkShowOffset
+    {
+        get
+        {
+            return new Vector3(talkShowOffsetX, talkShowOffsetY, talkShowOffsetZ);
+        }
+        set
+        {
+            talkShowOffsetX = value.x;
+            talkShowOffsetY = value.y;
+            talkShowOffsetZ = value.z;
+        }
+    }
+    /// <summary>
     /// 用于查找npc图标的唯一id
     /// </summary>
     public string npcSpriteID;
@@ -247,7 +305,8 @@ public class NPCDataInfo
             NPCObj.transform.position = NPCLocation;
             NPCObj.transform.eulerAngles = NPCAngle;
             NPCObj.name = NPCName;
-            NPCObj.AddComponent<NPCDataInfoMono>().NPCDataInfo = this;
+            NPCDataInfoMono npcDaatInfoMono = NPCObj.AddComponent<NPCDataInfoMono>();
+            npcDaatInfoMono.NPCDataInfo = this;
         }
         if (NPCSprite == null)
             if (!string.IsNullOrEmpty(npcSpriteID))
@@ -261,6 +320,9 @@ public class NPCDataInfo
 /// </summary>
 public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
 {
+    /// <summary>
+    /// npc的数据
+    /// </summary>
     public NPCDataInfo NPCDataInfo;
 }
 

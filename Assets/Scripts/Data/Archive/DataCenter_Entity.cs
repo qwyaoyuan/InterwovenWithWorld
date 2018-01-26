@@ -10,6 +10,10 @@ public partial class DataCenter
     /// </summary>
     private PlayerState PlayerState;
 
+    /// <summary>
+    /// 商人的状态
+    /// </summary>
+    private BusinessmanStates BusinessmanStates;
 
     /// <summary>
     /// 任务进度
@@ -38,6 +42,7 @@ public partial class DataCenter
         RuntimeTasks = new RuntimeTasksData();
         gameRunnedState = new GameRunnedState();
         RuntimeTaskMap = new TaskMap.RunTimeTaskData();
+        BusinessmanStates = new BusinessmanStates();
     }
 
 
@@ -71,6 +76,16 @@ public class PlayerState
     public Vector3 Location;
 
     /// <summary>
+    /// 最近一次点击路牌的ID
+    /// </summary>
+    public int StreetID;
+
+    /// <summary>
+    /// 最忌一次点击路牌时所在的场景
+    /// </summary>
+    public string StreetScene;
+
+    /// <summary>
     /// 人物等级
     /// </summary>
     public int Level;
@@ -79,6 +94,11 @@ public class PlayerState
     /// 当前的经验值
     /// </summary>
     public int Experience;
+
+    /// <summary>
+    /// 钱
+    /// </summary>
+    public int Sprice;
 
     /// <summary>
     /// 自由点
@@ -312,6 +332,58 @@ public enum GoodsLocation
     None,
 }
 
+/// <summary>
+/// 商人的数据集合
+/// </summary>
+public class BusinessmanStates
+{
+    /// <summary>
+    /// 商人集合
+    /// </summary>
+    public List<Businessman> BusinessmanList;
+
+    public BusinessmanStates()
+    {
+        BusinessmanList = new List<Businessman>();
+    }
+}
+
+/// <summary>
+/// 商人的数据
+/// </summary>
+public class Businessman
+{
+    /// <summary>
+    /// 商人的基础数据
+    /// </summary>
+    public BusinessmanDataInfo BusinessManDataInfo;
+
+    /// <summary>
+    /// 卖给商人并被商人保存的道具
+    /// </summary>
+    public List<PlayGoods> SellPropsList;
+
+    /// <summary>
+    /// 商人的基础道具
+    /// </summary>
+    public List<PlayGoods> BaseList;
+
+    /// <summary>
+    /// 商人的id
+    /// </summary>
+    public int BusinessmanID;
+
+    /// <summary>
+    /// 商人所在的场景
+    /// </summary>
+    public string BusinessmanScene;
+
+    public Businessman()
+    {
+        SellPropsList = new List<PlayGoods>();
+        BaseList = new List<PlayGoods>();
+    }
+}
 
 
 

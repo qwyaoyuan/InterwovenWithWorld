@@ -1138,7 +1138,9 @@ GameObject:
   - component: {fileID: 114197191527379774}
   - component: {fileID: 114474389887267694}
   - component: {fileID: 114225530744097154}
-  m_Layer: 0
+  - component: {fileID: 54612939132237330}
+  - component: {fileID: 136424514477429072}
+  m_Layer: 9
   m_Name: "\u571F\u532A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2195,6 +2197,21 @@ Transform:
   m_Father: {fileID: 4000010504151644}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &54612939132237330
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014232435074}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &95000011610634314
 Animator:
   serializedVersion: 3
@@ -2218,7 +2235,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014232435074}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aad115aca74ce3c4891b3f6de0b4aae8, type: 3}
   m_Name: 
@@ -2229,7 +2246,7 @@ MonoBehaviour:
   disableAction: 0
   versionUpdateProxyGraph: {fileID: 0}
   _graph: {fileID: 11400000, guid: e436bf1e60da9ee4789e50a388983b33, type: 2}
-  _blackboard: {fileID: 0}
+  _blackboard: {fileID: 114474389887267694}
 --- !u!114 &114225530744097154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2279,6 +2296,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 11400000, guid: aa0d27c32274b4f40a0cf2817ec9ffe1, type: 2}
   - {fileID: 11400000, guid: 2a24139987480cc40add24bf460adcf5, type: 2}
+--- !u!136 &136424514477429072
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014232435074}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.20518103
+  m_Height: 1.8812983
+  m_Direction: 1
+  m_Center: {x: 0.0027717054, y: 0.93417776, z: 0}
 --- !u!136 &136648655783489030
 CapsuleCollider:
   m_ObjectHideFlags: 1

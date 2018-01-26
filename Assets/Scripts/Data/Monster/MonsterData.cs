@@ -168,6 +168,11 @@ public class MonsterDataInfo
     public string Explane;
 
     /// <summary>
+    /// 怪物的基础属性
+    /// </summary>
+    public AttributeStateAdditional MonsterBaseAttribute;
+
+    /// <summary>
     /// 怪物的预设提名字
     /// </summary>
     public string monsterPrefabName;
@@ -214,6 +219,8 @@ public class MonsterDataInfo
         monsterDataInfo.Explane = Explane;
         monsterDataInfo.monsterPrefabName = monsterPrefabName;
         monsterDataInfo.MonsterPrefab = MonsterPrefab;
+        if (MonsterBaseAttribute != null)
+            monsterDataInfo.MonsterBaseAttribute = MonsterBaseAttribute.Clone();
         if (AIData != null)
             monsterDataInfo.AIData = AIData.Clone();
         return monsterDataInfo;

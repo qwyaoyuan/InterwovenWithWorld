@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -23,12 +25,18 @@ public class UIFocusButton : UIFocus
         }
     }
 
+
     /// <summary>
     /// 激活点击事件
     /// </summary>
     public void ClickThisButton()
     {
         if (button)
-            button.onClick.Invoke();
+        {
+            //button.onClick.Invoke();
+            EventTrigger eventTrigger = button.GetComponent<EventTrigger>();
+            eventTrigger.OnPointerClick(new PointerEventData(EventSystem.current));
+        }
     }
+
 }

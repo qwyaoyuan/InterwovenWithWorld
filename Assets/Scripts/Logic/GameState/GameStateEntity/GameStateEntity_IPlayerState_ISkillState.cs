@@ -312,9 +312,22 @@ public partial class GameState
                 && SkillCombineStaticTools.GetCanCombineSkills(_CombineSkills.Select(temp => temp != null ? temp.skillType : EnumSkillType.None).ToArray());
             IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
             IAttributeState nowIAttributeState = iPlayerState.GetResultAttribute();
+            SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
             //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
             if (canRelease)
             {
+                //计算被技能整合后的属性
+                IAttributeState baseAttributeState = iPlayerState.GetAttribute(0);//基础属性
+                foreach (SkillBaseStruct tempSkillBaseStruct in _CombineSkills)
+                {
+                    if (tempSkillBaseStruct == null)
+                        continue;
+                    SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct(tempSkillBaseStruct.skillType, skillStructData);
+                    AttributeStateAdditional skillAttributeStateAdditional = new AttributeStateAdditional();
+                    iPlayerState.SetIAttributeStateDataBySkillData(skillAttributeStateAdditional, baseAttributeState, skillAttributeStruct);
+                    nowIAttributeState += skillAttributeStateAdditional;
+                }
+
                 //判断这个是攻击用途还是辅助用途
                 SkillBaseStruct combine_secondSkill = _CombineSkills.Where(temp => temp != null).FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
                 bool attackType = true;
@@ -338,7 +351,6 @@ public partial class GameState
                     IEnvironment iEnvironment = GameState.Instance.GetEntity<IEnvironment>();
                     int index = _CombineSkills.ToList().IndexOf(combine_secondSkill);
                     SkillBaseStruct[] temp_CombineSkills = (SkillBaseStruct[])_CombineSkills.Clone();
-                    SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
                     switch (iEnvironment.TerrainEnvironmentType)
                     {
                         case EnumEnvironmentType.Plain:
@@ -428,7 +440,7 @@ public partial class GameState
                                iPlayerState.PlayerObj.transform.position + Vector3.up,
                                iPlayerState.PlayerObj.transform.forward,
                                Color.red,
-                               0,//这里的层是玩家和召唤物
+                               LayerMask.GetMask("Player","Summon"),//这里的层是玩家和召唤物
                                ThisCallBack,//如果是buff则这里会有回调
                                1);
 
@@ -740,7 +752,7 @@ public partial class GameState
                                   && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword
                                    && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
                             {
-                                //return false;
+                                return false;
                             }
                             break;
                         default:
@@ -761,7 +773,7 @@ public partial class GameState
                     //设置耗魔量
                     iPlayerState.Mana -= physic_AttributeState.MustUsedBaseMana;
                     //构建当前物理技能的数据
-                    PhysicsSKillStateStruct physicsSkillStateStruct = new PhysicsSKillStateStruct()
+                    PhysicsSkillStateStruct physicsSkillStateStruct = new PhysicsSkillStateStruct()
                     {
                         SkillType = skillBaseStruct.skillType,
                         AttributeState = thisPhysicsAttributeState,
@@ -772,7 +784,7 @@ public partial class GameState
                     iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Skill;
                     //交给IDamge脚本处理伤害以及开关粒子
                     IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
-                    iDamage.SetPhysicSkillAttack(iPlayerState, thisPhysicsAttributeState, skillBaseStruct.skillType, weaponTypeByPlayerState);
+                    iDamage.SetPhysicSkillAttack(iPlayerState, physicsSkillStateStruct, skillBaseStruct.skillType, weaponTypeByPlayerState);
                 }
             }
             //如果是物理普通攻击 (必须等普通攻击的冷却归零)
@@ -816,6 +828,25 @@ public partial class GameState
         if (skillRuntimeCoolingTimeDic != null && skillRuntimeCoolingTimeDic.ContainsKey(skillID))
             return skillRuntimeCoolingTimeDic[skillID];
         return 0;
+    }
+
+    /// <summary>
+    /// 设置技能的冷却时间(注意该函数会触发GetSkillCoolingTime的回调,但不会触发自身的回调)
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public void SetSkillCoolingTime(int skillID, float time)
+    {
+        if (skillRuntimeCoolingTimeDic != null)
+        {
+            if (!skillRuntimeCoolingTimeDic.ContainsKey(skillID))
+                skillRuntimeCoolingTimeDic.Add(skillID, 0);
+            float oldCoolingTime = skillRuntimeCoolingTimeDic[skillID];
+            skillRuntimeCoolingTimeDic[skillID] = time;
+            if (oldCoolingTime != time)
+                Call<ISkillState, Func<int, float>>(temp => temp.GetSkillCoolingTime);
+        }
     }
 
     #region  光环技能状态
@@ -900,19 +931,19 @@ public partial class GameState
     /// <summary>
     /// 当前物理技能的状态数据
     /// </summary>
-    private PhysicsSKillStateStruct _NowPhysicsSkillStateStruct;
+    private PhysicsSkillStateStruct _NowPhysicsSkillStateStruct;
     /// <summary>
     /// 获取当前物理技能的状态数据
     /// </summary>
-    public PhysicsSKillStateStruct NowPhysicsSkillStateStruct
+    public PhysicsSkillStateStruct NowPhysicsSkillStateStruct
     {
         get { return _NowPhysicsSkillStateStruct; }
         private set
         {
-            PhysicsSKillStateStruct tempNowPhysicsSkillStateStruct = _NowPhysicsSkillStateStruct;
+            PhysicsSkillStateStruct tempNowPhysicsSkillStateStruct = _NowPhysicsSkillStateStruct;
             _NowPhysicsSkillStateStruct = value;
             if (tempNowPhysicsSkillStateStruct != _NowPhysicsSkillStateStruct)
-                Call<ISkillState, PhysicsSKillStateStruct>(temp => temp.NowPhysicsSkillStateStruct);
+                Call<ISkillState, PhysicsSkillStateStruct>(temp => temp.NowPhysicsSkillStateStruct);
         }
     }
 

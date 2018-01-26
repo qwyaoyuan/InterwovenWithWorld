@@ -1,12 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// UI焦点
 /// </summary>
+[Serializable]
 public class UIFocus : MonoBehaviour
 {
+    /// <summary>
+    /// 标签
+    /// </summary>
+    public string Tag;
+
     /// <summary>
     /// 设置控件获得焦点
     /// </summary>

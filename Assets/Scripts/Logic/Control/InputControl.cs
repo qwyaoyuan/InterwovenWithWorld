@@ -77,6 +77,20 @@ public class InputControl : IEntrance
     bool pressLT;
 
 
+    int stepByStep;
+    /// <summary>
+    /// 步进
+    /// </summary>
+    int StepByStep
+    {
+        get
+        {
+            stepByStep++;
+            if (stepByStep == int.MaxValue)
+                stepByStep = 0;
+            return stepByStep;
+        }
+    }
 
     public void Update()
     {
@@ -273,10 +287,12 @@ public class InputControl : IEntrance
         if (releaseDownStart)
             upList.Add((int)EnumInputType.Start);
 
-
-        //循环给键
+        int nowStep = StepByStep;
+        //循环给键以及设置步进
         foreach (IInput iInput in inputList)
         {
+            //设置当前步进
+            iInput.SetStep(nowStep);
             //按下
             foreach (int key in downList)
             {

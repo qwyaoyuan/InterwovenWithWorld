@@ -1,4 +1,5 @@
 ﻿using NodeCanvas.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,21 @@ public class MonsterControl : MonoBehaviour
             }
         }
 
+        //给对象添加一个子物体,子物体设置触发
+        SphereCollider thisSphereCollider = GetComponent<SphereCollider>();
+        if (thisSphereCollider != null)
+        {
+            GameObject childCheckObj = new GameObject();
+            childCheckObj.transform.SetParent(transform);
+            MonsterCheckPlayer monsterCheckPlayer = childCheckObj.AddComponent<MonsterCheckPlayer>();
+            monsterCheckPlayer.TriggerEnter = _OnTriggerEnter;
+            monsterCheckPlayer.TriggerExit = _OnTriggerExit;
+            childCheckObj.transform.localPosition = Vector3.zero;
+            SphereCollider childSphereCollider = childCheckObj.AddComponent<SphereCollider>();
+            childSphereCollider.radius = thisSphereCollider.radius;
+            thisSphereCollider.enabled = false;
+            childSphereCollider.isTrigger = true;
+        }
     }
 
     /// <summary>
@@ -74,7 +90,7 @@ public class MonsterControl : MonoBehaviour
     /// <returns></returns>
     private Vector3 RandomVector3(float maxRandom)
     {
-        return new Vector3(Random.Range(-maxRandom, maxRandom), Random.Range(-maxRandom, maxRandom), Random.Range(-maxRandom, maxRandom));
+        return new Vector3(UnityEngine.Random.Range(-maxRandom, maxRandom), UnityEngine.Random.Range(-maxRandom, maxRandom), UnityEngine.Random.Range(-maxRandom, maxRandom));
     }
 
     /// <summary>
@@ -108,7 +124,7 @@ public class MonsterControl : MonoBehaviour
         return false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void _OnTriggerEnter(Collider other)
     {
         string checkTag = blackboard.GetValue<string>("PlayerTag");
         if (string.Equals(other.tag, checkTag))
@@ -117,12 +133,33 @@ public class MonsterControl : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void _OnTriggerExit(Collider other)
     {
         string checkTag = blackboard.GetValue<string>("PlayerTag");
         if (string.Equals(other.tag, checkTag))
         {
             blackboard.SetValue("TempTarget", null);
         }
+    }
+}
+
+/// <summary>
+/// 用于检测触发
+/// </summary>
+public class MonsterCheckPlayer : MonoBehaviour
+{
+    public Action<Collider> TriggerEnter;
+    public Action<Collider> TriggerExit;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (TriggerEnter != null)
+            TriggerEnter(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (TriggerExit != null)
+            TriggerExit(other);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIFocusSkillLittleLattice : UIFocus
 {
@@ -71,6 +72,34 @@ public class UIFocusSkillLittleLattice : UIFocus
     /// 所有技能对于前置点数的需求情况,根据技能计算出他们的需求(这个数据用于计算技能减点时,判断是否可以减去一点)
     /// </summary>
     public static Dictionary<EnumSkillType, int> skillMustPointDic;
+
+    /// <summary>
+    /// 显示技能的图片
+    /// </summary>
+    private Image showSkillImage;
+    /// <summary>
+    /// 显示技能的图片
+    /// </summary>
+    public Image ShowSkillImage
+    {
+        get
+        {
+            if (!showSkillImage)
+            {
+                int childCount = transform.childCount;
+                for (int i = 0; i < childCount; i++)
+                {
+                    Transform childTrans = transform.GetChild(i);
+                    if (childTrans.name.Equals("Skill") && (showSkillImage = childTrans.GetComponent<Image>()))
+                    {
+                        break;
+                    }
+                }
+            }
+            return showSkillImage;
+
+        }
+    }
 
     private void Awake()
     {
@@ -256,6 +285,12 @@ public class UIFocusSkillLittleLattice : UIFocus
             {
                 uiAddNum.Value = 0;
             }
+            //设置技能显示的图片
+            if (ShowSkillImage && skillBaseStruct != null)
+            {
+                ShowSkillImage.sprite = skillBaseStruct.skillSprite;
+            }
+            else Debug.Log(enumSkillType+" "+transform.name);
         }
     }
 

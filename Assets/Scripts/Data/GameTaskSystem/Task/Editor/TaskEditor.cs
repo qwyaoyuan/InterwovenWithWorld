@@ -11,6 +11,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Reflection;
 using MapStruct;
+using System.Runtime.InteropServices;
 
 namespace TaskMap
 {
@@ -101,42 +102,43 @@ namespace TaskMap
 
         private void Awake()
         {
-            if (!File.Exists(dataPath))
-            {
-                File.Create(dataPath).Close();
-                taskMap = new TaskMap();
-                string jsonValue = taskMap.Save();
-                File.WriteAllText(dataPath, jsonValue, Encoding.UTF8);
-            }
-            else
-            {
-                string jsonValue = File.ReadAllText(dataPath, Encoding.UTF8);
-                taskMap = new TaskMap();
-                taskMap.Load(jsonValue);
-            }
-            secondScroll = new Vector2(RelationShipWidth / 2, RelationShipHeight / 2);
-            ShowBackImage = Resources.Load<Texture2D>("Task/ShowBack");
+            //if (!File.Exists(dataPath))
+            //{
+            //    File.Create(dataPath).Close();
+            //    taskMap = new TaskMap();
+            //    string jsonValue = taskMap.Save();
+            //    File.WriteAllText(dataPath, jsonValue, Encoding.UTF8);
+            //}
+            //else
+            //{
+            //    string jsonValue = File.ReadAllText(dataPath, Encoding.UTF8);
+            //    taskMap = new TaskMap();
+            //    taskMap.Load(jsonValue);
+            //}
+            //secondScroll = new Vector2(RelationShipWidth / 2, RelationShipHeight / 2);
+            //ShowBackImage = Resources.Load<Texture2D>("Task/ShowBack");
+            LoadFile(dataPath);
             //按钮样式
             buttonSelectStyle = new GUIStyle();
-            buttonSelectStyle.fontSize = 14;  //字体大小
+            buttonSelectStyle.fontSize = 10;  //字体大小
             buttonSelectStyle.alignment = TextAnchor.MiddleCenter;//文字位置上下左右居中，
             buttonSelectStyle.normal.background = Resources.Load<Texture2D>("Task/Blue");//背景.
             buttonSelectStyle.normal.textColor = Color.yellow;//文字颜色。
 
             buttonNotSelectStyle = new GUIStyle();
-            buttonNotSelectStyle.fontSize = 14;  //字体大小
+            buttonNotSelectStyle.fontSize = 10;  //字体大小
             buttonNotSelectStyle.alignment = TextAnchor.MiddleCenter;//文字位置上下左右居中，
             buttonNotSelectStyle.normal.background = Resources.Load<Texture2D>("Task/Black");//背景.
             buttonNotSelectStyle.normal.textColor = Color.yellow;//文字颜色。
 
             buttonFirstSelectNodeStyle = new GUIStyle();
-            buttonFirstSelectNodeStyle.fontSize = 14;  //字体大小
+            buttonFirstSelectNodeStyle.fontSize = 10;  //字体大小
             buttonFirstSelectNodeStyle.alignment = TextAnchor.MiddleCenter;//文字位置上下左右居中，
             buttonFirstSelectNodeStyle.normal.background = Resources.Load<Texture2D>("Task/Blue");//背景.
             buttonFirstSelectNodeStyle.normal.textColor = Color.red;//文字颜色。
 
             buttonFirstNotSelectNodeStyle = new GUIStyle();
-            buttonFirstNotSelectNodeStyle.fontSize = 14;  //字体大小
+            buttonFirstNotSelectNodeStyle.fontSize = 10;  //字体大小
             buttonFirstNotSelectNodeStyle.alignment = TextAnchor.MiddleCenter;//文字位置上下左右居中，
             buttonFirstNotSelectNodeStyle.normal.background = Resources.Load<Texture2D>("Task/Black");//背景.
             buttonFirstNotSelectNodeStyle.normal.textColor = Color.red;//文字颜色。
@@ -147,6 +149,43 @@ namespace TaskMap
             buttonCloseStyle.normal.background = Resources.Load<Texture2D>("Task/Close");//背景.
             buttonCloseStyle.normal.textColor = Color.yellow;//文字颜色。
 
+        }
+
+        /// <summary>
+        /// 加载文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private bool LoadFile(string filePath)
+        {
+            try
+            {
+                TaskMap tempTaskMap = null;
+                if (!File.Exists(filePath))
+                {
+                    File.Create(filePath).Close();
+                    tempTaskMap = new TaskMap();
+                    string jsonValue = taskMap.Save();
+                    File.WriteAllText(filePath, jsonValue, Encoding.UTF8);
+                }
+                else
+                {
+                    string jsonValue = File.ReadAllText(filePath, Encoding.UTF8);
+                    tempTaskMap = new TaskMap();
+                    tempTaskMap.Load(jsonValue);
+                }
+                if (tempTaskMap != null)
+                    taskMap = tempTaskMap;
+                else
+                    return false;
+                secondScroll = new Vector2(RelationShipWidth / 2, RelationShipHeight / 2);
+                ShowBackImage = Resources.Load<Texture2D>("Task/ShowBack");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -177,6 +216,10 @@ namespace TaskMap
             this.Repaint();
         }
 
+
+
+
+
         /// <summary>
         /// 当前选择的节点
         /// </summary>
@@ -191,6 +234,20 @@ namespace TaskMap
         private void ShowAllNode()
         {
             EditorGUILayout.BeginVertical();
+            if (GUILayout.Button("路径:", GUILayout.Width(50)))
+            {
+                OpenFileName ofn = LocalDialog.CreateOpenFileName();
+                if (LocalDialog.GetOFN(ofn))
+                {
+                    if (LoadFile(ofn.file))
+                    {
+                        dataPath = ofn.file;
+                    }
+                }
+            }
+            EditorGUILayout.TextArea(dataPath, GUILayout.Width(165));
+            //EditorGUILayout.LabelField(dataPath, GUILayout.Width(400));
+
             if (GUILayout.Button("保存", GUILayout.Width(80)))
             {
                 string jsonValue = taskMap.Save();
@@ -320,7 +377,7 @@ namespace TaskMap
             //绘制前置组的关系(将两个组用方框框起来,选取最近的点连接)
             relationShipZonePointsDic = new Dictionary<RelationShipZone, Vector2[]>();
             RelationShipZone[] relationShipZones = taskMap.GetAllRelationShipZone();
-            Func<MapElement<TaskInfoStruct>[],Color, Rect> DrawLineAndReturnRectFunc = (zoneNodes,lineColor) =>//传入组的对象获取组对象的范围
+            Func<MapElement<TaskInfoStruct>[], Color, Rect> DrawLineAndReturnRectFunc = (zoneNodes, lineColor) =>//传入组的对象获取组对象的范围
             {
                 if (zoneNodes.Count() == 0)
                     return default(Rect);
@@ -369,7 +426,7 @@ namespace TaskMap
             }
             #endregion
 
-            #region 绘制图节点关系的附加条件(互斥,前置,前置组)
+            #region 绘制图节点关系的附加条件(互斥,前置,互斥组,前置组)
             //绘制特殊的关系互斥则在线中间画一个X 如果是前后置,则绘制一个箭头前置指向后置
             //绘制非前置组的类型
             NodeRelationShip[] allNodeRelationShips = taskMap.GetAllNodeRelationShip();
@@ -398,7 +455,31 @@ namespace TaskMap
                                 Handles.DrawLine(point3, point4);
                             }
                             break;
-                        case EnumNodeRelationShip.Predecessor://前置
+                        case EnumNodeRelationShip.SingleExclusion://前置失败
+                            {
+                                Vector2 point1 = centerVec;
+                                Vector2 point2 = centerVec;
+                                Vector2 point3 = centerVec;
+                                Vector2 point4 = centerVec;
+                                if (nodeRelationShip.StartID == tempReationShipNodeValue.Key.Key)//指向end 偏向start
+                                {
+                                    point1 += (-lineVec + lineNormalVec) * lineLength;
+                                    point2 += (-lineVec - lineNormalVec) * lineLength;
+
+                                }
+                                else//指向start 偏向end
+                                {
+                                    point1 += (lineVec + lineNormalVec) * lineLength;
+                                    point2 += (lineVec - lineNormalVec) * lineLength;
+                                }
+                                point3 += lineNormalVec * lineLength;
+                                point4 -= lineNormalVec * lineLength;
+                                Handles.DrawLine(point1, centerVec);
+                                Handles.DrawLine(point2, centerVec);
+                                Handles.DrawLine(point3, point4);
+                            }
+                            break;
+                        case EnumNodeRelationShip.Predecessor://前置成功
                             {
                                 Vector2 point1 = centerVec;
                                 Vector2 point2 = centerVec;
@@ -445,7 +526,22 @@ namespace TaskMap
                                 Handles.DrawLine(point3, point4);
                             }
                             break;
-                        case EnumNodeRelationShip.Predecessor:
+                        case EnumNodeRelationShip.SingleExclusion://前置失败
+                            {
+                                Vector2 point1 = centerVec;
+                                Vector2 point2 = centerVec;
+                                Vector2 point3 = centerVec;
+                                Vector2 point4 = centerVec;
+                                point1 += (-lineVec + lineNormalVec) * lineLength;
+                                point2 += (-lineVec - lineNormalVec) * lineLength;
+                                point3 += lineNormalVec * lineLength;
+                                point4 -= lineNormalVec * lineLength;
+                                Handles.DrawLine(point1, centerVec);
+                                Handles.DrawLine(point2, centerVec);
+                                Handles.DrawLine(point3, point4);
+                            }
+                            break;
+                        case EnumNodeRelationShip.Predecessor://前置完成
                             {
                                 Vector2 point1 = centerVec;
                                 Vector2 point2 = centerVec;
@@ -682,7 +778,7 @@ namespace TaskMap
                 if (controlSelectIDs != null && controlSelectIDs.Length > 0)
                 {
                     MapElement<TaskInfoStruct>[] selectZone = controlSelectIDs.Select(temp => nodes.FirstOrDefault(inner => inner.ID == temp)).Where(temp => temp != null).ToArray();
-                    DrawLineAndReturnRectFunc(selectZone,Color.yellow);
+                    DrawLineAndReturnRectFunc(selectZone, Color.yellow);
                 }
                 //查看框选
                 if (thisSelectRect != default(Rect))
@@ -799,6 +895,8 @@ namespace TaskMap
             if (taskEditor_Explan != null)
                 taskEditor_Explan.Close();
         }
+
+
     }
 
     /// <summary>
@@ -1277,9 +1375,11 @@ namespace TaskMap
             EditorGUILayout.EndHorizontal();
             if (nodeRelationShip != null)
             {
-                string[] explans = new string[] { "互斥", "前置" };
-                int[] values = new int[] { (int)EnumNodeRelationShip.Mutex, (int)EnumNodeRelationShip.Predecessor };
-                int index = nodeRelationShip.RelationShip == EnumNodeRelationShip.Mutex ? 0 : 1;
+                if (nodeRelationShip.JudgingStatus != Enums.EnumTaskProgress.Started && nodeRelationShip.JudgingStatus != Enums.EnumTaskProgress.Sucessed)
+                    nodeRelationShip.JudgingStatus = Enums.EnumTaskProgress.Sucessed;//默认完成才可以进行互斥的选择判断
+                string[] explans = new string[] { "互斥", "前置失败", "前置完成" };
+                int[] values = new int[] { (int)EnumNodeRelationShip.Mutex, (int)EnumNodeRelationShip.SingleExclusion, (int)EnumNodeRelationShip.Predecessor };
+                int index = nodeRelationShip.RelationShip == EnumNodeRelationShip.Mutex ? 0 : (nodeRelationShip.RelationShip == EnumNodeRelationShip.SingleExclusion ? 1 : 2);
                 index = EditorGUILayout.Popup("关系类型", index, explans);
                 if (index > -1)
                 {
@@ -1293,6 +1393,11 @@ namespace TaskMap
                 };
                 MapElement<TaskInfoStruct> node1 = taskMap.GetElement(nodeRelationShip.StartID);
                 MapElement<TaskInfoStruct> node2 = taskMap.GetElement(nodeRelationShip.EndID);
+                EditorGUILayout.BeginHorizontal();
+                bool judgingStatus = EditorGUILayout.Toggle(nodeRelationShip.JudgingStatus == Enums.EnumTaskProgress.Sucessed, GUILayout.Width(20));
+                EditorGUILayout.LabelField("选择时判断对方状态(√->判断为完成;×->判断为执行中)");
+                nodeRelationShip.JudgingStatus = judgingStatus ? Enums.EnumTaskProgress.Sucessed : Enums.EnumTaskProgress.Started;
+                EditorGUILayout.EndHorizontal();
                 switch (nodeRelationShip.RelationShip)
                 {
                     case EnumNodeRelationShip.Mutex://互斥
@@ -1304,7 +1409,8 @@ namespace TaskMap
                         EditorGUILayout.EndHorizontal();
                         ShowNodeMessageAction(node2);
                         break;
-                    case EnumNodeRelationShip.Predecessor://前置
+                    case EnumNodeRelationShip.SingleExclusion://前置失败
+                    case EnumNodeRelationShip.Predecessor://前置完成
                         EditorGUILayout.LabelField("前置节点");
                         ShowNodeMessageAction(node1);
                         EditorGUILayout.BeginHorizontal();
@@ -1380,6 +1486,8 @@ namespace TaskMap
         {
             if (taskMap == null || zone == null)
                 return;
+            if (zone.JudgingStatus != Enums.EnumTaskProgress.Started && zone.JudgingStatus != Enums.EnumTaskProgress.Sucessed)
+                zone.JudgingStatus = Enums.EnumTaskProgress.Sucessed;//默认完成才可以进行互斥的选择判断
             EditorGUILayout.BeginVertical();
             //删除
             if (GUILayout.Button("删除组关系", GUILayout.Width(60)))
@@ -1405,9 +1513,9 @@ namespace TaskMap
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
             //关系类型
-            string[] explans = new string[] { "互斥", "前置" };
-            int[] values = new int[] { (int)EnumNodeRelationShip.Mutex, (int)EnumNodeRelationShip.Predecessor };
-            int index = zone.RelationShip == EnumNodeRelationShip.Mutex ? 0 : 1;
+            string[] explans = new string[] { "互斥", "前置失败", "前置完成" };
+            int[] values = new int[] { (int)EnumNodeRelationShip.Mutex, (int)EnumNodeRelationShip.SingleExclusion, (int)EnumNodeRelationShip.Predecessor };
+            int index = zone.RelationShip == EnumNodeRelationShip.Mutex ? 0 : (zone.RelationShip == EnumNodeRelationShip.SingleExclusion ? 1 : 2);
             index = EditorGUILayout.Popup("关系类型", index, explans);
             if (index > -1)
             {
@@ -1447,6 +1555,11 @@ namespace TaskMap
                    EditorGUILayout.EndHorizontal();
                    return wantAddID;
                };
+            EditorGUILayout.BeginHorizontal();
+            bool judgingStatus = EditorGUILayout.Toggle(zone.JudgingStatus == Enums.EnumTaskProgress.Sucessed, GUILayout.Width(20));
+            EditorGUILayout.LabelField("选择时判断对方状态(√->判断为完成;×->判断为执行中)");
+            zone.JudgingStatus = judgingStatus ? Enums.EnumTaskProgress.Sucessed : Enums.EnumTaskProgress.Started;
+            EditorGUILayout.EndHorizontal();
             switch (zone.RelationShip)
             {
                 case EnumNodeRelationShip.Mutex://互斥
@@ -1482,6 +1595,7 @@ namespace TaskMap
                             zone.EndIDList.Remove(taskNode.ID);
                     }
                     break;
+                case EnumNodeRelationShip.SingleExclusion:
                 case EnumNodeRelationShip.Predecessor:
                     EditorGUILayout.LabelField("前置组");
                     zone.StartPassCount = EditorGUILayout.IntField("最小任务数判断(用于判断节点集合的完成与否)", zone.StartPassCount);

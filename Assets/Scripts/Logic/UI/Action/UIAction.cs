@@ -23,6 +23,11 @@ public class UIAction : MonoBehaviour
     /// </summary>
     IGameState iGameState;
 
+    /// <summary>
+    /// 是否可以切换标签,如果是通过特定功能点开的界面则不可以(判断方法ShowIndex函数传入参数为0表示随意,传入参数不为0则不可以)
+    /// </summary>
+    bool CanChangeTab;
+
     void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
@@ -46,7 +51,27 @@ public class UIAction : MonoBehaviour
             }
         }
         //重新载入数据
-        ShowIndex(0);
+        //检测此时是否有点击地图的ID(如果是则载入地图标签)
+        IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+        NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, iInteractiveState.ClickInteractiveNPCID);
+        if (npcDataInfo != null && npcDataInfo.NPCType == EnumNPCType.Street)
+        {
+            UIFocusTabPage[] tabPages = uiFocusPath.NewUIFocusArray.OfType<UIFocusTabPage>().ToArray();
+            var tempUIBigMaps = Enumerable.Range(0, tabPages.Length).Select(temp => new { index = temp, uiBigMap = tabPages[temp].panel.GetComponent<UIBigMap>() }).Where(temp => temp.uiBigMap != null).FirstOrDefault();
+            if (tempUIBigMaps != null)
+            {
+                ShowIndex(tempUIBigMaps.index);
+            }
+            else
+            {
+                ShowIndex(0);
+            }
+        }
+        else//如果不是则载入第一个标签
+        {
+            ShowIndex(0);
+        }
     }
 
     private void OnDisable()
@@ -64,16 +89,16 @@ public class UIAction : MonoBehaviour
     /// <param name="rockValue"></param>
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
-        if (uiFocusPath)//切换标签页
+        if (uiFocusPath && CanChangeTab)//切换标签页
         {
             UIFocus nextTabPageFocus = null;
             switch (keyType)
             {
                 case UIManager.KeyType.R1:
-                    nextTabPageFocus = uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT, true);
+                    nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT);// uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT, true);
                     break;
                 case UIManager.KeyType.L1:
-                    nextTabPageFocus = uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT, true);
+                    nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT);//uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT, true);
                     break;
             }
             TabPageClick(nextTabPageFocus as UIFocusTabPage);
@@ -116,11 +141,12 @@ public class UIAction : MonoBehaviour
     /// <param name="index"></param>
     public void ShowIndex(int index)
     {
-        UIFocusTabPage[] tabPages = uiFocusPath.UIFocuesArray.OfType<UIFocusTabPage>().ToArray();
+        CanChangeTab = index == 0;
+        UIFocusTabPage[] tabPages = uiFocusPath.NewUIFocusArray.OfType<UIFocusTabPage>().ToArray();//uiFocusPath.UIFocuesArray.OfType<UIFocusTabPage>().ToArray();
         if (tabPages.Length > 0)
         {
             if (index < 0)
-                tabPages.ToList().ForEach(temp => 
+                tabPages.ToList().ForEach(temp =>
                 {
                     temp.panel.gameObject.SetActive(false);
                     temp.LostForcus();
@@ -140,4 +166,6 @@ public class UIAction : MonoBehaviour
             }
         }
     }
+
+
 }

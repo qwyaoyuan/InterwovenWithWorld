@@ -43,11 +43,11 @@ public class UIInterlude : MonoBehaviour
     /// <summary>
     /// 运行时任务管理对象 
     /// </summary>
-    RuntimeTasksData runtimeTasksData;
+    TaskMap.RunTimeTaskData runtimeTasksData;
     /// <summary>
     /// 当前展示的任务信息对象
     /// </summary>
-    RunTimeTaskInfo runTimeTaskInfo;
+    TaskMap.RunTimeTaskInfo runTimeTaskInfo;
     /// <summary>
     /// 当前任务状态对象
     /// </summary>
@@ -73,17 +73,18 @@ public class UIInterlude : MonoBehaviour
     bool showLeftOrRight;
 
     /// <summary>
-    /// 之前的游戏状态
+    /// 开始时第一次的按键抬起(此时不可以使用)
     /// </summary>
-    EnumGameRunType oldGameRunType;
+    bool fisrtKeyUP;
 
     private void OnEnable()
     {
         dialogueStructData = DataCenter.Instance.GetMetaData<DialogueStructData>();
-        runtimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
+        runtimeTasksData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
         iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
         iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         iGameState = GameState.Instance.GetEntity<IGameState>();
+        iGameState.PushEnumGameRunType(EnumGameRunType.TaskTalk);
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         InitTalk();
     }
@@ -94,26 +95,29 @@ public class UIInterlude : MonoBehaviour
     /// </summary>
     private void InitTalk()
     {
-        oldGameRunType = iGameState.GameRunType;
+        fisrtKeyUP = false;
         int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
         INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
-        RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
-                       .Where(temp => temp.RunTimeTaskNode.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
+        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
+                       .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
                        .ToArray();
-        RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.RunTimeTaskNode.TaskType == Enums.TaskType.PrincipalLine).FirstOrDefault();
+        TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).FirstOrDefault();
         if (runTimeTaskInfo != null)
         {
             this.runTimeTaskInfo = runTimeTaskInfo;
-            this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.RunTimeTaskNode.ReceiveTaskNpcId,
+            this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId,
                 temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == runTimeTaskInfo.ID).FirstOrDefault();
             if (this.dialogueCodition != null)
             {
-                this.nowDialoguePoint = this.dialogueCodition.topPoint; 
+                this.nowDialoguePoint = this.dialogueCodition.topPoint;
                 showLeftOrRight = false;
-                iGameState.GameRunType = EnumGameRunType.TaskTalk;
                 ShowTalk();
             }
-            else gameObject.SetActive(false);
+            else
+            {
+                gameObject.SetActive(false);
+                iNowTaskState.StartTask = runTimeTaskInfo.ID;
+            }
         }
         else
         {
@@ -149,11 +153,16 @@ public class UIInterlude : MonoBehaviour
     private void OnDisable()
     {
         UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
-        iGameState.GameRunType = oldGameRunType;
+        iGameState.PopEnumGameRunType();
     }
 
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
+        if (!fisrtKeyUP)
+        {
+            fisrtKeyUP = true;
+            return;
+        }
         switch (keyType)
         {
             case UIManager.KeyType.A:
@@ -186,7 +195,7 @@ public class UIInterlude : MonoBehaviour
         {
             gameObject.SetActive(false);
             //接受任务
-            iNowTaskState.StartTask =runTimeTaskInfo.ID;
+            iNowTaskState.StartTask = runTimeTaskInfo.ID;
         }
     }
 }

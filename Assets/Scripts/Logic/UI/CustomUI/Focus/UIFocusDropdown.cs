@@ -20,7 +20,7 @@ public class UIFocusDropdown : UIFocus
     /// <summary>
     /// 下拉列表
     /// </summary>
-    Dropdown dropdown;
+    public Dropdown dropdown;
 
     void Awake()
     {

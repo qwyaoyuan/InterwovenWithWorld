@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114218653848639346}
   - component: {fileID: 114354712757135718}
   - component: {fileID: 114361424573301396}
+  - component: {fileID: 114468142063374514}
   m_Layer: 5
   m_Name: NewButton
   m_TagString: Untagged
@@ -42,6 +43,7 @@ GameObject:
   - component: {fileID: 114181634444178896}
   - component: {fileID: 114404626159993588}
   - component: {fileID: 114878163048400240}
+  - component: {fileID: 114758313410604352}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -149,6 +151,7 @@ GameObject:
   - component: {fileID: 114731105480559828}
   - component: {fileID: 114466025195576008}
   - component: {fileID: 114478474870551850}
+  - component: {fileID: 114366712389986384}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -425,18 +428,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114218653848639346}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114238984082071660}
-        m_MethodName: NewGameButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114361424573301396
@@ -450,6 +442,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7003f6351dcf9498a3e8de8848ed7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Tag: 
+--- !u!114 &114366712389986384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693697405785104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114238984082071660}
+          m_MethodName: SettingButtonClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114394470801263974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -467,6 +490,22 @@ MonoBehaviour:
   - {fileID: 114878163048400240}
   - {fileID: 114361424573301396}
   - {fileID: 114478474870551850}
+  UIFocusArrayRelaships:
+  - This: {fileID: 114878163048400240}
+    Up: {fileID: 114478474870551850}
+    Down: {fileID: 114361424573301396}
+    Left: {fileID: 0}
+    Right: {fileID: 0}
+  - This: {fileID: 114361424573301396}
+    Up: {fileID: 114878163048400240}
+    Down: {fileID: 114478474870551850}
+    Left: {fileID: 0}
+    Right: {fileID: 0}
+  - This: {fileID: 114478474870551850}
+    Up: {fileID: 114361424573301396}
+    Down: {fileID: 114878163048400240}
+    Left: {fileID: 0}
+    Right: {fileID: 0}
 --- !u!114 &114404626159993588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -506,18 +545,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114181634444178896}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114238984082071660}
-        m_MethodName: ContinueButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114448599239532260
@@ -592,20 +620,39 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114731105480559828}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114238984082071660}
-        m_MethodName: SettingButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114468142063374514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1110976559685446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114238984082071660}
+          m_MethodName: NewGameButtonClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114478474870551850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -617,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7003f6351dcf9498a3e8de8848ed7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Tag: 
 --- !u!114 &114731105480559828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,6 +692,36 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114758313410604352
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208662956127786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114238984082071660}
+          m_MethodName: ContinueButtonClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  delegates: []
 --- !u!114 &114766451989048062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -715,6 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7003f6351dcf9498a3e8de8848ed7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Tag: 
 --- !u!222 &222010743891688788
 CanvasRenderer:
   m_ObjectHideFlags: 1

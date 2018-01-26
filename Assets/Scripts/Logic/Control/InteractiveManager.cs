@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -79,23 +80,25 @@ public class InteractiveManager : IInput
 
     public void KeyPress(int key)
     {
-       
+
     }
 
     public void KeyUp(int key)
     {
-     
+
     }
 
     public void Move(Vector2 forward)
     {
-     
+
     }
 
     public void View(Vector2 view)
     {
-      
+
     }
+
+    public void SetStep(int step) { }
 
     public void KeyDown(int key)
     {
@@ -104,21 +107,26 @@ public class InteractiveManager : IInput
         if (iGameState.GameRunType != EnumGameRunType.Unsafa &&
             iGameState.GameRunType != EnumGameRunType.Safe)
             return;
+        KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(key, temp => temp.keyContactType == EnumKeyContactType.Action, iPlayerState.KeyContactDataZone);
+        if (keyContactStructs.Length == 0)
+            return;
         switch (iPlayerState.KeyContactDataZone)
         {
             case EnumKeyContactDataZone.Normal:
                 break;
             case EnumKeyContactDataZone.Collect:
-                if (iPlayerState.TouchTargetStruct.ID > -1)
-                {
-                    iInteractiveState.ClickInteractiveStuffID = iPlayerState.TouchTargetStruct.ID;
-                }
+                if (keyContactStructs[0].id == 1)
+                    if (iPlayerState.TouchTargetStruct.ID > -1)
+                    {
+                        iInteractiveState.ClickInteractiveStuffID = iPlayerState.TouchTargetStruct.ID;
+                    }
                 break;
             case EnumKeyContactDataZone.Dialogue:
-                if (iPlayerState.TouchTargetStruct.ID > -1)
-                {
-                    iInteractiveState.ClickInteractiveNPCID = iPlayerState.TouchTargetStruct.ID;
-                }
+                if (keyContactStructs[0].id == 2)
+                    if (iPlayerState.TouchTargetStruct.ID > -1)
+                    {
+                        iInteractiveState.ClickInteractiveNPCID = iPlayerState.TouchTargetStruct.ID;
+                    }
                 break;
         }
     }

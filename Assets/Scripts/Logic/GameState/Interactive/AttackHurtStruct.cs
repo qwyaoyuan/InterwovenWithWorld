@@ -12,21 +12,17 @@ public struct AttackHurtStruct
     /// </summary>
     public int hurtTransferNum;
     /// <summary>
-    /// 物理伤害
+    /// 伤害类型
     /// </summary>
-    public int physicsHurt;
+    public EnumHurtType hurtType;
     /// <summary>
-    /// 物理附加伤害(最终伤害附加)
+    /// 造成本次伤害时的基础状态
     /// </summary>
-    public int addPhysicsHurt;
+    public IAttributeState attributeState;
     /// <summary>
-    /// 魔法伤害
+    /// 本次技能的耗魔量(仅用于组合魔法)
     /// </summary>
-    public int magicHurt;
-    /// <summary>
-    /// 魔法伤害附加(最终伤害附加)
-    /// </summary>
-    public int addMagicHurt;
+    public float thisUsedMana;
     /// <summary>
     /// 附加状态数组
     /// </summary>
@@ -38,7 +34,34 @@ public struct AttackHurtStruct
 }
 
 /// <summary>
+/// 伤害类型 
+/// </summary>
+public enum EnumHurtType
+{
+    /// <summary>
+    /// 魔法伤害
+    /// </summary>
+    Magic,
+    /// <summary>
+    /// 物理技能伤害
+    /// </summary>
+    PhysicSkill,
+    /// <summary>
+    /// 普通攻击伤害
+    /// </summary>
+    NormalAction,
+}
+
+/// <summary>
 /// 计算伤害的静态类
 /// </summary>
 public static class CalculateHurt
-{ }
+{
+    /// <summary>
+    /// 具体的计算
+    /// </summary>
+    /// <param name="from">伤害来自于</param>
+    /// <param name="to">伤害指向</param>
+    public static void Calculate(AttackHurtStruct from, IAttributeState to)
+    { }
+}

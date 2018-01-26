@@ -44,14 +44,14 @@ public interface IGameState : IBaseState
     void ChangedScene(string sceneName, Vector3 playerLocation, Action<bool> LoadResultAction = null);
 
     /// <summary>
-    /// 镜头的移动速度
+    /// 镜头的移动速度(如果当前模式是第三人称模式)
     /// x表示围绕旋转(角色)
     /// y表示上下旋转(摄像机)
     /// </summary>
     Vector2 CameraRotateSpeed { get; set; }
 
     /// <summary>
-    /// 镜头与对象的Y轴夹角范围
+    /// 镜头与对象的Y轴夹角范围(如果当前模式是第三人称模式)
     /// x为最小夹角
     /// y为最大夹角
     /// 计算夹角的向量为对象的Y轴正方向,对象到摄像机的方向 
@@ -59,10 +59,50 @@ public interface IGameState : IBaseState
     Vector2 CameraYAngleRange { get; set; }
 
     /// <summary>
+    /// 镜头与对象的距离(如果当前模式是第三人称模式)
+    /// </summary>
+    float CameraDistanceOfPlayer { get; set; }
+
+    /// <summary>
+    /// 镜头朝向目标时向Z轴方向的偏差(如果当前模式是固定视角模式)
+    /// </summary>
+    float CameraArmOffsetZ { get; set; }
+
+    /// <summary>
+    /// 镜头与目标在Z轴方向上的偏差(如果当前模式是固定视角模式)
+    /// </summary>
+    float CameraPosOffsetZ { get; set; }
+
+    /// <summary>
+    /// 镜头与目标在Y轴方向上的偏差(如果当前模式是固定视角模式)
+    /// </summary>
+    float CameraPosOffsetY { get; set; }
+
+    /// <summary>
     /// 选择目标的模式
     /// </summary>
     EnumSelectTargetModel SelectTargetModel { get; set; }
 
+    /// <summary>
+    /// 游戏的视角模式
+    /// </summary>
+    EnumViewModel ViewModel { get; set; }
+
+}
+
+/// <summary>
+/// 游戏的视角模式
+/// </summary>
+public enum EnumViewModel
+{
+    /// <summary>
+    /// 自由的第三人称摄像机
+    /// </summary>
+    Free,
+    /// <summary>
+    /// 固定的俯视摄像机
+    /// </summary>
+    Solid
 }
 
 /// <summary>

@@ -32,9 +32,15 @@ namespace TaskMap
         [JsonIgnore]
         private TaskMap taskMap;
 
+        /// <summary>
+        ///  任务id对应任务的对象字典
+        /// </summary>
+        [JsonProperty]
+        private Dictionary<int, RunTimeTaskInfo> idToRunTimeTaskInfo;
+
         public RunTimeTaskData()
         {
-
+            idToRunTimeTaskInfo = new Dictionary<int, RunTimeTaskInfo>();
         }
 
         /// <summary>
@@ -69,20 +75,56 @@ namespace TaskMap
         }
 
         /// <summary>
-        /// 获取当前所有可做任务
+        /// 获取当前所有可做任务(包括已经接受的任务)
         /// </summary>
         /// <returns></returns>
         public List<RunTimeTaskInfo> GetAllToDoList()
         {
             List<RunTimeTaskInfo> resultList = taskMap.GetLastFrameNodes().Select(temp =>
-                new RunTimeTaskInfo()
-                {
-                    ID = temp.ID,
-                    TaskInfoStruct = temp.Value,
-                    TaskInfoNode = temp,
-                    TaskMap = taskMap
-                }).ToList();
+            {
+                if (!idToRunTimeTaskInfo.ContainsKey(temp.ID))
+                    idToRunTimeTaskInfo.Add(temp.ID, new RunTimeTaskInfo()
+                    {
+                        ID = temp.ID,
+                        TaskInfoStruct = temp.Value,
+                        TaskInfoNode = temp,
+                        TaskMap = taskMap
+                    });
+                return idToRunTimeTaskInfo[temp.ID];
+            }).ToList();
             return resultList;
+        }
+
+        /// <summary>
+        /// 通过id获取任务
+        /// </summary>
+        /// <param name="id">任务id</param>
+        /// <param name="onlyToDo">是否这从当前可做的任务中查找</param>
+        /// <returns></returns>
+        public RunTimeTaskInfo GetTasksWithID(int id, bool onlyToDo = true)
+        {
+            if (onlyToDo) return GetAllToDoList().FirstOrDefault(temp => temp.ID == id);
+            else
+            {
+                if (!idToRunTimeTaskInfo.ContainsKey(id))
+                {
+                    MapElement<TaskInfoStruct> result = taskMap.GetElement(id);
+                    if (result != null)
+                    {
+                        if (!idToRunTimeTaskInfo.ContainsKey(result.ID))
+                            idToRunTimeTaskInfo.Add(result.ID, new RunTimeTaskInfo()
+                            {
+                                ID = result.ID,
+                                TaskInfoStruct = result.Value,
+                                TaskInfoNode = result,
+                                TaskMap = taskMap
+                            });
+                    }
+                }
+                if (idToRunTimeTaskInfo.ContainsKey(id))
+                    return idToRunTimeTaskInfo[id];
+                return null;
+            }
         }
     }
 

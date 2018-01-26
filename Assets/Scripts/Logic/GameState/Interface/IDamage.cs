@@ -29,9 +29,9 @@ public interface IDamage : IBaseState
     /// 设置物理技能攻击
     /// </summary>
     /// <param name="iPlayerState">玩家状态对象</param>
-    /// <param name="nowIAttributeState">本技能释放时的数据状态</param>
+    /// <param name="physicsSkillStateStruct">本技能释放时的数据状态</param>
     /// <param name="skillType">技能类型</param>
     /// <param name="weaponTypeByPlayerState">武器类型</param>
-    void SetPhysicSkillAttack(IPlayerState iPlayerState, IAttributeState nowIAttributeState, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
+    void SetPhysicSkillAttack(IPlayerState iPlayerState, PhysicsSkillStateStruct physicsSkillStateStruct, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
 }
 

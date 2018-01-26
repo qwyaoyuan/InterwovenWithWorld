@@ -20,5 +20,7 @@ interface IObjInteractive
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     T GetEntity<T>() where T : IBaseState;
+
+
 }
 

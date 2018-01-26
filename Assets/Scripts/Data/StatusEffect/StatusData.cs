@@ -168,6 +168,47 @@ public class StatusDataInfo
         /// </summary>
         public Dictionary<EnumStatusAction, StatusActionDataInfo_Base> StatusActionDataInfoDic;
 
+        /// <summary>
+        /// 持续时间曲线的关键帧数据
+        /// </summary>
+        [JsonProperty]
+        private Keyframe[] durationCurve_Keys;
+        /// <summary>
+        /// 持续时间曲线
+        /// </summary>
+        [JsonIgnore]
+        private AnimationCurve _DurationCurve;
+        /// <summary>
+        /// 持续时间曲线
+        /// </summary>
+        [JsonIgnore]
+        public AnimationCurve DurationCuvre
+        {
+            get
+            {
+                if (_DurationCurve == null)
+                {
+                    if (durationCurve_Keys != null)
+                        _DurationCurve = new AnimationCurve(durationCurve_Keys);
+                    else _DurationCurve = new AnimationCurve();
+                }
+                return _DurationCurve;
+            }
+            set
+            {
+                _DurationCurve = value;
+                durationCurve_Keys = _DurationCurve.keys;
+            }
+        }
+        /// <summary>
+        /// 持续时间曲线依据的最小耗魔(如果小于该魔力则取最小时间)
+        /// </summary>
+        public int MinMana;
+        /// <summary>
+        /// 持续时间曲线依据的最大耗魔(如果大于该魔力则取最大时间)
+        /// </summary>
+        public int MaxMana;
+
         public StatusLevelDataInfo()
         {
             StatusActionDataInfoDic = new Dictionary<EnumStatusAction, StatusActionDataInfo_Base>();

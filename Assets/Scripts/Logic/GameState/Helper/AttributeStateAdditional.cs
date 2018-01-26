@@ -19,6 +19,17 @@ public class AttributeStateAdditional : IAttributeState
     public AttributeStateAdditional()
     {
         callBackDic = new Dictionary<Type, List<KeyValuePair<object, Action<IBaseState, string>>>>();
+        Type[] allType = GetType().GetInterfaces();
+        foreach (Type type in allType)
+        {
+            if (type.IsInterface
+                && !Type.Equals(type, typeof(IBaseState))
+                && type.GetInterface(typeof(IBaseState).Name) != null)
+            {
+                List<KeyValuePair<object, Action<IBaseState, string>>> callBackList = new List<KeyValuePair<object, Action<IBaseState, string>>>();
+                callBackDic.Add(type, callBackList);
+            }
+        }
     }
 
     public void Init()
@@ -87,6 +98,20 @@ public class AttributeStateAdditional : IAttributeState
             result.StateResistances = stateResistances;
         }
         return result;
+    }
+
+    public static IAttributeState operator +(IAttributeState a, AttributeStateAdditional b)
+    {
+        return b + a;
+    }
+
+    /// <summary>
+    /// 返回深拷贝对象
+    /// </summary>
+    /// <returns></returns>
+    public AttributeStateAdditional Clone()
+    {
+        return (AttributeStateAdditional)((IAttributeState)this + (new AttributeStateAdditional()));
     }
 
     /// <summary>
@@ -255,6 +280,70 @@ public class AttributeStateAdditional : IAttributeState
             {
                 Call<IAttributeState, float>(temp => temp.MaxMana);
             }
+        }
+    }
+
+    private float _Mentality;
+    /// <summary>
+    /// 精神力计量
+    /// </summary>
+    public float Mentality
+    {
+        get { return _Mentality; }
+        set
+        {
+            float tempMentality = _Mentality;
+            _Mentality = value;
+            if (tempMentality != _Mentality)
+                Call<IAttributeState, float>(temp => temp.MaxMana);
+        }
+    }
+
+    private float _MaxMentality;
+    /// <summary>
+    /// 最大精神力计量
+    /// </summary>
+    public float MaxMentality
+    {
+        get { return _MaxMentality; }
+        set
+        {
+            float tempMaxMentality = _MaxMentality;
+            _MaxMentality = value;
+            if (tempMaxMentality != _MaxMentality)
+                Call<IAttributeState, float>(temp => temp.MaxMentality);
+        }
+    }
+
+    private float _MindTraining;
+    /// <summary>
+    /// 心志力计量
+    /// </summary>
+    public float MindTraining
+    {
+        get { return _MindTraining; }
+        set
+        {
+            float tempMindTraining = _MindTraining;
+            _MindTraining = value;
+            if (_MindTraining != tempMindTraining)
+                Call<IAttributeState, float>(temp => temp.MindTraining);
+        }
+    }
+
+    private float _MaxMindTraining;
+    /// <summary>
+    ///  最大心志力计量
+    /// </summary>
+    public float MaxMindTraining
+    {
+        get { return _MaxMindTraining; }
+        set
+        {
+            float tempMaxMindTraining = _MaxMindTraining;
+            _MaxMindTraining = value;
+            if (tempMaxMindTraining != _MaxMindTraining)
+                Call<IAttributeState, float>(temp => temp.MaxMindTraining);
         }
     }
 
@@ -544,6 +633,24 @@ public class AttributeStateAdditional : IAttributeState
             if (tempPhysicsAttacking != _PhysicsAttacking)
             {
                 Call<IAttributeState, float>(temp => temp.PhysicsAttacking);
+            }
+        }
+    }
+
+    private float _PhysicsMinHurt;
+    /// <summary>
+    /// 物理最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
+    /// </summary>
+    public float PhysicsMinHurt
+    {
+        get { return _PhysicsMinHurt; }
+        set
+        {
+            float tempPhysicsMinHurt = _PhysicsMinHurt;
+            _PhysicsMinHurt = value;
+            if (tempPhysicsMinHurt != _PhysicsMinHurt)
+            {
+                Call<IAttributeState, float>(temp => temp.PhysicsMinHurt);
             }
         }
     }

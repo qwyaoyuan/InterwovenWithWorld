@@ -107,7 +107,7 @@ public class UISetting : MonoBehaviour
                     {
                         if (tabPanelFocus.CanMoveNext(moveType))
                         {
-                            UIFocus nextTabPanelFocus = nowTabPageFocus.panelFocusPath.GetNextFocus(tabPanelFocus, moveType);
+                            UIFocus nextTabPanelFocus = nowTabPageFocus.panelFocusPath.GetNewNextFocus(tabPanelFocus, moveType);// nowTabPageFocus.panelFocusPath.GetNextFocus(tabPanelFocus, moveType);
                             if (nextTabPanelFocus)
                             {
                                 tabPanelFocus = nextTabPanelFocus;
