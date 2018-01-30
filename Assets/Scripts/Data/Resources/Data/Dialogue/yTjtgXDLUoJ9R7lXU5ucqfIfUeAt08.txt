@@ -40,3 +40,17 @@ maxGoodAndEvil==>9999
 race==>None
 
 [End]
+[Start]
+topPoint==>[10={[11=]}]
+text==>test
+touchNPCID==>0
+enumDialogueType==>Task
+maxLevel==>99
+minLevel==>-1
+overTask==>-1
+thisTask==>5
+minGoodAndEvil==>-9999
+maxGoodAndEvil==>9999
+race==>None
+
+[End]

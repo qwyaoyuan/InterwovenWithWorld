@@ -25,3 +25,9 @@ dialogueID==>8!@#$%^&*npcID==>1!@#$%^&*voiceID==>-1!@#$%^&*titleValue==>!@#$%^&*
 [Start]
 dialogueID==>9!@#$%^&*npcID==>1!@#$%^&*voiceID==>-1!@#$%^&*titleValue==>!@#$%^&*showValue==>显示文字2!@#$%^&*otherValue==>2,5!@#$%^&*
 [End]
+[Start]
+dialogueID==>10!@#$%^&*npcID==>0!@#$%^&*voiceID==>0!@#$%^&*titleValue==>123!@#$%^&*showValue==>123!@#$%^&*otherValue==>!@#$%^&*
+[End]
+[Start]
+dialogueID==>11!@#$%^&*npcID==>0!@#$%^&*voiceID==>0!@#$%^&*titleValue==>321!@#$%^&*showValue==>321!@#$%^&*otherValue==>!@#$%^&*
+[End]

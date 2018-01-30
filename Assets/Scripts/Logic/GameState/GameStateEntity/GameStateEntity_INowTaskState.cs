@@ -71,7 +71,7 @@ public partial class GameState : INowTaskState
         if (runTimeTaskInfo == null || runTimeTaskInfo.IsOver)
             return;
         //NPC检测(是否存在交任务的npc)
-        if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId >= 0)
+        if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskNpcId > 0)
             checkNPCRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
         //位置检测(与NPC检测互斥,如果存在交任务的npc则不检测位置(但是使用其中的场景))
         else if (runTimeTaskInfo.TaskInfoStruct.DeliveryTaskLocation != null)
@@ -120,6 +120,11 @@ public partial class GameState : INowTaskState
     partial void Update_INowTaskState()
     {
         CheckNowTask(EnumCheckTaskType.Position);
+        //如果此时没有主线但是有未接取的主线,则持续检测
+        if (runTimeTaskInfos_Start != null && runTimeTaskInfos_Wait != null
+            && runTimeTaskInfos_Start.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) == 0
+            && runTimeTaskInfos_Wait.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) > 0)
+            CheckNewTask();
     }
 
     public bool CheckNowTask(EnumCheckTaskType checkTaskType, int value = -1)
@@ -154,7 +159,7 @@ public partial class GameState : INowTaskState
     /// </summary>
     bool CheckNowTaskPostion()
     {
-        if (checkPostionRunTimeDic == null)
+        if (checkPostionRunTimeDic == null || PlayerObj == null)
             return false;
         if (checkPostionDicTempList == null)
             checkPostionDicTempList = new List<TaskMap.RunTimeTaskInfo>();
@@ -511,7 +516,7 @@ public partial class GameState : INowTaskState
         {
             if (!todoTaskInfo.IsStart)//只用处理未开始的
             {
-                if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId < 0)//直接接取
+                if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId <= 0)//直接接取
                 {
                     bool canStart = false;
                     if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
@@ -529,7 +534,13 @@ public partial class GameState : INowTaskState
                     }
                     if (canStart)
                     {
-                        StartTask = todoTaskInfo.ID;
+                        //调用对话框,让对话框完成后实现接取
+                        IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+                        if (iInteractiveState.InterludeObj != null)
+                        {
+                            iInteractiveState.InterludeObj.SetActive(true);
+                        }
+                        //StartTask = todoTaskInfo.ID;
                         //todoTaskInfo.IsStart = true;
                         ////将任务添加到分类中
                         //runTimeTaskInfos_Start.Add(todoTaskInfo);
