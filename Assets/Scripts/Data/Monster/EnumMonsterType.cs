@@ -68,5 +68,9 @@ public enum EnumBossActionType
     /// <summary>
     /// 防御
     /// </summary>
-    Defense
+    Defense,
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    Death
 }

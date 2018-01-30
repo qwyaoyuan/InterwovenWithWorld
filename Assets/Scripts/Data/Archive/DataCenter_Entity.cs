@@ -101,10 +101,9 @@ public class PlayerState
     public int Sprice;
 
     /// <summary>
-    /// 自由点
+    /// 技能点
     /// </summary>
     public int FreedomPoint;
-
 
     /// <summary>
     /// 技能点

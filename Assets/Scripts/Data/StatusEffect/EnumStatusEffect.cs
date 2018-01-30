@@ -7,6 +7,8 @@ public enum EnumStatusEffect
 {
     [FieldExplan("无特殊效果")]
     None = 0,
+    //-----------------------------------//
+    DebuffStart,
     #region Debuff 10个
     /// <summary>
     /// 冰冻
@@ -15,7 +17,7 @@ public enum EnumStatusEffect
     [StatusAction(EnumStatusAction.MoveSpeed, 
         EnumStatusAction.AttackSpeed, 
         EnumStatusAction.PhysicsResisitance)]
-    bd1 = 1,
+    bd1 ,
     /// <summary>
     /// 迟钝
     /// </summary>
@@ -102,6 +104,11 @@ public enum EnumStatusEffect
     [StatusAction(EnumStatusAction.Life)]
     lx1,
     #endregion
+    DebuffEnd,
+    //-----------------------------------//
+
+    //-----------------------------------//
+    BuffStart,
     #region Buff 9个
     /// <summary>
     /// 洞察
@@ -169,7 +176,11 @@ public enum EnumStatusEffect
     [StatusAction(EnumStatusAction.MagicSuckBlood)]
     xx4,
     #endregion
+    BuffEnd,
+    //-----------------------------------//
 
+    //-----------------------------------//
+    SpecialStart,
     #region 特殊状态 10个
     /// <summary>
     /// 嘲讽
@@ -254,7 +265,8 @@ public enum EnumStatusEffect
         EnumStatusAction.HitRate)]
     zm1,
     #endregion
-
+    SpecialEnd,
+    //-----------------------------------//
 }
 
 /// <summary>

@@ -149,6 +149,9 @@ public class StatusDataInfo
         }
     }
 
+    /// <summary>
+    /// 具对应等级的特效属性(每个属性包含不同的特殊效果)
+    /// </summary>
     [Serializable]
     public class StatusLevelDataInfo
     {

@@ -18,6 +18,10 @@ public interface IPlayerState : IBaseState,
     /// </summary>
     Camera PlayerCamera { get; set; }
     /// <summary>
+    /// 玩家自身的种族成长数据
+    /// </summary>
+    RoleOfRaceInfoStruct SelfRoleOfRaceInfoStruct { get; }
+    /// <summary>
     /// 物理检测脚本
     /// </summary>
     PhysicSkillInjuryDetection PhysicSkillInjuryDetection { get; set; }
@@ -38,6 +42,10 @@ public interface IPlayerState : IBaseState,
     /// 经验值(本级的)
     /// </summary>
     int Experience { get; set; }
+    /// <summary>
+    /// 最大经验值(本级的)
+    /// </summary>
+    int MaxExperience { get; set; }
     /// <summary>
     /// 技能等级变化
     /// </summary>

@@ -12,6 +12,10 @@ using UnityEngine;
 /// </summary>
 public class AttributeStateAdditional : IAttributeState
 {
+    /// <summary>
+    /// 种族成长对象
+    /// </summary>
+    RoleOfRaceInfoStruct roleOfRaceInfoStruct;
 
     /// <summary>
     /// 构造函数
@@ -50,6 +54,15 @@ public class AttributeStateAdditional : IAttributeState
                 setMethod.Invoke(this, new object[] { null });
             }
         }
+    }
+
+    /// <summary>
+    /// 设置种族成长对象
+    /// </summary>
+    /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
+    public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct)
+    {
+        this.roleOfRaceInfoStruct = roleOfRaceInfoStruct;
     }
 
     public static IAttributeState operator +(AttributeStateAdditional a, IAttributeState b)
@@ -114,13 +127,7 @@ public class AttributeStateAdditional : IAttributeState
         return (AttributeStateAdditional)((IAttributeState)this + (new AttributeStateAdditional()));
     }
 
-    /// <summary>
-    /// 更新属性
-    /// </summary>
-    private void UpdateAttribute()
-    {
-        //通过基础属性修改下方的衍生属性
-    }
+
 
     private float _Quick;
     /// <summary>
@@ -179,6 +186,34 @@ public class AttributeStateAdditional : IAttributeState
         }
     }
 
+    /// <summary>
+    /// 更新属性
+    /// </summary>
+    private void UpdateAttribute()
+    {
+        if (roleOfRaceInfoStruct == null)
+            return;
+        //通过基础属性修改下方的衍生属性
+        //敏捷
+        _EvadeRate = Quick * roleOfRaceInfoStruct.additionQuickToEvadeRate;
+        _HitRate = Quick * roleOfRaceInfoStruct.additionQuickToHitRate;
+        _CritRate = Quick * roleOfRaceInfoStruct.additionQuickToCritRate;
+        _AttackSpeed = Quick * roleOfRaceInfoStruct.additionQuickToAttackSpeed;
+        _MoveSpeed = Quick * roleOfRaceInfoStruct.additionQuickToMoveSpeed;
+        //精神
+        _MaxMana = Mental * roleOfRaceInfoStruct.additionMentalToMana;
+        _MagicAttacking = Mental * roleOfRaceInfoStruct.additionMentalToMagicAttacking;
+        _MaxUseMana = Mental * roleOfRaceInfoStruct.additionMentalToMaxUseMana;
+        _MagicResistance = Mental * roleOfRaceInfoStruct.additionMentalToMagicResistance;
+        _ManaRecovery = Mental * roleOfRaceInfoStruct.additionMentalToManaRecovery;
+        //力量 
+        _MaxHP = Power * roleOfRaceInfoStruct.additionPowerToHP;
+        _PhysicsAttacking = Power * roleOfRaceInfoStruct.additionPowerToPhysicAttacking;
+        _AbnormalStateResistance = Power * roleOfRaceInfoStruct.additionPowerToAbnormalStateResistance;
+        _PhysicsResistance = Power * roleOfRaceInfoStruct.additionPowerToPhysicsResistance;
+        _LifeRecovery = Power * roleOfRaceInfoStruct.additionPowerToHPRecovery;
+    }
+
     private float _BasePhysicDefense;
     /// <summary>
     /// 基础物理护甲
@@ -222,6 +257,8 @@ public class AttributeStateAdditional : IAttributeState
         {
             float tempHP = _HP;
             _HP = value;
+            if (_HP < 0)
+                _HP = 0;
             if (tempHP != _HP)
             {
                 Call<IAttributeState, float>(temp => temp.HP);
@@ -258,6 +295,8 @@ public class AttributeStateAdditional : IAttributeState
         {
             float tempMana = _Mana;
             _Mana = value;
+            if (_Mana < 0)
+                _Mana = 0;
             if (tempMana != _Mana)
             {
                 Call<IAttributeState, float>(temp => temp.Mana);
@@ -652,6 +691,22 @@ public class AttributeStateAdditional : IAttributeState
             {
                 Call<IAttributeState, float>(temp => temp.PhysicsMinHurt);
             }
+        }
+    }
+
+    private float _MagicMinHurt;
+    /// <summary>
+    /// 魔法最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
+    /// </summary>
+    public float MagicMinHurt
+    {
+        get { return _MagicMinHurt; }
+        set
+        {
+            float tempMagicMinHurt = _MagicMinHurt;
+            _MagicMinHurt = value;
+            if (_MagicMinHurt != tempMagicMinHurt)
+                Call<IAttributeState, float>(temp => temp.MagicMinHurt);
         }
     }
 

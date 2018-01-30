@@ -13,7 +13,7 @@ using UnityEngine;
 public class StuffData : ILoadable<StuffData>
 {
     /// <summary>
-    /// 保存才几点信息的路径
+    /// 保存采集点信息的路径
     /// </summary>
     public static string dataDirectoryPath = "Data/Stuff";
 

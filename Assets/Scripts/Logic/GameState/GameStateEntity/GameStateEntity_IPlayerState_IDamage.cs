@@ -21,11 +21,46 @@ public partial class GameState
         List<ParticalInitParamData> resultList = new List<ParticalInitParamData>();
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
         ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
+        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
         //耗魔量
         float holdingRate = iSkillState.SkillStartHoldingTime / GameState.BaseSkillStartHoldingTime;//计算蓄力程度
         float maxUseMana = nowIAttributeState.MaxUseMana;//当前的最大耗魔上限
         float baseUseMana = nowIAttributeState.MustUsedBaseMana;//基础耗魔值
         float thisUsedMana = baseUseMana + maxUseMana * holdingRate;//该技能的耗魔值
+        //技能附加的特效(特殊效果和debuff)
+        StatusData statusData = DataCenter.Instance.GetMetaData<StatusData>();//保存特殊状态的数据
+        Dictionary<StatusDataInfo.StatusLevelDataInfo, int> statusEffects = new Dictionary<StatusDataInfo.StatusLevelDataInfo, int>();//特殊效果对应该等级数据与对应等级字典
+        foreach (SkillBaseStruct skillBaseStruct in skills)
+        {
+            if (skillBaseStruct == null)
+                continue;
+            //选取debuff和特殊效果
+            IEnumerable<EnumStatusEffect> enumStatusEffects = skillBaseStruct.skillStatusEffect.Where(temp => (temp > EnumStatusEffect.DebuffStart && temp < EnumStatusEffect.DebuffEnd) || (temp > EnumStatusEffect.SpecialStart && temp < EnumStatusEffect.SpecialEnd));
+            foreach (EnumStatusEffect enumStatusEffect in enumStatusEffects)
+            {
+                StatusDataInfo statusDataInfo = statusData[enumStatusEffect];
+                if (statusDataInfo == null)
+                    continue;
+                int level = 0;
+                playerState.SkillPoint.TryGetValue(skillBaseStruct.skillType, out level);
+                StatusDataInfo.StatusLevelDataInfo statusLevelDataInfo = statusDataInfo[level];
+                if (statusEffects.Count(temp => temp.Key.EffectType == enumStatusEffect) > 0)//如果已经存在相同类型的特效
+                {
+                    KeyValuePair<StatusDataInfo.StatusLevelDataInfo, int> tempStatusEffect = statusEffects.FirstOrDefault(temp => temp.Key.EffectType == enumStatusEffect);
+                    int nowLevel = tempStatusEffect.Value;
+                    if (nowLevel < level)//计算当前存放的特效等级是否高于新加的等级
+                    {
+                        statusEffects.Remove(tempStatusEffect.Key);
+                        statusEffects.Add(statusLevelDataInfo, level);
+                    }
+                }
+                else
+                {
+                    statusEffects.Add(statusLevelDataInfo, level);
+                }
+            }
+        }
+        StatusDataInfo.StatusLevelDataInfo[] statusLevelDataInfos = statusEffects.Keys.ToArray();
         //这几个是基础数据
         particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up;
         particalInitParamData.lifeTime = 5;
@@ -104,15 +139,15 @@ public partial class GameState
             {
                 case EnumSkillType.FS01://奥数弹
                     particalInitParamData.range = 20;//表示距离
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
                     break;
                 case EnumSkillType.FS02://奥数震荡
                     particalInitParamData.range = 1;//表示比例
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
                     break;
                 case EnumSkillType.FS03://魔力屏障
                     particalInitParamData.range = 1;//表示比例
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
                     break;
                 case EnumSkillType.FS04://魔力导向
                     //查找前方45度方位内距离自己最近的怪物
@@ -123,7 +158,7 @@ public partial class GameState
                     {
                         particalInitParamData.range = Vector3.Distance(selectTargetObj.transform.position, playerObj.transform.position);//表示距离
                         particalInitParamData.targetObjs = new GameObject[] { selectTargetObj };
-                        particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
+                        particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
                     }
                     else
                         particalInitParamData.range = 10;
@@ -157,7 +192,7 @@ public partial class GameState
                     temp_particalInitParamData.position = firstObj.transform.position + temp_particalInitParamData.forward;
                     temp_particalInitParamData.range = Vector3.Distance(firstObj.transform.position, secondObj.transform.position);
                     temp_particalInitParamData.targetObjs = new GameObject[] { secondObj };
-                    temp_particalInitParamData.CollisionCallBack = (temp) => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana);
+                    temp_particalInitParamData.CollisionCallBack = (temp) => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
                     resultList.Add(temp_particalInitParamData);
                 }
             }
@@ -172,8 +207,9 @@ public partial class GameState
     /// <param name="iAttributeState">伤害计算时使用的属性</param>
     /// <param name="collisionHitCallbackStruct">碰撞到的对象</param>
     /// <param name="thisUsedMana">本次技能的耗魔值</param>
+    /// <param name="statusLevelDataInfos">本次技能附加的特殊效果数组</param>
     /// <returns></returns>
-    private bool CalculateCombineMagicHurt(IAttributeState iAttributeState, CollisionHitCallbackStruct collisionHitCallbackStruct, float thisUsedMana)
+    private bool CalculateCombineMagicHurt(IAttributeState iAttributeState, CollisionHitCallbackStruct collisionHitCallbackStruct, float thisUsedMana, StatusDataInfo.StatusLevelDataInfo[] statusLevelDataInfos)
     {
         if (collisionHitCallbackStruct.targetObj == null)
             return false;
@@ -187,7 +223,8 @@ public partial class GameState
             hurtType = EnumHurtType.Magic,
             attributeState = iAttributeState,
             thisUsedMana = thisUsedMana,
-            hurtFromObj = iPlayerState.PlayerObj
+            hurtFromObj = iPlayerState.PlayerObj,
+            statusLevelDataInfos = statusLevelDataInfos
         };
         interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
         return true;
@@ -240,7 +277,12 @@ public partial class GameState
             hurtTransferNum = 0,
             hurtType = EnumHurtType.NormalAction,
             attributeState = iAttribute,
-            hurtFromObj = iPlayerState.PlayerObj
+            hurtFromObj = iPlayerState.PlayerObj,
+            PhysicAttackFactor = new PhysicAttackFactor()
+            {
+                IncreaseRatioInjuryFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicAttackToDamageRateRatio,
+                MinimumDamageFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicQuickToMinDamageRatio
+            }
         };
         interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
     }
@@ -276,20 +318,25 @@ public partial class GameState
     /// <param name="physicsSkillStateStruct">物理技能数据</param>
     /// <param name="innerOrder">当前攻击的阶段</param>
     /// <param name="target">攻击的目标</param>
-    private void CalculatePhysicSkillHurt(PhysicsSkillStateStruct physicsSkillStateStruct,int innerOrder, GameObject target)
+    private void CalculatePhysicSkillHurt(PhysicsSkillStateStruct physicsSkillStateStruct, int innerOrder, GameObject target)
     {
         if (target == null)
-            return ;
+            return;
         InteractiveAsMonster interactiveAsMonster = target.GetComponent<InteractiveAsMonster>();
         if (interactiveAsMonster == null)
-            return ;
+            return;
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
         {
             hurtTransferNum = 0,
             hurtType = EnumHurtType.PhysicSkill,
             attributeState = physicsSkillStateStruct.AttributeState,
-            hurtFromObj = iPlayerState.PlayerObj
+            hurtFromObj = iPlayerState.PlayerObj,
+            PhysicAttackFactor = new PhysicAttackFactor()
+            {
+                IncreaseRatioInjuryFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicAttackToDamageRateRatio,
+                MinimumDamageFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicQuickToMinDamageRatio
+            }
         };
         interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
     }

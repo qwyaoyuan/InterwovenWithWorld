@@ -54,19 +54,19 @@ public class UIPlayerExperience : MonoBehaviour
     /// </summary>
     private void SetExperience()
     {
-        LevelDataInfo levelDataInfo = levelData[iPlayerState.Level];
-        if (levelDataInfo != null)
-        {
-            int maxEx = levelDataInfo.Experience;
-            int nowEx = iPlayerState.Experience;
-            float bili = ((float)nowEx) / ((float)maxEx);
-            exprienceImage.fillAmount = Mathf.Clamp(bili, 0, 1);
-            exprienceText.text = nowEx + "/" + maxEx + "(" + ((int)(bili * 100)) + "%)";
-        }
-        else
-        {
-            exprienceImage.fillAmount = 0;
-            exprienceText.text = "";
-        }
+        //LevelDataInfo levelDataInfo = levelData[iPlayerState.Level];
+        //if (levelDataInfo != null)
+        //{
+        int maxEx = iPlayerState.MaxExperience;//levelDataInfo.Experience;
+        int nowEx = iPlayerState.Experience;
+        float bili = ((float)nowEx) / ((float)maxEx);
+        exprienceImage.fillAmount = Mathf.Clamp(bili, 0, 1);
+        exprienceText.text = nowEx + "/" + maxEx + "(" + ((int)(bili * 100)) + "%)";
+        //}
+        //else
+        //{
+        //    exprienceImage.fillAmount = 0;
+        //    exprienceText.text = "";
+        //}
     }
 }

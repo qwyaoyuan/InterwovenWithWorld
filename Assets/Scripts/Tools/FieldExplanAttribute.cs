@@ -6,7 +6,7 @@ using System.Reflection;
 /// <summary>
 /// 用于解释字段或有限长度数组字段中每个元素的含义
 /// </summary>
-[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Field|AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public class FieldExplanAttribute : Attribute
 {
     /// <summary>
@@ -68,6 +68,19 @@ public class FieldExplanAttribute : Attribute
             return explan;
         }
         return "";
+    }
+
+    /// <summary>
+    /// 获取字段上挂在的特性
+    /// </summary>
+    /// <param name="fieldInfo"></param>
+    /// <returns></returns>
+    public static FieldExplanAttribute GetFieldInfoExplan(FieldInfo fieldInfo)
+    {
+        if (fieldInfo == null)
+            return null;
+        FieldExplanAttribute fieldExplanAttribute = fieldInfo.GetCustomAttributes(typeof(FieldExplanAttribute), false).OfType<FieldExplanAttribute>().FirstOrDefault();
+        return fieldExplanAttribute;
     }
 
     /// <summary>

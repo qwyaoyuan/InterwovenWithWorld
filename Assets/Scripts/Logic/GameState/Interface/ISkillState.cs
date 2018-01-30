@@ -48,7 +48,13 @@ public interface ISkillState : IBaseState
     /// </summary>
     /// <param name="skillID"></param>
     /// <returns></returns>
-    float GetSkillCoolingTime(int skillID);
+    float GetSkillRuntimeCoolingTime(int skillID);
+    /// <summary>
+    /// 获取技能最大的冷却时间
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    float GetSkillMaxCoolingTime(int skillID);
     /// <summary>
     /// 设置技能的冷却时间(注意该函数会触发GetSkillCoolingTime的回调,但不会触发自身的回调)
     /// </summary>
@@ -56,7 +62,12 @@ public interface ISkillState : IBaseState
     /// <param name="time"></param>
     /// <returns></returns>
     void SetSkillCoolingTime(int skillID,float time);
-
+    /// <summary>
+    /// 上一次释放魔法的元素类型
+    /// 主要是魔法2的类型(风火水土冰雷)
+    /// 该字段没有回调事件
+    /// </summary>
+    EnumSkillType LastMagicElementType { get; }
     //----------光环技能状态-----------//
     /// <summary>
     /// 获取指定光环技能数据

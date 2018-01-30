@@ -13,240 +13,250 @@ public interface IAttributeState : IBaseState
     /// </summary>
     void Init();
 
+    /// <summary>
+    /// 设置种族成长对象
+    /// </summary>
+    /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
+    void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct);
+
     #region 这些属性会影响到下面的计算 而这些属性由角色自身以及装备累加计算
     /// <summary>
     /// 敏捷
     /// </summary>
-    float Quick { get; set; }
+    [FieldExplan("敏捷")] float Quick { get; set; }
     /// <summary>
     /// 精神
     /// </summary>
-    float Mental { get; set; }
+    [FieldExplan("精神")] float Mental { get; set; }
     /// <summary>
     /// 力量
     /// </summary>
-    float Power { get; set; }
+    [FieldExplan("力量")] float Power { get; set; }
     /// <summary>
     /// 基础物理护甲
     /// </summary>
-    float BasePhysicDefense { get; set; }
+    [FieldExplan("基础物理护甲")] float BasePhysicDefense { get; set; }
     /// <summary>
     /// 基础物理伤害
     /// </summary>
-    float BasePhysicDamage { get; set; }
+    [FieldExplan("基础物理伤害")] float BasePhysicDamage { get; set; }
     #endregion
 
     #region 常规属性
     /// <summary>
     /// 血量
     /// </summary>
-    float HP { get; set; }
+    [FieldExplan("血量")] float HP { get; set; }
     /// <summary>
     /// 最大血量
     /// </summary>
-    float MaxHP { get; set; }
+    [FieldExplan("最大血量")] float MaxHP { get; set; }
     /// <summary>
     /// 魔力量
     /// </summary>
-    float Mana { get; set; }
+    [FieldExplan("魔力量")] float Mana { get; set; }
     /// <summary>
     /// 最大魔力量
     /// </summary>
-    float MaxMana { get; set; }
+    [FieldExplan("最大魔力量")] float MaxMana { get; set; }
     /// <summary>
     /// 最大耗魔上限
     /// </summary>
-    float MaxUseMana { get; set; }
+    [FieldExplan("最大耗魔上限")] float MaxUseMana { get; set; }
     /// <summary>
     /// 精神力计量
     /// </summary>
-    float Mentality { get; set; }
+    [FieldExplan("精神力计量")] float Mentality { get; set; }
     /// <summary>
     /// 最大精神力计量
     /// </summary>
-    float MaxMentality { get; set; }
+    [FieldExplan("最大精神力计量")] float MaxMentality { get; set; }
     /// <summary>
     /// 心志力计量
     /// </summary>
-    float MindTraining { get; set; }
+    [FieldExplan("心志力计量")] float MindTraining { get; set; }
     /// <summary>
     /// 最大心志力计量
     /// </summary>
-    float MaxMindTraining { get; set; }
+    [FieldExplan("最大心志力计量")] float MaxMindTraining { get; set; }
     /// <summary>
     /// 视野范围
     /// </summary>
-    float View { get; set; }
+    [FieldExplan("视野范围")] float View { get; set; }
     /// <summary>
     /// 降低被怪物发现的概率(被发现的距离倍率)
     /// </summary>
-    float SightDef { get; set; }
+    [FieldExplan("降低被怪物发现的概率")] float SightDef { get; set; }
     /// <summary>
     /// 移动速度
     /// </summary>
-    float MoveSpeed { get; set; }
+    [FieldExplan("移动速度")] float MoveSpeed { get; set; }
     /// <summary>
     /// 攻击速度
     /// </summary>
-    float AttackSpeed { get; set; }
+    [FieldExplan("攻击速度")] float AttackSpeed { get; set; }
     /// <summary>
     /// 命中率
     /// </summary>
-    float HitRate { get; set; }
+    [FieldExplan("命中率")] float HitRate { get; set; }
     /// <summary>
     /// 闪避率
     /// </summary>
-    float EvadeRate { get; set; }
+    [FieldExplan("闪避率")] float EvadeRate { get; set; }
     /// <summary>
     /// 暴击率
     /// </summary>
-    float CritRate { get; set; }
+    [FieldExplan("暴击率")] float CritRate { get; set; }
     #endregion
 
     #region 回复
     /// <summary>
     /// 生命恢复速度
     /// </summary>
-    float LifeRecovery { get; set; }
+    [FieldExplan("生命回复速度")] float LifeRecovery { get; set; }
     /// <summary>
     /// 法力恢复速度
     /// </summary>
-    float ManaRecovery { get; set; }
+    [FieldExplan("法力恢复速度")] float ManaRecovery { get; set; }
     #endregion
 
     #region 攻击与防御属性
     /// <summary>
     /// 伤害格挡率
     /// </summary>
-    float EquipBlock { get; set; }
+    [FieldExplan("伤害格挡率")] float EquipBlock { get; set; }
     /// <summary>
-    /// 暴击率伤害减少率
+    /// 暴击伤害减少率
     /// </summary>
-    float CriticalDef { get; set; }
+    [FieldExplan("暴击伤害减少率")] float CriticalDef { get; set; }
     /// <summary>
     /// 攻击僵直
     /// </summary>
-    float AttackRigidity { get; set; }
+    [FieldExplan("攻击僵直")] float AttackRigidity { get; set; }
     /// <summary>
     /// 道具攻击力
     /// </summary>
-    float ItemAttacking { get; set; }
+    [FieldExplan("道具攻击力")] float ItemAttacking { get; set; }
     /// <summary>
     /// 魔法攻击力
     /// </summary>
-    float MagicAttacking { get; set; }
+    [FieldExplan("魔法攻击力")] float MagicAttacking { get; set; }
     /// <summary>
     /// 物理攻击力
     /// </summary>
-    float PhysicsAttacking { get; set; }
+    [FieldExplan("物理攻击力")] float PhysicsAttacking { get; set; }
     /// <summary>
     /// 物理最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
     /// </summary>
-    float PhysicsMinHurt { get; set; }
+    [FieldExplan("物理最小伤害")] float PhysicsMinHurt { get; set; }
+    /// <summary>
+    /// 魔法最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值)
+    /// </summary>
+    [FieldExplan("魔法最小伤害")] float MagicMinHurt { get; set; }
     /// <summary>
     /// 魔法附加伤害 
     /// </summary>
-    float MagicAdditionalDamage { get; set; }
+    [FieldExplan("魔法附加伤害")] float MagicAdditionalDamage { get; set; }
     /// <summary>
     /// 物理伤害附加
     /// </summary>
-    float PhysicsAdditionalDamage { get; set; }
+    [FieldExplan("物理附加伤害")] float PhysicsAdditionalDamage { get; set; }
     /// <summary>
     /// 魔法攻击穿透
     /// </summary>
-    float MagicPenetrate { get; set; }
+    [FieldExplan("魔法攻击穿透")] float MagicPenetrate { get; set; }
     /// <summary>
     /// 物理攻击穿透
     /// </summary>
-    float PhysicsPenetrate { get; set; }
+    [FieldExplan("物理攻击穿透")] float PhysicsPenetrate { get; set; }
     /// <summary>
     /// 魔法最终伤害
     /// </summary>
-    float MagicFinalDamage { get; set; }
+    [FieldExplan("魔法最终伤害")] float MagicFinalDamage { get; set; }
     /// <summary>
     /// 暴击倍率(角色本身为1.5倍)
     /// </summary>
-    float CritDamageRatio { get; set; }
+    [FieldExplan("暴击倍率")] float CritDamageRatio { get; set; }
     /// <summary>
     /// 法术陷阱伤害提升(百分比)
     /// </summary>
-    float SpellTrapDamage { get; set; }
+    [FieldExplan("法术陷阱伤害提升")] float SpellTrapDamage { get; set; }
     /// <summary>
     /// 法术陷阱特效产生几率
     /// </summary>
-    float SpellTrapEffectProbability { get; set; }
+    [FieldExplan("法术陷阱特效产生几率")] float SpellTrapEffectProbability { get; set; }
     /// <summary>
     /// 对不死族伤害提升(百分比倍率)
     /// </summary>
-    float DamageToTheUndead { get; set; }
+    [FieldExplan("对不死族伤害提升")] float DamageToTheUndead { get; set; }
     /// <summary>
     /// 对不死族附加混乱几率
     /// </summary>
-    float ChaosOfTheUndead { get; set; }
+    [FieldExplan("对不死族附加混乱几率")] float ChaosOfTheUndead { get; set; }
     /// <summary>
     /// 治疗量
     /// </summary>
-    float TreatmentVolume { get; set; }
+    [FieldExplan("治疗量")] float TreatmentVolume { get; set; }
     /// <summary>
     /// 物理最终伤害
     /// </summary>
-    float PhysicsFinalDamage { get; set; }
+    [FieldExplan("物理最终伤害")] float PhysicsFinalDamage { get; set; }
     /// <summary>
     /// 特效影响力
     /// </summary>
-    float EffectAffine { get; set; }
+    [FieldExplan("特效影响力")] float EffectAffine { get; set; }
     /// <summary>
     /// 驻留时间
     /// </summary>
-    float EffectResideTime { get; set; }
+    [FieldExplan("驻留时间")] float EffectResideTime { get; set; }
     /// <summary>
     /// 魔法亲和
     /// </summary>
-    float MagicFit { get; set; }
+    [FieldExplan("魔法亲和")] float MagicFit { get; set; }
     /// <summary>
     /// 魔法防御
     /// </summary>
-    float MagicResistance { get; set; }
+    [FieldExplan("魔法防御")] float MagicResistance { get; set; }
     /// <summary>
     /// 物理防御
     /// </summary>
-    float PhysicsResistance { get; set; }
+    [FieldExplan("物理防御")] float PhysicsResistance { get; set; }
     /// <summary>
     /// 对陷阱的防御力
     /// </summary>
-    float TrapDefense { get; set; }
+    [FieldExplan("对陷阱的防御力")] float TrapDefense { get; set; }
     /// <summary>
     /// 光明信仰强度
     /// </summary>
-    float LightFaith { get; set; }
+    [FieldExplan("光明信仰强度")] float LightFaith { get; set; }
     /// <summary>
     /// 黑暗信仰强度
     /// </summary>
-    float DarkFaith { get; set; }
+    [FieldExplan("黑暗信仰强度")] float DarkFaith { get; set; }
     /// <summary>
     /// 生物信仰强度
     /// </summary>
-    float LifeFaith { get; set; }
+    [FieldExplan("生物信仰强度")] float LifeFaith { get; set; }
     /// <summary>
     /// 自然信仰强度
     /// </summary>
-    float NaturalFaith { get; set; }
+    [FieldExplan("自然信仰强度")] float NaturalFaith { get; set; }
     /// <summary>
     /// 神秘信仰强度
     /// </summary>
-    float MysticalBeliefIntensity { get; set; }
+    [FieldExplan("神秘信仰强度")] float MysticalBeliefIntensity { get; set; }
     /// <summary>
     /// 神秘信仰特效产生几率
     /// </summary>
-    float MysticalBeliefSpecialEffects { get; set; }
+    [FieldExplan("神秘信仰特效产生几率")] float MysticalBeliefSpecialEffects { get; set; }
     /// <summary>
     /// 崇拜信仰强度
     /// </summary>
-    float ImproveWorshipFaith { get; set; }
+    [FieldExplan("崇拜信仰强度")] float ImproveWorshipFaith { get; set; }
     /// <summary>
     /// 异常状态抗性
     /// </summary>
-    float AbnormalStateResistance { get; set; }
+    [FieldExplan("异常状态抗性")] float AbnormalStateResistance { get; set; }
     /// <summary>
     /// 元素抗性,根据元素类型枚举的顺序
     /// </summary>
@@ -258,50 +268,50 @@ public interface IAttributeState : IBaseState
     /// <summary>
     /// 元素立场强度
     /// </summary>
-    float ElementStandStrength { get; set; }
+    [FieldExplan("元素立场强度")] float ElementStandStrength { get; set; }
     /// <summary>
     /// 同元素魔法效果加成
     /// </summary>
-    float SameElementEffectAdded { get; set; }
+    [FieldExplan("同元素魔法效果加成")] float SameElementEffectAdded { get; set; }
     /// <summary>
     /// 技能冷却时间
     /// </summary>
-    float CoolingTime { get; set; }
+    [FieldExplan("技能冷却时间")] float CoolingTime { get; set; }
     /// <summary>
     /// 需要使用的基础耗魔量(主要是组合技能以及需要主动释放的技能存在此选项)
     /// </summary>
-    float MustUsedBaseMana { get; set; }
+    [FieldExplan("需要使用的基础耗魔量")] float MustUsedBaseMana { get; set; }
     #endregion
 
     #region 其他杂项
     /// <summary>
-    /// 减少该技能的冷却时间
+    /// 减少该技能的冷却时间(百分比)
     /// </summary>
-    float ExemptionChatingMana { get; set; }
+    [FieldExplan("减少该技能的冷却时间")] float ExemptionChatingMana { get; set; }
     /// <summary>
     /// 耗魔量减免(百分比)
     /// </summary>
-    float ReliefManaAmount { get; set; }
+    [FieldExplan("耗魔量减免")] float ReliefManaAmount { get; set; }
     /// <summary>
     /// 咏唱时间减免(百分比)
     /// </summary>
-    float ExemptionChantingTime { get; set; }
+    [FieldExplan("咏唱时间减免")] float ExemptionChantingTime { get; set; }
     /// <summary>
     /// 公共冷却时间减免(百分比)
     /// </summary>
-    float ReduceCoolingTime { get; set; }
+    [FieldExplan("公共冷却时间减免")] float ReduceCoolingTime { get; set; }
     /// <summary>
     /// 对不死族加速
     /// </summary>
-    float AccelerateToUndead { get; set; }
+    [FieldExplan("对不死族加速")] float AccelerateToUndead { get; set; }
     /// <summary>
     /// 经验值加成(与基础经验乘算)
     /// </summary>
-    float ExperienceValuePlus { get; set; }
+    [FieldExplan("经验值加成")] float ExperienceValuePlus { get; set; }
     /// <summary>
     /// 物品掉落率(与基础掉落率乘算)
     /// </summary>
-    float GooodsDropRate { get; set; }
+    [FieldExplan("物品掉落率")] float GooodsDropRate { get; set; }
     #endregion
 
     #region 特殊效果

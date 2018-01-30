@@ -20,6 +20,11 @@ public class GoodsAbility
     public int Value { get; set; }
 
     /// <summary>
+    /// 能力等级
+    /// </summary>
+    public int Level { get; set; }
+
+    /// <summary>
     /// 说明
     /// </summary>
     public string Explain { get; set; }

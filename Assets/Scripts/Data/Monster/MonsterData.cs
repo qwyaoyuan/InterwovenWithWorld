@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using UnityEngine;
 
@@ -166,11 +167,34 @@ public class MonsterDataInfo
     /// 该配置的详细说明
     /// </summary>
     public string Explane;
-
     /// <summary>
     /// 怪物的基础属性
     /// </summary>
     public AttributeStateAdditional MonsterBaseAttribute;
+    /// <summary>
+    /// 怪物种族
+    /// </summary>
+    public RoleOfRace roleOfRace;
+    /// <summary>
+    /// 物理攻击系数
+    /// </summary>
+    [JsonIgnore]
+    public PhysicAttackFactor PhysicAttackFactor;
+    /// <summary>
+    /// 物理防御系数
+    /// </summary>
+    [JsonIgnore]
+    public PhysicDefenseFactor PhysicDefenseFactor;
+    /// <summary>
+    /// 魔法攻击系数
+    /// </summary>
+    [JsonIgnore]
+    public MagicAttackFactor MagicAttackFactor;
+    /// <summary>
+    /// 魔法防御系数
+    /// </summary>
+    [JsonIgnore]
+    public MagicDefenseFactor MagicDefenseFactor;
 
     /// <summary>
     /// 怪物的预设提名字
@@ -223,7 +247,27 @@ public class MonsterDataInfo
             monsterDataInfo.MonsterBaseAttribute = MonsterBaseAttribute.Clone();
         if (AIData != null)
             monsterDataInfo.AIData = AIData.Clone();
+        monsterDataInfo.Init();
         return monsterDataInfo;
+    }
+
+    public void Init()
+    {
+        RoleOfRaceData roleOfRaceData = DataCenter.Instance.GetMetaData<RoleOfRaceData>();
+        RoleOfRaceInfoStruct roleOfRaceInfoStruct = roleOfRaceData[roleOfRace];
+        if (roleOfRaceInfoStruct != null)
+        {
+            PhysicAttackFactor = new PhysicAttackFactor()
+            {
+                IncreaseRatioInjuryFactor = roleOfRaceInfoStruct.physicAttackToDamageRateRatio,
+                MinimumDamageFactor = roleOfRaceInfoStruct.physicQuickToMinDamageRatio
+            };
+            PhysicDefenseFactor = new PhysicDefenseFactor()
+            {
+                CoefficientRatioReducingDamageFactor = roleOfRaceInfoStruct.physicDefenseToHurtRateRatio,
+                ImmunityInjury = roleOfRaceInfoStruct.physicQuickToHurtExemptRatio
+            };
+        }
     }
 }
 

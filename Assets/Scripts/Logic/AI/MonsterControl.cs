@@ -23,10 +23,21 @@ public class MonsterControl : MonoBehaviour
     Blackboard blackboard;
 
     /// <summary>
+    /// 不要初始化
+    /// </summary>
+#if UNITY_EDITOR
+    public bool DontInit;
+#endif
+
+    /// <summary>
     /// 更新位置到地面并初始化导航网格
     /// </summary>
     public void Start()
     {
+#if UNITY_EDITOR
+        if (DontInit)
+            return;
+#endif
         Vector3 rayStart = transform.position + Vector3.up * 100;
         Ray ray = new Ray(rayStart, Vector3.down);
         RaycastHit[] rayCastHits = Physics.RaycastAll(ray);
@@ -42,6 +53,8 @@ public class MonsterControl : MonoBehaviour
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         if (blackboard != null)
         {
+            if (monsterDataInfo.MonsterBaseAttribute != null)
+                blackboard.SetValue("HP", (int)monsterDataInfo.MonsterBaseAttribute.HP);
             switch (monsterDataInfo.AIType)
             {
                 case EnumMonsterAIType.Trigger:
@@ -66,7 +79,7 @@ public class MonsterControl : MonoBehaviour
             }
         }
 
-        //给对象添加一个子物体,子物体设置触发
+        //给对象添加一个子物体,子物体设置触发(这个不是用来检测攻击的而是用来检测发现目标的)
         SphereCollider thisSphereCollider = GetComponent<SphereCollider>();
         if (thisSphereCollider != null)
         {
@@ -141,6 +154,18 @@ public class MonsterControl : MonoBehaviour
             blackboard.SetValue("TempTarget", null);
         }
     }
+
+
+    #region 给外部提供的函数
+    /// <summary>
+    /// 获取怪物的当前属性 
+    /// </summary>
+    /// <returns></returns>
+    public IAttributeState GetMonsterAttributeState()
+    {
+        return monsterDataInfo.MonsterBaseAttribute.Clone();
+    }
+    #endregion
 }
 
 /// <summary>

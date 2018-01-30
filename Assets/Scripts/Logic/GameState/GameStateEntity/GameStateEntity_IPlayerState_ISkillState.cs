@@ -12,6 +12,7 @@ public partial class GameState
     partial void Start_IPlayerState_ISkillState()
     {
         skillRuntimeCoolingTimeDic = new Dictionary<int, float>();
+        skillMaxCoolingTimeDic = new Dictionary<int, float>();
         _CombineSkills = new SkillBaseStruct[4];
     }
 
@@ -38,6 +39,11 @@ public partial class GameState
     private Dictionary<int, float> skillRuntimeCoolingTimeDic;
 
     /// <summary>
+    /// 技能当前最大的冷却时间字典
+    /// </summary>
+    private Dictionary<int, float> skillMaxCoolingTimeDic;
+
+    /// <summary>
     /// 是否开始蓄力
     /// </summary>
     bool _IsSkillStartHolding;
@@ -59,7 +65,21 @@ public partial class GameState
     /// <summary>
     /// 基础的最大蓄力时间
     /// </summary>
-    public const float BaseSkillStartHoldingTime = 2;
+    private static float _BaseSkillStartHoldingTime = 2;
+    /// <summary>
+    /// 基础的最大蓄力时间
+    /// </summary>
+    public static float BaseSkillStartHoldingTime
+    {
+        get
+        {
+            return _BaseSkillStartHoldingTime;
+        }
+        private set
+        {
+            _BaseSkillStartHoldingTime = value;
+        }
+    }
     /// <summary>
     /// 技能蓄力时间
     /// </summary>
@@ -174,11 +194,20 @@ public partial class GameState
         }
     }
 
+    /// <summary>
+    /// 上一次释放魔法的元素类型
+    /// 主要是魔法2的类型(风火水土冰雷)
+    /// 该字段没有回调事件
+    /// </summary>
+    public EnumSkillType LastMagicElementType { get; private set; }
+
     partial void Update_IPlayerState_ISkillState()
     {
         if (IsSkillStartHolding)
         {
             SkillStartHoldingTime += Time.deltaTime;
+            if (SkillStartHoldingTime > BaseSkillStartHoldingTime)
+                SkillStartHoldingTime = BaseSkillStartHoldingTime;
             normalAttackCoolintTime = 0;//如果正在释放魔法则普通攻击冷却时间重置
         }
         else
@@ -208,7 +237,7 @@ public partial class GameState
             }
         }
         if (skillCoolingChanged)
-            Call<ISkillState, Func<int, float>>(temp => temp.GetSkillCoolingTime);
+            Call<ISkillState, Func<int, float>>(temp => temp.GetSkillRuntimeCoolingTime);
         //如果此时没有组合技能并且存在临时技能属性,则移除
         if ((_CombineSkills == null || _CombineSkills.Length == 0) && ClearTempCombineSkillAttributeAction != null)
         {
@@ -280,7 +309,8 @@ public partial class GameState
                 IAttributeState tempAttributeState = iPlayerAttributeState.GetAttribute(handle.Key);
                 SkillAttributeStruct tempSkillAttributeState = iPlayerState.GetSkillAttributeStruct(handle.Value, skillStructData);
                 if (tempSkillAttributeState != null)
-                    mustUseMana += tempSkillAttributeState.MustUsedBaseMana;
+                    mustUseMana += tempSkillAttributeState.MustUsedBaseMana;//基础的耗魔量
+                tempAttributeState.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);//设置种族成长对象
                 iPlayerAttributeState.SetIAttributeStateDataBySkillData(tempAttributeState, baseAttributeState, tempSkillAttributeState);
             }
             //判断技能耗魔量,如果基础耗魔量很大则取消
@@ -290,6 +320,8 @@ public partial class GameState
                 ClearTempCombineSkillAttributeAction = null;
                 return false;
             }
+            //设置基础蓄力时间
+            BaseSkillStartHoldingTime = Mathf.Pow(2, _CombineSkills.Count(temp => temp != null) - 1);
             //设置动作
             iAnimatorState.MagicAnimatorType = EnumMagicAnimatorType.Sing;
             //初始化蓄力数据 
@@ -311,19 +343,26 @@ public partial class GameState
                 && _CombineSkills.Count(temp => temp != null) > 0
                 && SkillCombineStaticTools.GetCanCombineSkills(_CombineSkills.Select(temp => temp != null ? temp.skillType : EnumSkillType.None).ToArray());
             IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+            IAttributeState baseAttributeState = iPlayerState.GetAttribute(0);//基础属性
+            IAttributeState IAttributeState_YSX06_Data_Start = iPlayerState.GetAttribute(10);//元素驻留的属性
+            if (_CombineSkills.FirstOrDefault(temp => temp != null && temp.skillType == LastMagicElementType) == null)//本次释放与上次释放不包含相同元素则移除元素驻留的增幅属性
+            {
+                IAttributeState_YSX06_Data_Start.Init();
+            }
             IAttributeState nowIAttributeState = iPlayerState.GetResultAttribute();
+            IAttributeState_YSX06_Data_Start.Init();//不管是不是已经清理了,但是在释放完技能后都要清理元素驻留的属性
             SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
             //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
             if (canRelease)
             {
                 //计算被技能整合后的属性
-                IAttributeState baseAttributeState = iPlayerState.GetAttribute(0);//基础属性
                 foreach (SkillBaseStruct tempSkillBaseStruct in _CombineSkills)
                 {
                     if (tempSkillBaseStruct == null)
                         continue;
                     SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct(tempSkillBaseStruct.skillType, skillStructData);
                     AttributeStateAdditional skillAttributeStateAdditional = new AttributeStateAdditional();
+                    skillAttributeStateAdditional.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);
                     iPlayerState.SetIAttributeStateDataBySkillData(skillAttributeStateAdditional, baseAttributeState, skillAttributeStruct);
                     nowIAttributeState += skillAttributeStateAdditional;
                 }
@@ -440,25 +479,57 @@ public partial class GameState
                                iPlayerState.PlayerObj.transform.position + Vector3.up,
                                iPlayerState.PlayerObj.transform.forward,
                                Color.red,
-                               LayerMask.GetMask("Player","Summon"),//这里的层是玩家和召唤物
+                               LayerMask.GetMask("Player", "Summon"),//这里的层是玩家和召唤物
                                ThisCallBack,//如果是buff则这里会有回调
                                1);
 
                     }
                 }
             }
+            #region 特殊技能的设置
+            //使用本次释放魔法的元素类型替换
+            SkillBaseStruct secondSkillBaseStruct_Element = _CombineSkills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
+            if (secondSkillBaseStruct_Element == null ||
+                (secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX01 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX02 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX03 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX04 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.SM06 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.SM07 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.DSM03 &&
+                secondSkillBaseStruct_Element.skillType != EnumSkillType.DSM04))
+                LastMagicElementType = EnumSkillType.None;
+            else LastMagicElementType = secondSkillBaseStruct_Element.skillType;
+            //元素驻留的增幅属性
+            IAttributeState IAttributeState_YSX06_Data_End = iPlayerState.GetAttribute(10);
+            //如果存在元素驻留的效果元素驻留 
+            if (_CombineSkills.Count(temp => temp.skillType == EnumSkillType.YSX06) == 1)
+            {
+                IAttributeState_YSX06_Data_End.MagicAttacking = baseAttributeState.MagicAttacking * 0.25f;//将法伤提高,下次在释放时,会先判断元素类型是否一致,如果不一致则会先初始化该对象
+            }
+            #endregion
+            #region 公共设置
             //根据当前技能设置本次的冷却时间以及耗魔量
             //技能冷却时间
             int thisSkillID = SkillCombineStaticTools.GetCombineSkillKey(_CombineSkills);
-            float thisSkillCoolingTime = nowIAttributeState.CoolingTime;
+            float selfSkillCoolingTime = nowIAttributeState.CoolingTime;//魔法字节自带的冷却时间
+            float baseSkillCoolingTime = Mathf.Pow(2, _CombineSkills.Count(temp => temp != null));//根据阶段算出来的基础冷却时间
+            float thisSkillHodlingCoolintTime = BaseSkillStartHoldingTime * SkillStartHoldingTime;//根据最大蓄力时间和本次蓄力时间计算出的冷却时间
+            float thisSkillCoolingTime = selfSkillCoolingTime + baseSkillCoolingTime + thisSkillHodlingCoolintTime;//整合后的冷却时间
             float exemptionSkillCoolintTime = nowIAttributeState.ExemptionChatingMana;//该技能减少冷却时间百分比
-            exemptionSkillCoolintTime = Mathf.Clamp(exemptionSkillCoolintTime, 0, 0.75f);//将数值锁定到0-0.75的范围之间 
+            exemptionSkillCoolintTime = Mathf.Clamp(exemptionSkillCoolintTime, 0, 0.5f);//将数值锁定到0-0.5的范围之间 
             thisSkillCoolingTime = thisSkillCoolingTime - thisSkillCoolingTime * exemptionSkillCoolintTime;//计算出该技能的冷却时间
-            if (skillRuntimeCoolingTimeDic != null)
+            if (skillRuntimeCoolingTimeDic != null)//运行时逐步递减的当前剩余冷却时间
             {
                 if (skillRuntimeCoolingTimeDic.ContainsKey(thisSkillID))
                     skillRuntimeCoolingTimeDic[thisSkillID] = thisSkillCoolingTime;
                 else skillRuntimeCoolingTimeDic.Add(thisSkillID, thisSkillCoolingTime);
+            }
+            if (skillMaxCoolingTimeDic != null)//释放技能后当前技能的最大冷却时间
+            {
+                if (skillMaxCoolingTimeDic.ContainsKey(thisSkillID))
+                    skillMaxCoolingTimeDic[thisSkillID] = thisSkillCoolingTime;
+                else skillMaxCoolingTimeDic.Add(thisSkillID, thisSkillCoolingTime);
             }
             //公共冷却时间
             float exemptionPublicCoolingTime = nowIAttributeState.ReduceCoolingTime;//公共冷却时间减少百分比
@@ -483,6 +554,7 @@ public partial class GameState
             //设置动作
             IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
             iAnimatorState.MagicAnimatorType = EnumMagicAnimatorType.Shot;
+            #endregion
             //CombineSkills = null;
             return canRelease;
         }
@@ -724,6 +796,7 @@ public partial class GameState
                 {
                     //共有设置
                     IAttributeState physic_AttributeState = iPlayerState.GetAttribute(-physicSkillID);
+                    physic_AttributeState.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);//设置种族成长属性
                     iPlayerState.SetIAttributeStateDataBySkillData(physic_AttributeState, baseAttributeState, skillAttributeStruct);
                     IAttributeState thisPhysicsAttributeState = iPlayerState.GetResultAttribute();
                     iPlayerState.RemoveAttribute(-physicSkillID);
@@ -819,14 +892,26 @@ public partial class GameState
     }
 
     /// <summary>
-    /// 获取技能的冷却时间
+    /// 获取技能运行时的当前剩余冷却时间
     /// </summary>
     /// <param name="skillID">技能id(包括组合技能)</param>
     /// <returns></returns>
-    public float GetSkillCoolingTime(int skillID)
+    public float GetSkillRuntimeCoolingTime(int skillID)
     {
         if (skillRuntimeCoolingTimeDic != null && skillRuntimeCoolingTimeDic.ContainsKey(skillID))
             return skillRuntimeCoolingTimeDic[skillID];
+        return 0;
+    }
+
+    /// <summary>
+    /// 获取技能最大的冷却时间
+    /// </summary>
+    /// <param name="skillID"></param>
+    /// <returns></returns>
+    public float GetSkillMaxCoolingTime(int skillID)
+    {
+        if (skillMaxCoolingTimeDic != null && skillMaxCoolingTimeDic.ContainsKey(skillID))
+            return skillMaxCoolingTimeDic[skillID];
         return 0;
     }
 
@@ -844,8 +929,14 @@ public partial class GameState
                 skillRuntimeCoolingTimeDic.Add(skillID, 0);
             float oldCoolingTime = skillRuntimeCoolingTimeDic[skillID];
             skillRuntimeCoolingTimeDic[skillID] = time;
+            if (skillMaxCoolingTimeDic != null)//释放技能后当前技能的最大冷却时间
+            {
+                if (skillMaxCoolingTimeDic.ContainsKey(skillID))
+                    skillMaxCoolingTimeDic[skillID] = time;
+                else skillMaxCoolingTimeDic.Add(skillID, time);
+            }
             if (oldCoolingTime != time)
-                Call<ISkillState, Func<int, float>>(temp => temp.GetSkillCoolingTime);
+                Call<ISkillState, Func<int, float>>(temp => temp.GetSkillRuntimeCoolingTime);
         }
     }
 

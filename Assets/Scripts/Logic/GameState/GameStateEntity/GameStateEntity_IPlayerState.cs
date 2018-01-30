@@ -14,6 +14,8 @@ public partial class GameState : IPlayerState
     /// </summary>
     float DSM07_TimeDuration;
 
+
+
     /// <summary>
     /// 玩家状态接口实现对象的开始函数
     /// </summary>
@@ -34,6 +36,13 @@ public partial class GameState : IPlayerState
     {
         _Level = playerState.Level;
         _Experience = playerState.Experience;
+        MaxExperience = GameStateConstValues.GetExperienceAtLevel(_Level);
+        //获取该种族的成长数据
+        RoleOfRaceData roleOfRaceData = DataCenter.Instance.GetMetaData<RoleOfRaceData>();
+        RoleOfRace nowRoleOfRace = playerState.RoleOfRaceRoute.Last();
+        SelfRoleOfRaceInfoStruct = roleOfRaceData[nowRoleOfRace];
+        //更新属性
+        UpdateAttribute();
     }
 
     /// <summary>
@@ -72,7 +81,7 @@ public partial class GameState : IPlayerState
                     MindTraining = 0;
                     //判断萨满之矛的冷却,如果已经冷却了,则添加状态
                     ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
-                    float coolingTime = iSkillState.GetSkillCoolingTime((int)EnumSkillType.DSM07);
+                    float coolingTime = iSkillState.GetSkillRuntimeCoolingTime((int)EnumSkillType.DSM07);
                     if (CoolingTime <= 0)
                     {
                         SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
@@ -238,6 +247,11 @@ public partial class GameState : IPlayerState
     }
 
     /// <summary>
+    /// 玩家自身的种族成长数据
+    /// </summary>
+    public RoleOfRaceInfoStruct SelfRoleOfRaceInfoStruct { get; private set; }
+
+    /// <summary>
     /// (每一帧都)检测变化的状态
     /// 比如暴击时产生效果,一定时间内产生效果等属性 
     /// </summary>
@@ -268,6 +282,7 @@ public partial class GameState : IPlayerState
                     SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.ZS04, skillStructData);
                     iPlayerAttributeState.CreateAttributeHandle(handle_JZQH);
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_JZQH);
+                    iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
                 //近战专精
@@ -276,6 +291,7 @@ public partial class GameState : IPlayerState
                     SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.KZS02, skillStructData);
                     iPlayerAttributeState.CreateAttributeHandle(handle_JZZJ);
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_JZZJ);
+                    iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
                 //移除远程强化
@@ -292,6 +308,7 @@ public partial class GameState : IPlayerState
                     SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.GJS04, skillStructData);
                     iPlayerAttributeState.CreateAttributeHandle(handle_YCQH);
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_YCQH);
+                    iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
                 //远程专精
@@ -300,6 +317,7 @@ public partial class GameState : IPlayerState
                     SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(EnumSkillType.SSS01, skillStructData);
                     iPlayerAttributeState.CreateAttributeHandle(handle_YCZJ);
                     IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle_YCZJ);
+                    iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
                 }
                 //移除近战强化
@@ -322,6 +340,7 @@ public partial class GameState : IPlayerState
         IAttributeState iAttributeState_DSM09 = GetAttribute(handle_DSM09);
         if (skillAttributeStruct_DSM09 != null && skillStruct_DSM09 != null)
         {
+            iAttributeState_DSM09.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
             iAttributeState_DSM09.MaxMentality = 100;
             iAttributeState_DSM09.MaxMindTraining = 100;
             //根据精神力计量计算抗性
@@ -342,10 +361,13 @@ public partial class GameState : IPlayerState
             {
                 int waitTime_JAS02 = skillAttributeStruct_JAS02.ERST;//使用特效影响力表示持续时间
                 if (iAttributeState_JAS02 != null)
+                {
+                    iAttributeState_JAS02.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_JAS02 > intervalCriticalHitTime)//在效果时间内,则更新攻击速度
                         iAttributeState_JAS02.AttackSpeed = skillAttributeStruct_JAS02.AttackSpeed;
                     else//在效果时间外,则归零
                         iAttributeState_JAS02.CritRate = 0;
+                }
             }
             else
             {
@@ -361,6 +383,8 @@ public partial class GameState : IPlayerState
             {
                 int waitTime_DZ01 = skillAttributeStruct_DZ01.ERST;//使用特效影响力表示持续时间
                 if (iAttributeState_DZ01 != null)
+                {
+                    iAttributeState_DZ01.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_DZ01 > intervalCriticalHitTime)//在效果时间内,则更新附加伤害(根据敏捷附加)
                     {
                         iAttributeState_DZ01.PhysicsAdditionalDamage = skillAttributeStruct_DZ01.PHYAD * iAttributeState_Base.Quick / 100;
@@ -370,6 +394,7 @@ public partial class GameState : IPlayerState
                     {
                         iAttributeState_DZ01.PhysicsAdditionalDamage = 0;
                     }
+                }
             }
             else
             {
@@ -391,10 +416,13 @@ public partial class GameState : IPlayerState
             {
                 int waitTime_JAS02 = skillAttributeStruct_JAS02.ERST;//使用特效影响力表示持续时间
                 if (iAttributeState_JAS02 != null)
+                {
+                    iAttributeState_JAS02.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_JAS02 < intervalDodgeTime)//在效果时间内,则更新攻击速度
                         iAttributeState_JAS02.PhysicsPenetrate = skillAttributeStruct_JAS02.PYEDMG;
                     else//在效果时间外,则归零
                         iAttributeState_JAS02.PhysicsPenetrate = 0;
+                }
             }
             else
             {
@@ -416,6 +444,8 @@ public partial class GameState : IPlayerState
             {
                 int waitTime_DZ02 = skillAttributeStruct_DZ02.ERST;//使用特效影响力表示持续时间
                 if (iAttributeState_DZ02 != null)
+                {
+                    iAttributeState_DZ02.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_DZ02 < intervalChangeWeaponTime) //在效果时间内,则更新暴击率和暴击伤害
                     {
                         iAttributeState_DZ02.CritRate = skillAttributeStruct_DZ02.IncreasedCritRate;
@@ -423,6 +453,7 @@ public partial class GameState : IPlayerState
                     }
                     else //在效果时间外,则归零
                         iAttributeState_DZ02.Init();
+                }
             }
             else
             {
@@ -442,6 +473,7 @@ public partial class GameState : IPlayerState
             {
                 if (iAttributeState_YX01 != null)
                 {
+                    iAttributeState_YX01.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     iAttributeState_YX01.MoveSpeed = 0;
                     iAttributeState_YX01.TrapDefense = skillAttributeStruct_YX01.TrapDefense;
                     iAttributeState_YX01.AbnormalStateResistance = skillAttributeStruct_YX01.AbnormalStateResistance;
@@ -462,6 +494,8 @@ public partial class GameState : IPlayerState
             {
                 int waitTime_GJS01 = skillAttributeStruct_GJS01.ERST;//使用特效影响力表示持续时间
                 if (iAttributeState_GJS01 != null)
+                {
+                    iAttributeState_GJS01.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_GJS01 < intervalIntoBattleTime)//在效果时间内,则更新攻击速度和移动速度 
                     {
                         iAttributeState_GJS01.AttackSpeed = skillAttributeStruct_GJS01.AttackSpeed;
@@ -469,6 +503,7 @@ public partial class GameState : IPlayerState
                     }
                     else //在效果时间外,则归零
                         iAttributeState_GJS01.Init();
+                }
             }
             else
             {
@@ -492,6 +527,7 @@ public partial class GameState : IPlayerState
             {
                 if (iAttributeState_YX01 != null)
                 {
+                    iAttributeState_YX01.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     iAttributeState_YX01.MoveSpeed = iAttributeState_Base.MoveSpeed * skillAttributeStruct_YX01.MoveSpeedAddtionNotFighting / 100f;
                     iAttributeState_YX01.TrapDefense = skillAttributeStruct_YX01.TrapDefense;
                     iAttributeState_YX01.AbnormalStateResistance = skillAttributeStruct_YX01.AbnormalStateResistance;
@@ -510,8 +546,12 @@ public partial class GameState : IPlayerState
             {
                 float mentality = iAttributeState_DSM09.Mentality + Time.deltaTime * 1;
                 float mindTraining = iAttributeState_DSM09.MindTraining + Time.deltaTime * 1;
-                iAttributeState_DSM09.Mentality = Mathf.Clamp(mentality, 0, 100);
-                iAttributeState_DSM09.MindTraining = Mathf.Clamp(mindTraining, 0, 100);
+                if (iAttributeState_DSM09 != null)
+                {
+                    iAttributeState_DSM09.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
+                    iAttributeState_DSM09.Mentality = Mathf.Clamp(mentality, 0, 100);
+                    iAttributeState_DSM09.MindTraining = Mathf.Clamp(mindTraining, 0, 100);
+                }
             }
         }
 
@@ -545,16 +585,39 @@ public partial class GameState : IPlayerState
     {
         SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         IPlayerAttributeState iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
+       
         //处理等级以及加点影响的基础属性 
         IAttributeState iAttributeState_Base = iPlayerAttributeState.GetAttribute(0);
         if (iAttributeState_Base != null)
         {
+            iAttributeState_Base.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
             int level = playerState.Level;
             //当前计算方式,基础数据各项值为10,每升一级增加2
-            iAttributeState_Base.Quick = 10 + level * 2 + playerState.Agility;
-            iAttributeState_Base.Mental = 10 + level * 2 + playerState.Spirit;
-            iAttributeState_Base.Power = 10 + level * 2 + playerState.Strength;
-            iAttributeState_Base.MaxHP = 1000;//测试
+            iAttributeState_Base.Quick = SelfRoleOfRaceInfoStruct.baseQuick+ level * SelfRoleOfRaceInfoStruct.additionQuick + playerState.Agility;
+            iAttributeState_Base.Mental = SelfRoleOfRaceInfoStruct.baseMental + level * SelfRoleOfRaceInfoStruct.additionMental + playerState.Spirit;
+            iAttributeState_Base.Power = SelfRoleOfRaceInfoStruct.basePower + level * SelfRoleOfRaceInfoStruct.additionPower + playerState.Strength;
+            iAttributeState_Base.MaxHP += SelfRoleOfRaceInfoStruct.baseHP+ level * SelfRoleOfRaceInfoStruct.additionHP;
+            iAttributeState_Base.MaxMana += SelfRoleOfRaceInfoStruct.baseMana + level * SelfRoleOfRaceInfoStruct.additionMana;
+            iAttributeState_Base.BasePhysicDamage = SelfRoleOfRaceInfoStruct.basePhysicDamage + level * SelfRoleOfRaceInfoStruct.additionPhysicDamage;
+            iAttributeState_Base.BasePhysicDefense = SelfRoleOfRaceInfoStruct.basePhysicDefense + level * SelfRoleOfRaceInfoStruct.additionPhysicDefense;
+            iAttributeState_Base.LifeRecovery += SelfRoleOfRaceInfoStruct.baseHPRecovery;
+            iAttributeState_Base.ManaRecovery += SelfRoleOfRaceInfoStruct.baseManaRecovery;
+            iAttributeState_Base.EvadeRate += SelfRoleOfRaceInfoStruct.baseEvadeRate;
+            iAttributeState_Base.HitRate += SelfRoleOfRaceInfoStruct.baseHitRate;
+            iAttributeState_Base.CritRate += SelfRoleOfRaceInfoStruct.baseCritRate;
+            iAttributeState_Base.AttackSpeed += SelfRoleOfRaceInfoStruct.baseAttackSpeed;
+            iAttributeState_Base.MoveSpeed += SelfRoleOfRaceInfoStruct.baseMoveSpeed;
+            iAttributeState_Base.MaxUseMana += SelfRoleOfRaceInfoStruct.baseMaxUseMana;
+            iAttributeState_Base.SightDef = 1 - SelfRoleOfRaceInfoStruct.baseSight;
+            iAttributeState_Base.ExemptionChatingMana = SelfRoleOfRaceInfoStruct.baseCoolingTime;
+            iAttributeState_Base.CritDamageRatio = SelfRoleOfRaceInfoStruct.baseCritHurt;
+            iAttributeState_Base.CriticalDef = SelfRoleOfRaceInfoStruct.baseCritHurtDef;
+            iAttributeState_Base.LightFaith = SelfRoleOfRaceInfoStruct.baseLightStrength;
+            iAttributeState_Base.DarkFaith = SelfRoleOfRaceInfoStruct.baseDarkStrength;
+            iAttributeState_Base.LifeFaith = SelfRoleOfRaceInfoStruct.baseLifeStrength;
+            iAttributeState_Base.NaturalFaith = SelfRoleOfRaceInfoStruct.baseNaturalStrength;
+            iAttributeState_Base.MagicFit = SelfRoleOfRaceInfoStruct.baseMagicFit;
+            iAttributeState_Base.AbnormalStateResistance += SelfRoleOfRaceInfoStruct.baseAbnormalStateResistance;
         }
         //处理装备的附加属性
         IAttributeState iAttributeState_Equip = iPlayerAttributeState.GetAttribute(1);
@@ -651,6 +714,7 @@ public partial class GameState : IPlayerState
             IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(handle);
             if (iAttributeState != null)//如果没有目标被动则需要修改初始化模块)
             {
+                iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                 SkillAttributeStruct skillAttributeStruct = GetSkillAttributeStruct(skillType, skillStructData);
                 SetIAttributeStateDataBySkillData(iAttributeState, iAttributeState_Base, skillAttributeStruct);
             }
@@ -744,6 +808,11 @@ public partial class GameState : IPlayerState
             {
                 //处理存档内的等级
                 playerState.Level = _Level;
+                //更新存档中的技能点和属性点
+                playerState.FreedomPoint += SelfRoleOfRaceInfoStruct.additionSkillPoint;
+                playerState.PropertyPoint += SelfRoleOfRaceInfoStruct.additionAttributePoint;
+                //更新本级的升级经验
+                MaxExperience = GameStateConstValues.GetExperienceAtLevel(_Level);
                 //更新自身属性
                 UpdateAttribute();
                 InitPlayAttributeState();
@@ -770,22 +839,34 @@ public partial class GameState : IPlayerState
             if (tempExperience != _Experience)
             {
                 //计算当前经验是否可以升级,如果可以则升级
-                LevelDataInfo levelDataInfo = levelData[Level];
-                if (levelDataInfo != null)
+                //LevelDataInfo levelDataInfo = levelData[Level];
+                //if (levelDataInfo != null)
+                //{
+                //    if (_Experience > levelDataInfo.Experience)
+                //    {
+                //        if (_Level < levelData.MaxLevel)
+                //        {
+                //            _Experience -= levelDataInfo.Experience;
+                //            Level += 1;//等级加1
+                //                       //可能会有经验超出的情况
+                //                       //后期处理
+                //        }
+                //        else//表示已经满级了
+                //        {
+                //            _Experience = levelDataInfo.Experience;
+                //        }
+                //    }
+                //}
+                if (_Experience > MaxExperience)//经验超出
                 {
-                    if (_Experience > levelDataInfo.Experience)
+                    if (_Level < GameStateConstValues.MAXLEVEL)//等级没有超出
                     {
-                        if (_Level < levelData.MaxLevel)
-                        {
-                            _Experience -= levelDataInfo.Experience;
-                            Level += 1;//等级加1
-                                       //可能会有经验超出的情况
-                                       //后期处理
-                        }
-                        else//表示已经满级了
-                        {
-                            _Experience = levelDataInfo.Experience;
-                        }
+                        _Experience -= MaxExperience;
+                        Level += 1;
+                    }
+                    else
+                    {
+                        _Experience = MaxExperience;//已经满级了经验不在增加
                     }
                 }
                 //处理存档内的经验
@@ -795,6 +876,11 @@ public partial class GameState : IPlayerState
             }
         }
     }
+
+    /// <summary>
+    /// 最大经验值(本级的)
+    /// </summary>
+    public int MaxExperience { get; set; }
 
     /// <summary>
     /// 技能等级变化

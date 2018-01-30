@@ -172,13 +172,6 @@ public class UIEntrance : MonoBehaviour
                 case UIManager.KeyType.A:
                     if (nowFocus)
                     {
-                        //Button nowButton = nowFocus.GetComponent<Button>();
-                        //if (nowButton)
-                        //{
-                        //    EventTrigger eventTrigger = nowButton.GetComponent<EventTrigger>();
-                        //    eventTrigger.OnPointerClick(new PointerEventData(EventSystem.current));
-                        //    //nowButton.onClick.Invoke();
-                        //}
                         UIFocusButton uiFocusButton = nowFocus as UIFocusButton;
                         if(uiFocusButton)
                         {
@@ -284,6 +277,11 @@ public class UIEntrance : MonoBehaviour
             //设置对话键
             Sprite talkSprite = SpriteManager.GetSrpite("1:1_165");
             keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交谈", Sprite = talkSprite, id = 2 }, EnumKeyContactDataZone.Dialogue);
+            //设置默认的等级
+            PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+            playerState.Level = 1;
+            playerState.Experience = 0;
+            playerState.RoleOfRaceRoute = RoleOfRaceHelper.GetAllEvolvePath(RoleOfRace.Human).FirstOrDefault();
             //再次保存
             DataCenter.Instance.Save(1, "存档", "默认存档");
             //获取数据并切换场景

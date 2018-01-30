@@ -114,7 +114,7 @@ public class SkillStructData : ILoadable<SkillStructData>
                     skillBaseStruct.skillSprite = SkillSpriteData.GetSprite(skillBaseStruct.skillType);
                     //计算技能名(现在暂定使用元名字)
                     skillBaseStruct.skillName = skillBaseStruct.name;
-                    //完成加载粒子
+                    //完成加载特殊效果
                     skillBaseStruct.skillBelief = skillAnalysisData.GetEnum<EnumSkillBelief>(id, "skillBelief");
                     string[] skillStatusEffectStrs = skillAnalysisData.GetValues<string>(id, "skillStatusEffect").Where(temp => !string.IsNullOrEmpty(temp)).ToArray();
                     skillBaseStruct.skillStatusEffect = new EnumStatusEffect[skillStatusEffectStrs.Length];

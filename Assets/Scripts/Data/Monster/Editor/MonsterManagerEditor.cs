@@ -358,6 +358,16 @@ public class MonsterManagerEditor : EditorWindow
                 if (monsterPrefabDic.ContainsKey(monsterPrefabName))
                     monsterDataInfo.monsterPrefabName = monsterPrefabName;
             }
+            //设置属性
+            if (monsterDataInfo.MonsterBaseAttribute == null)
+                monsterDataInfo.MonsterBaseAttribute = new AttributeStateAdditional();
+            if (GUILayout.Button("设置属性"))
+            {
+                AttributeStateAdditionalEditor attributeStateAdditionalEditor = EditorWindow.GetWindow<AttributeStateAdditionalEditor>();
+                attributeStateAdditionalEditor.Show();
+                attributeStateAdditionalEditor.Target = monsterDataInfo.MonsterBaseAttribute;
+            }
+            //物品掉落
             if (monsterDataInfo.ItemDropRates == null)
                 monsterDataInfo.ItemDropRates = new float[0];
             if (monsterDataInfo.ItemDropTypes == null)

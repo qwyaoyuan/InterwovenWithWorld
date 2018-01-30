@@ -133,7 +133,7 @@ public class UISkillHodingRelease : MonoBehaviour
             ChangeSpriteLattice();
         }
         //技能冷却时间
-        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, Func<int, float>>(temp => temp.GetSkillCoolingTime)))
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<ISkillState, Func<int, float>>(temp => temp.GetSkillRuntimeCoolingTime)))
         {
             ChangeSpriteLattice();
         }
@@ -171,8 +171,8 @@ public class UISkillHodingRelease : MonoBehaviour
         if (skillBaseStructs != null)
         {
             int skillID = SkillCombineStaticTools.GetCombineSkillKey(skillBaseStructs);
-            float skillCoolingTime = iSkillState.GetSkillCoolingTime(skillID);//本技能的冷却时间
-            float maxTime = skillCoolingTime > iSkillState.PublicCoolingTime ? skillCoolingTime : iSkillState.PublicCoolingTime;//选取最大的时间作为显示时间
+            float skillCoolingTime = iSkillState.GetSkillRuntimeCoolingTime(skillID);//本技能的冷却时间
+            float maxTime = skillCoolingTime > iSkillState.PublicCoolingTime ? (skillCoolingTime / iSkillState.GetSkillMaxCoolingTime(skillID)) : iSkillState.PublicCoolingTime;//选取最大的时间作为显示时间
             if (skillBaseStructs.Length > 0 && skillBaseStructs[0] != null)
             {
                 Sprite sprite = SkillCombineStaticTools.GetCombineSkillSprite(skillStructData, (int)skillBaseStructs[0].skillType);

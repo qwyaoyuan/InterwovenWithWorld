@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class GoodsMetaInfoMations : ILoadable<GoodsMetaInfoMations>
@@ -15,7 +18,6 @@ public class GoodsMetaInfoMations : ILoadable<GoodsMetaInfoMations>
 
     public void Load()
     {
-    
         allGoodsInfo = JsonConvert.DeserializeObject<Dictionary<int, Goods>>(Resources.Load<TextAsset>("Data/Goods/allGoodsMetaInfo").text);
     }
 

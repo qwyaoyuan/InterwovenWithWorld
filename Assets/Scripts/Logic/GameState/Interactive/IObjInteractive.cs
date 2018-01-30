@@ -7,7 +7,7 @@ using System.Text;
 /// <summary>
 /// 对象交互接口
 /// </summary>
-interface IObjInteractive
+public interface IObjInteractive
 {
     /// <summary>
     /// 造成伤害

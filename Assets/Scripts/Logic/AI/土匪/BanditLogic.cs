@@ -5,13 +5,17 @@ using UnityEngine;
 /// <summary>
 /// 土匪的逻辑脚本(用于接收消息并处理)
 /// </summary>
-public class BanditLogic : MonoBehaviour
+public class BanditLogic : MonsterBaseLogic
 {
-    Animator animator;
 
-    private void Awake()
+    protected override void Awake()
     {
-        animator = GetComponent<Animator>();
+        base.Awake();
+    }
+
+    protected override void PlayerAnimEnterLeaveState_AnimEnterLeaveHandle(string actionTag, bool enter)
+    {
+        base.PlayerAnimEnterLeaveState_AnimEnterLeaveHandle(actionTag, enter);
     }
 
     /// <summary>

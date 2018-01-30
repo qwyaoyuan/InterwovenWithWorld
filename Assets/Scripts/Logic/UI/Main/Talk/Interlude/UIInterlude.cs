@@ -77,6 +77,11 @@ public class UIInterlude : MonoBehaviour
     /// </summary>
     bool fisrtKeyUP;
 
+    /// <summary>
+    /// 第一次显示时的npcid(包括主角0)
+    /// </summary>
+    int lastNPCID;
+
     private void OnEnable()
     {
         dialogueStructData = DataCenter.Instance.GetMetaData<DialogueStructData>();
@@ -110,7 +115,7 @@ public class UIInterlude : MonoBehaviour
             if (this.dialogueCodition != null)
             {
                 this.nowDialoguePoint = this.dialogueCodition.topPoint;
-                showLeftOrRight = false;
+                showLeftOrRight = true;
                 ShowTalk();
             }
             else
@@ -134,6 +139,9 @@ public class UIInterlude : MonoBehaviour
         Sprite showImage = null;
         DialogueValue nowDialogueValue = dialogueStructData.SearchDialogueValueByID(nowDialoguePoint.dialogueID);
         string showText = nowDialogueValue.showValue;
+        if (lastNPCID != nowDialogueValue.npcID)//本次的NPCid和上次的不一致则左右显示切换
+            showLeftOrRight = !showLeftOrRight;
+        lastNPCID = nowDialogueValue.npcID;
         if (showLeftOrRight)
         {
             rightImage.gameObject.SetActive(false);
@@ -185,7 +193,6 @@ public class UIInterlude : MonoBehaviour
     /// </summary>
     void NextTalkOrEnd()
     {
-        showLeftOrRight = !showLeftOrRight;
         if (nowDialoguePoint.childDialoguePoints != null && nowDialoguePoint.childDialoguePoints.Length > 0)
         {
             nowDialoguePoint = nowDialoguePoint.childDialoguePoints[0];

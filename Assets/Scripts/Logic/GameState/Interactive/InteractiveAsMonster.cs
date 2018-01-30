@@ -25,7 +25,9 @@ class InteractiveAsMonster : MonoBehaviour, IObjInteractive
             && monsterControl.monsterDataInfo != null 
             && monsterControl.monsterDataInfo.MonsterBaseAttribute != null)
         {
-            
+            PhysicDefenseFactor physicDefenseFactor = monsterControl.monsterDataInfo.PhysicDefenseFactor;//物理防御系数
+            MagicDefenseFactor magicDefenseFactor = monsterControl.monsterDataInfo.MagicDefenseFactor;//魔法防御系数
+            CalculateHurt.Calculate(attackHurtStruct, monsterControl.monsterDataInfo.MonsterBaseAttribute, physicDefenseFactor, magicDefenseFactor);
         }
     }
 }

@@ -19,6 +19,11 @@ public partial class GameState
     /// 属性操作句柄的当前下标
     /// </summary>
     int iAttributeHandleIndex;
+    /// <summary>
+    /// 最小的默认临时属性操作句柄下标
+    /// 从0到该数的句柄被用于特殊地方
+    /// </summary>
+    int minDefaultIAttributeHandleIndex = 100;
 
     /// <summary>
     /// 用于初始化角色属性的对象 
@@ -29,8 +34,10 @@ public partial class GameState
         iAttributeHandleIndex = 0;
         //构建自身的基础属性(下标是0)
         CreateAttributeHandle(0);
-        //构建装备属性(下表是1)
+        //构建装备属性(下标是1)
         CreateAttributeHandle(1);
+        //构建下一次相同元素魔法伤害增加(下标是10)
+        CreateAttributeHandle(10);
         //构建技能的属性(注意技能的属性从负数开始)
         //有些技能只存在特殊效果,而且这些特殊效果不涉及这些属性,则这些特殊效果在具体的位置处理
         //被动技能  注:光环技能不需要初始化,因为光环是动态的
@@ -78,6 +85,7 @@ public partial class GameState
         CreateAttributeHandle(-(int)EnumSkillType.SSS01);
         CreateAttributeHandle(-(int)EnumSkillType.SSS02);
         #endregion
+        iAttributeHandleIndex = minDefaultIAttributeHandleIndex;
     }
 
     #region 用于操纵附加状态的功能
@@ -99,7 +107,7 @@ public partial class GameState
         {
             if (iAttributeHandleIndex == int.MaxValue)
             {
-                iAttributeHandleIndex = 0;
+                iAttributeHandleIndex = minDefaultIAttributeHandleIndex;
             }
             goto ReTest;
         }
@@ -119,6 +127,7 @@ public partial class GameState
         if (iAttributeStateDic.ContainsKey(index))
             return false;
         IAttributeState iAttributeState = new AttributeStateAdditional();
+        
         iAttributeStateDic.Add(index, iAttributeState);
         //添加回调
         iAttributeState.Registor<IAttributeState>((target, fieldName) =>
@@ -254,6 +263,12 @@ public partial class GameState
     /// </summary>
     public void Init()
     { }
+
+    /// <summary>
+    /// 设置种族成长对象
+    /// </summary>
+    /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
+    public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct) { }
 
     #region IAttributeState 属性状态
     #region 基础属性
@@ -916,6 +931,27 @@ public partial class GameState
             if (iAttributeBaseState != null)
             {
                 iAttributeBaseState.PhysicsMinHurt = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 魔法最小伤害(通过敏捷计算出来的值,也有一些装备会附加该数值 )
+    /// </summary>
+    public float MagicMinHurt
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.MagicMinHurt).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.MagicMinHurt = value;
             }
         }
     }
