@@ -66,18 +66,22 @@ namespace TaskMap
             /// <summary>
             /// 未接取(任务还未接取)
             /// </summary>
+            [FieldExplan("未接取")]
             NoTake,
             /// <summary>
             /// 失败(一般用于互斥任务)
             /// </summary>
+            [FieldExplan("失败")]
             Failed,
             /// <summary>
             /// 已成功(任务完成后)
             /// </summary>
+            [FieldExplan("已成功")]
             Sucessed,
             /// <summary>
             /// 已开始(任务正在执行)
             /// </summary>
+            [FieldExplan("已开始")]
             Started,
         }
 

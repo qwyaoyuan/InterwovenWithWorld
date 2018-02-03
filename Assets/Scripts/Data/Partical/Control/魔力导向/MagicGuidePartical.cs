@@ -77,11 +77,11 @@ public class MagicGuidePartical : ParticalControlEntry
             if (CollisionPartical)
             {
                 GameObject go = GameObject.Instantiate(CollisionPartical);
-                go.transform.position = data.hitPoint;
+                go.transform.position = data.hitPoint + Vector3.up *1.5f;
                 ParticalControlEntry collisionEntry = go.GetComponent<ParticalControlEntry>();
                 if (collisionEntry)
                 {
-                    collisionEntry.Init(data.hitPoint, collisionForward, collisionColor, 0, null, collisionRange, target);
+                    collisionEntry.Init(go.transform.position, collisionForward, collisionColor, 0, null, collisionRange, target);
                 }
             }
         }
@@ -91,9 +91,9 @@ public class MagicGuidePartical : ParticalControlEntry
 
     //private void Start()
     //{
-        ////魔力导向的配置
-        //Init(Vector3.up, Vector3.forward, new Color(1f, 1f, 1f, 0.02f), ~1, temp => true, 1, testObj);
+    //    //魔力导向的配置
+    //    Init(Vector3.up, Vector3.forward, new Color(1f, 1f, 1f, 0.02f), ~1, temp => true, 1, testObj);
 
-        //Init(Vector3.up, Vector3.forward, new Color(1, 0, 0, 1), ~1, temp => true, 1f, testObj);
+    //    Init(Vector3.up, Vector3.forward, new Color(1, 0, 0, 1), ~1, temp => true, 1f, testObj);
     //}
 }

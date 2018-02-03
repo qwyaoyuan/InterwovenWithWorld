@@ -41,7 +41,7 @@ public class FirePiercingPartical : ParticalControlEntry
         else this.transform.forward = Vector3.forward;
         this.layerMask = layerMask;
         this.CollisionCallback = CollisionCallback;
-        this.range = range;
+        this.range = 10 * range;
         tempShotCount = 0;
         InvokeRepeating("FirePiercing_ShotFire", 0.1f, 0.5f);
     }
@@ -73,9 +73,9 @@ public class FirePiercingPartical : ParticalControlEntry
     }
 
 
-    private void Start()
-    {
-        SetLifeCycle(100);
-        Init(Vector3.up, Vector3.forward, Color.red, ~1, tep => true, 10);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(100);
+    //    Init(Vector3.up, Vector3.forward, Color.red, ~1, tep => true, 10);
+    //}
 }

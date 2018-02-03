@@ -28,6 +28,11 @@ public class UIAction : MonoBehaviour
     /// </summary>
     bool CanChangeTab;
 
+    /// <summary>
+    /// 是否正在保存中
+    /// </summary>
+    public static bool isSaving;
+
     void Awake()
     {
         uiFocusPath = GetComponent<UIFocusPath>();
@@ -35,10 +40,10 @@ public class UIAction : MonoBehaviour
 
     private void OnEnable()
     {
+        isSaving = false;
         iGameState = GameState.Instance.GetEntity<IGameState>();
         //压入状态 
         iGameState.PushEnumGameRunType(EnumGameRunType.Setting);
-
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         if (uiFocusPath)
         {
@@ -89,6 +94,8 @@ public class UIAction : MonoBehaviour
     /// <param name="rockValue"></param>
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
+        if (isSaving)
+            return;
         if (uiFocusPath && CanChangeTab)//切换标签页
         {
             UIFocus nextTabPageFocus = null;

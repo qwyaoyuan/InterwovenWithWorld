@@ -78,6 +78,8 @@ public class InteractiveManager : IInput
         iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
     }
 
+    public void Update() { }
+
     public void KeyPress(int key)
     {
 

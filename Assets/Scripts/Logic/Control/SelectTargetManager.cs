@@ -17,7 +17,15 @@ public class SelectTargetManager : IInput
     /// <summary>
     /// 选择目标管理器的但离对象
     /// </summary>
-    public static SelectTargetManager Instance;
+    public static SelectTargetManager Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = new SelectTargetManager();
+            return instance;
+        }
+    }
 
     /// <summary>
     /// 游戏状态
@@ -56,7 +64,7 @@ public class SelectTargetManager : IInput
                 case EnumSelectTargetModel.SelectMonster:
                     iPlayerState.SelectObj = null;
                     break;
-                case EnumSelectTargetModel.SelectSelf:
+                case EnumSelectTargetModel.SelectSelf://暂定友军只有自己
                     iPlayerState.SelectObj = iPlayerState.PlayerObj;
                     break;
             }
@@ -71,7 +79,7 @@ public class SelectTargetManager : IInput
     /// <summary>
     /// 如果当选择目标是空的话,则选择一个怪物
     /// </summary>
-    private void Update()
+    public void Update()
     {
         selectTime -= Time.deltaTime;
         if (selectTime < 0 && iGameState.SelectTargetModel == EnumSelectTargetModel.SelectMonster && iPlayerState.SelectObj == null && iPlayerState.PlayerObj != null)
@@ -80,6 +88,16 @@ public class SelectTargetManager : IInput
             //选择一个最近的怪物
             GameObject selectObj = iMonsterCollection.GetMonsters(iPlayerState.PlayerObj, -1, 20).FirstOrDefault();
             iPlayerState.SelectObj = selectObj;
+        }
+        //在选择模式下如果选择的目标距离超出则取消当前锁定的怪物
+        if (iGameState.SelectTargetModel == EnumSelectTargetModel.SelectMonster && iPlayerState.SelectObj != null && iPlayerState.PlayerObj != null)
+        {
+            float dis = Vector3.Distance(iPlayerState.SelectObj.transform.position, iPlayerState.PlayerObj.transform.position);
+            if (dis > 20)
+            {
+                iPlayerState.SelectObj = null;
+                selectTime = 0;
+            }
         }
     }
 
@@ -180,7 +198,7 @@ public class SelectTargetManager : IInput
 
     public void SetStep(int step)
     {
-        
+
     }
 }
 

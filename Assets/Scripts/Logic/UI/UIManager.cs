@@ -46,6 +46,8 @@ public class UIManager : IInput
         StepByStep = step;
     }
 
+    public void Update() { }
+
     /// <summary>
     /// 将EnumInputType类型的数值转换为KeyType类型枚举
     /// </summary>

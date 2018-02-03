@@ -133,10 +133,10 @@ public partial class GameState : IInteractiveState
                     {
                         ClickNPC_Street();
                     }
-                    else//如果不是路牌则判断任务等其他处理
+                    else if (npcDataInfo.NPCType != EnumNPCType.Normal)//如果不是路牌则判断任务等其他处理
                     {
                         bool isTask = ClickNPC_Task();//返回是否存在任务需要处理
-                        if (!isTask && npcDataInfo.NPCType != EnumNPCType.Normal)//如果没有任务需要处理则判断是否有其他的情况
+                        if (!isTask)//如果没有任务需要处理则判断是否有其他的情况
                         {
                             if (npcDataInfo.NPCType == EnumNPCType.Businessman)//如果是商人
                             {

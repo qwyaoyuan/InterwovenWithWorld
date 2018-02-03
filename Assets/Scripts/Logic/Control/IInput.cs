@@ -43,6 +43,10 @@ public interface IInput
     /// </summary>
     /// <param name="step">步进值</param>
     void SetStep(int step);
+    /// <summary>
+    /// 更新函数
+    /// </summary>
+    void Update();
 }
 
 

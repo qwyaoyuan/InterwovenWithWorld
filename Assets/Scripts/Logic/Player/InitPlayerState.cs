@@ -28,7 +28,7 @@ public class InitPlayerState : MonoBehaviour
         GameState.Instance.CameraArmOffsetZ = 1;
         GameState.Instance.CameraPosOffsetY = 7;
         GameState.Instance.CameraPosOffsetZ = 6;
-        GameState.Instance.ViewModel = EnumViewModel.Free;//自由摄像机模式
+        GameState.Instance.ViewModel = EnumViewModel.Solid;//固定摄像机模式
         GameState.Instance.GameRunType = EnumGameRunType.Safe;
         GameState.Instance.PhysicSkillInjuryDetection = physicSkillInjuryDetection;
     }

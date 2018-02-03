@@ -111,6 +111,33 @@ public class ParticalManager
     }
 
     /// <summary>
+    /// 增加加载
+    /// </summary>
+    public static void IncrementalLoad()
+    {
+        TextAsset textAsset = Resources.Load<TextAsset>(particalObjDirectoryPath);
+        string allLine = Encoding.UTF8.GetString(textAsset.bytes);
+        string[] lines = allLine.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        char[] splits = new char[] { '/' };
+        if (nameToPrefabDic == null)
+            nameToPrefabDic = new Dictionary<string, GameObject>();
+        foreach (string line in lines)
+        {
+            try
+            {
+                string name = line.Split(splits, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+                if (name != null && !nameToPrefabDic.ContainsKey(name))
+                {
+                    GameObject obj = Resources.Load<GameObject>(line.Trim());
+                    nameToPrefabDic.Add(obj.name, obj);
+                }
+            }
+            catch (Exception ex) { Debug.Log(ex); }
+        }
+    }
+
+
+    /// <summary>
     /// 根据名字查找粒子
     /// </summary>
     /// <param name="name"></param>

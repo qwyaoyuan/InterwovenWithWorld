@@ -44,25 +44,28 @@ public partial class GameState
                 int level = 0;
                 playerState.SkillPoint.TryGetValue(skillBaseStruct.skillType, out level);
                 StatusDataInfo.StatusLevelDataInfo statusLevelDataInfo = statusDataInfo[level];
-                if (statusEffects.Count(temp => temp.Key.EffectType == enumStatusEffect) > 0)//如果已经存在相同类型的特效
+                if (statusLevelDataInfo != null)
                 {
-                    KeyValuePair<StatusDataInfo.StatusLevelDataInfo, int> tempStatusEffect = statusEffects.FirstOrDefault(temp => temp.Key.EffectType == enumStatusEffect);
-                    int nowLevel = tempStatusEffect.Value;
-                    if (nowLevel < level)//计算当前存放的特效等级是否高于新加的等级
+                    if (statusEffects.Count(temp => temp.Key.EffectType == enumStatusEffect) > 0)//如果已经存在相同类型的特效
                     {
-                        statusEffects.Remove(tempStatusEffect.Key);
+                        KeyValuePair<StatusDataInfo.StatusLevelDataInfo, int> tempStatusEffect = statusEffects.FirstOrDefault(temp => temp.Key.EffectType == enumStatusEffect);
+                        int nowLevel = tempStatusEffect.Value;
+                        if (nowLevel < level)//计算当前存放的特效等级是否高于新加的等级
+                        {
+                            statusEffects.Remove(tempStatusEffect.Key);
+                            statusEffects.Add(statusLevelDataInfo, level);
+                        }
+                    }
+                    else
+                    {
                         statusEffects.Add(statusLevelDataInfo, level);
                     }
-                }
-                else
-                {
-                    statusEffects.Add(statusLevelDataInfo, level);
                 }
             }
         }
         StatusDataInfo.StatusLevelDataInfo[] statusLevelDataInfos = statusEffects.Keys.ToArray();
         //这几个是基础数据
-        particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up;
+        particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 0.2f + playerObj.transform.up * 1.5f;
         particalInitParamData.lifeTime = 5;
         particalInitParamData.checkCollisionIntervalTime = 1;
         particalInitParamData.targetObjs = new GameObject[0];

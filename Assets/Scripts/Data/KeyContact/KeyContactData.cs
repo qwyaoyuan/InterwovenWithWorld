@@ -122,5 +122,5 @@ public enum EnumKeyContactDataZone
     /// <summary>
     /// 对话
     /// </summary>
-    Dialogue
+    Dialogue,
 }

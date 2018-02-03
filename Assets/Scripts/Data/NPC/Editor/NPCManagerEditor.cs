@@ -338,9 +338,18 @@ public class EditorNPCDataInfoWindow : EditorWindow
     /// </summary>
     List<KeyValuePair<EnumQualityType, string>> goodsQualityTypeToExplanList;
     /// <summary>
+    /// 任务状态对应说明字典
+    /// </summary>
+    List<KeyValuePair<TaskMap.Enums.EnumTaskProgress, string>> taskStateTypeToExplanList;
+    /// <summary>
     /// 物品类型选择添加下标
     /// </summary>
     int goodsTypeIndex;
+
+    /// <summary>
+    /// 滑动条
+    /// </summary>
+    Vector2 scroll;
 
     public void SetNPCDataInfo(NPCDataInfo npcDataInfo)
     {
@@ -381,6 +390,8 @@ public class EditorNPCDataInfoWindow : EditorWindow
 
         }
         EditorGUILayout.BeginVertical();
+
+        scroll = EditorGUILayout.BeginScrollView(scroll);
 
         List<string> names = npcDataDic.Keys.OfType<string>().ToList();
         int index = names.IndexOf(tempNPCDataInfo.npcPrefabName);
@@ -444,6 +455,84 @@ public class EditorNPCDataInfoWindow : EditorWindow
         {
             tempNPCDataInfo.npcSpriteID = SpriteManager.GetName(tempSprite);
             tempNPCDataInfo.NPCSprite = tempSprite;
+        }
+        EditorGUILayout.LabelField("------------------显示条件------------------");
+        if (tempNPCDataInfo.NPCShowCondition == null && GUILayout.Button("创建显示条件"))
+        {
+            tempNPCDataInfo.NPCShowCondition = new NPCShowCondition();
+        }
+        if (tempNPCDataInfo.NPCShowCondition != null)
+        {
+            if (GUILayout.Button("删除显示条件"))
+            {
+                if (EditorUtility.DisplayDialog("请再次确认!", "是否要删除显示条件?", "删除", "取消"))
+                {
+                    tempNPCDataInfo.NPCShowCondition = null;
+                }
+            }
+        }
+        if (tempNPCDataInfo.NPCShowCondition != null)
+        {
+            if (taskStateTypeToExplanList == null)
+            {
+                taskStateTypeToExplanList = new List<KeyValuePair<TaskMap.Enums.EnumTaskProgress, string>>();
+                FieldExplanAttribute.SetEnumExplanDic(taskStateTypeToExplanList);
+            }
+            List<TaskMap.Enums.EnumTaskProgress> taskProgressValueList = taskStateTypeToExplanList.Select(temp => temp.Key).ToList();
+            string[] taskProgressExplanArray = taskStateTypeToExplanList.Select(temp => temp.Value).ToArray();
+            //显示与任务条件相关的函数
+            Func<NPCShowCondition.TaskCondition[], NPCShowCondition.TaskCondition[]> ShowAbourtTaskConditionFunc = (source) =>
+            {
+                if (source == null)
+                    source = new NPCShowCondition.TaskCondition[0];
+                if (GUILayout.Button("添加", GUILayout.Width(50)))
+                {
+                    NPCShowCondition.TaskCondition[] tempSource = new NPCShowCondition.TaskCondition[source.Length + 1];
+                    Array.Copy(source, tempSource, source.Length);
+                    tempSource[source.Length] = new NPCShowCondition.TaskCondition();
+                    source = tempSource;
+                }
+                List<NPCShowCondition.TaskCondition> removeList = new List<NPCShowCondition.TaskCondition>();//需要移除的列表
+                foreach (NPCShowCondition.TaskCondition taskCondition in source)
+                {
+                    if (taskCondition == null)
+                        continue;
+                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("×", GUILayout.Width(20)))//删除
+                    {
+                        if (EditorUtility.DisplayDialog("请再次确认!", "是否删除该条数据?", "删除", "取消"))
+                        {
+                            removeList.Add(taskCondition);
+                        }
+                    }
+                    EditorGUILayout.LabelField("任务ID:", GUILayout.Width(50));
+                    taskCondition.TaskID = EditorGUILayout.IntField(taskCondition.TaskID, GUILayout.Width(20));
+
+                    EditorGUILayout.LabelField("任务状态:", GUILayout.Width(60));
+                    int taskStateIndex = taskProgressValueList.IndexOf(taskCondition.TaskState);
+                    taskStateIndex = EditorGUILayout.Popup(taskStateIndex, taskProgressExplanArray, GUILayout.Width(100));
+                    if (taskStateIndex > -1)
+                    {
+                        TaskMap.Enums.EnumTaskProgress tskProgress = taskProgressValueList[taskStateIndex];
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                if (removeList.Count > 0)
+                {
+                    List<NPCShowCondition.TaskCondition> tempSource = new List<NPCShowCondition.TaskCondition>(source);
+                    foreach (NPCShowCondition.TaskCondition taskCondition in removeList)
+                    {
+                        tempSource.Remove(taskCondition);
+                    }
+                    source = tempSource.ToArray();
+                }
+                return source;
+            };
+            tempNPCDataInfo.NPCShowCondition.TimeRange = EditorGUILayout.Vector2Field("在该时间范围内显示(都为0表示不受该项影响)", tempNPCDataInfo.NPCShowCondition.TimeRange);
+            EditorGUILayout.LabelField("NPC的隐藏条件(满足任何一条则必须隐藏):");
+            tempNPCDataInfo.NPCShowCondition.TaskConditionsHide = ShowAbourtTaskConditionFunc(tempNPCDataInfo.NPCShowCondition.TaskConditionsHide);
+            EditorGUILayout.LabelField("NPC的显示条件(满足任何一条则允许显示):");
+            tempNPCDataInfo.NPCShowCondition.TaskConditionShow = ShowAbourtTaskConditionFunc(tempNPCDataInfo.NPCShowCondition.TaskConditionShow);
         }
         EditorGUILayout.LabelField("------------------其他数据------------------");
         switch (tempNPCDataInfo.NPCType)
@@ -520,6 +609,8 @@ public class EditorNPCDataInfoWindow : EditorWindow
                 EditorGUILayout.EndScrollView();
                 break;
         }
+
+        EditorGUILayout.EndScrollView();
         EditorGUILayout.EndVertical();
     }
 

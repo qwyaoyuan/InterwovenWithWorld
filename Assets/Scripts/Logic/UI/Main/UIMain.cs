@@ -121,7 +121,8 @@ public class UIMain : MonoBehaviour
                     actionPanel.gameObject.SetActive(true);
                     break;
                 case UIManager.KeyType.Back://开启设置界面
-                    settingPanel.gameObject.SetActive(false);
+                    //settingPanel.gameObject.SetActive(true);
+                    //UISetting uiSetting = settingPanel.GetComponent<UISetting>() ;
                     break;
             }
     }

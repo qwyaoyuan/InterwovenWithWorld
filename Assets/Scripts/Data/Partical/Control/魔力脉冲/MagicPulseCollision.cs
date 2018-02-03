@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -25,6 +26,11 @@ public class MagicPulseCollision : MonoBehaviour, IParticalConduct
     /// 颜色
     /// </summary>
     Color color;
+
+    /// <summary>
+    /// 是否只检测最近的一个
+    /// </summary>
+    public bool onlyNear;
 
     /// <summary>
     /// 检测后生成的粒子
@@ -67,6 +73,7 @@ public class MagicPulseCollision : MonoBehaviour, IParticalConduct
             RaycastHit[] rchs = Physics.RaycastAll(ray, range, layerMask);
             if (rchs != null && rchs.Length > 0)
             {
+                rchs = rchs.OrderBy(temp => Vector3.Distance(temp.point, transform.position)).ToArray();
                 foreach (RaycastHit rch in rchs)
                 {
                     bool result = CallBack(new CollisionHitCallbackStruct() { targetObj = rch.transform.gameObject, hitPoint = rch.point });
@@ -78,11 +85,15 @@ public class MagicPulseCollision : MonoBehaviour, IParticalConduct
                         ParticalControlEntry particalControlEntry = go.GetComponent<ParticalControlEntry>();
                         if (particalControlEntry)
                         {
-                            particalControlEntry.Init(rch.point, transform.forward, color, layerMask, null, 1);//这里的范围不起作用
+                            particalControlEntry.Init(rch.point, transform.forward, color, layerMask, CallBack, 1);//这里的范围不起作用
                         }
                         else
                         {
                             go.transform.forward = -transform.forward;
+                        }
+                        if (onlyNear)//只生成第一个
+                        {
+                            break;
                         }
                     }
                 }

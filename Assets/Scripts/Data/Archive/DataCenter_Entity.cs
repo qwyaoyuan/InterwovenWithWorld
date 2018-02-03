@@ -76,6 +76,11 @@ public class PlayerState
     public Vector3 Location;
 
     /// <summary>
+    /// 角色名字
+    /// </summary>
+    public string PlayerName;
+
+    /// <summary>
     /// 最近一次点击路牌的ID
     /// </summary>
     public int StreetID;

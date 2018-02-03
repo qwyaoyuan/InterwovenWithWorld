@@ -13,10 +13,12 @@ public class MagicPulsePartical : ParticalControlEntry
     /// </summary>
     public Color magicColor;
 
+/*
     private void Start()
     {
-        Init(Vector3.up, Vector3.forward, magicColor, ~1, temp => true, 10);
+        Init(Vector3.up, Vector3.forward, Color.red, ~1, temp => true, 10);
     }
+*/
 
     public override void Init(Vector3 pos, Vector3 forward, Color color, LayerMask layerMask, Func<CollisionHitCallbackStruct, bool> CollisionCallback, float range, params GameObject[] targetObjs)
     {

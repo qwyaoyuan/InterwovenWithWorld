@@ -5,7 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// 移动管理器
-/// 负责角色的移动
+/// 负责角色的移动(以及角色和怪物的锁定)
 /// </summary>
 public class MoveManager : IInput
 {
@@ -106,6 +106,8 @@ public class MoveManager : IInput
             CheckGameState(iSpecialState.Mabi, specialName);
 
     }
+
+    public void Update() { }
 
     /// <summary>
     /// 将变化后的buff设置到或从buffOrDebuffStateList_Move字典中移除
@@ -268,14 +270,25 @@ public class MoveManager : IInput
             }
             else if (iGameState.ViewModel == EnumViewModel.Solid)//固定视角摄像机的方向判断
             {
-                if (lastView == Vector3.zero)//如果没有使用右摇杆控制方向,则方向由左摇杆来确定
+                //如果现在的模式不是选择怪物或者是选择怪物但是周围没有怪物则使用摇杆控制方向
+                if (iGameState.SelectTargetModel != EnumSelectTargetModel.SelectMonster||
+                    (iGameState.SelectTargetModel == EnumSelectTargetModel.SelectMonster&& !iPlayerState.SelectObj))
                 {
-                    if (Mathf.Abs(forward.x) > 0.3 || Mathf.Abs(forward.y) > 0.3)//如果摇杆输入的数据量超过静止位,则认为是有输入,使用的朝向为输入的朝向
+                    if (lastView == Vector3.zero)//如果没有使用右摇杆控制方向,则方向由左摇杆来确定
                     {
-                        tempView = (new Vector3(forward.x, 0, forward.y)).normalized;
+                        if (Mathf.Abs(forward.x) > 0.3 || Mathf.Abs(forward.y) > 0.3)//如果摇杆输入的数据量超过静止位,则认为是有输入,使用的朝向为输入的朝向
+                        {
+                            tempView = (new Vector3(forward.x, 0, forward.y)).normalized;
+                        }
                     }
+                    else tempView = lastView;
                 }
-                else tempView = lastView;
+                //如果现在的模式是选择怪物,则使用怪物的朝向为方向
+                else
+                {
+                    Vector3 tempVec = iPlayerState.SelectObj.transform.position - iPlayerState.PlayerObj.transform.position;
+                    tempView = (new Vector3(tempVec.x, 0, tempVec.z)).normalized;
+                }
                 if (Mathf.Abs(forward.x) > 0.3 || Mathf.Abs(forward.y) > 0.3)//如果存在输入时才计算角色的移动速度
                 {
                     Vector3 moveView = (new Vector3(forward.x, 0, forward.y)).normalized;//计算时角色移动的朝向
@@ -411,3 +424,4 @@ public class MoveManager : IInput
 
 
 }
+

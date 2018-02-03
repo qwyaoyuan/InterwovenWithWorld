@@ -94,6 +94,25 @@ public class MonsterControl : MonoBehaviour
             thisSphereCollider.enabled = false;
             childSphereCollider.isTrigger = true;
         }
+
+        //注册监听
+        if (monsterDataInfo != null && monsterDataInfo.MonsterBaseAttribute != null)
+        {
+            monsterDataInfo.MonsterBaseAttribute.Registor<IAttributeState>(IAttribute_Changed);
+        }
+    }
+
+    /// <summary>
+    /// 监听属性变化
+    /// </summary>
+    /// <param name="iAttribute"></param>
+    /// <param name="fieldName"></param>
+    private void IAttribute_Changed(IAttributeState iAttribute, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.GetFieldNameStatic<IAttributeState, float>(temp => temp.HP)))
+        {
+            blackboard.SetValue("HP", (int)iAttribute.HP);
+        }
     }
 
     /// <summary>

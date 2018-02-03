@@ -33,6 +33,8 @@ public class SkillManager : IInput
         GameState.Instance.Registor<IGameState>(GameStateChanged);
     }
 
+    public void Update() { }
+
     /// <summary>
     /// 游戏状态发生变化
     /// </summary>

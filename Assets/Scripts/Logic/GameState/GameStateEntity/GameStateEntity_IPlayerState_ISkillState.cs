@@ -503,7 +503,7 @@ public partial class GameState
             //元素驻留的增幅属性
             IAttributeState IAttributeState_YSX06_Data_End = iPlayerState.GetAttribute(10);
             //如果存在元素驻留的效果元素驻留 
-            if (_CombineSkills.Count(temp => temp.skillType == EnumSkillType.YSX06) == 1)
+            if (_CombineSkills.Count(temp => temp!=null && temp.skillType == EnumSkillType.YSX06) == 1)
             {
                 IAttributeState_YSX06_Data_End.MagicAttacking = baseAttributeState.MagicAttacking * 0.25f;//将法伤提高,下次在释放时,会先判断元素类型是否一致,如果不一致则会先初始化该对象
             }

@@ -119,7 +119,7 @@ public enum EnumSelectTargetModel
     /// </summary>
     SelectMonster,
     /// <summary>
-    /// 选择玩家自己
+    /// 选择玩家自己或友军
     /// </summary>
     SelectSelf
 }

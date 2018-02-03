@@ -84,7 +84,7 @@ public class UIFocusPath : MonoBehaviour
     public UIFocus GetFirstFocus()
     {
         if (NewUIFocusArray != null && NewUIFocusArray.Length > 0)
-            return NewUIFocusArray.FirstOrDefault();
+            return NewUIFocusArray.FirstOrDefault(temp => temp != null && temp.gameObject.activeSelf != false);
         if (UIFocuesArray != null)
             return UIFocuesArray.FirstOrDefault(temp => temp != null && temp.gameObject.activeSelf != false);
         return null;
@@ -449,14 +449,14 @@ public class UIFocusPath : MonoBehaviour
         FocusRelaship focusRelaship = UIFocusArrayRelaships.FirstOrDefault(temp => temp.This == target);
         if (focusRelaship != null)
         {
-            Func<UIFocus,MoveType, UIFocus> CheckThisFocus = (innerTarget,innerMoveType) => 
-            {
-                if (innerTarget == null)
-                    return null;
-                if (innerTarget.gameObject.activeSelf)
-                    return innerTarget;
-                return GetNewNextFocus(innerTarget, innerMoveType);
-            };
+            Func<UIFocus, MoveType, UIFocus> CheckThisFocus = (innerTarget, innerMoveType) =>
+             {
+                 if (innerTarget == null)
+                     return null;
+                 if (innerTarget.gameObject.activeSelf)
+                     return innerTarget;
+                 return GetNewNextFocus(innerTarget, innerMoveType);
+             };
             switch (moveType)
             {
                 case MoveType.LEFT:

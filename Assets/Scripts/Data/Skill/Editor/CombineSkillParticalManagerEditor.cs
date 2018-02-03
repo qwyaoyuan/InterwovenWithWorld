@@ -111,12 +111,19 @@ public class CombineSkillParticalManagerEditor : EditorWindow
         EditorGUILayout.BeginHorizontal();
         //左侧的选择配置项按钮面板
         EditorGUILayout.BeginVertical(GUILayout.Width(250));
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("保存", GUILayout.Width(35)))
         {
             string valueText = SerializeNow(skillTypeToParticalNameDic);
             File.WriteAllText(dataDirecotryPath + "/CombinePartical.txt", valueText, Encoding.UTF8);
             EditorUtility.DisplayDialog("保存数据", "保存成功!", "确认");
         }
+        GUILayout.Space(100);
+        if (GUILayout.Button("增量加载资源", GUILayout.Width(100)))
+        {
+            ParticalManager.IncrementalLoad();
+        }
+        EditorGUILayout.EndHorizontal();
         if (GUILayout.Button("添加", GUILayout.Width(35)))
         {
             if (!skillTypeToParticalNameDic.ContainsKey(-1))

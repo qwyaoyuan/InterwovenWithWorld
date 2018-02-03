@@ -49,6 +49,7 @@ public class InputControl : IEntrance
         inputList.Add(MoveManager.Instance);
         inputList.Add(InteractiveManager.Instance);
         inputList.Add(SkillManager.Instance);
+        inputList.Add(SelectTargetManager.Instance);
     }
 
     /// <summary>
@@ -312,6 +313,8 @@ public class InputControl : IEntrance
             iInput.Move(new Vector2(hl, vl));
             //右摇杆 
             iInput.View(new Vector2(hr, vr));
+            //更新
+            iInput.Update();
         }
     }
 

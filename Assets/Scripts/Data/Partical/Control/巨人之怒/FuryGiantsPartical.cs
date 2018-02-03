@@ -18,8 +18,8 @@ public class FuryGiantsPartical : ParticalControlEntry
     }
 
 
-    private void Start()
-    {
-        Init(Vector3.up, Vector3.forward, Color.red, ~1, temp => true, 10);
-    }
+    //private void Start()
+    //{
+    //    Init(Vector3.up, Vector3.forward, Color.red, ~1, temp => true, 10);
+    //}
 }

@@ -59,7 +59,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 476452}
-  - component: {fileID: 114330296382747288}
+  - component: {fileID: 114280959894546292}
   m_Layer: 0
   m_Name: Voltorb
   m_TagString: Untagged
@@ -10364,7 +10364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf87186453bcdcb40af3c9151cf3633e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114330296382747288
+--- !u!114 &114280959894546292
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -10372,7 +10372,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 153482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9159da40ae50fc45b98569670773eae, type: 3}
+  m_Script: {fileID: 11500000, guid: d2b7b49830b20c64b8eb9ac457ec8dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114602317934997762

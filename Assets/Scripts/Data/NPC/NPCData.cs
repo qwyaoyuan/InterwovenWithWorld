@@ -106,6 +106,7 @@ public class NPCData : ILoadable<NPCData>
             return npcDataInfoCollection.NPCDataInfos.ToArray();
         return new NPCDataInfo[0];
     }
+
 }
 
 /// <summary>
@@ -281,7 +282,10 @@ public class NPCDataInfo
     /// 附加的数据
     /// </summary>
     public string OtherValue;
-
+    /// <summary>
+    /// NPC的显示条件,如果为null表示一直显示,如果不为null则判断
+    /// </summary>
+    public NPCShowCondition NPCShowCondition { get; set; }
 #if UNITY_EDITOR
     /// <summary>
     /// 将NPCObjPrefab设置为false
@@ -316,6 +320,74 @@ public class NPCDataInfo
 }
 
 /// <summary>
+/// NPC的显示条件(可以分为时间和任务范围)
+/// </summary>
+[Serializable]
+public class NPCShowCondition
+{
+    [JsonProperty] private float timeRange_x;
+    [JsonProperty] private float timeRange_y;
+    /// <summary>
+    /// 时间范围(范围内显示该对象)
+    /// 
+    /// (注意如果第一个数字大于第二个数字表示回环,如23-1表示晚上23点到第二天的早上1点)
+    /// 
+    /// (如果该数值为0,0表示不受时间范围约束)
+    /// </summary>
+    [JsonIgnore]
+    public Vector2 TimeRange
+    {
+        get { return new Vector2(timeRange_x, timeRange_y); }
+        set { timeRange_x = value.x; timeRange_y = value.y; }
+    }
+    /// <summary>
+    /// 任务的条件(隐藏)
+    /// 
+    /// 注意这里判断的是隐藏条件,如果有任何一条满足则该NPC隐藏(优先级大于显示)
+    /// </summary>
+    public TaskCondition[] TaskConditionsHide;
+    /// <summary>
+    /// 任务的条件(显示)
+    /// 
+    /// 注意这里判断的是显示条件,如果有任何一条满足则该NPC可以显示(优先级小于隐藏)
+    /// </summary>
+    public TaskCondition[] TaskConditionShow;
+
+    /// <summary>
+    /// 时间检测是否通过(通过表示可以显示,否则必须隐藏)
+    /// </summary>
+    [JsonIgnore]
+    public bool TimeRangePath;
+    /// <summary>
+    /// 隐藏条件是否通过(通过表示必须隐藏,否则可以显示)
+    /// </summary>
+    [JsonIgnore]
+    public bool TaskCoditionHidePath;
+    /// <summary>
+    /// 显示条件是否通过(通过表示可以显示,否则必须隐藏)
+    /// </summary>
+    [JsonIgnore]
+    public bool TaskCoditionShowPath;
+
+    /// <summary>
+    /// 任务的条件
+    /// </summary>
+    [Serializable]
+    public class TaskCondition
+    {
+        /// <summary>
+        /// 任务id
+        /// </summary>
+        public int TaskID;
+        /// <summary>
+        /// 任务的状态
+        /// </summary>
+        public TaskMap.Enums.EnumTaskProgress TaskState;
+    }
+}
+
+
+/// <summary>
 /// npc的数据(用于挂在在对象身上)
 /// </summary>
 public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
@@ -324,6 +396,120 @@ public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
     /// npc的数据
     /// </summary>
     public NPCDataInfo NPCDataInfo;
+
+    /// <summary>
+    /// 任务结构对象
+    /// </summary>
+    TaskMap.RunTimeTaskData runTimeTaskData;
+
+    private void Start()
+    {
+        if (GameState.Instance != null)
+        {
+            GameState.Instance.Registor<INowTaskState>(CheckTask);
+            CheckTask(GameState.Instance.GetEntity<INowTaskState>());
+            runTimeTaskData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
+        }
+        if (NPCDataInfo != null)
+        {
+            if (NPCDataInfo.NPCShowCondition != null)
+            {
+                NPCDataInfo.NPCShowCondition.TimeRangePath = true;
+                NPCDataInfo.NPCShowCondition.TaskCoditionHidePath = false;
+                NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = true;
+            }
+        }
+    }
+
+
+    private void CheckTask(INowTaskState iNowTaskState, string fieldName)
+    {
+        CheckTask(iNowTaskState);
+    }
+
+    /// <summary>
+    /// 判断任务情况
+    /// </summary>
+    /// <param name="iNowTaskState"></param>
+    /// <param name="fieldName"></param>
+    private void CheckTask(INowTaskState iNowTaskState)
+    {
+        if (iNowTaskState != null && NPCDataInfo != null && NPCDataInfo.NPCShowCondition != null && runTimeTaskData != null)
+        {
+            NPCDataInfo.NPCShowCondition.TaskCoditionHidePath = false;
+            if (NPCDataInfo.NPCShowCondition.TaskConditionsHide != null && NPCDataInfo.NPCShowCondition.TaskConditionsHide.Length > 0)
+            {
+                foreach (var item in NPCDataInfo.NPCShowCondition.TaskConditionsHide)
+                {
+                    TaskMap.RunTimeTaskInfo runtimeTaskInfo = runTimeTaskData.GetTasksWithID(item.TaskID, false);
+                    if (runtimeTaskInfo != null && runtimeTaskInfo.TaskProgress == item.TaskState)
+                    {
+                        NPCDataInfo.NPCShowCondition.TaskCoditionHidePath = true;
+                        break;
+                    }
+                }
+            }
+            NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = false;
+            if (NPCDataInfo.NPCShowCondition.TaskConditionShow != null && NPCDataInfo.NPCShowCondition.TaskConditionShow.Length > 0)
+            {
+                foreach (var item in NPCDataInfo.NPCShowCondition.TaskConditionShow)
+                {
+                    TaskMap.RunTimeTaskInfo runtimeTaskInfo = runTimeTaskData.GetTasksWithID(item.TaskID, false);
+                    if (runtimeTaskInfo != null && runtimeTaskInfo.TaskProgress == item.TaskState)
+                    {
+                        NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = true;
+                        break;
+                    }
+                }
+            }
+            else NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = true;
+        }
+    }
+
+    /// <summary>
+    /// 在Update里面判断是否可以显示(游戏内部时间)
+    /// </summary>
+    void Update()
+    {
+        if (GameState.Instance != null)
+        {
+            if (NPCDataInfo != null && NPCDataInfo.NPCShowCondition != null)
+            {
+                if (NPCDataInfo.NPCShowCondition.TimeRange.Equals(Vector2.zero))
+                    NPCDataInfo.NPCShowCondition.TimeRangePath = true;
+                else
+                {
+                    //暂时没有时间系统
+                    NPCDataInfo.NPCShowCondition.TimeRangePath = true;
+                }
+                UpdateShow();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 更新显示
+    /// </summary>
+    void UpdateShow()
+    {
+        if (NPCDataInfo != null)
+        {
+            if (NPCDataInfo.NPCShowCondition != null)
+            {
+                bool state = (!NPCDataInfo.NPCShowCondition.TaskCoditionHidePath) && NPCDataInfo.NPCShowCondition.TaskCoditionShowPath && NPCDataInfo.NPCShowCondition.TimeRangePath;
+                if (gameObject.activeSelf != state)
+                    gameObject.SetActive(state);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameState.Instance != null)
+        {
+            GameState.Instance.UnRegistor<INowTaskState>(CheckTask);
+        }
+    }
 }
 
 /// <summary>
@@ -332,7 +518,7 @@ public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
 public enum EnumNPCType
 {
     /// <summary>
-    /// 普通
+    /// 普通(有可能是场景道具)
     /// </summary>
     Normal,
     /// <summary>
@@ -354,5 +540,5 @@ public enum EnumNPCType
     /// <summary>
     /// 路牌
     /// </summary>
-    Street
+    Street,
 }
