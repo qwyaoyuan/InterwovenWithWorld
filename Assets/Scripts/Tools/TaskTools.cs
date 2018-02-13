@@ -48,7 +48,10 @@ public class TaskTools : IEntrance
 
     public void Update()
     {
-        foreach (RunTaskStruct runTaskStruct in taskList)
+        if (taskList.Count <= 0)
+            return;
+        RunTaskStruct[] tempTaskArray = taskList.ToArray();
+        foreach (RunTaskStruct runTaskStruct in tempTaskArray)
         {
             RunTaskStruct.RunTaskStructHandle runTaskStructHandle = null;
             if (taskHandleDic.TryGetValue(runTaskStruct, out runTaskStructHandle))

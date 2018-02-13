@@ -54,6 +54,11 @@ public class MonsterManagerEditor : EditorWindow
     private Dictionary<EnumMonsterAIType, string> monsterAITypeToFieldNameDic;
 
     /// <summary>
+    /// 种族对应说明的字典
+    /// </summary>
+    private List<KeyValuePair<RoleOfRace, string>> roleOfRaceToFieldNameDic;
+
+    /// <summary>
     /// 用于显示范围的游戏对象
     /// </summary>
     private GameObject rangeObj;
@@ -138,6 +143,9 @@ public class MonsterManagerEditor : EditorWindow
         material.SetColor("_Color", new Color(1, 0, 0, 0.35f));
         rangeObj.GetComponent<MeshRenderer>().material = material;
         rangeObj.name = "中心以及区域";
+
+        roleOfRaceToFieldNameDic = new List<KeyValuePair<RoleOfRace, string>>();
+        FieldExplanAttribute.SetEnumExplanDic(roleOfRaceToFieldNameDic, 0);
     }
 
     private void OnDestroy()
@@ -366,6 +374,15 @@ public class MonsterManagerEditor : EditorWindow
                 AttributeStateAdditionalEditor attributeStateAdditionalEditor = EditorWindow.GetWindow<AttributeStateAdditionalEditor>();
                 attributeStateAdditionalEditor.Show();
                 attributeStateAdditionalEditor.Target = monsterDataInfo.MonsterBaseAttribute;
+            }
+            //设置种族
+            List<RoleOfRace> roleOfRaceValues = roleOfRaceToFieldNameDic.Select(temp => temp.Key).ToList();
+            string[] roleOfRaceExplans = roleOfRaceToFieldNameDic.Select(temp => temp.Value).ToArray();
+            int roleOfRaceIndex = roleOfRaceValues.IndexOf(monsterDataInfo.roleOfRace);
+            roleOfRaceIndex = EditorGUILayout.Popup("种族:",roleOfRaceIndex, roleOfRaceExplans);
+            if (roleOfRaceIndex > -1)
+            {
+                monsterDataInfo.roleOfRace = roleOfRaceValues[roleOfRaceIndex];
             }
             //物品掉落
             if (monsterDataInfo.ItemDropRates == null)

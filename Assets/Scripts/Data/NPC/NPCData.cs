@@ -404,12 +404,6 @@ public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
 
     private void Start()
     {
-        if (GameState.Instance != null)
-        {
-            GameState.Instance.Registor<INowTaskState>(CheckTask);
-            CheckTask(GameState.Instance.GetEntity<INowTaskState>());
-            runTimeTaskData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
-        }
         if (NPCDataInfo != null)
         {
             if (NPCDataInfo.NPCShowCondition != null)
@@ -418,6 +412,12 @@ public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
                 NPCDataInfo.NPCShowCondition.TaskCoditionHidePath = false;
                 NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = true;
             }
+        }
+        if (GameState.Instance != null)
+        {
+            GameState.Instance.Registor<INowTaskState>(CheckTask);
+            runTimeTaskData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
+            CheckTask(GameState.Instance.GetEntity<INowTaskState>());
         }
     }
 
@@ -464,6 +464,7 @@ public class NPCDataInfoMono : DataInfoType<NPCDataInfoMono>
             }
             else NPCDataInfo.NPCShowCondition.TaskCoditionShowPath = true;
         }
+        UpdateShow();
     }
 
     /// <summary>

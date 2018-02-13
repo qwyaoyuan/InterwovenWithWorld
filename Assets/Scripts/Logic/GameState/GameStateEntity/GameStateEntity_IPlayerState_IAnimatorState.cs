@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -167,6 +168,34 @@ public partial class GameState
                 Call<IAnimatorState, bool>(temp => temp.SkillSustainable);
         }
     }
+
+    /// <summary>
+    /// 物理攻击命中了目标设置动画延迟
+    /// </summary>
+    bool _PhysicHitMonsterAnimDelay;
+    /// <summary>
+    /// 物理攻击命中了目标设置动画延迟
+    /// </summary>
+    public bool PhysicHitMonsterAnimDelay
+    {
+        get { return _PhysicHitMonsterAnimDelay; }
+        set
+        {
+            bool tempPhysicHitMonsterAnimDelay = _PhysicHitMonsterAnimDelay;
+            _PhysicHitMonsterAnimDelay = value;
+            if (_PhysicHitMonsterAnimDelay && tempPhysicHitMonsterAnimDelay != _PhysicHitMonsterAnimDelay)
+            {
+                Call<IAnimatorState, bool>(temp => temp.PhysicHitMonsterAnimDelay);
+
+            }
+            _PhysicHitMonsterAnimDelay = false;
+        }
+    }
+
+    /// <summary>
+    /// 获取当前动画剪辑状态对象 
+    /// </summary>
+    public AnimationClipTypeState AnimationClipTypeState { get; set; }
     #endregion
     #region 内部设置
     /// <summary>

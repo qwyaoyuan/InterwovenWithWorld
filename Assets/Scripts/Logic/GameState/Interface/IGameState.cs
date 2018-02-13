@@ -88,6 +88,27 @@ public interface IGameState : IBaseState
     /// </summary>
     EnumViewModel ViewModel { get; set; }
 
+    /// <summary>
+    /// 设置面板的UI
+    /// </summary>
+    Canvas SettingPanel { get; set; }
+    /// <summary>
+    /// 功能面板的UI
+    /// </summary>
+    Canvas ActionPanel { get; set; }
+    /// <summary>
+    /// 主面板的UI
+    /// </summary>
+    Canvas MainPanel { get; set; }
+    /// <summary>
+    /// 过场动画幕布的UI
+    /// </summary>
+    Canvas InterludesPanel { get; set; }
+    /// <summary>
+    /// 过场动画用到的摄像机
+    /// </summary>
+    Camera InterludesCamera { get; set; }
+
 }
 
 /// <summary>

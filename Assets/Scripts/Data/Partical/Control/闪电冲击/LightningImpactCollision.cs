@@ -44,8 +44,8 @@ public class LightningImpactCollision : MonoBehaviour, IParticalConduct
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit[] rchs = Physics.RaycastAll(ray, range, layerMask);
-        rchs = Physics.CapsuleCastAll(transform.position, transform.position + transform.forward, 0.5f, transform.forward, range);
-        if (rchs != null && rchs.Length > 0)
+        rchs = Physics.CapsuleCastAll(transform.position, transform.position + transform.forward, 0.5f, transform.forward, range * 10);
+        if (rchs != null && rchs.Length > 0 && CallBack != null)
         {
             foreach (RaycastHit rch in rchs)
             {

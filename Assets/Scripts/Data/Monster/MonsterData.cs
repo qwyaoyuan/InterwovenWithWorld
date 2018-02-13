@@ -105,7 +105,7 @@ public class MonsterDataInfo
     /// 保存怪物预设体的路径
     /// </summary>
     [JsonIgnore]
-    public static string monsterPrefabDirectoryPath = "Prefabs";
+    public static string monsterPrefabDirectoryPath = "Prefabs/Monster";
     /// <summary>
     /// 该数据的id(因为有可能一个场景有相同类型的怪物,但是数据不一样)
     /// </summary>
@@ -266,6 +266,14 @@ public class MonsterDataInfo
             {
                 CoefficientRatioReducingDamageFactor = roleOfRaceInfoStruct.physicDefenseToHurtRateRatio,
                 ImmunityInjury = roleOfRaceInfoStruct.physicQuickToHurtExemptRatio
+            };
+            MagicAttackFactor = new MagicAttackFactor()
+            {
+                IncreaseRatioInjuryFactor = roleOfRaceInfoStruct.magicAttackToDamageRateRatio
+            };
+            MagicDefenseFactor = new MagicDefenseFactor()
+            {
+                CoefficientRatioReducingDamageFactor = roleOfRaceInfoStruct.magicDefenseToHurtRateRatio
             };
         }
     }

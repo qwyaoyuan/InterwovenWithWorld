@@ -183,16 +183,16 @@ public class UIKeySetting : MonoBehaviour
             int inputKey = uiKeySettingLattice.GetKeySettingInput();//输入的按键值
             if (uiKeySettingLattice)
             {
-                KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(inputKey);
+                //KeyContactStruct[] keyContactStructs = keyContactData.GetKeyContactStruct(inputKey);
                 KeyContactStruct newTarget = new KeyContactStruct();
                 newTarget.id = uiKeySettingLattice.id;
                 newTarget.keyContactType = uiKeySettingLattice.keyLatticeType;
-                if (keyContactStructs.Length > 0)
-                {
-                    newTarget = keyContactStructs[0];
-                }
-                else
-                {
+                //if (keyContactStructs.Length > 0)
+                //{
+                //    newTarget = keyContactStructs[0];
+                //}
+                //else
+                //{
                     //设置对象的名字
                     switch (newTarget.keyContactType)
                     {
@@ -211,7 +211,7 @@ public class UIKeySetting : MonoBehaviour
                             newTarget.name = "暂无功能";
                             break;
                     }
-                }
+                //}
                 keyContactData.SetKeyContactStruct(inputKey, newTarget);
             }
         }
@@ -388,6 +388,7 @@ public class UIKeySetting : MonoBehaviour
                 KeyContactStruct keyContactStruct = (KeyContactStruct)nowKeySettingListItem.value;
                 nowKeySettingLattice.keyLatticeType = keyContactStruct.keyContactType;
                 nowKeySettingLattice.id = keyContactStruct.id;
+
             }
             else
             {

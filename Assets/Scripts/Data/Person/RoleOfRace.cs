@@ -520,6 +520,14 @@ public class RoleOfRaceInfoStruct
     /// 敏捷转换为豁免伤害值的系数
     /// </summary>
     [FieldExplan("敏捷转换为豁免伤害值的系数")] public float physicQuickToHurtExemptRatio;
+    /// <summary>
+    /// 魔法攻击力转化为伤害倍率的系数
+    /// </summary>
+    [FieldExplan("魔法攻击力转化为伤害倍率的系数")] public float magicAttackToDamageRateRatio;
+    /// <summary>
+    /// 魔法防御力转换为减伤倍率系数
+    /// </summary>
+    [FieldExplan("物理防御力转换为减伤倍率系数")] public float magicDefenseToHurtRateRatio;
     #endregion
 
 }

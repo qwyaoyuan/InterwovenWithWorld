@@ -23,77 +23,123 @@ public class PlayerAnimControl : MonoBehaviour
     /// </summary>
     ISpecialState iSpecialState;
 
+    /// <summary>
+    /// 攻击目标造成自身动画的延迟携程
+    /// </summary>
+    Coroutine physicAttackDelayCoroutine;
+
+    /// <summary>
+    /// 动画剪辑的状态
+    /// </summary>
+    List<AnimationClipTypeState> animationClipTypeStateList;
+
     void Start()
     {
+        animationClipTypeStateList = new List<AnimationClipTypeState>();
         iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         iSpecialState = GameState.Instance.GetEntity<ISpecialState>();
         if (!playerAnimator)
             playerAnimator = GetComponent<Animator>();
         if (playerAnimator)
         {
-            PlayerAnimEnterLeaveState[] playerAnimEnterLeaveStates = playerAnimator.GetBehaviours<PlayerAnimEnterLeaveState>();
-            foreach (PlayerAnimEnterLeaveState playerAnimEnumterLeaveState in playerAnimEnterLeaveStates)
+
+            PlayerAnimRunningState[] playerAnimRunningStates = playerAnimator.GetBehaviours<PlayerAnimRunningState>();
+            foreach (PlayerAnimRunningState playerAnimRunningState in playerAnimRunningStates)
             {
-                playerAnimEnumterLeaveState.AnimEnterLeaveHandle += PlayerAnimEnumterLeaveState_AnimEnterLeaveHandle;
+                playerAnimRunningState.AnimRunningStateHandle += PlayerAnimRunningState_AnimRunningStateHandle;
             }
         }
         //注册监听
         GameState.Instance.Registor<IPlayerState>(CallBackIPlayerStateState);
         GameState.Instance.Registor<IAnimatorState>(CallBackIAnimatorState);
         GameState.Instance.Registor<ISpecialState>(CallBackISpecialState);
+        GameState.Instance.Registor<IAttributeState>(CallBackIAttributeState);
+        //设置初始武器状态
+        CallBackIPlayerStateState(GameState.Instance.GetEntity<IPlayerState>(), GameState.GetFieldNameStatic<IPlayerState, bool>(temp => temp.EquipmentChanged));
+        //设置初始速度
+        CallBackIAttributeState(GameState.Instance.GetEntity<IAttributeState>(), GameState.GetFieldNameStatic<IAttributeState, float>(temp => temp.AttackSpeed));
+    }
+
+    private void OnDestroy()
+    {
+        GameState.Instance.UnRegistor<IPlayerState>(CallBackIPlayerStateState);
+        GameState.Instance.UnRegistor<IAnimatorState>(CallBackIAnimatorState);
+        GameState.Instance.UnRegistor<ISpecialState>(CallBackISpecialState);
+        GameState.Instance.UnRegistor<IAttributeState>(CallBackIAttributeState);
     }
 
     /// <summary>
-    /// 离开物理普通攻击函数
+    /// 动画进入离开或触发条件时
     /// </summary>
-    IEnumerator LeavePhysicInvoke()
+    /// <param name="animationClipType"></param>
+    /// <param name="clipTimeType"></param>
+    /// <param name="normalizedTime"></param>
+    private void PlayerAnimRunningState_AnimRunningStateHandle(EnumAnimationClipType animationClipType, EnumAnimationClipTimeType clipTimeType, float normalizedTime)
     {
-        yield return new WaitForSeconds(0.15f);
-        if (iAnimatorState != null)
+        AnimationClipTypeState animationClipTypeState = animationClipTypeStateList.FirstOrDefault(temp => temp.AnimationClipType == animationClipType);
+        if (animationClipTypeState == null)
         {
-            iAnimatorState.IsPhycisActionState = false;
-            //当从物理动作(普通攻击)中退出时,设置其阶段为0
-            iAnimatorState.PhycisActionNowType = 0;
+            animationClipTypeState = new AnimationClipTypeState() { AnimationClipType = animationClipType };
+            animationClipTypeStateList.Add(animationClipTypeState);
         }
-    }
-
-    /// <summary>
-    /// 离开技能动作函数
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator LeaveSkillInvoke()
-    {
-        yield return new WaitForSeconds(0.3f);
-        if (iAnimatorState != null)
+        animationClipTypeState.TimeType = clipTimeType;
+        animationClipTypeState.ClipTime = normalizedTime;
+        Action SetAttackAction = () =>
         {
-            iAnimatorState.IsSkillState = false;
-        }
-    }
+            bool allOut = animationClipTypeStateList.Where(temp => temp.AnimationClipType == EnumAnimationClipType.Attack1 ||
+                temp.AnimationClipType == EnumAnimationClipType.Attack2 ||
+                temp.AnimationClipType == EnumAnimationClipType.Attack3
+                ).ToList().TrueForAll(temp => temp.TimeType == EnumAnimationClipTimeType.Out);
+            if (allOut)
+            {
+                iAnimatorState.IsPhycisActionState = false;
+                iAnimatorState.PhycisActionNowType = 0;
+            }
+            else
+                iAnimatorState.IsPhycisActionState = true;
 
-    /// <summary>
-    /// 离开魔法动作函数
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator LeaveMagicInvoke()
-    {
-        yield return new WaitForSeconds(0.3f);
-        if (iAnimatorState != null)
+        };
+        switch (animationClipType)
         {
-            iAnimatorState.IsMagicActionState = false;
-        }
-    }
-
-    /// <summary>
-    /// 动画进入或离开某状态
-    /// </summary>
-    /// <param name="name">动画名(手动输入的)</param>
-    /// <param name="state">进入或离开状态</param>
-    private void PlayerAnimEnumterLeaveState_AnimEnterLeaveHandle(string name, bool state)
-    {
-        switch (name)
-        {
-            case "Dizzy"://如果陷入眩晕则重置普通攻击状态
-                if (state)
+            case EnumAnimationClipType.Move:
+                break;
+            //当动作进入攻击1 攻击2 攻击3时分别设置对应的物理动作(普通攻击)阶段为对应的阶段
+            //当退出动作时设置动作为0(无攻击)
+            case EnumAnimationClipType.Attack1:
+                SetAttackAction();
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.PhycisActionNowType = 1;
+                    break;
+            case EnumAnimationClipType.Attack2:
+                SetAttackAction();
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.PhycisActionNowType = 2;
+                break;
+            case EnumAnimationClipType.Attack3:
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.PhycisActionNowType = 3;
+                else if (clipTimeType == EnumAnimationClipTimeType.Out)
+                    iAnimatorState.PhycisActionNowType = 0;
+                SetAttackAction();
+                break;
+            case EnumAnimationClipType.MagicSing:
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.IsMagicActionState = true;
+                break;
+            case EnumAnimationClipType.MagicShot:
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.IsMagicActionState = true;
+                else if (clipTimeType == EnumAnimationClipTimeType.Out)
+                    iAnimatorState.IsMagicActionState = false;
+                break;
+            case EnumAnimationClipType.PhysicSkill:
+                if (clipTimeType == EnumAnimationClipTimeType.In)
+                    iAnimatorState.IsSkillState = true;
+                else if (clipTimeType == EnumAnimationClipTimeType.Out)
+                    iAnimatorState.IsSkillState = false;
+                break;
+            case EnumAnimationClipType.Dizzy:
+                if (clipTimeType == EnumAnimationClipTimeType.Out)
                 {
                     iAnimatorState.PhycisActionNowType = 0;
                     iAnimatorState.IsPhycisActionState = false;
@@ -102,51 +148,26 @@ public class PlayerAnimControl : MonoBehaviour
                     playerAnimator.SetLayerWeight(1, 0f);
                 }
                 break;
-            case "SkillIn":
-                StopCoroutine("LeaveSkillInvoke");
-                iAnimatorState.IsSkillState = true;
-                break;
-            case "SkillOut":
-                if (state)
-                    StartCoroutine("LeaveSkillInvoke");
-                break;
-            case "PhycisIn":
-                StopCoroutine("LeavePhysicInvoke");
-                iAnimatorState.IsPhycisActionState = true;
-                break;
-            case "PhycisOut":
-                if (state)
-                    StartCoroutine("LeavePhysicInvoke");
-                break;
-            case "MagicIn":
-                StopCoroutine("LeaveMagicInvoke");
-                iAnimatorState.IsMagicActionState = true;
-                break;
-            case "MagicOut":
-                if (state)
-                    StartCoroutine("LeaveMagicInvoke");
-                break;
-            //当动作进入攻击1 攻击2 攻击3时分别设置对应的物理动作(普通攻击)阶段为对应的阶段
-            //当退出动作时设置动作为0(无攻击)
-            case "PhycisType1":
-                if (state)
-                    iAnimatorState.PhycisActionNowType = 1;
-                break;
-            case "PhycisType2":
-                if (state)
-                    iAnimatorState.PhycisActionNowType = 2;
-                break;
-            case "PhycisType3":
-                if (state)
-                    iAnimatorState.PhycisActionNowType = 3;
-                break;
-            default:
+            case EnumAnimationClipType.Roll:
                 break;
         }
+        UpdateAnimationClipTypeState();
     }
 
     /// <summary>
-    /// 监听角色属性更改(主要是装备)
+    /// 更新当前动画剪辑的状态
+    /// </summary>
+    /// <returns></returns>
+    private void UpdateAnimationClipTypeState()
+    {
+        //获取不是结束状态的对象
+        AnimationClipTypeState animationClipTypeState = animationClipTypeStateList.FirstOrDefault(temp => temp.TimeType != EnumAnimationClipTimeType.Out);
+        iAnimatorState.AnimationClipTypeState = animationClipTypeState;
+    }
+
+
+    /// <summary>
+    /// 监听角色状态更改(主要是装备)
     /// </summary>
     /// <param name="iPlayerState"></param>
     /// <param name="fieldName"></param>
@@ -158,7 +179,7 @@ public class PlayerAnimControl : MonoBehaviour
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerState, bool>(temp => temp.EquipmentChanged)))
         {
             PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
-            PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == false).First();
+            PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == false).FirstOrDefault();
             if (playGoods != null)
             {
                 EnumGoodsType enumGoodsType = playGoods.GoodsInfo.EnumGoodsType;
@@ -175,6 +196,25 @@ public class PlayerAnimControl : MonoBehaviour
             }
             else
                 playerAnimator.SetFloat("WeaponType", 0);//0表示空手
+        }
+
+    }
+
+    /// <summary>
+    /// 监听角色属性更改(主要是速度)
+    /// </summary>
+    /// <param name="iPlayerState"></param>
+    /// <param name="fieldName"></param>
+    private void CallBackIAttributeState(IAttributeState iAttribute, string fieldName)
+    {
+        if (!playerAnimator)
+            return;
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.AttackSpeed)))
+        {
+            if (physicAttackDelayCoroutine == null)//如果正在执行携程则不做该操作,携程处理完成后会自动处理该操作
+            {
+                PlayerAnimSpeed.speedRate = iAttribute.AttackSpeed;
+            }
         }
     }
 
@@ -238,7 +278,6 @@ public class PlayerAnimControl : MonoBehaviour
                 case EnumPhysicAnimatorType.Skill:
                     playerAnimator.SetTrigger("Skill");
                     playerAnimator.SetTrigger("ChangeMode");
-                    playerAnimator.SetBool("SkillSustainable", iAnimatorState.SkillSustainable);//技能保持持续(主要是有些技能可能会有持续动
                     playerAnimator.SetInteger("SkillType", (int)iAnimatorState.PhysicAnimatorSkillType - (int)EnumSkillType.SpecialPhysicActionReleaseStart);
                     break;
                 default:
@@ -260,7 +299,34 @@ public class PlayerAnimControl : MonoBehaviour
                 iAnimatorState.RollAnimator = false;
             }
         }
+        //攻击造成的动画延迟
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAnimatorState, bool>(temp => temp.PhysicHitMonsterAnimDelay)))
+        {
+            if (physicAttackDelayCoroutine == null)
+            {
+                physicAttackDelayCoroutine = StartCoroutine(PhysicAttackDelay());
+            }
+        }
+        //持续动作发生变化
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAnimatorState, bool>(temp => temp.SkillSustainable)))
+        {
+            playerAnimator.SetBool("SkillSustainable", iAnimatorState.SkillSustainable);//技能保持持续(主要是有些技能可能会有持续动
+        }
     }
+
+    /// <summary>
+    /// 攻击造成的延迟处理携程
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator PhysicAttackDelay()
+    {
+        PlayerAnimSpeed.speedRate = 0;
+        yield return new WaitForSeconds(0.15f);
+        IAttributeState iAttribute = GameState.Instance.GetEntity<IAttributeState>();
+        PlayerAnimSpeed.speedRate = iAttribute.AttackSpeed;
+        physicAttackDelayCoroutine = null;
+    }
+
 
     /// <summary>
     /// 监听函数-特殊状态变化

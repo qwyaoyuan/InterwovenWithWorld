@@ -29,4 +29,5 @@ public class FlashPulsePartical : ParticalControlEntry
         SetColor(magicColor);
         SetCollisionCallback(CollisionCallback);
     }
+
 }

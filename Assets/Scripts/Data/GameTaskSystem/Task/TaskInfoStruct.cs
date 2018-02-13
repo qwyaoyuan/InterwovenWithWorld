@@ -27,6 +27,7 @@ namespace TaskMap
         /// 任务类型
         /// </summary>
         public Enums.EnumTaskType TaskType { get; set; }
+
         #region 任务接取限制
         /// <summary>
         /// 等级限制,>=此等级可以开始任务
@@ -44,6 +45,10 @@ namespace TaskMap
         /// 接取任务地点
         /// </summary>
         public Enums.TaskLocation ReceiveTaskLocation { get; set; }
+        /// <summary>
+        /// 直接接取任务是否需要显示对话栏,如果不展示则直接接取
+        /// </summary>
+        public bool NeedShowTalk { get; set; }
         /// <summary>
         /// 需要的声望
         /// </summary>

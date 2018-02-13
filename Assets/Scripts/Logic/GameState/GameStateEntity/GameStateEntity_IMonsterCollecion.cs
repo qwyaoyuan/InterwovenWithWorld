@@ -39,9 +39,9 @@ public partial class GameState : IMonsterCollection
     MonsterDataInfo[] monsterDataInfos;
 
     /// <summary>
-    /// 运行任务结构
+    /// 运行任务结构(检测怪物)
     /// </summary>
-    RunTaskStruct runTaskStruct;
+    RunTaskStruct runTaskStruct_CheckMonster;
 
     /// <summary>
     /// 怪物集合的开始方法
@@ -51,7 +51,7 @@ public partial class GameState : IMonsterCollection
     {
         thisSceneCanCheckMonsterObjList = new List<GameObject>();
         allMonsterObjDic = new Dictionary<MonsterDataInfo, List<GameObject>>();
-        runTaskStruct = TaskTools.Instance.GetRunTaskStruct();
+        runTaskStruct_CheckMonster = TaskTools.Instance.GetRunTaskStruct();
         GameState.Instance.Registor<IGameState>(IGameStateChanged_In_IMonsterCollection);
     }
 
@@ -90,9 +90,9 @@ public partial class GameState : IMonsterCollection
             //创建检测
             if (monsterDataInfos != null)
             {
-                runTaskStruct.InitTask();
-                runTaskStruct.SetSpeed(1);
-                runTaskStruct.StartTask(UpdateTime, CheckMonsterDataInfoState, 0, true);
+                runTaskStruct_CheckMonster.InitTask();
+                runTaskStruct_CheckMonster.SetSpeed(1);
+                runTaskStruct_CheckMonster.StartTask(UpdateTime, CheckMonsterDataInfoState, 0, true);
             }
         }
     }

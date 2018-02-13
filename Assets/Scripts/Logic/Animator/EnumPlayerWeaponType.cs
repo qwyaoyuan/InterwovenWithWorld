@@ -10,17 +10,21 @@ using System;
 public enum EnumPlayerWeaponType
 {
     /// <summary>
+    /// 空手
+    /// </summary>
+    None=0,
+    /// <summary>
     /// 单手剑
     /// </summary>
-    OneHandSword = 0,
+    OneHandSword = 1,
     /// <summary>
     /// 双手剑
     /// </summary>
-    TwoHandSword = 1,
+    TwoHandSword = 2,
     /// <summary>
     /// 弓
     /// </summary>
-    Bow = 2
+    Bow = 3
 }
 
 /// <summary>

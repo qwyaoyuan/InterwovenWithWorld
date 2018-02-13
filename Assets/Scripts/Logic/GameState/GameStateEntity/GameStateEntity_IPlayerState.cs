@@ -14,7 +14,10 @@ public partial class GameState : IPlayerState
     /// </summary>
     float DSM07_TimeDuration;
 
-
+    /// <summary>
+    /// 用于处理手柄震动的任务对象
+    /// </summary>
+    RunTaskStruct runTaskStruct_Vibration;
 
     /// <summary>
     /// 玩家状态接口实现对象的开始函数
@@ -27,6 +30,8 @@ public partial class GameState : IPlayerState
         GameState.Instance.Registor<IGameState>(IGameState_Changed);
         //注册监听属性变化
         GameState.Instance.Registor<IPlayerAttributeState>(IPlayerAttributeState_Changed);
+
+        runTaskStruct_Vibration = TaskTools.Instance.GetRunTaskStruct();
     }
 
     /// <summary>
@@ -41,6 +46,8 @@ public partial class GameState : IPlayerState
         RoleOfRaceData roleOfRaceData = DataCenter.Instance.GetMetaData<RoleOfRaceData>();
         RoleOfRace nowRoleOfRace = playerState.RoleOfRaceRoute.Last();
         SelfRoleOfRaceInfoStruct = roleOfRaceData[nowRoleOfRace];
+        //判断武器类型
+        EquipmentChanged = true;
         //更新属性
         UpdateAttribute();
     }
@@ -585,7 +592,7 @@ public partial class GameState : IPlayerState
     {
         SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
         IPlayerAttributeState iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
-       
+
         //处理等级以及加点影响的基础属性 
         IAttributeState iAttributeState_Base = iPlayerAttributeState.GetAttribute(0);
         if (iAttributeState_Base != null)
@@ -593,10 +600,10 @@ public partial class GameState : IPlayerState
             iAttributeState_Base.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
             int level = playerState.Level;
             //当前计算方式,基础数据各项值为10,每升一级增加2
-            iAttributeState_Base.Quick = SelfRoleOfRaceInfoStruct.baseQuick+ level * SelfRoleOfRaceInfoStruct.additionQuick + playerState.Agility;
+            iAttributeState_Base.Quick = SelfRoleOfRaceInfoStruct.baseQuick + level * SelfRoleOfRaceInfoStruct.additionQuick + playerState.Agility;
             iAttributeState_Base.Mental = SelfRoleOfRaceInfoStruct.baseMental + level * SelfRoleOfRaceInfoStruct.additionMental + playerState.Spirit;
             iAttributeState_Base.Power = SelfRoleOfRaceInfoStruct.basePower + level * SelfRoleOfRaceInfoStruct.additionPower + playerState.Strength;
-            iAttributeState_Base.MaxHP += SelfRoleOfRaceInfoStruct.baseHP+ level * SelfRoleOfRaceInfoStruct.additionHP;
+            iAttributeState_Base.MaxHP += SelfRoleOfRaceInfoStruct.baseHP + level * SelfRoleOfRaceInfoStruct.additionHP;
             iAttributeState_Base.MaxMana += SelfRoleOfRaceInfoStruct.baseMana + level * SelfRoleOfRaceInfoStruct.additionMana;
             iAttributeState_Base.BasePhysicDamage = SelfRoleOfRaceInfoStruct.basePhysicDamage + level * SelfRoleOfRaceInfoStruct.additionPhysicDamage;
             iAttributeState_Base.BasePhysicDefense = SelfRoleOfRaceInfoStruct.basePhysicDefense + level * SelfRoleOfRaceInfoStruct.additionPhysicDefense;
@@ -954,7 +961,7 @@ public partial class GameState : IPlayerState
                 _EquipmentChanged = false;
 
                 //设置当前武器类型(远程和近战)
-                var checkWeapons = playerState.PlayerAllGoods.Where(temp => temp.GoodsInfo.EnumGoodsType > EnumGoodsType.Arms && temp.GoodsInfo.EnumGoodsType < EnumGoodsType.HelmetBig);
+                var checkWeapons = playerState.PlayerAllGoods.Where(temp => temp.GoodsInfo.EnumGoodsType > EnumGoodsType.Arms && temp.GoodsInfo.EnumGoodsType < EnumGoodsType.HelmetBig && temp.GoodsLocation == GoodsLocation.Wearing);
                 if (checkWeapons.Count() > 0)
                 {
                     EnumWeaponTypeByPlayerState thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.None;
@@ -968,19 +975,19 @@ public partial class GameState : IPlayerState
                             thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.SingleHandedSword;
                         }
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.TwoHandedSword && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.Arch)//双手剑
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.TwoHandedSword;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.TwoHandedSword;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.Arch && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.CrossBow)//弓
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Arch;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Arch;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.CrossBow && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.Shield)//弩
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrossBow;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrossBow;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.Dagger && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.LongRod)//匕首
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Dagger;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.Dagger;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.LongRod && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.ShortRod)//长杖
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.LongRod;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.LongRod;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.ShortRod && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.CrystalBall)//短杖
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.ShortRod;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.ShortRod;
                         else if (rightWeaponGoods.GoodsInfo.EnumGoodsType > EnumGoodsType.CrystalBall && rightWeaponGoods.GoodsInfo.EnumGoodsType < EnumGoodsType.HelmetBig)//水晶球
-                            WeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrystalBall;
+                            thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrystalBall;
                     }
                     //再次获取左手武器的信息
                     PlayGoods leftWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == true).FirstOrDefault();
@@ -992,6 +999,7 @@ public partial class GameState : IPlayerState
                             thisWeaponTypeByPlayerState = thisWeaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield;
                         }
                     }
+                    WeaponTypeByPlayerState = thisWeaponTypeByPlayerState;
                 }
                 else
                 {
@@ -1210,6 +1218,65 @@ public partial class GameState : IPlayerState
             _LastChangeWeaponTime = value;
             if (tempLastChangeWeaponTime != _LastChangeWeaponTime)
                 Call<IPlayerState, float>(temp => temp.LastChangeWeaponTime);
+        }
+    }
+
+    /// <summary>
+    /// 命中了怪物的对象
+    /// </summary>
+    private MonsterControl _HitMonsterTarget;
+    /// <summary>
+    /// 命中了怪物的对象
+    /// </summary>
+    public MonsterControl HitMonsterTarget
+    {
+        get { return _HitMonsterTarget; }
+        set
+        {
+            MonsterControl tempHitMonsterTarget = _HitMonsterTarget;
+            _HitMonsterTarget = value;
+            if (_HitMonsterTarget != tempHitMonsterTarget)
+            {
+                Call<IPlayerState, MonsterControl>(temp => temp.HitMonsterTarget);
+                _HitMonsterTarget = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 设置手柄震动
+    /// </summary>
+    /// <param name="time">手柄震动的时间</param>
+    /// <param name="left">手柄左侧的震动频率</param>
+    /// <param name="right">手柄右侧的震动频率</param>
+    public void SetVibration(float time, float left, float right)
+    {
+        XInputDotNetPure.PlayerIndex _type = XInputDotNetPure.PlayerIndex.One;
+        XInputDotNetPure.GamePad.SetVibration(_type, left, right);//设置震动
+        runTaskStruct_Vibration.StartTask(time, 
+            () => 
+            {
+                XInputDotNetPure.GamePad.SetVibration(_type, 0, 0);//等待指定时间后归位
+            }, 1,false);
+    }
+
+    /// <summary>
+    /// 强制移动
+    /// </summary>
+    ForceMoveStruct _ForceMoveStruct;
+    /// <summary>
+    /// 强制移动
+    /// </summary>
+    public ForceMoveStruct ForceMoveStruct
+    {
+        get
+        {
+            return _ForceMoveStruct;
+        }
+        set
+        {
+            _ForceMoveStruct = value;
+            Call<IPlayerState, ForceMoveStruct>(temp => temp.ForceMoveStruct);
         }
     }
     #endregion

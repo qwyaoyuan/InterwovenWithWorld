@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 玩家物理动作的速度
 /// </summary>
-public class PlayerPhycisActionSpeed : StateMachineBehaviour
+public class PlayerPhycisActionSpeed : PlayerAnimSpeed
 {
     /// <summary>
     /// 动画类型对应速度集合

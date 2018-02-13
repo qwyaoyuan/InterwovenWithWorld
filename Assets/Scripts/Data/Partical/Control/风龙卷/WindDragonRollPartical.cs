@@ -34,6 +34,7 @@ public class WindDragonRollPartical : ParticalControlEntry
         SetCollisionCallback(CollisionCallback);
         //风龙卷暂时无法调节范围
         lastCheckCollisionTime = 0;
+        SetLifeCycle(5);
     }
 
     public override void SetLayerMask(LayerMask layerMask)
@@ -74,9 +75,9 @@ public class WindDragonRollPartical : ParticalControlEntry
     }
 
 
-    private void Start()
-    {
-        SetLifeCycle(10);
-        Init(Vector3.up, Vector3.forward, Color.red, ~1, temp => true, 10);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(10);
+    //    Init(Vector3.up, Vector3.forward, Color.red, ~1, temp => true, 10);
+    //}
 }

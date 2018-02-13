@@ -8688,6 +8688,8 @@ MonoBehaviour:
     type: 2}
   actionPanelPrefab: {fileID: 1899280532972582, guid: 3941dfd12d171b44e8ecf5625b90a653,
     type: 2}
+  interludeAnimationPanelPrefab: {fileID: 1524370933875698, guid: 8b8f8562d1057984694659f84f5a6063,
+    type: 2}
 --- !u!114 &114961900095722632
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -39,8 +39,14 @@ public class ThunderstormPartical : ParticalControlEntry
     /// </summary>
     public float thundersLineDis;
 
+    /// <summary>
+    /// 创建的链条集合
+    /// </summary>
+    public List<GameObject> createTrailObjList;
+
     private void Awake()
     {
+        createTrailObjList = new List<GameObject>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         baseRadius = capsuleCollider.radius;
         lastCheckCollisionTime = 0;
@@ -48,12 +54,18 @@ public class ThunderstormPartical : ParticalControlEntry
 
     public override void Init(Vector3 pos, Vector3 forward, Color color, LayerMask layerMask, Func<CollisionHitCallbackStruct, bool> CollisionCallback, float range, params GameObject[] targetObjs)
     {
+        //default层
+        int defaultValue = LayerMask.GetMask("Default");
+        int layerValue = layerMask.value | defaultValue;
+        layerValue -= defaultValue;
+
         //雷暴不需要方向
         transform.position = pos;
-        SetLayerMask(layerMask);
+        SetLayerMask(layerValue);
         SetCollisionCallback(CollisionCallback);
         SetRange(range);
         lastCheckCollisionTime = 0;
+        SetLifeCycle(5);
     }
 
     public override void SetLayerMask(LayerMask layerMask)
@@ -79,6 +91,7 @@ public class ThunderstormPartical : ParticalControlEntry
         if (lastCheckCollisionTime > checkCollisionIntervalTime)
         {
             lastCheckCollisionTime = 0;
+            createTrailObjList.Clear();
         }
     }
 
@@ -90,10 +103,12 @@ public class ThunderstormPartical : ParticalControlEntry
     {
         if (lastCheckCollisionTime == 0 && CallBack != null)
         {
-            int layer = (int)Math.Pow(2, other.gameObject.layer);
+            GameObject target = other.transform.root.gameObject;
+            int layer = (int)Math.Pow(2, target.layer);
             int endLayer = layer | layerMask;
-            if (endLayer == layerMask)
+            if (endLayer == layerMask && !createTrailObjList.Contains(target))
             {
+                createTrailObjList.Add(other.gameObject);
                 //生成一个粒子
                 GameObject go = GameObject.Instantiate(tempTrailPrefab);
                 go.transform.SetParent(transform);
@@ -107,9 +122,9 @@ public class ThunderstormPartical : ParticalControlEntry
         }
     }
 
-    private void Start()
-    {
-        SetLifeCycle(1000);
-        Init(Vector3.up*5, Vector3.forward, Color.red, 16, temp => true, 1);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(1000);
+    //    Init(Vector3.up*5, Vector3.forward, Color.red, 16, temp => true, 1);
+    //}
 }

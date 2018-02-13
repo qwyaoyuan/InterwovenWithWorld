@@ -16,6 +16,7 @@ public class FrostBreathPartical : ParticalControlEntry
 
     public override void Init(Vector3 pos, Vector3 forward, Color color, LayerMask layerMask, Func<CollisionHitCallbackStruct, bool> CollisionCallback, float range, params GameObject[] targetObjs)
     {
+        SetLifeCycle(4);
         this.transform.position = pos;
         if (forward != Vector3.zero)
             this.transform.forward = forward;
@@ -39,9 +40,9 @@ public class FrostBreathPartical : ParticalControlEntry
         }
     }
 
-    private void Start()
-    {
-        SetLifeCycle(4);
-        Init(Vector3.zero, Vector3.forward, Color.red, ~1, temp => { Debug.Log(temp.targetObj); return true; }, 1);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(4);
+    //    Init(Vector3.zero, Vector3.forward, Color.red, ~1, temp => { Debug.Log(temp.targetObj); return true; }, 1);
+    //}
 }

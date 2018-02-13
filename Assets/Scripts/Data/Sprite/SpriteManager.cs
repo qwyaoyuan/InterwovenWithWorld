@@ -105,6 +105,8 @@ public class SpriteManager
     /// <returns></returns>
     public static Sprite GetSrpite(string name)
     {
+        if (string.IsNullOrEmpty(name))
+            return null;
         if (!loaded)
             Load();
         if (strToSpriteDic.ContainsKey(name))

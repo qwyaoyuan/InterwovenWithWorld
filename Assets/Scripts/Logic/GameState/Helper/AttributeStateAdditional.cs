@@ -140,9 +140,9 @@ public class AttributeStateAdditional : IAttributeState
         {
             float tempQuick = _Quick;
             _Quick = value;
+            UpdateAttribute();
             if (tempQuick != _Quick)
             {
-                UpdateAttribute();
                 Call<IAttributeState, float>(temp => temp.Quick);
             }
         }
@@ -159,9 +159,9 @@ public class AttributeStateAdditional : IAttributeState
         {
             float tempMental = _Mental;
             _Mental = value;
+            UpdateAttribute();
             if (tempMental != _Mental)
             {
-                UpdateAttribute();
                 Call<IAttributeState, float>(temp => temp.Mental);
             }
         }
@@ -178,9 +178,9 @@ public class AttributeStateAdditional : IAttributeState
         {
             float tempPower = _Power;
             _Power = value;
+            UpdateAttribute();
             if (tempPower != _Power)
             {
-                UpdateAttribute();
                 Call<IAttributeState, float>(temp => temp.Power);
             }
         }

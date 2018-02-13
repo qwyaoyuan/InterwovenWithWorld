@@ -22,11 +22,12 @@ public class LightningImpactPartical : ParticalControlEntry
         SetRange(range);
         SetLayerMask(layerMask);
         SetCollisionCallback(CollisionCallback);
+        SetLifeCycle(5);
     }
 
-    private void Start()
-    {
-        SetLifeCycle(100);
-        Init(Vector3.up, Vector3.forward, Color.red, ~1, tep => true, 20);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(100);
+    //    Init(Vector3.up, Vector3.forward, Color.red, ~1, tep => true, 20);
+    //}
 }

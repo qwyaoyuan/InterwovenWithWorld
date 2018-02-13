@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 54873671102301104}
   - component: {fileID: 143128156427969742}
   m_Layer: 12
-  m_Name: Player
+  m_Name: Player_Start
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -924,7 +924,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4420018767134718}
   - component: {fileID: 95641909182129276}
-  - component: {fileID: 114828472831255764}
   m_Layer: 12
   m_Name: Model
   m_TagString: Untagged
@@ -4656,18 +4655,6 @@ MonoBehaviour:
   m_MinZ: 0.01
   m_SSAOShader: {fileID: 4800000, guid: 43ca18288c424f645aaa1e9e07f04c50, type: 3}
   m_RandomTexture: {fileID: 2800000, guid: a181ca8e3c62f3e4b8f183f6c586b032, type: 3}
---- !u!114 &114828472831255764
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1436044871482262}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff813bb1d24ba9c46bf672d5335d7ce5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 95641909182129276}
 --- !u!114 &114896614225967900
 MonoBehaviour:
   m_ObjectHideFlags: 1

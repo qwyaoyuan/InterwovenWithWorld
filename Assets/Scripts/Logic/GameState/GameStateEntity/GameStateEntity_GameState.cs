@@ -149,7 +149,7 @@ public partial class GameState : IGameState
         }
         else//如果不需要切换场景则直接更改玩家位置即可
         {
-            UIChangeScene.Instance.MovePlayer(3, result => 
+            UIChangeScene.Instance.MovePlayer(3, result =>
             {
                 GameRunType = EnumGameRunType.Safe;
                 //场景变换回调
@@ -342,6 +342,97 @@ public partial class GameState : IGameState
         }
     }
 
+    /// <summary>
+    /// 设置面板的UI
+    /// </summary>
+    private Canvas _SettingPanel;
+    /// <summary>
+    /// 设置面板的UI
+    /// </summary>
+    public Canvas SettingPanel
+    {
+        get { return _SettingPanel; }
+        set
+        {
+            Canvas tempSettingPanel = _SettingPanel;
+            _SettingPanel = value;
+            if (tempSettingPanel != _SettingPanel)
+                Call<IGameState, Canvas>(temp => temp.SettingPanel);
+        }
+    }
+
+    /// <summary>
+    /// 功能面板的UI
+    /// </summary>
+    private Canvas _ActionPanel;
+    /// <summary>
+    /// 功能面板的UI 
+    /// </summary>
+    public Canvas ActionPanel
+    {
+        get { return _ActionPanel; }
+        set
+        {
+            Canvas tempActionPanel = _ActionPanel;
+            _ActionPanel = value;
+            if (_ActionPanel != tempActionPanel)
+                Call<IGameState, Canvas>(temp => temp.ActionPanel);
+        }
+    }
+
+    /// <summary>
+    /// 主面板的UI
+    /// </summary>
+    private Canvas _MainPanel;
+    /// <summary>
+    /// 主面板的UI
+    /// </summary>
+    public Canvas MainPanel
+    {
+        get { return _MainPanel; }
+        set
+        {
+            Canvas tempMainPanel = _MainPanel;
+            _MainPanel = value;
+            if (_MainPanel != tempMainPanel)
+                Call<IGameState, Canvas>(temp => temp.MainPanel);
+        }
+    }
+
+    private Canvas _InterludesPanel;
+    /// <summary>
+    /// 过场动画幕布的UI
+    /// </summary>
+    public Canvas InterludesPanel
+    {
+        get { return _InterludesPanel; }
+        set
+        {
+            Canvas tempInterludesPanel = _InterludesPanel;
+            _InterludesPanel = value;
+            if (_InterludesPanel != tempInterludesPanel)
+                Call<IGameState, Canvas>(temp => temp.InterludesPanel);
+        }
+    }
+
+    /// <summary>
+    /// 过场动画用到的摄像机
+    /// </summary>
+    private Camera _InterludesCamera;
+    /// <summary>
+    /// 过场动画用到的摄像机
+    /// </summary>
+    public Camera InterludesCamera
+    {
+        get { return _InterludesCamera; }
+        set
+        {
+            Camera tempInterludesCamera = _InterludesCamera;
+            _InterludesCamera = value;
+            if (_InterludesCamera != tempInterludesCamera)
+                Call<IGameState, Camera>(temp => temp.InterludesCamera);
+        }
+    }
     #endregion
 
 }

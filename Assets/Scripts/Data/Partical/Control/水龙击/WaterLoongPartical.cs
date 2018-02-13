@@ -46,11 +46,11 @@ public class WaterLoongPartical : ParticalControlEntry
     /// </summary>
     List<GameObject> checkedTargetObjList;
 
-    private void Start()
-    {
-        SetLifeCycle(100000);
-        Init(Vector3.zero, Vector3.zero, Color.red, ~0, temp => { Debug.Log(temp.targetObj); return false; }, 2);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(100000);
+    //    Init(Vector3.zero, Vector3.zero, Color.red, ~0, temp => { Debug.Log(temp.targetObj); return false; }, 2);
+    //}
 
     private void Awake()
     {
@@ -91,6 +91,7 @@ public class WaterLoongPartical : ParticalControlEntry
         SetRange(range);
         rigidbody.detectCollisions = false;
         checkedTargetObjList.Clear();
+        SetLifeCycle(5);
     }
 
     /// <summary>

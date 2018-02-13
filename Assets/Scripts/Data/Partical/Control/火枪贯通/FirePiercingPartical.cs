@@ -42,6 +42,7 @@ public class FirePiercingPartical : ParticalControlEntry
         this.layerMask = layerMask;
         this.CollisionCallback = CollisionCallback;
         this.range = 10 * range;
+        SetLifeCycle(5);
         tempShotCount = 0;
         InvokeRepeating("FirePiercing_ShotFire", 0.1f, 0.5f);
     }

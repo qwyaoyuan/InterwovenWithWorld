@@ -31,7 +31,7 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
     /// <summary>
     /// 检测到后的回调函数
     /// </summary>
-    Action<int, GameObject> CheckResultAction;
+    Func<int, GameObject,bool> CheckResultAction;
     /// <summary>
     /// 临时的检测层对象
     /// </summary>
@@ -63,6 +63,7 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
     {
         if (checkStructCollection != null && skillOrderToObjList != null && CheckResultAction != null)//开始检测
         {
+            bool hasNextCheck = true;//是否存在下次一的检测
             float lastCheckTime = nowCheckTime;
             nowCheckTime += Time.deltaTime * AttackSpeed;//根据攻击速度乘以对应的时间
             //当时间到时生成粒子
@@ -119,8 +120,8 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
                         if (!skillOrderToObjList[checkStruct.InnerDamageOrder].Contains(targetObj))
                         {
                             skillOrderToObjList[checkStruct.InnerDamageOrder].Add(targetObj);
-                            CheckResultAction(checkStruct.InnerDamageOrder, targetObj);
-                            //生成粒子
+                            hasNextCheck = CheckResultAction(checkStruct.InnerDamageOrder, targetObj);//返回是否存在下一次的检测
+                            //生成(命中)粒子
                             //从对象身上获取偏差值数据,暂时为0
                             if (checkStruct.ParticalPrefab != null)
                             {
@@ -133,7 +134,7 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
             }
             //判断之后是否还有检测的东西
             int canCheckCount = checkStructCollection.CheckStructs.Count(temp => temp.StartCheckTime + temp.DurationCheck > nowCheckTime);
-            if (canCheckCount <= 0)//如果都检测完了则初始化
+            if (canCheckCount <= 0 || !hasNextCheck)//如果都检测完了则初始化 如果没有下次检测了也要初始化
             {
                 checkStructCollection.CheckStructs.ToList().ForEach(temp =>
                 {
@@ -158,7 +159,7 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
     /// <param name="attackLayerMask">内部设置的检测层</param>
     /// <param name="CheckResultAction">检测到碰撞对象后的回调</param>
     /// <param name="otherCheck">其他的检测</param>
-    public void CheckAttack(EnumSkillType skillType, EnumWeaponTypeByPlayerState WeaponType, float attackSpeed, LayerMask? attackLayerMask, Action<int, GameObject> CheckResultAction, int otherCheck = 0)
+    public void CheckAttack(EnumSkillType skillType, EnumWeaponTypeByPlayerState WeaponType, float attackSpeed, LayerMask? attackLayerMask, Func<int, GameObject,bool> CheckResultAction, int otherCheck = 0)
     {
         this.CheckResultAction = CheckResultAction;
         this.AttackSpeed = attackSpeed;
@@ -260,9 +261,9 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
         [Tooltip("持续检测的时间")]
         public float DurationCheck;
         /// <summary>
-        /// 粒子预设提
+        /// 粒子预设提(命中)
         /// </summary>
-        [Tooltip("粒子预设提")]
+        [Tooltip("粒子预设提(命中)")]
         public GameObject ParticalPrefab;
     }
 

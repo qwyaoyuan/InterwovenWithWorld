@@ -48,6 +48,12 @@ public class UIMain : MonoBehaviour
     GameObject actionPanelPrefab;
 
     /// <summary>
+    /// 过场动画面板预设体
+    /// </summary>
+    [SerializeField]
+    GameObject interludeAnimationPanelPrefab;
+
+    /// <summary>
     /// 设置面板
     /// </summary>
     Canvas settingPanel;
@@ -56,6 +62,16 @@ public class UIMain : MonoBehaviour
     /// 功能面板
     /// </summary>
     Canvas actionPanel;
+
+    /// <summary>
+    /// 主面板
+    /// </summary>
+    Canvas mainPanel;
+
+    /// <summary>
+    /// 过场动画面板
+    /// </summary>
+    Canvas interludeAnimationPanel;
 
     /// <summary>
     /// 交互对象
@@ -90,6 +106,18 @@ public class UIMain : MonoBehaviour
         actionPanel = actionPanelObj.GetComponent<Canvas>();
         actionPanel.gameObject.SetActive(false);
         iInteractiveState.ActionObj = actionPanelObj;
+
+        GameObject interludeAnimationPanelObj = GameObject.Instantiate<GameObject>(interludeAnimationPanelPrefab);
+        interludeAnimationPanel = interludeAnimationPanelObj.GetComponent<Canvas>();
+        interludeAnimationPanel.enabled = false;
+        //interludeAnimationPanel.gameObject.SetActive(false);
+        iGameState.InterludesPanel = interludeAnimationPanel;
+
+        mainPanel = GetComponent<Canvas>();
+
+        iGameState.SettingPanel = settingPanel;
+        iGameState.ActionPanel = actionPanel;
+        iGameState.MainPanel = mainPanel;
 
         //查找事件系统,如果存在则不用新建
         EventSystem = GameObject.Find("EventSystem");

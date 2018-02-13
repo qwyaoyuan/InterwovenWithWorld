@@ -514,6 +514,7 @@ public class EditorNPCDataInfoWindow : EditorWindow
                     if (taskStateIndex > -1)
                     {
                         TaskMap.Enums.EnumTaskProgress tskProgress = taskProgressValueList[taskStateIndex];
+                        taskCondition.TaskState = tskProgress;
                     }
                     EditorGUILayout.EndHorizontal();
                 }

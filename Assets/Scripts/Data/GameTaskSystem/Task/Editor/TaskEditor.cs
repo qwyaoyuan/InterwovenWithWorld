@@ -1097,6 +1097,10 @@ namespace TaskMap
                 nowSelectNode.Value.ReceiveTaskLocation.SceneName = EditorGUILayout.TextField("场景:", nowSelectNode.Value.ReceiveTaskLocation.SceneName);
                 nowSelectNode.Value.ReceiveTaskLocation.ArrivedCenterPos = EditorGUILayout.Vector3Field("中心点:", nowSelectNode.Value.ReceiveTaskLocation.ArrivedCenterPos);
                 nowSelectNode.Value.ReceiveTaskLocation.Radius = EditorGUILayout.IntField("半径:", nowSelectNode.Value.ReceiveTaskLocation.Radius);
+                EditorGUILayout.BeginHorizontal();
+                nowSelectNode.Value.NeedShowTalk = EditorGUILayout.Toggle(nowSelectNode.Value.NeedShowTalk, GUILayout.Width(20));
+                EditorGUILayout.LabelField("直接截取任务是否要显示对话(注意如果没有对话则该任务不会被接取!)");
+                EditorGUILayout.EndHorizontal();
                 if (GUILayout.Button("移除接取任务地点"))
                 {
                     if (EditorUtility.DisplayDialog("请再次确认!", "是否要移除接取任务地点", "是", "否"))

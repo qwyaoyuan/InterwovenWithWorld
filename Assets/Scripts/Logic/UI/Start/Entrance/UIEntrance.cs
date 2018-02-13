@@ -584,6 +584,9 @@ public class UIEntrance : MonoBehaviour
             keyContactData.SetKeyContactStruct((int)EnumInputType.Down, new KeyContactStruct() { id = 1201, key = (int)EnumInputType.Down, keyContactType = EnumKeyContactType.Skill, name = "连续魔力导向" });
             keyContactData.SetKeyContactStruct((int)EnumInputType.X, new KeyContactStruct() { id = 201, key = (int)EnumInputType.X, keyContactType = EnumKeyContactType.Skill, name = "普通攻击" });
             keyContactData.SetKeyContactStruct((int)EnumInputType.Y, new KeyContactStruct() { id = (int)EnumSkillType.JAS03, /*key = (int)EnumInputType.Y,*/ keyContactType = EnumKeyContactType.Skill, name = "燕返" });
+            keyContactData.SetKeyContactStruct((int)EnumInputType.B, new KeyContactStruct() { id = (int)EnumSkillType.ZS03, keyContactType = EnumKeyContactType.Skill, name = "冲锋" });
+            int key = (int)(EnumInputType.A | EnumInputType.LB);
+            keyContactData.SetKeyContactStruct(key, new KeyContactStruct() { id = (int)EnumSkillType.KZS03, key = key, keyContactType = EnumKeyContactType.Skill, name = "战吼" });
             //添加装备
             int playGoodsID = NowTimeToID.GetNowID(DataCenter.Instance.GetEntity<GameRunnedState>());
             Goods goods = new Goods(EnumGoodsType.XJJ, "测试武器", 1, 10, "123");
@@ -804,7 +807,7 @@ public class UIEntrance : MonoBehaviour
         if (playerCreateTrans != null)
         {
             //暂时不管种族
-            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Start/Player");
+            GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Start/Player_Start");
             GameObject playerCreate = GameObject.Instantiate(playerPrefab);
             playerCreate.transform.position = playerCreateTrans.position;
             playerCreate.transform.rotation = playerCreateTrans.rotation;
@@ -830,10 +833,34 @@ public class UIEntrance : MonoBehaviour
     private void GetArchiveData()
     {
         entranceType = EnumEntranceType.Transition;
-        //加载数据
-        GameState.Instance.LoadArchive();
-        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
 
+        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        //测试代码开始
+        //添加一个弓
+        playerState.PlayerAllGoods.Add(new PlayGoods(100000, new Goods(EnumGoodsType.WGCSG, "王国长杉弓", 1, 100, "王国长杉弓"), GoodsLocation.Package)
+        {
+            leftRightArms =false,
+            QualityType = EnumQualityType.Blue,
+            Count =1
+        });
+        //添加一个剑
+        playerState.PlayerAllGoods.Add(new PlayGoods(100001, new Goods(EnumGoodsType.TJ, "铁剑", 1, 100, "铁剑"), GoodsLocation.Package)
+        {
+            leftRightArms = false,
+            QualityType = EnumQualityType.Blue,
+            Count = 1
+        });
+        //添加一个巨剑
+        playerState.PlayerAllGoods.Add(new PlayGoods(100002, new Goods(EnumGoodsType.YGDJ, "精钢大剑", 1, 100, "精钢大剑"), GoodsLocation.Wearing)
+        {
+            leftRightArms = false,
+            QualityType = EnumQualityType.Blue,
+            Count = 1
+        });
+        //测试代码结束
+
+        //通知运行时数据状态中心加载数据
+        GameState.Instance.LoadArchive();
         //切换场景
         if (string.IsNullOrEmpty(playerState.Scene))
         {

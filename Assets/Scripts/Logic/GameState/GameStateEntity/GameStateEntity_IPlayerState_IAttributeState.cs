@@ -270,6 +270,7 @@ public partial class GameState
     /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
     public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct) { }
 
+
     #region IAttributeState 属性状态
     #region 基础属性
     /// <summary>

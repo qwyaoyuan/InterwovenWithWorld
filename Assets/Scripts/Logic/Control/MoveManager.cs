@@ -39,6 +39,7 @@ public class MoveManager : IInput
         GameState.Instance.Registor<IBuffState>(CallbackBuffState);
         GameState.Instance.Registor<IDebuffState>(CallbackDebuffState);
         GameState.Instance.Registor<IGameState>(CallbackGameState);
+        GameState.Instance.Registor<IPlayerState>(CallbackPlayerState);
     }
 
     /// <summary>
@@ -188,6 +189,30 @@ public class MoveManager : IInput
                         break;
                 }
         }
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IGameState, EnumGameRunType>(temp => temp.GameRunType)))
+        {
+            if (iGameState.GameRunType != EnumGameRunType.Safe && iGameState.GameRunType != EnumGameRunType.Safe)
+            {
+                iAnimatorState.AnimatorMoveSpeed = 0;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 角色状态发生变化
+    /// </summary>
+    /// <param name="iPlayerState"></param>
+    /// <param name="fieldName"></param>
+    private void CallbackPlayerState(IPlayerState iPlayerState, string fieldName)
+    {
+        //检测到强制移动
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerState, ForceMoveStruct>(temp => temp.ForceMoveStruct)))
+        {
+            CharacterController characterController = iPlayerState.PlayerObj.GetComponent<CharacterController>();
+            Vector3 self_forward = iPlayerState.PlayerObj.transform .forward * iPlayerState.ForceMoveStruct.MoveSpeed * Time.deltaTime;
+            self_forward.y = 0;
+            characterController.Move(self_forward);
+        }
     }
 
     /// <summary>
@@ -224,8 +249,9 @@ public class MoveManager : IInput
             && !iAnimatorState.IsPhycisActionState
             && !iAnimatorState.IsSkillState)
         {
+
             float moveSpeed = iPlayerAttributeState.MoveSpeed;//移动速度(向前移动  向后移动0.7  左右移动0.3) 
-            if (iAnimatorState.IsMagicActionState && iAnimatorState.MagicAnimatorType == EnumMagicAnimatorType.Sing)
+            if ( iAnimatorState.MagicAnimatorType == EnumMagicAnimatorType.Sing)
                 moveSpeed *= 0.3f;
             float strength = Mathf.Pow(forward.sqrMagnitude, 0.5f);//速度的力度
             float animForwardAngle = 0;//0前方向 1,-1后方向 0.5右方向 -0.5左方向

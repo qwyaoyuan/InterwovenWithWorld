@@ -43,6 +43,10 @@ GameObject:
   m_Component:
   - component: {fileID: 468664}
   - component: {fileID: 114915449531050410}
+  - component: {fileID: 114513626497730370}
+  - component: {fileID: 114349812619793718}
+  - component: {fileID: 114775649336186094}
+  - component: {fileID: 114930594237354612}
   m_Layer: 0
   m_Name: WindBlade
   m_TagString: Untagged
@@ -443,6 +447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.5
   Shadows: 0
+  isLoop: 0
 --- !u!114 &11447966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -630,7 +635,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1774477862
+  randomSeed: -2083861113
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3570,7 +3575,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1978235659
+  randomSeed: -2026472814
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6665,7 +6670,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -94720236
+  randomSeed: 1357546954
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -9763,7 +9768,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 327394466
+  randomSeed: 1224782734
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -12697,7 +12702,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -9349630
+  randomSeed: -151969322
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -15679,7 +15684,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2083536983
+  randomSeed: 87746928
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -19087,6 +19092,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f731bd1c5376f04397ab6101e36054e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114349812619793718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299369f945879d147a3e97f89f51f236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActivatedGameObject: {fileID: 129942}
+  Delay: 0.4
+--- !u!114 &114513626497730370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299369f945879d147a3e97f89f51f236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActivatedGameObject: {fileID: 192186}
+  Delay: 0.5
+--- !u!114 &114775649336186094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e6c05f3b0fd5784183b0fa05af74041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionModes: 0
+  givenName: 
+  customName: 
+  fullName: 
+  _percent: 0
+  _animationPercentage: 0
+  point: {fileID: 0}
+  index: 0
+  cpointA: {fileID: 0}
+  cpointB: {fileID: 0}
+  curvePercentage: 0
+  worldPosition: {x: 0, y: 0, z: 0}
+  lockPoint: 0
+  time: 0
+  introStartEasePercentage: 0.1
+  introCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  outroEndEasePercentage: 0.1
+  outroCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &114915449531050410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -19098,3 +19192,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1883ea2e517eb40bbc76547a332e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114930594237354612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299369f945879d147a3e97f89f51f236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActivatedGameObject: {fileID: 165198}
+  Delay: 0.4

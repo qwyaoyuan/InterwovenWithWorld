@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,15 @@ public interface IAnimatorState : IBaseState
     /// 技能动作是否持续
     /// </summary>
     bool SkillSustainable { get; set; }
+    /// <summary>
+    /// 物理攻击命中了目标设置动画延迟
+    /// </summary>
+    bool PhysicHitMonsterAnimDelay { get; set; }
+    /// <summary>
+    /// 当前动画剪辑状态对象 
+    /// </summary>
+    AnimationClipTypeState AnimationClipTypeState { get; set; }
+
     #endregion
     #region 内部设置 
     /// <summary>
@@ -59,6 +69,94 @@ public interface IAnimatorState : IBaseState
     /// </summary>
     bool IsSkillState { get; set; }
     #endregion 
+
+}
+
+/// <summary>
+/// 动画剪辑状态
+/// </summary>
+public class AnimationClipTypeState
+{
+    /// <summary>
+    /// 动画剪辑的类型
+    /// </summary>
+    public EnumAnimationClipType AnimationClipType;
+
+    /// <summary>
+    /// 动画剪辑的当前时间类型(只计算进入时间)
+    /// </summary>
+    public EnumAnimationClipTimeType TimeType;
+
+    /// <summary>
+    /// 当前运行的时间
+    /// </summary>
+    public float ClipTime;
+}
+
+/// <summary>
+/// 当前的动画剪辑类型
+/// </summary>
+public enum EnumAnimationClipType
+{
+    /// <summary>
+    /// 移动
+    /// </summary>
+    Move,
+    /// <summary>
+    /// 普通攻击1
+    /// </summary>
+    Attack1,
+    /// <summary>
+    /// 普通攻击2
+    /// </summary>
+    Attack2,
+    /// <summary>
+    /// 普通攻击3
+    /// </summary>
+    Attack3,
+    /// <summary>
+    /// 咏唱魔法
+    /// </summary>
+    MagicSing,
+    /// <summary>
+    /// 发射魔法
+    /// </summary>
+    MagicShot,
+    /// <summary>
+    /// 物理技能
+    /// </summary>
+    PhysicSkill,
+    /// <summary>
+    /// 异常状态
+    /// </summary>
+    Dizzy,
+    /// <summary>
+    /// 翻滚
+    /// </summary>
+    Roll,
+}
+
+/// <summary>
+/// 当前动画剪辑的时间类型
+/// </summary>
+public enum EnumAnimationClipTimeType
+{
+    /// <summary>
+    /// 进入,只在开始时存在
+    /// </summary>
+    In,
+    /// <summary>
+    /// 开始事件
+    /// </summary>
+    Start,
+    /// <summary>
+    /// 结束事件
+    /// </summary>
+    End,
+    /// <summary>
+    /// 出去,只在结束时存在,且会立刻移除出集合
+    /// </summary>
+    Out,
 }
 
 /// <summary>

@@ -43,7 +43,7 @@ race==>None
 [Start]
 topPoint==>[10={[11=]}]
 text==>test
-touchNPCID==>0
+touchNPCID==>-1
 enumDialogueType==>Task
 maxLevel==>99
 minLevel==>-1

@@ -11,6 +11,10 @@ public class InitPlayerState : MonoBehaviour
     /// 玩家摄像机
     /// </summary>
     public Camera playerCamera;
+    /// <summary>
+    /// 过场动画摄像机
+    /// </summary>
+    public Camera interludesCamera;
 
     /// <summary>
     /// 伤害检测脚本
@@ -21,13 +25,14 @@ public class InitPlayerState : MonoBehaviour
     {
         GameState.Instance.PlayerObj = gameObject;
         GameState.Instance.PlayerCamera = playerCamera;
+        GameState.Instance.InterludesCamera = interludesCamera;
         GameState.Instance.MoveSpeed = 8;
         GameState.Instance.CameraRotateSpeed = new Vector2(50, 50);
         GameState.Instance.CameraYAngleRange = new Vector2(20, 160);
         GameState.Instance.CameraDistanceOfPlayer = 10;
         GameState.Instance.CameraArmOffsetZ = 1;
-        GameState.Instance.CameraPosOffsetY = 7;
-        GameState.Instance.CameraPosOffsetZ = 6;
+        GameState.Instance.CameraPosOffsetY = 10;
+        GameState.Instance.CameraPosOffsetZ = 10;
         GameState.Instance.ViewModel = EnumViewModel.Solid;//固定摄像机模式
         GameState.Instance.GameRunType = EnumGameRunType.Safe;
         GameState.Instance.PhysicSkillInjuryDetection = physicSkillInjuryDetection;

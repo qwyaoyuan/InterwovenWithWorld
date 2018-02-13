@@ -510,6 +510,8 @@ public partial class GameState : INowTaskState
     /// </summary>
     private void CheckNewTask()
     {
+        if (PlayerObj == null)
+            return;
         List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
         //检测新的任务
         foreach (TaskMap.RunTimeTaskInfo todoTaskInfo in todoList)
@@ -534,11 +536,18 @@ public partial class GameState : INowTaskState
                     }
                     if (canStart)
                     {
-                        //调用对话框,让对话框完成后实现接取
-                        IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
-                        if (iInteractiveState.InterludeObj != null)
+                        if (todoTaskInfo.TaskInfoStruct.NeedShowTalk)
                         {
-                            iInteractiveState.InterludeObj.SetActive(true);
+                            //调用对话框,让对话框完成后实现接取
+                            IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+                            if (iInteractiveState.InterludeObj != null)
+                            {
+                                iInteractiveState.InterludeObj.SetActive(true);
+                            }
+                        }
+                        else
+                        {
+                            StartTask = todoTaskInfo.ID;
                         }
                         //StartTask = todoTaskInfo.ID;
                         //todoTaskInfo.IsStart = true;

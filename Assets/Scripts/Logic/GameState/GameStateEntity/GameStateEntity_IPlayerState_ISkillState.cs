@@ -488,7 +488,7 @@ public partial class GameState
             }
             #region 特殊技能的设置
             //使用本次释放魔法的元素类型替换
-            SkillBaseStruct secondSkillBaseStruct_Element = _CombineSkills.FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
+            SkillBaseStruct secondSkillBaseStruct_Element = _CombineSkills.Where(temp => temp != null).FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
             if (secondSkillBaseStruct_Element == null ||
                 (secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX01 &&
                 secondSkillBaseStruct_Element.skillType != EnumSkillType.YSX02 &&
@@ -503,7 +503,7 @@ public partial class GameState
             //元素驻留的增幅属性
             IAttributeState IAttributeState_YSX06_Data_End = iPlayerState.GetAttribute(10);
             //如果存在元素驻留的效果元素驻留 
-            if (_CombineSkills.Count(temp => temp!=null && temp.skillType == EnumSkillType.YSX06) == 1)
+            if (_CombineSkills.Count(temp => temp != null && temp.skillType == EnumSkillType.YSX06) == 1)
             {
                 IAttributeState_YSX06_Data_End.MagicAttacking = baseAttributeState.MagicAttacking * 0.25f;//将法伤提高,下次在释放时,会先判断元素类型是否一致,如果不一致则会先初始化该对象
             }
@@ -819,11 +819,11 @@ public partial class GameState
                             break;
                         case EnumSkillType.JAS03://燕返
                             //判断是否是如下近战武器
-                            if (weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Dagger
-                                && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.LongRod
-                                 && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.ShortRod
-                                  && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword
-                                   && weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
+                            if (//weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Dagger&&
+                                // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.LongRod&&
+                                // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.ShortRod&&
+                                   weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword &&
+                                    weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
                             {
                                 return false;
                             }
@@ -855,13 +855,34 @@ public partial class GameState
                     //设置技能动作
                     iAnimatorState.PhysicAnimatorSkillType = skillBaseStruct.skillType;
                     iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Skill;
+                    //设置持续
+                    iAnimatorState.SkillSustainable = true;
                     //交给IDamge脚本处理伤害以及开关粒子
                     IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
                     iDamage.SetPhysicSkillAttack(iPlayerState, physicsSkillStateStruct, skillBaseStruct.skillType, weaponTypeByPlayerState);
                 }
             }
-            //如果是物理普通攻击 (必须等普通攻击的冷却归零)
-            if (skillBaseStruct.skillType == EnumSkillType.PhysicAttack && normalAttackCoolintTime <= 0)
+            //如果是物理普通攻击 (必须等普通攻击的冷却归零) 如果当前状态是move或者攻击的指定段位
+            bool canNormalAttack = false;
+            if (iAnimatorState.AnimationClipTypeState != null)
+            {
+                AnimationClipTypeState animationClipTypeState = iAnimatorState.AnimationClipTypeState;
+                if (animationClipTypeState != null)
+                {
+                    if (animationClipTypeState.AnimationClipType == EnumAnimationClipType.Move)
+                        canNormalAttack = true;
+                    else if (animationClipTypeState.AnimationClipType == EnumAnimationClipType.Attack1 ||
+                        animationClipTypeState.AnimationClipType == EnumAnimationClipType.Attack2 ||
+                        animationClipTypeState.AnimationClipType == EnumAnimationClipType.Attack3)
+                    {
+                        if (animationClipTypeState.TimeType == EnumAnimationClipTimeType.Start)
+                        {
+                            canNormalAttack = true;
+                        }
+                    }
+                }
+            }
+            if (skillBaseStruct.skillType == EnumSkillType.PhysicAttack && normalAttackCoolintTime <= 0 && canNormalAttack)
             {
                 switch (iAnimatorState.PhycisActionNowType)
                 {
@@ -880,6 +901,9 @@ public partial class GameState
                 IAttributeState thisAttackAttributeState = iPlayerState.GetResultAttribute();
                 EnumWeaponTypeByPlayerState weaponTypeByPlayerState = iPlayerState.WeaponTypeByPlayerState;//武器类型
                 weaponTypeByPlayerState = weaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌
+                //如果没有武器则不可以攻击
+                if (weaponTypeByPlayerState == EnumWeaponTypeByPlayerState.None)
+                    return false;
                 //设置攻击动作
                 iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Normal;
                 //交给IDamage脚本处理伤害以及开关粒子

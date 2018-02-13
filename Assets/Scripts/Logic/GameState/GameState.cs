@@ -54,6 +54,7 @@ public partial class GameState : IEntrance, IBaseState
         Start_IMonsterCollection();
         Start_IPlayerState_IAttribute();
         Start_IPlayerState_ISkillState();
+        Start_IDamageState();
     }
 
     public void Update()
@@ -302,6 +303,11 @@ public partial class GameState : IEntrance, IBaseState
     /// 角色状态的更新方法
     /// </summary>
     partial void Update_IPlayerState();
+
+    /// <summary>
+    /// 计算伤害状态的的开始方法
+    /// </summary>
+    partial void Start_IDamageState();
 
     #endregion
 }

@@ -41,6 +41,7 @@ public class StormRaidsPartical : ParticalControlEntry
         this.CollisionCallback = CollisionCallback;
         tempShotCount = 0;
         InvokeRepeating("StormRaids_Shot", 0.1f, 0.1f);
+        SetLifeCycle(5);
     }
 
     /// <summary>
@@ -70,9 +71,9 @@ public class StormRaidsPartical : ParticalControlEntry
         StormRaids_Shot();
     }
 
-    private void Start()
-    {
-        SetLifeCycle(100);
-        Init(Vector3.zero, Vector3.forward, Color.red, ~1, temp => { Debug.Log(temp.targetObj); return true; }, 1);
-    }
+    //private void Start()
+    //{
+    //    SetLifeCycle(100);
+    //    Init(Vector3.zero, Vector3.forward, Color.red, ~1, temp => { Debug.Log(temp.targetObj); return true; }, 1);
+    //}
 }

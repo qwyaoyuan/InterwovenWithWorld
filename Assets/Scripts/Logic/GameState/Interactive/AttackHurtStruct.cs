@@ -95,13 +95,23 @@ public struct PhysicDefenseFactor
 /// 魔法攻击系数
 /// </summary>
 public struct MagicAttackFactor
-{ }
+{
+    /// <summary>
+    /// 增伤倍率系数
+    /// </summary>
+    public float IncreaseRatioInjuryFactor;
+}
 
 /// <summary>
 /// 魔法防御系数
 /// </summary>
 public struct MagicDefenseFactor
-{ }
+{
+    /// <summary>
+    /// 减伤倍率系数
+    /// </summary>
+    public float CoefficientRatioReducingDamageFactor;
+}
 
 /// <summary>
 /// 计算伤害的静态类
@@ -128,6 +138,16 @@ public static class CalculateHurt
         switch (from.hurtType)
         {
             case EnumHurtType.Magic:
+                {
+                    float hurtRate = from.attributeState.MagicAttacking * from.MagicAttackFactor.IncreaseRatioInjuryFactor;//伤害倍率
+                    float defenceRate = 1 - 1 / (1 + to.MagicResistance * magicDefenseFactor.CoefficientRatioReducingDamageFactor);//减伤倍率
+                    float baseHurt = from.thisUsedMana * from.attributeState.MagicAttacking / 25;
+                    float otherHurt = (from.attributeState.MagicAttacking - to.MagicResistance) * 0.1f;
+                    otherHurt = Mathf.Clamp(otherHurt, 0, float.MaxValue);
+                    baseDamage = (baseHurt * defenceRate + otherHurt) * hurtRate;
+                    //如果是信仰系魔法还要计算信仰差值.....
+                    //暂时空
+                }
                 break;
             case EnumHurtType.PhysicSkill:
             case EnumHurtType.NormalAction:

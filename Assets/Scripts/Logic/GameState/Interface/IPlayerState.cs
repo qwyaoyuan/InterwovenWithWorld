@@ -108,6 +108,22 @@ public interface IPlayerState : IBaseState,
     /// 如果切换则会修改改时间并通知注册方
     /// </summary>
     float LastChangeWeaponTime { get; }
+    /// <summary>
+    /// 命中了怪物的对象
+    /// </summary>
+    MonsterControl HitMonsterTarget { get; set; }
+    /// <summary>
+    /// 设置手柄震动
+    /// </summary>
+    /// <param name="time">手柄震动的时间</param>
+    /// <param name="left">手柄左侧的震动频率</param>
+    /// <param name="right">手柄右侧的震动频率</param>
+    void SetVibration(float time,float left,float right);
+
+    /// <summary>
+    /// 强制移动
+    /// </summary>
+    ForceMoveStruct ForceMoveStruct { get; set; }
 
     //--------------------辅助函数--------------------
     /// <summary>
@@ -119,6 +135,23 @@ public interface IPlayerState : IBaseState,
     /// <returns>技能当前等级的数据(如果没有加点或者出错则范围null)</returns>
     SkillAttributeStruct GetSkillAttributeStruct(EnumSkillType skillType, SkillStructData skillStructData);
 }
+
+/// <summary>
+/// 强制移动
+/// </summary>
+public struct ForceMoveStruct
+{
+    /// <summary>
+    /// 移动速度
+    /// </summary>
+    public float MoveSpeed;
+    /// <summary>
+    /// 朝向
+    /// </summary>
+    public float Forward;
+}
+
+
 /// <summary>
 /// 武器的类型(玩家状态使用的枚举)
 /// </summary>
