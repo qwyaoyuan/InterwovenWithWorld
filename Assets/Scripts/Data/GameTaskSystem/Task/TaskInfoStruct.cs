@@ -59,7 +59,7 @@ namespace TaskMap
         /// <summary>
         /// 奖励物品
         /// </summary>
-        public Dictionary<EnumGoodsType,int> AwardGoods { get; set; }
+        public Dictionary<EnumGoodsType, int> AwardGoods { get; set; }
         /// <summary>
         /// 奖励经验
         /// </summary>
@@ -128,11 +128,18 @@ namespace TaskMap
         /// <summary>
         /// 任务进度
         /// </summary>
-        internal Enums.EnumTaskProgress TaskProgress { get;set; }
+        internal Enums.EnumTaskProgress TaskProgress { get; set; }
         /// <summary>
         /// 游戏中获得的物品数量
         /// </summary>
         public Dictionary<EnumGoodsType, int> GameGetGoodsCount { get; set; }
+        #endregion
+
+        #region 任务状态触发的事件
+        /// <summary>
+        /// 任务时间触发字典
+        /// </summary>
+        public Dictionary<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>> TaskEventTriggerDic;
         #endregion
 
         public TaskInfoStruct()
@@ -144,6 +151,7 @@ namespace TaskMap
         }
 
     }
+
 
 
 }

@@ -61,6 +61,11 @@ public class UIFocusItemEquipment : UIFocus, IUIItemSelectGoods
     private void OnDisable()
     {
         GameState.Instance.UnRegistor<IPlayerState>(IPlayerStateChanged);
+        try
+        {
+            UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
+        }
+        catch { }
     }
 
     /// <summary>

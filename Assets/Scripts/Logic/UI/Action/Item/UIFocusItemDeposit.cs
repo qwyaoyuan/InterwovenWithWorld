@@ -268,12 +268,13 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
     /// <param name="rockValue"></param>
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
     {
-        switch (keyType)
-        {
-            case UIManager.KeyType.A:
-                ItemAction();
-                break;
-        }
+        if (focused)
+            switch (keyType)
+            {
+                case UIManager.KeyType.A:
+                    ItemAction();
+                    break;
+            }
     }
 
     /// <summary>
@@ -326,7 +327,7 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
                     PlayGoods[] twoHandedWeapons = playerState.PlayerAllGoods.Where(
                         temp => temp.GoodsLocation == GoodsLocation.Wearing
                         && (GoodsStaticTools.IsTwoHandedWeapon(temp.GoodsInfo.EnumGoodsType) ||
-                        (temp.leftRightArms != null && temp.leftRightArms.Value == true))).ToArray();
+                        (temp.leftRightArms != null && temp.leftRightArms.Value == false))).ToArray();
                     foreach (PlayGoods _playGoods in twoHandedWeapons)
                     {
                         _playGoods.leftRightArms = null;
@@ -341,7 +342,7 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
                     PlayGoods[] oneHandedWeapons = playerState.PlayerAllGoods.Where(
                         temp => temp.GoodsLocation == GoodsLocation.Wearing &&
                         (GoodsStaticTools.IsLeftOneHandedWeapon(temp.GoodsInfo.EnumGoodsType) ||
-                        (temp.leftRightArms != null && temp.leftRightArms.Value == false))).ToArray();
+                        (temp.leftRightArms != null && temp.leftRightArms.Value == true))).ToArray();
                     foreach (PlayGoods _playGoods in oneHandedWeapons)
                     {
                         _playGoods.leftRightArms = null;
@@ -368,7 +369,7 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
                 {
                     //需要卸载所有的右手装备
                     PlayGoods[] rightHandedWeapons = playerState.PlayerAllGoods.Where(
-                        temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == false).ToArray();
+                        temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == true).ToArray();
                     foreach (PlayGoods _playGoods in rightHandedWeapons)
                     {
                         _playGoods.leftRightArms = null;

@@ -737,7 +737,7 @@ public class SkillCombineNextNodeStruct
                     }
                     break;
                 case EnumSkillType.SM03://魔力虹吸
-                    defaultName += "_魔力虹吸" ;
+                    defaultName += "_魔力虹吸";
                     break;
                 case EnumSkillType.SM02://生命虹吸
                     defaultName += "_生命虹吸";
@@ -904,9 +904,26 @@ public static class SkillCombineStaticTools
     {
         if (combineSpriteDic.ContainsKey(key))
             return combineSpriteDic[key];
-        EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key);
-        SkillBaseStruct[] thisUsedSkills = skillStructData.SearchSkillDatas(temp => skills.Contains(temp.skillType));
-        Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).ToArray();
+        EnumSkillType[] skills = SkillCombineStaticTools.GetCombineSkills(key).OrderBy(temp => temp).ToArray();
+        SkillBaseStruct[] thisUsedSkills = skillStructData.SearchSkillDatas(temp => skills.Contains(temp.skillType)).ToArray();//将技能从小到大排序 
+        Sprite[] sprites = thisUsedSkills.Select(temp => temp.skillSprite).Where(temp => temp != null).ToArray();//如果只有一个则获取该技能要显示的图片
+        if (skills.Length > 1)
+        {
+            List<Sprite> tempSpriteList = new List<Sprite>();
+            //取出前两位来作为一个图片
+            int skillKey = SkillCombineStaticTools.GetCombineSkillKey(new EnumSkillType[] { thisUsedSkills[0].skillType, thisUsedSkills[1].skillType });
+            Sprite topSprite = SkillSpriteData.GetSpriteCombine((EnumSkillType)skillKey);
+            if (topSprite != null)
+                tempSpriteList.Add(topSprite);
+            //后面的用于叠加
+            for (int i = 2; i < thisUsedSkills.Length; i++)
+            {
+                Sprite endSprite = SkillSpriteData.GetSpriteCombine(thisUsedSkills[i].skillType);
+                if (endSprite != null)
+                    tempSpriteList.Add(endSprite);
+            }
+            sprites = tempSpriteList.ToArray();
+        }
         if (sprites == null || sprites.Length == 0)
             return null;
         var sizes = sprites.Select(temp => new { width = temp.textureRect.width, height = temp.textureRect.height });
@@ -914,59 +931,99 @@ public static class SkillCombineStaticTools
         int height = (int)sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
         if (width == 0 || height == 0)
             return null;
-        //进行组合
-        if (sprites.Length == 1)//只有一个技能表示该技能本身
+        int mustWidth = 256;
+        int mustHeight = 256;
+        List<Color[]> Colors = new List<Color[]>();
+        for (int i = 0; i < sprites.Length; i++)
         {
-            combineSpriteDic.Add(key, sprites[0]);
-            return combineSpriteDic[key];
+            //取出所有颜色并将颜色数组压缩或放大到(256,256)
+            Sprite thisSprite = sprites[i];
+            Rect thisRect = thisSprite.rect;
+            Color[] thisColors = thisSprite.texture.GetPixels((int)thisRect.x, (int)thisRect.y, (int)thisRect.width, (int)thisRect.height);
+            Color[] thisEndColors = thisColors.CompressionColors((int)thisRect.width, (int)thisRect.height, mustWidth, mustHeight);
+            Colors.Add(thisEndColors);
         }
-        Texture2D texture2D = new Texture2D(width, height);
-        if (sprites.Length == 2)//两个技能左右分开
+        //进行叠加计算
+        Color[] resultColor = new Color[mustWidth * mustHeight];
+        for (int i = 0; i < resultColor.Length; i++)//初始化
         {
-
-            //第一个技能
-            Sprite firstSprite = sprites[0];
-            Rect firstRect = firstSprite.rect;
-            Color[] firstColors = firstSprite.texture.GetPixels((int)firstRect.x, (int)firstRect.y, (int)firstRect.width, (int)firstRect.height);
-            Color[] firstEndColors = firstColors.CompressionColors((int)firstRect.width, (int)firstRect.height, width, height / 2);
-            texture2D.SetPixels(0, 0, width, height / 2, firstEndColors);
-            //第二个技能
-            Sprite secondSprite = sprites[1];
-            Rect secondRect = secondSprite.rect;
-            Color[] secondColors = secondSprite.texture.GetPixels((int)secondRect.x, (int)secondRect.y, (int)secondRect.width, (int)secondRect.height);
-            Color[] secondEndColors = secondColors.CompressionColors((int)secondRect.width, (int)secondRect.height, width, height / 2);
-            texture2D.SetPixels(0, height / 2, width, height / 2, secondEndColors);
+            resultColor[i] = new Color(0, 0, 0, 0);
         }
-        else if (sprites.Length >= 3)//三个技能或四个技能则分成四块分布
+        for (int i = 0; i < Colors.Count; i++)
         {
-            //第一个技能
-            Sprite firstSprite = sprites[0];
-            Rect firstRect = firstSprite.rect;
-            Color[] firstColors = firstSprite.texture.GetPixels((int)firstRect.x, (int)firstRect.y, (int)firstRect.width, (int)firstRect.height);
-            Color[] firstEndColors = firstColors.CompressionColors((int)firstRect.width, (int)firstRect.height, width / 2, height / 2);
-            texture2D.SetPixels(0, 0, width / 2, height / 2, firstEndColors);
-            //第二个技能
-            Sprite secondSprite = sprites[0];
-            Rect secondRect = secondSprite.rect;
-            Color[] secondColors = secondSprite.texture.GetPixels((int)secondRect.x, (int)secondRect.y, (int)secondRect.width, (int)secondRect.height);
-            Color[] secondEndColors = secondColors.CompressionColors((int)secondRect.width, (int)secondRect.height, width / 2, height / 2);
-            texture2D.SetPixels(width / 2, height / 2, width / 2, height / 2, secondEndColors);
-            //第三个技能
-            Sprite thirdSprite = sprites[0];
-            Rect thirdRect = thirdSprite.rect;
-            Color[] thirdColors = thirdSprite.texture.GetPixels((int)thirdRect.x, (int)thirdRect.y, (int)thirdRect.width, (int)thirdRect.height);
-            Color[] thirdEndColors = thirdColors.CompressionColors((int)thirdRect.width, (int)thirdRect.height, width / 2, height / 2);
-            texture2D.SetPixels(0, height / 2, width / 2, height / 2, thirdEndColors);
-            //第四个技能
-            if (sprites.Length >= 4)
+            for (int j = 0; j < resultColor.Length; j++)
             {
-                Sprite fourthSprite = sprites[0];
-                Rect fourthRect = fourthSprite.rect;
-                Color[] fourthColors = fourthSprite.texture.GetPixels((int)fourthRect.x, (int)fourthRect.y, (int)fourthRect.width, (int)fourthRect.height);
-                Color[] fourthEndColors = fourthColors.CompressionColors((int)fourthRect.width, (int)fourthRect.height, width / 2, height / 2);
-                texture2D.SetPixels(width / 2, 0, width / 2, height / 2, fourthEndColors);
+                Color backColor = resultColor[j];//当前的背景色
+                Color nowColor = Colors[i][j];//要叠加的颜色
+                //通过透明通道计算权重(透明按最不透明计算)
+                float a = nowColor.a;
+                float r = a * nowColor.r + (1 - a) * backColor.r;
+                float g = a * nowColor.g + (1 - a) * backColor.g;
+                float b = a * nowColor.b + (1 - a) * backColor.b;
+                r = Mathf.Clamp(r, 0, 1);
+                g = Mathf.Clamp(g, 0, 1);
+                b = Mathf.Clamp(b, 0, 1);
+                if (a < backColor.a)
+                    a = backColor.a;
+                resultColor[j] = new Color(r, g, b, a);
             }
         }
+        Texture2D texture2D = new Texture2D(width, height);
+        texture2D.SetPixels(0, 0, width, height , resultColor);
+
+        ////进行组合
+        //if (sprites.Length == 1)//只有一个技能表示该技能本身
+        //{
+        //    combineSpriteDic.Add(key, sprites[0]);
+        //    return combineSpriteDic[key];
+        //}
+        //Texture2D texture2D = new Texture2D(width, height);
+        //if (sprites.Length == 2)//两个技能左右分开
+        //{
+
+        //    //第一个技能
+        //    Sprite firstSprite = sprites[0];
+        //    Rect firstRect = firstSprite.rect;
+        //    Color[] firstColors = firstSprite.texture.GetPixels((int)firstRect.x, (int)firstRect.y, (int)firstRect.width, (int)firstRect.height);
+        //    Color[] firstEndColors = firstColors.CompressionColors((int)firstRect.width, (int)firstRect.height, width, height / 2);
+        //    texture2D.SetPixels(0, 0, width, height / 2, firstEndColors);
+        //    //第二个技能
+        //    Sprite secondSprite = sprites[1];
+        //    Rect secondRect = secondSprite.rect;
+        //    Color[] secondColors = secondSprite.texture.GetPixels((int)secondRect.x, (int)secondRect.y, (int)secondRect.width, (int)secondRect.height);
+        //    Color[] secondEndColors = secondColors.CompressionColors((int)secondRect.width, (int)secondRect.height, width, height / 2);
+        //    texture2D.SetPixels(0, height / 2, width, height / 2, secondEndColors);
+        //}
+        //else if (sprites.Length >= 3)//三个技能或四个技能则分成四块分布
+        //{
+        //    //第一个技能
+        //    Sprite firstSprite = sprites[0];
+        //    Rect firstRect = firstSprite.rect;
+        //    Color[] firstColors = firstSprite.texture.GetPixels((int)firstRect.x, (int)firstRect.y, (int)firstRect.width, (int)firstRect.height);
+        //    Color[] firstEndColors = firstColors.CompressionColors((int)firstRect.width, (int)firstRect.height, width / 2, height / 2);
+        //    texture2D.SetPixels(0, 0, width / 2, height / 2, firstEndColors);
+        //    //第二个技能
+        //    Sprite secondSprite = sprites[0];
+        //    Rect secondRect = secondSprite.rect;
+        //    Color[] secondColors = secondSprite.texture.GetPixels((int)secondRect.x, (int)secondRect.y, (int)secondRect.width, (int)secondRect.height);
+        //    Color[] secondEndColors = secondColors.CompressionColors((int)secondRect.width, (int)secondRect.height, width / 2, height / 2);
+        //    texture2D.SetPixels(width / 2, height / 2, width / 2, height / 2, secondEndColors);
+        //    //第三个技能
+        //    Sprite thirdSprite = sprites[0];
+        //    Rect thirdRect = thirdSprite.rect;
+        //    Color[] thirdColors = thirdSprite.texture.GetPixels((int)thirdRect.x, (int)thirdRect.y, (int)thirdRect.width, (int)thirdRect.height);
+        //    Color[] thirdEndColors = thirdColors.CompressionColors((int)thirdRect.width, (int)thirdRect.height, width / 2, height / 2);
+        //    texture2D.SetPixels(0, height / 2, width / 2, height / 2, thirdEndColors);
+        //    //第四个技能
+        //    if (sprites.Length >= 4)
+        //    {
+        //        Sprite fourthSprite = sprites[0];
+        //        Rect fourthRect = fourthSprite.rect;
+        //        Color[] fourthColors = fourthSprite.texture.GetPixels((int)fourthRect.x, (int)fourthRect.y, (int)fourthRect.width, (int)fourthRect.height);
+        //        Color[] fourthEndColors = fourthColors.CompressionColors((int)fourthRect.width, (int)fourthRect.height, width / 2, height / 2);
+        //        texture2D.SetPixels(width / 2, 0, width / 2, height / 2, fourthEndColors);
+        //    }
+        //}
         texture2D.Apply();
         Sprite createSprite = Sprite.Create(texture2D, new Rect(0, 0, width, height), Vector2.zero);
         combineSpriteDic.Add(key, createSprite);
@@ -1137,6 +1194,92 @@ public static class SkillCombineStaticTools
             default:
                 return new EnumSkillType[0];
         }
+    }
+
+    /// <summary>
+    /// 设置技能组合(对多个数组进行组合)
+    /// </summary>
+    /// <param name="combinesList"></param>
+    /// <param name="sources"></param>
+    private static void SetSkillCombine(List<EnumSkillType[]> combinesList, params EnumSkillType[][] sources)
+    {
+        //初始化计算总长
+        int elementLength = sources.GetLength(0);
+        int lenght = 1;
+        Enumerable.Range(0, sources.GetLength(0)).Select(temp => sources[temp].Length).ToList().ForEach(temp => lenght *= temp);
+        for (int i = 0; i < lenght; i++)
+        {
+            combinesList.Add(new EnumSkillType[elementLength]);
+        }
+        for (int i = 0; i < sources.GetLength(0); i++)
+        {
+            EnumSkillType[] thisIndexs = sources[i];
+            //计算平铺长度
+            int rangeLenght = 1;
+            int thisTempLength = sources.GetLength(0) - 1 - i;
+            Enumerable.Range(i + 1, thisTempLength).Select(temp => sources[temp].Length).ToList().ForEach(temp => rangeLenght *= temp);
+            int offsetIndex = 0;//当前的偏移下标
+            if (offsetIndex >= thisIndexs.Length)
+                continue;
+            EnumSkillType tempSkill = thisIndexs[offsetIndex];
+            int offsetRange = 0;//当前的屏幕长度
+            foreach (EnumSkillType[] tempSkills in combinesList)
+            {
+                tempSkills[i] = tempSkill;
+                offsetRange++;
+                if (offsetRange >= rangeLenght)
+                {
+                    offsetRange = 0;
+                    offsetIndex++;
+                    if (offsetIndex < thisIndexs.Length)
+                        tempSkill = thisIndexs[offsetIndex];
+                    else
+                    {
+                        offsetIndex = 0;
+                        tempSkill = thisIndexs[offsetIndex];
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 通过组合技能的阶段来获取该阶段可以组合成的技能
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static EnumSkillType[] GetCombineSkillByCombineSkillIndex(int index)
+    {
+        EnumSkillType[] skillIndex1 = GetBaseSkillBackCombineSkillIndex(1);
+        EnumSkillType[] skillIndex2 = GetBaseSkillBackCombineSkillIndex(2);
+        EnumSkillType[] skillIndex3 = GetBaseSkillBackCombineSkillIndex(3);
+        EnumSkillType[] skillIndex4 = GetBaseSkillBackCombineSkillIndex(4);
+        List<EnumSkillType[]> combinesList = new List<EnumSkillType[]>();
+
+        switch (index)
+        {
+            case 1:
+                SetSkillCombine(combinesList, skillIndex1);
+                break;
+            case 2:
+                SetSkillCombine(combinesList, skillIndex1, skillIndex2);
+                break;
+            case 3:
+                SetSkillCombine(combinesList, skillIndex1, skillIndex2, skillIndex3);
+                break;
+            case 4:
+                SetSkillCombine(combinesList, skillIndex1, skillIndex2, skillIndex3, skillIndex4);
+                break;
+        }
+        List<EnumSkillType> resultList = new List<EnumSkillType>();
+        foreach (EnumSkillType[] combines in combinesList)
+        {
+            if (GetCanCombineSkills(combines))
+            {
+                resultList.Add((EnumSkillType)GetCombineSkillKey(combines));
+            }
+        }
+        return resultList.Distinct().ToArray();
     }
 
     /// <summary>

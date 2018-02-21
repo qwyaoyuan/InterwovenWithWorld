@@ -931,6 +931,10 @@ namespace TaskMap
                 });
             MonsterTypeKeyValueList = new List<KeyValuePair<EnumMonsterType, string>>();
             SetEnumExplanDic(MonsterTypeKeyValueList);
+            TaskEventKeyValueList = new List<KeyValuePair<Enums.EnumTaskEventType, string>>();
+            SetEnumExplanDic(TaskEventKeyValueList);
+            TaskProgressKeyValueList = new List<KeyValuePair<Enums.EnumTaskProgress, string>>();
+            SetEnumExplanDic(TaskProgressKeyValueList);
         }
 
         TaskEditor_Explan()
@@ -989,6 +993,14 @@ namespace TaskMap
         /// 怪物和该枚举的描述键值对集合
         /// </summary>
         List<KeyValuePair<EnumMonsterType, string>> MonsterTypeKeyValueList;
+        /// <summary>
+        /// 任务事件与该枚举的描述键值对集合
+        /// </summary>
+        List<KeyValuePair<Enums.EnumTaskEventType, string>> TaskEventKeyValueList;
+        /// <summary>
+        /// 任务进度与该枚举的描述键值对集合
+        /// </summary>
+        List<KeyValuePair<Enums.EnumTaskProgress, string>> TaskProgressKeyValueList;
 
         /// <summary>
         /// 临时的显示需要添加的奖励物品类型
@@ -1004,6 +1016,11 @@ namespace TaskMap
         /// 临时的显示需要添加的任务需求杀死怪物类型
         /// </summary>
         EnumMonsterType tempAddNeedMonsterType;
+
+        /// <summary>
+        /// 临时的显示需要添加任务状态(任务事件所需)
+        /// </summary>
+        Enums.EnumTaskProgress tempAddTaskProgressOfEvent;
 
         /// <summary>
         /// 获取值在数组的下标
@@ -1306,6 +1323,101 @@ namespace TaskMap
                     if (nowSelectNode.Value.AwardGoods.ContainsKey(awardGoods.Key))
                         nowSelectNode.Value.AwardGoods[awardGoods.Key] = goodsCount;
                     EditorGUILayout.EndHorizontal();
+                }
+            }
+            EditorGUILayout.LabelField("******************************************************");
+            EditorGUILayout.Space();
+            #endregion
+
+            #region 任务触发事件
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("<---------------------任务触发事件--------------------->");
+            EditorGUILayout.Space();
+            EditorGUILayout.EndHorizontal();
+            if (nowSelectNode.Value.TaskEventTriggerDic != null)
+            {
+                if (GUILayout.Button("移除任务触发事件") && EditorUtility.DisplayDialog("请再次确认!", "是否要移除所有任务事件", "确定", "取消"))
+                {
+                    nowSelectNode.Value.TaskEventTriggerDic = null;
+                }
+            }
+            if (nowSelectNode.Value.TaskEventTriggerDic == null)
+            {
+                if (GUILayout.Button("创建任务触发事件"))
+                {
+                    nowSelectNode.Value.TaskEventTriggerDic = new Dictionary<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>>();
+                }
+            }
+            else
+            {
+                EditorGUILayout.BeginHorizontal();
+                List<Enums.EnumTaskProgress> taskProgressOfEventValues = TaskProgressKeyValueList.Select(temp => temp.Key).ToList();
+                string[] taskTypeOfEventExplans = TaskProgressKeyValueList.Select(temp => temp.Value).ToArray();
+                int taskTypeOfEventIndex = taskProgressOfEventValues.IndexOf(tempAddTaskProgressOfEvent);
+                taskTypeOfEventIndex = EditorGUILayout.Popup(taskTypeOfEventIndex, taskTypeOfEventExplans);
+                if (taskTypeOfEventIndex >= 0)
+                {
+                    tempAddTaskProgressOfEvent = taskProgressOfEventValues[taskTypeOfEventIndex];
+                    if (GUILayout.Button("添加事件"))//添加一个任务事件状态
+                    {
+                        if (!nowSelectNode.Value.TaskEventTriggerDic.ContainsKey(tempAddTaskProgressOfEvent))
+                        {
+                            nowSelectNode.Value.TaskEventTriggerDic.Add(tempAddTaskProgressOfEvent, new List<Enums.EnumTaskEventType>());
+                        }
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+
+                List<Enums.EnumTaskEventType> taskEventValues = TaskEventKeyValueList.Select(temp => temp.Key).ToList();
+                string[] taskEventExplans = TaskEventKeyValueList.Select(temp => temp.Value).ToArray();
+                List<Enums.EnumTaskProgress> tempRemoveList = new List<Enums.EnumTaskProgress>();
+                foreach (KeyValuePair<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>> item in nowSelectNode.Value.TaskEventTriggerDic)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    if (GUILayout.Button("×", GUILayout.Width(20)) && EditorUtility.DisplayDialog("请再次确认!", "是否要移除该阶段的事件", "确定", "取消"))
+                    {
+                        tempRemoveList.Add(item.Key);
+                    }
+                    string thisTaskTypeExplan = "未找到状态";
+                    int tempIndex = taskProgressOfEventValues.IndexOf(item.Key);
+                    if (tempIndex >= 0)
+                    {
+                        thisTaskTypeExplan = taskTypeOfEventExplans[tempIndex];
+                    }
+                    EditorGUILayout.LabelField(thisTaskTypeExplan);
+                    if (GUILayout.Button("＋", GUILayout.Width(20)))//添加一个具体的事件类型
+                    {
+                        item.Value.Add(Enums.EnumTaskEventType.None);
+                    }
+                    EditorGUILayout.Space();
+                    EditorGUILayout.EndHorizontal();
+                    //便利子节点
+                    for (int i = 0; i < item.Value.Count; i++)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        GUILayout.Space(30);
+                        if (GUILayout.Button("×", GUILayout.Width(20)) && EditorUtility.DisplayDialog("请再次确认!", "是否要移除该事件", "确定", "取消"))
+                        {
+                            item.Value.RemoveAt(i);
+                            i--;
+                            goto DeleteEvent;
+                        }
+                        int eventIndex = taskEventValues.IndexOf(item.Value[i]);
+                        eventIndex = EditorGUILayout.Popup(eventIndex, taskEventExplans);
+                        if (eventIndex >= 0)
+                            item.Value[i] = taskEventValues[eventIndex];
+                        DeleteEvent:
+                        EditorGUILayout.Space();
+                        EditorGUILayout.EndHorizontal();
+
+                    }
+                }
+                if (tempRemoveList.Count > 0)
+                {
+                    foreach (var item in tempRemoveList)
+                    {
+                        nowSelectNode.Value.TaskEventTriggerDic.Remove(item);
+                    }
                 }
             }
             EditorGUILayout.LabelField("******************************************************");

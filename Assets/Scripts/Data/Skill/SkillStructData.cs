@@ -112,6 +112,7 @@ public class SkillStructData : ILoadable<SkillStructData>
                     skillBaseStruct.skillZones = skillAnalysisData.GetEnums<EnumSkillZone>(id, "correlationZone").Where(temp => temp != EnumSkillZone.None).ToArray();
                     //加载技能图标
                     skillBaseStruct.skillSprite = SkillSpriteData.GetSprite(skillBaseStruct.skillType);
+                    skillBaseStruct.skillSprite_Combine = SkillSpriteData.GetSpriteCombine(skillBaseStruct.skillType);
                     //计算技能名(现在暂定使用元名字)
                     skillBaseStruct.skillName = skillBaseStruct.name;
                     //完成加载特殊效果

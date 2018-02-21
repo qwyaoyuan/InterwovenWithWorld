@@ -123,5 +123,28 @@ namespace TaskMap
             /// </summary>
             public int Radius { get; set; }
         }
+
+        /// <summary>
+        /// 任务事件类型
+        /// 当任务处于某种状态时,可能会导致的某种事件
+        /// </summary>
+        public enum EnumTaskEventType
+        {
+            /// <summary>
+            /// 空
+            /// </summary>
+            [FieldExplan("空")]
+            None,
+            /// <summary>
+            /// 大地图功能开
+            /// </summary>
+            [FieldExplan("大地图功能开")]
+            BigMap_Enable,
+            /// <summary>
+            /// 大地图功能关
+            /// </summary>
+            [FieldExplan("大地图功能关")]
+            BigMap_Disable,
+        }
     }
 }

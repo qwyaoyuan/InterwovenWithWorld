@@ -58,9 +58,13 @@ public class SkillBaseStruct
 
     //运行时生成的数据↓↓↓
     /// <summary>
-    /// 技能的图标
+    /// 技能的图标(用于显示)
     /// </summary>
     public Sprite skillSprite;
+    /// <summary>
+    /// 技能的图标(用于组合)
+    /// </summary>
+    public Sprite skillSprite_Combine;
     /// <summary>
     /// 技能显示的名字(根据语言进行翻译)
     /// </summary>
