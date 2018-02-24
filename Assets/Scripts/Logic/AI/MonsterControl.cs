@@ -102,6 +102,7 @@ public class MonsterControl : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// 监听属性变化
     /// </summary>
@@ -183,6 +184,15 @@ public class MonsterControl : MonoBehaviour
     public IAttributeState GetMonsterAttributeState()
     {
         return monsterDataInfo.MonsterBaseAttribute.Clone();
+    }
+
+    /// <summary>
+    /// 给与攻击(用于被攻击反馈)
+    /// </summary>
+    public void GiveHit()
+    {
+        //暂时为所有时刻都处于可以被攻击状态
+        blackboard.SetValue("GetHit", true);
     }
     #endregion
 }

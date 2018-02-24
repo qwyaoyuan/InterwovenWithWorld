@@ -35,6 +35,11 @@ public partial class DataCenter
     /// </summary>
     private TaskMap.RunTimeTaskData RuntimeTaskMap;
 
+    /// <summary>
+    /// 游戏运行时的状态数据
+    /// </summary>
+    private GameRunningStateData GameRunningStaetData;
+
     public DataCenter()
     {
         PlayerState = new PlayerState();
@@ -43,6 +48,7 @@ public partial class DataCenter
         gameRunnedState = new GameRunnedState();
         RuntimeTaskMap = new TaskMap.RunTimeTaskData();
         BusinessmanStates = new BusinessmanStates();
+        GameRunningStaetData = new GameRunningStateData();
     }
 
 
@@ -389,5 +395,15 @@ public class Businessman
     }
 }
 
+/// <summary>
+/// 游戏运行时的状态数据
+/// </summary>
+public class GameRunningStateData
+{
+    /// <summary>
+    /// 大都图是否可用
+    /// </summary>
+    public bool CanBigMap;
+}
 
 

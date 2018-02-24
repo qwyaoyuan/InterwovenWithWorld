@@ -6,7 +6,7 @@ using System.Reflection;
 /// <summary>
 /// 用于解释字段或有限长度数组字段中每个元素的含义
 /// </summary>
-[AttributeUsage(AttributeTargets.Field|AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public class FieldExplanAttribute : Attribute
 {
     /// <summary>
@@ -90,7 +90,7 @@ public class FieldExplanAttribute : Attribute
     /// <param name="targetList">要添加的键值对字典集合</param>
     /// <param name="selectIndex">选择下标</param>
     /// <param name="CallBackCheck">选择回调</param>
-    public static void SetEnumExplanDic<T>(List<KeyValuePair<T, string>> targetList, int selectIndex = 0,Func<T, bool> CallBackCheck = null)
+    public static void SetEnumExplanDic<T>(List<KeyValuePair<T, string>> targetList, int selectIndex = 0, Func<T, bool> CallBackCheck = null)
     {
         Type EnumType = typeof(T);
         if (EnumType.IsEnum)
@@ -115,3 +115,78 @@ public class FieldExplanAttribute : Attribute
     }
 }
 
+/// <summary>
+/// 用于解释该字段对应的附加数据类型 
+/// </summary>
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+public class TargetTypeExplanAttribute : Attribute
+{
+    /// <summary>
+    /// 目标类型
+    /// </summary>
+    public EnumTargetType TargetType { get; private set; }
+
+    public TargetTypeExplanAttribute(EnumTargetType targetType)
+    {
+        this.TargetType = targetType;
+    }
+
+    /// <summary>
+    /// 对象的类型
+    /// </summary>
+    public enum EnumTargetType
+    {
+        /// <summary>
+        /// 空类型,此类型默认为空
+        /// </summary>
+        Null,
+        /// <summary>
+        /// 字符串
+        /// </summary>
+        String,
+        /// <summary>
+        /// 整形
+        /// </summary>
+        Int,
+        /// <summary>
+        /// 浮点型
+        /// </summary>
+        Float,
+        /// <summary>
+        /// Bool
+        /// </summary>
+        Bool
+    }
+
+    /// <summary>
+    /// 设置枚举说明到键值对集合中
+    /// </summary>
+    /// <typeparam name="T">类型</typeparam>
+    /// <param name="targetDic">要添加的字典</param>
+    /// <param name="selectIndex">选择下标</param>
+    /// <param name="CallBackCheck">选择回调</param>
+    public static void SetEnumExplanDic<T>(Dictionary<T, EnumTargetType> targetDic, int selectIndex = 0, Func<T, bool> CallBackCheck = null)
+    {
+        Type EnumType = typeof(T);
+        if (EnumType.IsEnum)
+        {
+            IEnumerable<T> enumTaskTypes = Enum.GetValues(typeof(T)).OfType<T>();
+            foreach (T enumTarget in enumTaskTypes)
+            {
+                FieldInfo fieldInfo = EnumType.GetField(enumTarget.ToString());
+                if (fieldInfo != null)
+                {
+                    TargetTypeExplanAttribute targetTypeExplan = fieldInfo.GetCustomAttributes(typeof(TargetTypeExplanAttribute), false).OfType<TargetTypeExplanAttribute>().FirstOrDefault();
+                    if (targetTypeExplan != null)
+                    {
+                        if (CallBackCheck == null || CallBackCheck(enumTarget))
+                        {
+                            targetDic.Add(enumTarget, targetTypeExplan.TargetType);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

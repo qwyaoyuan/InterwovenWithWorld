@@ -13,7 +13,7 @@ public class SpriteManager
     /// <summary>
     /// 精灵所在文件夹路径
     /// </summary>
-    public static string spriteDirectoryPath = "Sprites";
+    public static string spriteDirectoryPath = "Sprites";//,Sprites/Skill,Sprites/Skill/融合魔法";
 
     /// <summary>
     /// 字符串与精灵的对应关系
@@ -60,10 +60,26 @@ public class SpriteManager
         }
     }
 
+    /// <summary>
+    /// 获取资源
+    /// </summary>
+    /// <returns></returns>
+    static Sprite[] GetResources()
+    {
+        string[] paths = spriteDirectoryPath.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        List<Sprite> resultList = new List<Sprite>();
+        foreach (string path in paths)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(path);
+            resultList.AddRange(sprites);
+        }
+        return resultList.ToArray(); 
+    }
+
     static IEnumerable EnumerableLoad()
     {
         strToSpriteDic = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteDirectoryPath);
+        Sprite[] sprites = GetResources();//Resources.LoadAll<Sprite>(spriteDirectoryPath);
         int count = 0;
         foreach (Sprite sprite in sprites)
         {
@@ -90,7 +106,7 @@ public class SpriteManager
             SpriteManager.CloseEnumerableLoad = null;
         }
         strToSpriteDic = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteDirectoryPath);
+        Sprite[] sprites = GetResources();//Resources.LoadAll<Sprite>(spriteDirectoryPath);
         foreach (Sprite sprite in sprites)
         {
             strToSpriteDic.Add(sprite.texture.name + ":" + sprite.name, sprite);

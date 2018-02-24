@@ -134,17 +134,14 @@ namespace TaskMap
             /// 空
             /// </summary>
             [FieldExplan("空")]
+            [TargetTypeExplan(TargetTypeExplanAttribute.EnumTargetType.Null)]
             None,
             /// <summary>
-            /// 大地图功能开
+            /// 大地图功能是否可以使用
             /// </summary>
-            [FieldExplan("大地图功能开")]
-            BigMap_Enable,
-            /// <summary>
-            /// 大地图功能关
-            /// </summary>
-            [FieldExplan("大地图功能关")]
-            BigMap_Disable,
+            [FieldExplan("大地图功能是否可以使用")]
+            [TargetTypeExplan(TargetTypeExplanAttribute.EnumTargetType.Bool)]
+            CanBigMap
         }
     }
 }

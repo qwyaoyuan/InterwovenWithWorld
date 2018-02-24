@@ -342,6 +342,10 @@ public class EditorNPCDataInfoWindow : EditorWindow
     /// </summary>
     List<KeyValuePair<TaskMap.Enums.EnumTaskProgress, string>> taskStateTypeToExplanList;
     /// <summary>
+    /// NPC类型对应说明字典
+    /// </summary>
+    List<KeyValuePair<EnumNPCType, string>> npcTypeToExplanList;
+    /// <summary>
     /// 物品类型选择添加下标
     /// </summary>
     int goodsTypeIndex;
@@ -428,7 +432,19 @@ public class EditorNPCDataInfoWindow : EditorWindow
         if (!nowIDList.Contains(id))
             tempNPCDataInfo.NPCID = id;
         tempNPCDataInfo.NPCName = EditorGUILayout.TextField("NPC Name:", tempNPCDataInfo.NPCName);
-        tempNPCDataInfo.NPCType = (EnumNPCType)EditorGUILayout.EnumPopup("NPC Type:", tempNPCDataInfo.NPCType);
+        if (npcTypeToExplanList == null)
+        {
+            npcTypeToExplanList = new List<KeyValuePair<EnumNPCType, string>>();
+            FieldExplanAttribute.SetEnumExplanDic(npcTypeToExplanList);
+        }
+        List<EnumNPCType> npcTypeValues = npcTypeToExplanList.Select(temp => temp.Key).ToList();
+        string[] npcTypeExplans = npcTypeToExplanList.Select(temp => temp.Value).ToArray();
+        int npcTypeIndex = npcTypeValues.IndexOf(tempNPCDataInfo.NPCType);
+        npcTypeIndex = EditorGUILayout.Popup("NPC Type:", npcTypeIndex, npcTypeExplans);
+        if (npcTypeIndex >= 0)
+        {
+            tempNPCDataInfo.NPCType = npcTypeValues[npcTypeIndex];
+        }
         tempNPCDataInfo.OtherValue = EditorGUILayout.TextField("Other Data:", tempNPCDataInfo.OtherValue);
         if (isCreate)
         {

@@ -23,6 +23,7 @@ public partial class GameState : IGameState
         Load_IPlayerState();
         Load_IGameState();
         Load_IPlayerState_ISkillState();
+        Load_INowTaskStateEvent();
         //通知存档加载
         Call<IGameState, Action>(temp => temp.LoadArchive);
     }

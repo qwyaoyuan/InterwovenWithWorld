@@ -9,6 +9,10 @@ using UnityEngine;
 /// </summary>
 public partial class GameState : IInteractiveState
 {
+    /// <summary>
+    /// 是否可以使用主线面板
+    /// </summary>
+    public bool CanInterlude { get; set; }
 
     /// <summary>
     /// 主线的中间过度展示
@@ -155,8 +159,9 @@ public partial class GameState : IInteractiveState
     ///<returns>是否有任务需要处理</returns>
     private bool ClickNPC_Task()
     {
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         //先判断是否完成了任务
-        bool checkNPCTaskResult = CheckNowTask(EnumCheckTaskType.NPC, _ClickInteractiveNPCID);
+        bool checkNPCTaskResult = iNowTaskState.CheckNowTask(EnumCheckTaskType.NPC, _ClickInteractiveNPCID);
         if (checkNPCTaskResult)//如果任务完成了则不用后面的检测了
             return false;
         //如果任务没有完成则需要后面的检测
@@ -164,21 +169,21 @@ public partial class GameState : IInteractiveState
         TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTaskData.GetAllToDoList()
             .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == _ClickInteractiveNPCID && temp.IsOver == false && temp.IsStart == false)
             .ToArray();
-        //存在主线任务则展开主线
+        //存在主线任务则展开主线(主线任务在这里直接开始)
         if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).Count() > 0)
         {
-            if (InterludeObj != null)
-                InterludeObj.SetActive(true);
+            //INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+            iNowTaskState.StartTask = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).First().ID;
             return true;
         }
-        //如果存在支线则展开支线
+        //如果存在支线则展开支线(支线任务存在选择项,在UI处开始)
         if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Spur).Count() > 0)
         {
             if (QueryObj != null)
                 QueryObj.SetActive(true);
             return true;
         }
-        //如果存在重复任务则展开重复任务
+        //如果存在重复任务则展开重复任务(重复任务存在选择项,在UI处开始)
         if (runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Repeat).Count() > 0)
         {
             if (QueryObj != null)

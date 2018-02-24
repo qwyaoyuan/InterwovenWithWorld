@@ -128,6 +128,7 @@ namespace TaskMap
         /// <summary>
         /// 任务进度
         /// </summary>
+        [JsonProperty]
         internal Enums.EnumTaskProgress TaskProgress { get; set; }
         /// <summary>
         /// 游戏中获得的物品数量
@@ -139,7 +140,7 @@ namespace TaskMap
         /// <summary>
         /// 任务时间触发字典
         /// </summary>
-        public Dictionary<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>> TaskEventTriggerDic;
+        public Dictionary<Enums.EnumTaskProgress, List<TaskEventData>> TaskEventTriggerDic;
         #endregion
 
         public TaskInfoStruct()
@@ -152,6 +153,28 @@ namespace TaskMap
 
     }
 
+    /// <summary>
+    /// 任务事件数据
+    /// </summary>
+    public class TaskEventData
+    {
+        /// <summary>
+        /// 事件类型
+        /// </summary>
+        public Enums.EnumTaskEventType EventType;
+        /// <summary>
+        /// 事件数据
+        /// </summary>
+        public object EventData;
 
+        /// <summary>
+        /// 返回深拷贝
+        /// </summary>
+        /// <returns></returns>
+        public TaskEventData Clone()
+        {
+            return new TaskEventData() { EventType = EventType, EventData = EventData };
+        }
+    }
 
 }

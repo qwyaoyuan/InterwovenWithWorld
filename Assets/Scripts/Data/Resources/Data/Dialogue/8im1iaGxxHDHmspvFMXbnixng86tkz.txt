@@ -1,11 +1,5 @@
-﻿10[Start]
-dialogueID==>0!@#$%^&*npcID==>1!@#$%^&*voiceID==>1!@#$%^&*titleValue==>向你问好!@#$%^&*showValue==>冒险家?!@#$%^&*otherValue==>!@#$%^&*
-[End]
-[Start]
-dialogueID==>1!@#$%^&*npcID==>-1!@#$%^&*voiceID==>2!@#$%^&*titleValue==>粗暴的回复!@#$%^&*showValue==>恩?!@#$%^&*otherValue==>!@#$%^&*
-[End]
-[Start]
-dialogueID==>7!@#$%^&*npcID==>1!@#$%^&*voiceID==>5!@#$%^&*titleValue==>回复!@#$%^&*showValue==>去死吧!@#$%^&*otherValue==>4!@#$%^&*
+﻿[Start]
+dialogueID==>0!@#$%^&*npcID==>-1!@#$%^&*voiceID==>2!@#$%^&*titleValue==>粗暴的回复!@#$%^&*showValue==>恩?!@#$%^&*otherValue==>!@#$%^&*
 [End]
 [Start]
 dialogueID==>2!@#$%^&*npcID==>-1!@#$%^&*voiceID==>3!@#$%^&*titleValue==>友好的问好!@#$%^&*showValue==>冒险家你好!@#$%^&*otherValue==>!@#$%^&*

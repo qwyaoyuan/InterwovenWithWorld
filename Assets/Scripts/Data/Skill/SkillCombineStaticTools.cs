@@ -931,7 +931,7 @@ public static class SkillCombineStaticTools
         int height = (int)sizes.OrderBy(temp => temp.height).FirstOrDefault().height;
         if (width == 0 || height == 0)
             return null;
-        int mustWidth = 256;
+        int mustWidth = 256 ;
         int mustHeight = 256;
         List<Color[]> Colors = new List<Color[]>();
         for (int i = 0; i < sprites.Length; i++)
@@ -968,8 +968,8 @@ public static class SkillCombineStaticTools
                 resultColor[j] = new Color(r, g, b, a);
             }
         }
-        Texture2D texture2D = new Texture2D(width, height);
-        texture2D.SetPixels(0, 0, width, height , resultColor);
+        Texture2D texture2D = new Texture2D(mustWidth, mustHeight);
+        texture2D.SetPixels(0, 0, mustWidth, mustHeight, resultColor);
 
         ////进行组合
         //if (sprites.Length == 1)//只有一个技能表示该技能本身
@@ -1025,7 +1025,7 @@ public static class SkillCombineStaticTools
         //    }
         //}
         texture2D.Apply();
-        Sprite createSprite = Sprite.Create(texture2D, new Rect(0, 0, width, height), Vector2.zero);
+        Sprite createSprite = Sprite.Create(texture2D, new Rect(0, 0, mustWidth, mustHeight), Vector2.zero);
         combineSpriteDic.Add(key, createSprite);
         return combineSpriteDic[key];
     }
@@ -1046,7 +1046,7 @@ public static class SkillCombineStaticTools
         {
             for (int j = 0; j < sourceHeight; j++)
             {
-                tempSourceColors[sourceWidth, sourceHeight] = sourceColors[j * sourceWidth + i];
+                tempSourceColors[i, j] = sourceColors[j * sourceWidth + i];
             }
         }
         Color[,] endSourceColors = new Color[targetWidth, targetHeight];
@@ -1058,7 +1058,7 @@ public static class SkillCombineStaticTools
             indexWidth = Mathf.Clamp(indexWidth, 0, sourceWidth - 1);
             for (int j = 0; j < targetHeight; j++)
             {
-                int indexHeight = (int)(biliWidth * i);
+                int indexHeight = (int)(biliWidth * j);
                 indexHeight = Mathf.Clamp(indexHeight, 0, sourceHeight - 1);
                 endSourceColors[i, j] = tempSourceColors[indexWidth, indexHeight];
             }

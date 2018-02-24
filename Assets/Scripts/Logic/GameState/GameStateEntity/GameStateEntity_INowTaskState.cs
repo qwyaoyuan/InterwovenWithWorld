@@ -37,15 +37,38 @@ public partial class GameState : INowTaskState
     Dictionary<int, TaskMap.RunTimeTaskInfo> checkGoodsRunTimeDic;
 
     /// <summary>
+    /// 检测移除的id集合
+    /// </summary>
+    List<int> checkRemoveIDList;
+
+    /// <summary>
     /// 任务信息对象 
     /// </summary>
     //MetaTasksData metaTasksData;
+
+    ///<summary>
+    ///游戏状态对象
+    /// </summary>
+    IGameState iGameState;
+
+    /// <summary>
+    /// 交互对象
+    /// </summary>
+    IInteractiveState iInteractiveState;
+
+    /// <summary>
+    /// 任务事件处理接口
+    /// </summary>
+    INowTaskStateEvent iNowTaskStateEvent;
 
     /// <summary>
     /// 任务接口实现对象的加载函数 
     /// </summary>
     partial void Load_INowTaskState()
     {
+        iGameState = GameState.Instance.GetEntity<IGameState>();
+        iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+        iNowTaskStateEvent = GameState.Instance.GetEntity<INowTaskStateEvent>();
         //metaTasksData = DataCenter.Instance.GetMetaData<MetaTasksData>();
         //当前可以做的任务,包括正在做的和可以接取的
         List<TaskMap.RunTimeTaskInfo> todoList = runtimeTaskData.GetAllToDoList();
@@ -58,8 +81,11 @@ public partial class GameState : INowTaskState
         checkMonsterRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         checkGoodsRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         runTimeTaskInfos_Start.ForEach(temp => SetStartTaskCheckClassify(temp));
-        //检测当前是否有可接取任务
-        CheckNewTask();
+        //触发事件
+        foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in todoList)
+        {
+            iNowTaskStateEvent.TriggeringEvents(runTimeTaskInfo);
+        }
     }
 
     /// <summary>
@@ -119,12 +145,21 @@ public partial class GameState : INowTaskState
     /// </summary>
     partial void Update_INowTaskState()
     {
-        CheckNowTask(EnumCheckTaskType.Position);
-        //如果此时没有主线但是有未接取的主线,则持续检测
-        if (runTimeTaskInfos_Start != null && runTimeTaskInfos_Wait != null
-            && runTimeTaskInfos_Start.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) == 0
-            && runTimeTaskInfos_Wait.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) > 0)
-            CheckNewTask();
+        if (iGameState != null &&
+            (iGameState.GameRunType == EnumGameRunType.Safe || iGameState.GameRunType == EnumGameRunType.Unsafa) &&
+            iInteractiveState != null && iInteractiveState.CanInterlude)
+        {
+            //检测可以完成的任务
+            CheckNowTask(EnumCheckTaskType.Position);
+            //如果此时没有主线但是有未接取的主线,则持续检测
+            if (runTimeTaskInfos_Start != null && runTimeTaskInfos_Wait != null
+                && runTimeTaskInfos_Start.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) == 0
+                && runTimeTaskInfos_Wait.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) > 0)
+            {
+                //检测新任务
+                CheckNewTask();
+            }
+        }
     }
 
     public bool CheckNowTask(EnumCheckTaskType checkTaskType, int value = -1)
@@ -199,6 +234,32 @@ public partial class GameState : INowTaskState
                         return true;
                     }
                 }
+            }
+        }
+        if (runTimeTaskInfos_Start.Count > 0)
+        {
+            if (checkRemoveIDList == null)
+                checkRemoveIDList = new List<int>();
+            checkRemoveIDList.Clear();
+            foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in runTimeTaskInfos_Start)
+            {
+                if (checkPostionRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
+                    continue;
+                if (checkNPCRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
+                    continue;
+                if (checkMonsterRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
+                    continue;
+                if (checkGoodsRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
+                    continue;
+                checkRemoveIDList.Add(runTimeTaskInfo.ID);
+            }
+            if (checkRemoveIDList.Count > 0)
+            {
+                foreach (int checkRemoveID in checkRemoveIDList)
+                {
+                    OverTaskID = checkRemoveID;
+                }
+                return true;
             }
         }
         return false;
@@ -423,7 +484,7 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 开始任务
     /// </summary>
-    int _StartTask;
+    int _StartTask = -1;
     /// <summary>
     /// 开始任务
     /// </summary>
@@ -444,6 +505,8 @@ public partial class GameState : INowTaskState
                     runTimeTaskInfo.IsStart = true;
                     SetStartTaskCheckClassify(runTimeTaskInfo);
                     Call<INowTaskState, int>(temp => temp.StartTask);
+                    //触发事件
+                    iNowTaskStateEvent.TriggeringEvents(runTimeTaskInfo);
                 }
             }
         }
@@ -501,6 +564,12 @@ public partial class GameState : INowTaskState
                 CheckNewTask();
                 //调用通知外部任务完成了
                 Call<INowTaskState, int>(temp => temp.OverTaskID);
+                //触发事件
+                iNowTaskStateEvent.TriggeringEvents(runTimeTaskInfo);
+                foreach (TaskMap.RunTimeTaskInfo todoRunTimeTaskInfo in todoList)
+                {
+                    iNowTaskStateEvent.TriggeringEvents(todoRunTimeTaskInfo);
+                }
             }
         }
     }
@@ -518,6 +587,11 @@ public partial class GameState : INowTaskState
         {
             if (!todoTaskInfo.IsStart)//只用处理未开始的
             {
+                if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)//不管是否可以直接接取都先将该数据存放到等待接取集合中,如果可以直接接取
+                {
+                    runTimeTaskInfos_Wait.Add(todoTaskInfo);
+                }
+                //如果可以直接接取则接取该任务
                 if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId <= 0)//直接接取
                 {
                     bool canStart = false;
@@ -536,19 +610,19 @@ public partial class GameState : INowTaskState
                     }
                     if (canStart)
                     {
-                        if (todoTaskInfo.TaskInfoStruct.NeedShowTalk)
-                        {
-                            //调用对话框,让对话框完成后实现接取
-                            IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
-                            if (iInteractiveState.InterludeObj != null)
-                            {
-                                iInteractiveState.InterludeObj.SetActive(true);
-                            }
-                        }
-                        else
-                        {
-                            StartTask = todoTaskInfo.ID;
-                        }
+                        //if (todoTaskInfo.TaskInfoStruct.NeedShowTalk)
+                        //{
+                        //    //调用对话框,让对话框完成后实现接取
+                        //    IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+                        //    if (iInteractiveState.InterludeObj != null)
+                        //    {
+                        //        iInteractiveState.InterludeObj.SetActive(true);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        StartTask = todoTaskInfo.ID;
+                        //}
                         //StartTask = todoTaskInfo.ID;
                         //todoTaskInfo.IsStart = true;
                         ////将任务添加到分类中
@@ -557,14 +631,14 @@ public partial class GameState : INowTaskState
                         //SetStartTaskCheckClassify(todoTaskInfo);
                     }
                 }
-                else//如果不是直接接取的
-                {
-                    //判断是否存在于等待截取集合中,不存在则添加
-                    if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)
-                    {
-                        runTimeTaskInfos_Wait.Add(todoTaskInfo);
-                    }
-                }
+                //else//如果不是直接接取的
+                //{
+                //    //判断是否存在于等待截取集合中,不存在则添加
+                //    if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)
+                //    {
+                //        runTimeTaskInfos_Wait.Add(todoTaskInfo);
+                //    }
+                //}
             }
         }
     }
@@ -580,6 +654,8 @@ public partial class GameState : INowTaskState
         {
             RemoveTaskByIDAtDicAndList(runTimeTaskInfo.ID);
             runTimeTaskInfo.IsStart = false;
+            //触发事件
+            iNowTaskStateEvent.TriggeringEvents(runTimeTaskInfo);
         }
     }
 
@@ -635,4 +711,5 @@ public partial class GameState : INowTaskState
                 (temp.TaskInfoStruct.DeliveryTaskLocation != null && string.Equals(scene, temp.TaskInfoStruct.DeliveryTaskLocation.SceneName))
             ).ToArray();
     }
+
 }

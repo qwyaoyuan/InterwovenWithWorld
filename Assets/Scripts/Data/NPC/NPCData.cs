@@ -521,25 +521,36 @@ public enum EnumNPCType
     /// <summary>
     /// 普通(有可能是场景道具)
     /// </summary>
+    [FieldExplan("场景道具")]
     Normal,
+    /// <summary>
+    /// 这是一个未知功能的NPC
+    /// </summary>
+    [FieldExplan("NPC")]
+    NPC,
     /// <summary>
     /// 商人 
     /// </summary>
+    [FieldExplan("商人")]
     Businessman,
     /// <summary>
     /// 合成人
     /// </summary>
+    [FieldExplan("合成人")]
     Synthesiser,
     /// <summary>
     /// 打造人
     /// </summary>
+    [FieldExplan("打造")]
     Forge,
     /// <summary>
     /// 佣兵提交
     /// </summary>
+    [FieldExplan("佣兵")]
     Mercenarier,
     /// <summary>
     /// 路牌
     /// </summary>
+    [FieldExplan("路牌")]
     Street,
 }

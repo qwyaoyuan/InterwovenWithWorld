@@ -50,6 +50,7 @@ public partial class GameState : IEntrance, IBaseState
             }
         }
         //其他的开始方法
+        Start_INowTaskStateEvent();
         Start_IPlayerState();
         Start_IMonsterCollection();
         Start_IPlayerState_IAttribute();
@@ -253,6 +254,16 @@ public partial class GameState : IEntrance, IBaseState
     /// (任务)加载函数调用时调用
     /// </summary>
     partial void Load_INowTaskState();
+
+    /// <summary>
+    /// (任务事件)的开始方法
+    /// </summary>
+    partial void Start_INowTaskStateEvent();
+
+    /// <summary>
+    /// (任务时间)加载存档时调用
+    /// </summary>
+    partial void Load_INowTaskStateEvent();
 
     /// <summary>
     /// 任务的更新函数

@@ -9,6 +9,10 @@ using UnityEngine;
 public interface IInteractiveState : IBaseState
 {
     /// <summary>
+    /// 是否可以使用主线面板
+    /// </summary>
+    bool CanInterlude { get; set; }
+    /// <summary>
     /// 主线的中间过度展示面板
     /// </summary>
     GameObject InterludeObj { get; set; }

@@ -55667,7 +55667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5016afedb77e9f248b3224b1dbf3c614, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tag: 
+  Tag: BigMap
   panelFocusPath: {fileID: 114347415474620466}
   panel: {fileID: 224326473405451480}
   highLightSprite: {fileID: 21300652, guid: e2a2dfca765aa5c4fbe535eff37138f2, type: 3}

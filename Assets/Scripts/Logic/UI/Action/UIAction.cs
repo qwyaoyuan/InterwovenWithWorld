@@ -102,10 +102,12 @@ public class UIAction : MonoBehaviour
             switch (keyType)
             {
                 case UIManager.KeyType.R1:
-                    nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT);// uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT, true);
+                    //nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT);// uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.RIGHT, true);
+                    nextTabPageFocus = GetNextEnableTabPage( UIFocusPath.MoveType.RIGHT);
                     break;
                 case UIManager.KeyType.L1:
-                    nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT);//uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT, true);
+                    //nextTabPageFocus = uiFocusPath.GetNewNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT);//uiFocusPath.GetNextFocus(nowTabPageFocus, UIFocusPath.MoveType.LEFT, true);
+                    nextTabPageFocus = GetNextEnableTabPage(UIFocusPath.MoveType.LEFT);
                     break;
             }
             TabPageClick(nextTabPageFocus as UIFocusTabPage);
@@ -116,6 +118,31 @@ public class UIAction : MonoBehaviour
                 CloseActionClick();
                 break;
         }
+    }
+
+    /// <summary>
+    /// 依照当前的焦点获取下一个可以移动的焦点 
+    /// </summary>
+    /// <param name="moveType"></param>
+    /// <returns></returns>
+    private UIFocus GetNextEnableTabPage(UIFocusPath.MoveType moveType)
+    {
+        UIFocus tempStartFocus = nowTabPageFocus;
+        ReGo:
+        tempStartFocus = uiFocusPath.GetNewNextFocus(tempStartFocus, moveType);
+        if (tempStartFocus != null)
+        {
+            //查看是否可以使用
+            if (tempStartFocus.Tag == "BigMap")//如果是大地图则查看是是否可以使用大地图
+            {
+                GameRunningStateData gameRunningStateData = DataCenter.Instance.GetEntity<GameRunningStateData>();
+                if (!gameRunningStateData.CanBigMap)//如果不可以使用则调到上面重新获取该节点的下一个位置
+                {
+                    goto ReGo;
+                }
+            }
+        }
+        return tempStartFocus;
     }
 
     /// <summary>

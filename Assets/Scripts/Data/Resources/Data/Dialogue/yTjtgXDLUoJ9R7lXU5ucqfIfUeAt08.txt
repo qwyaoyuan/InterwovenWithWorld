@@ -1,5 +1,5 @@
 ﻿[Start]
-topPoint==>[0={[1={[7=]}]}{[2={[3=]}]}]
+topPoint==>[0={[2={[3=]}]}]
 text==>完成任务2后
 touchNPCID==>1
 enumDialogueType==>Ask
@@ -20,7 +20,7 @@ enumDialogueType==>Task
 maxLevel==>99
 minLevel==>-1
 overTask==>-1
-thisTask==>2
+thisTask==>1
 minGoodAndEvil==>-9999
 maxGoodAndEvil==>9999
 race==>None

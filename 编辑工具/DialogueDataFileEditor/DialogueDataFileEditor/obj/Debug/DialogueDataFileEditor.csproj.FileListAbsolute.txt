@@ -10,3 +10,7 @@ E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\Dialogue
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\obj\Debug\DialogueDataFileEditor.exe
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\obj\Debug\DialogueDataFileEditor.NewProjectForm.resources
 E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\obj\Debug\DialogueDataFileEditor.SearchNodeForm.resources
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\bin\Debug\Newtonsoft.Json.dll
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\bin\Debug\UnityEngine.dll
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\bin\Debug\Newtonsoft.Json.xml
+E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\编辑工具\DialogueDataFileEditor\DialogueDataFileEditor\bin\Debug\UnityEngine.xml

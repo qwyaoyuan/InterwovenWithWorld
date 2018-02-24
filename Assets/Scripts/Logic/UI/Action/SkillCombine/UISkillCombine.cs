@@ -127,7 +127,7 @@ public class UISkillCombine : MonoBehaviour
         playerState.CombineSkills.Clear();
         foreach (UIListItem uiListItem in allUIListItems)
         {
-            if (uiListItem != null && uiListItem.value!=null && uiListItem.value.GetType().Equals(typeof(EnumSkillType[])))
+            if (uiListItem != null && uiListItem.value != null && uiListItem.value.GetType().Equals(typeof(EnumSkillType[])))
             {
                 EnumSkillType[] enumSkillTypes = uiListItem.value as EnumSkillType[];
                 if (enumSkillTypes.Count(temp => temp == EnumSkillType.None) != 4)
@@ -218,7 +218,7 @@ public class UISkillCombine : MonoBehaviour
                         {
                             UIFocusSkillCombineLattice tempUIFocuesSkillCombineLattice =
                                 uiFocusPath.GetNewNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
-                                //uiFocusPath.GetNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
+                            //uiFocusPath.GetNextFocus(nowUISkilCombineLattice, keyType == UIManager.KeyType.LEFT ? UIFocusPath.MoveType.LEFT : UIFocusPath.MoveType.RIGHT) as UIFocusSkillCombineLattice;
                             if (tempUIFocuesSkillCombineLattice)
                             {
                                 nowUISkilCombineLattice.LostForcus();
@@ -330,7 +330,7 @@ public class UISkillCombine : MonoBehaviour
     private void SetSkillCombineLatticeAndShowVadio(EnumSkillType[] skillTypes)
     {
         //需要修改技能组合框的图标以及显示该技能的视频（如果没有则不播放）
-        SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => skillTypes.Contains(temp.skillType));
+        SkillBaseStruct[] thisUsedSkills = skillStructData_Base.SearchSkillDatas(temp => skillTypes.Contains(temp.skillType)).OrderBy(temp => temp.skillType).ToArray();
         UIFocusSkillCombineLattice[] uiFocus = uiFocusPath.NewUIFocusArray.Select(temp => temp as UIFocusSkillCombineLattice).ToArray();//uiFocusPath.UIFocuesArray.Select(temp => temp as UIFocusSkillCombineLattice).ToArray();
         for (int i = 0; i < uiFocus.Length; i++)
         {

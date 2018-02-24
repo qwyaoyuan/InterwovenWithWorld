@@ -82,53 +82,133 @@ public class UIInterlude : MonoBehaviour
     /// </summary>
     int lastNPCID;
 
+    private void Awake()
+    {
+        Init();
+        GameState.Instance.Registor<INowTaskState>(INowTaskStateChanged);
+        gameObject.SetActive(false);
+        iInteractiveState.CanInterlude = true;
+    }
+
+    private void OnDestroy()
+    {
+        GameState.Instance.UnRegistor<INowTaskState>(INowTaskStateChanged);
+    }
+
+    /// <summary>
+    /// 当前任务状态发生变化
+    /// </summary>
+    /// <param name="iNowTaskState"></param>
+    /// <param name="fieldName"></param>
+    private void INowTaskStateChanged(INowTaskState iNowTaskState, string fieldName)
+    {
+        //开始任务
+        if (string.Equals(fieldName, GameState.GetFieldNameStatic<INowTaskState, int>(temp => temp.StartTask)))
+        {
+            Init();
+            // 如果存在该任务且该任务是主线
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.StartTask, true);
+            if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && runTimeTaskInfo.TaskInfoStruct.NeedShowTalk)
+            {
+                DialogueCondition dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(-1,
+                    temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == iNowTaskState.StartTask).FirstOrDefault();
+                if (dialogueCodition != null)
+                {
+                    gameObject.SetActive(true);//显示面板
+                    InitTalk(dialogueCodition);//初始化对话
+                }
+            }
+        }
+        else if (string.Equals(fieldName, GameState.GetFieldNameStatic<INowTaskState, int>(temp => temp.OverTaskID)))
+        {
+            Init();
+            // 如果存在该任务且该任务是主线
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.StartTask, false);
+            if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && runTimeTaskInfo.TaskInfoStruct.NeedShowTalk)
+            {
+                DialogueCondition dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(-1,
+                   temp => temp.enumDialogueType == EnumDialogueType.Task && temp.overTask == iNowTaskState.OverTaskID).FirstOrDefault();
+                if (dialogueCodition != null)
+                {
+                    gameObject.SetActive(true);//显示面板
+                    InitTalk(dialogueCodition);//初始化对话
+                }
+            }
+        }
+    }
+
+    private void Init()
+    {
+        if (dialogueStructData == null)
+            dialogueStructData = DataCenter.Instance.GetMetaData<DialogueStructData>();
+        if (runtimeTasksData == null)
+            runtimeTasksData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
+        if (iInteractiveState == null)
+            iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
+        if (iNowTaskState == null)
+            iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+        if (iGameState == null)
+            iGameState = GameState.Instance.GetEntity<IGameState>();
+    }
+
+    /// <summary>
+    /// 只是负责压入状态
+    /// </summary>
     private void OnEnable()
     {
-        dialogueStructData = DataCenter.Instance.GetMetaData<DialogueStructData>();
-        runtimeTasksData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
-        iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
-        iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
-        iGameState = GameState.Instance.GetEntity<IGameState>();
+        Init();
         iGameState.PushEnumGameRunType(EnumGameRunType.TaskTalk);
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
-        InitTalk();
+    }
+
+    /// <summary>
+    /// 初始化对话
+    /// 展示如下对话
+    /// </summary>
+    /// <param name="dialogueCodition">对话数据</param>
+    private void InitTalk(DialogueCondition dialogueCodition)
+    {
+        this.dialogueCodition = dialogueCodition;
+        this.nowDialoguePoint = this.dialogueCodition.topPoint;
+        showLeftOrRight = true;
+        ShowTalk();
     }
 
     /// <summary>
     /// 初始化对话
     /// 展示的是接取主线任务前的对话
     /// </summary>
-    private void InitTalk()
-    {
-        fisrtKeyUP = false;
-        int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
-        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
-        TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
-                       .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
-                       .ToArray();
-        TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).FirstOrDefault();
-        if (runTimeTaskInfo != null)
-        {
-            this.runTimeTaskInfo = runTimeTaskInfo;
-            this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId,
-                temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == runTimeTaskInfo.ID).FirstOrDefault();
-            if (this.dialogueCodition != null)
-            {
-                this.nowDialoguePoint = this.dialogueCodition.topPoint;
-                showLeftOrRight = true;
-                ShowTalk();
-            }
-            else
-            {
-                gameObject.SetActive(false);
-                iNowTaskState.StartTask = runTimeTaskInfo.ID;
-            }
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    //private void InitTalk()
+    //{
+    //    fisrtKeyUP = false;
+    //    int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
+    //    INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+    //    TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
+    //                   .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
+    //                   .ToArray();
+    //    TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).FirstOrDefault();
+    //    if (runTimeTaskInfo != null)
+    //    {
+    //        this.runTimeTaskInfo = runTimeTaskInfo;
+    //        this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId,
+    //            temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == runTimeTaskInfo.ID).FirstOrDefault();
+    //        if (this.dialogueCodition != null)
+    //        {
+    //            this.nowDialoguePoint = this.dialogueCodition.topPoint;
+    //            showLeftOrRight = true;
+    //            ShowTalk();
+    //        }
+    //        else
+    //        {
+    //            gameObject.SetActive(false);
+    //            iNowTaskState.StartTask = runTimeTaskInfo.ID;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
 
     /// <summary>
     /// 展示对话
@@ -158,10 +238,16 @@ public class UIInterlude : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 只是负责弹出状态
+    /// </summary>
     private void OnDisable()
     {
-        UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
-        iGameState.PopEnumGameRunType();
+        if (iGameState != null)
+        {
+            UIManager.Instance.KeyUpHandle -= Instance_KeyUpHandle;
+            iGameState.PopEnumGameRunType();
+        }
     }
 
     private void Instance_KeyUpHandle(UIManager.KeyType keyType, Vector2 rockValue)
@@ -202,7 +288,7 @@ public class UIInterlude : MonoBehaviour
         {
             gameObject.SetActive(false);
             //接受任务
-            iNowTaskState.StartTask = runTimeTaskInfo.ID;
+            //iNowTaskState.StartTask = runTimeTaskInfo.ID;
         }
     }
 }

@@ -155,6 +155,8 @@ public class DialogueAnalysisData
     /// <returns></returns>
     public DialogueCondition[] GetDialogueConditionIDByNPCID(int npcID)
     {
+        if (npcID < 0)
+            return dialogueConditionList.ToArray();
         DialogueCondition[] result = dialogueConditionList.Where(temp => temp.touchNPCID == npcID).ToArray();
         return result;
     }

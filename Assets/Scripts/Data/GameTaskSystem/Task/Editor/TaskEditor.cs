@@ -935,6 +935,8 @@ namespace TaskMap
             SetEnumExplanDic(TaskEventKeyValueList);
             TaskProgressKeyValueList = new List<KeyValuePair<Enums.EnumTaskProgress, string>>();
             SetEnumExplanDic(TaskProgressKeyValueList);
+            taskEventDataToTypeDic = new Dictionary<Enums.EnumTaskEventType, TargetTypeExplanAttribute.EnumTargetType>();
+            TargetTypeExplanAttribute.SetEnumExplanDic(taskEventDataToTypeDic);
         }
 
         TaskEditor_Explan()
@@ -1001,6 +1003,10 @@ namespace TaskMap
         /// 任务进度与该枚举的描述键值对集合
         /// </summary>
         List<KeyValuePair<Enums.EnumTaskProgress, string>> TaskProgressKeyValueList;
+        /// <summary>
+        /// 任务事件类型对应附加数据类型的字典
+        /// </summary>
+        Dictionary<Enums.EnumTaskEventType, TargetTypeExplanAttribute.EnumTargetType> taskEventDataToTypeDic;
 
         /// <summary>
         /// 临时的显示需要添加的奖励物品类型
@@ -1108,16 +1114,16 @@ namespace TaskMap
 
             nowSelectNode.Value.ReceiveTaskNpcId = EditorGUILayout.IntField("接取任务NPC", nowSelectNode.Value.ReceiveTaskNpcId);
             nowSelectNode.Value.NeedReputation = EditorGUILayout.IntField("需要的声望", nowSelectNode.Value.NeedReputation);
+            EditorGUILayout.BeginHorizontal();
+            nowSelectNode.Value.NeedShowTalk = EditorGUILayout.Toggle(nowSelectNode.Value.NeedShowTalk, GUILayout.Width(20));
+            EditorGUILayout.LabelField("直接截取任务是否要显示对话(注意如果没有对话则该任务不会被接取!)");
+            EditorGUILayout.EndHorizontal();
             if (nowSelectNode.Value.ReceiveTaskLocation != null)
             {
                 EditorGUILayout.LabelField("接取任务地点(场景、中心点、半径):");
                 nowSelectNode.Value.ReceiveTaskLocation.SceneName = EditorGUILayout.TextField("场景:", nowSelectNode.Value.ReceiveTaskLocation.SceneName);
                 nowSelectNode.Value.ReceiveTaskLocation.ArrivedCenterPos = EditorGUILayout.Vector3Field("中心点:", nowSelectNode.Value.ReceiveTaskLocation.ArrivedCenterPos);
                 nowSelectNode.Value.ReceiveTaskLocation.Radius = EditorGUILayout.IntField("半径:", nowSelectNode.Value.ReceiveTaskLocation.Radius);
-                EditorGUILayout.BeginHorizontal();
-                nowSelectNode.Value.NeedShowTalk = EditorGUILayout.Toggle(nowSelectNode.Value.NeedShowTalk, GUILayout.Width(20));
-                EditorGUILayout.LabelField("直接截取任务是否要显示对话(注意如果没有对话则该任务不会被接取!)");
-                EditorGUILayout.EndHorizontal();
                 if (GUILayout.Button("移除接取任务地点"))
                 {
                     if (EditorUtility.DisplayDialog("请再次确认!", "是否要移除接取任务地点", "是", "否"))
@@ -1345,7 +1351,7 @@ namespace TaskMap
             {
                 if (GUILayout.Button("创建任务触发事件"))
                 {
-                    nowSelectNode.Value.TaskEventTriggerDic = new Dictionary<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>>();
+                    nowSelectNode.Value.TaskEventTriggerDic = new Dictionary<Enums.EnumTaskProgress, List<TaskEventData>>();
                 }
             }
             else
@@ -1362,7 +1368,7 @@ namespace TaskMap
                     {
                         if (!nowSelectNode.Value.TaskEventTriggerDic.ContainsKey(tempAddTaskProgressOfEvent))
                         {
-                            nowSelectNode.Value.TaskEventTriggerDic.Add(tempAddTaskProgressOfEvent, new List<Enums.EnumTaskEventType>());
+                            nowSelectNode.Value.TaskEventTriggerDic.Add(tempAddTaskProgressOfEvent, new List<TaskEventData>());
                         }
                     }
                 }
@@ -1371,7 +1377,7 @@ namespace TaskMap
                 List<Enums.EnumTaskEventType> taskEventValues = TaskEventKeyValueList.Select(temp => temp.Key).ToList();
                 string[] taskEventExplans = TaskEventKeyValueList.Select(temp => temp.Value).ToArray();
                 List<Enums.EnumTaskProgress> tempRemoveList = new List<Enums.EnumTaskProgress>();
-                foreach (KeyValuePair<Enums.EnumTaskProgress, List<Enums.EnumTaskEventType>> item in nowSelectNode.Value.TaskEventTriggerDic)
+                foreach (KeyValuePair<Enums.EnumTaskProgress, List<TaskEventData>> item in nowSelectNode.Value.TaskEventTriggerDic)
                 {
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("×", GUILayout.Width(20)) && EditorUtility.DisplayDialog("请再次确认!", "是否要移除该阶段的事件", "确定", "取消"))
@@ -1387,7 +1393,7 @@ namespace TaskMap
                     EditorGUILayout.LabelField(thisTaskTypeExplan);
                     if (GUILayout.Button("＋", GUILayout.Width(20)))//添加一个具体的事件类型
                     {
-                        item.Value.Add(Enums.EnumTaskEventType.None);
+                        item.Value.Add(new TaskEventData() { EventType = Enums.EnumTaskEventType.None, EventData = "" });
                     }
                     EditorGUILayout.Space();
                     EditorGUILayout.EndHorizontal();
@@ -1402,10 +1408,76 @@ namespace TaskMap
                             i--;
                             goto DeleteEvent;
                         }
-                        int eventIndex = taskEventValues.IndexOf(item.Value[i]);
+                        int eventIndex = taskEventValues.IndexOf(item.Value[i].EventType);
                         eventIndex = EditorGUILayout.Popup(eventIndex, taskEventExplans);
                         if (eventIndex >= 0)
-                            item.Value[i] = taskEventValues[eventIndex];
+                            item.Value[i].EventType = taskEventValues[eventIndex];
+                        if (!taskEventDataToTypeDic.ContainsKey(item.Value[i].EventType))
+                        {
+                            item.Value[i].EventType = Enums.EnumTaskEventType.None;
+                        }
+                        switch (taskEventDataToTypeDic[item.Value[i].EventType])
+                        {
+                            case TargetTypeExplanAttribute.EnumTargetType.String:
+                                if (item.Value[i].EventData == null)
+                                {
+                                    item.Value[i].EventData = "";
+                                }
+                                {
+                                    string tempData = item.Value[i].EventData.ToString();
+                                    item.Value[i].EventData = EditorGUILayout.TextField(tempData);
+                                }
+                                break;
+                            case TargetTypeExplanAttribute.EnumTargetType.Int:
+                                if (item.Value[i].EventData == null)
+                                {
+                                    item.Value[i].EventData = 0;
+                                }
+                                {
+                                    int tempData = 0;
+                                    try
+                                    {
+                                        tempData = (int)item.Value[i].EventData;
+                                    }
+                                    catch { }
+                                    item.Value[i].EventData = EditorGUILayout.IntField(tempData);
+                                }
+                                break;
+                            case TargetTypeExplanAttribute.EnumTargetType.Float:
+                                if (item.Value[i].EventData == null)
+                                {
+                                    item.Value[i].EventData = 0f;
+                                }
+                                {
+                                    float tempData = 0f;
+                                    try
+                                    {
+                                        tempData = (float)item.Value[i].EventData;
+                                    }
+                                    catch { }
+                                    item.Value[i].EventData = EditorGUILayout.FloatField(tempData);
+                                }
+                                break;
+                            case TargetTypeExplanAttribute.EnumTargetType.Bool:
+                                if (item.Value[i].EventData == null)
+                                {
+                                    item.Value[i].EventData = false;
+                                }
+                                {
+                                    bool tempData = false;
+                                    try
+                                    {
+                                        tempData = (bool)item.Value[i].EventData;
+                                    }
+                                    catch { }
+                                    item.Value[i].EventData = EditorGUILayout.Toggle(tempData);
+                                }
+                                break;
+                            default:
+                                item.Value[i].EventData = null;
+                                break;
+                        }
+                        
                         DeleteEvent:
                         EditorGUILayout.Space();
                         EditorGUILayout.EndHorizontal();
