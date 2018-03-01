@@ -52,21 +52,28 @@ public class UITree : MonoBehaviour
 
     private void Awake()
     {
-        roots = new List<UITreeNode>();
-        allTreeNode = new List<UITreeNode>();
+        Init();
     }
 
-    private void Start()
+    private void Init()
     {
-        UITreeNode uiTreeNode = CreateTreeNode();
-        AddTreeNode(uiTreeNode);
-        uiTreeNode.IsDisplay = true;
-        uiTreeNode.IsExpand = false;
-        UITreeNode uitreeNode1 = CreateTreeNode();
-        uiTreeNode.Add(uitreeNode1);
-        uitreeNode1.IsDisplay = true;
-        UpdateRenderer();
+        if (roots == null)
+            roots = new List<UITreeNode>();
+        if (allTreeNode == null)
+            allTreeNode = new List<UITreeNode>();
     }
+
+    //private void Start()
+    //{
+    //UITreeNode uiTreeNode = CreateTreeNode();
+    //AddTreeNode(uiTreeNode);
+    //uiTreeNode.IsDisplay = true;
+    //uiTreeNode.IsExpand = false;
+    //UITreeNode uitreeNode1 = CreateTreeNode();
+    //uiTreeNode.Add(uitreeNode1);
+    //uitreeNode1.IsDisplay = true;
+    //UpdateRenderer();
+    //}
 
     private void LateUpdate()
     {
@@ -274,6 +281,7 @@ public class UITree : MonoBehaviour
     {
         if (selectNode != null)
         {
+            UITreeNode tempSelectNode = selectNode;
             if (selectNode.Parent != null)//不是根节点 
             {
                 int index = selectNode.Parent.IndexOf(selectNode);
@@ -289,11 +297,11 @@ public class UITree : MonoBehaviour
                         }
                         else return targetNode;
                     };
-                    selectNode = FindDeepLastNode(tempNode);
+                    tempSelectNode = FindDeepLastNode(tempNode);
                 }
                 else if (index == 0)
                 {
-                    selectNode = selectNode.Parent;
+                    tempSelectNode = selectNode.Parent;
                 }
             }
             else//这是根节点
@@ -301,10 +309,10 @@ public class UITree : MonoBehaviour
                 int index = roots.IndexOf(selectNode);
                 if (index > 0)
                 {
-                    selectNode = roots[index - 1];
+                    tempSelectNode = roots[index - 1];
                 }
             }
-            selectNode.IsSelect = true;
+            tempSelectNode.IsSelect = true;
         }
     }
 
@@ -315,6 +323,7 @@ public class UITree : MonoBehaviour
     {
         if (selectNode != null)
         {
+            UITreeNode tempSelectNode = selectNode;
             Action<UITreeNode> MoveDownAction = null;
             MoveDownAction = (targetNode) =>
             {
@@ -322,23 +331,27 @@ public class UITree : MonoBehaviour
                 {
                     int index = targetNode.Parent.IndexOf(targetNode);//在父节点中的下标
                     if (index >= 0 && index < targetNode.Parent.Count - 1)
-                        selectNode = targetNode.Parent[index + 1];
+                        tempSelectNode = targetNode.Parent[index + 1];
                     else if (index >= targetNode.Parent.Count - 1)
                     {
                         MoveDownAction(targetNode.Parent);//已经到了该子节点的尽头,返回父节点寻找父节点向下移动的方式
                     }
                 }
-                else//根节点
+                else if (targetNode.IsExpand && targetNode.Count > 0)//当前节点是根节点且是展开的且子节点不为0
+                {
+                    tempSelectNode = targetNode[0];
+                }
+                else//当前节点是根节点且无法项该节点的子节点移动了
                 {
                     int index = roots.IndexOf(targetNode);
                     if (index >= 0 && index < roots.Count - 1)
                     {
-                        selectNode = roots[index + 1];
+                        tempSelectNode = roots[index + 1];
                     }
                 }
             };
             MoveDownAction(selectNode);
-            selectNode.IsSelect = true;
+            tempSelectNode.IsSelect = true;
         }
     }
 
@@ -413,7 +426,7 @@ public class UITree : MonoBehaviour
     {
         get
         {
-            if (roots.Count < index && index >= 0)
+            if (index < roots.Count && index >= 0)
             {
                 return roots[index];
             }
@@ -427,7 +440,9 @@ public class UITree : MonoBehaviour
     /// </summary>
     public void Clear()
     {
-        foreach (var item in roots)
+        Init();
+        var tempRoots = roots.ToArray();
+        foreach (var item in tempRoots)
         {
             item.DeleteObject();
         }

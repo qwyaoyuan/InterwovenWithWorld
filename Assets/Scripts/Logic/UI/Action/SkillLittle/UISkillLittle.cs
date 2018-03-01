@@ -149,7 +149,15 @@ public class UISkillLittle : MonoBehaviour
             if (playerState.SkillPoint.ContainsKey((EnumSkillType)_uiFocus.skillID))
             {
                 if (playerState.SkillPoint[(EnumSkillType)_uiFocus.skillID] != _uiFocus.TempPoint)
+                {
                     skillChanged = true;
+                    if ((EnumSkillType)_uiFocus.skillID == EnumSkillType.YSX01)
+                    {
+                        //给任务系统填入状态
+                        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+                        iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.LearnFireSkill);
+                    }
+                }
                 playerState.SkillPoint[(EnumSkillType)_uiFocus.skillID] = _uiFocus.TempPoint;
             }
             else

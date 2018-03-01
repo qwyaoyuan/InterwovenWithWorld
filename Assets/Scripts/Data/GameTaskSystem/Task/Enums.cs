@@ -59,6 +59,59 @@ namespace TaskMap
         }
 
         /// <summary>
+        /// 特殊检测
+        /// </summary>
+        public enum EnumTaskSpecialCheck
+        {
+            /// <summary>
+            /// 不存在特殊检测 
+            /// </summary>
+            [FieldExplan("不存在特殊检测")]
+            None,
+            /// <summary>
+            /// 打开菜单
+            /// </summary>
+            [FieldExplan("打开菜单")]
+            OpenMenuUI,
+            /// <summary>
+            /// 进入属性展示界面
+            /// </summary>
+            [FieldExplan("进入属性展示界面")]
+            OpenAttributeUI,
+            /// <summary>
+            /// 进入词条展示界面
+            /// </summary>
+            [FieldExplan("进入词条展示界面")]
+            OpenEntryUI,
+            /// <summary>
+            /// 进入道具展示界面
+            /// </summary>
+            [FieldExplan("进入道具展示界面")]
+            OpenItemUI,
+            /// <summary>
+            /// 学习火元素技能
+            /// </summary>
+            [FieldExplan("学习火元素技能")]
+            LearnFireSkill,
+            /// <summary>
+            /// 将火元素技能放入技能格子
+            /// </summary>
+            [FieldExplan("将火球术技能放入技能格子")]
+            SetFireSkillToLattice,
+            /// <summary>
+            /// 使用了传讯魔法卷轴
+            /// </summary>
+            [FieldExplan("使用了传讯魔法卷轴")]
+            SummonsScrollMagic,
+            /// <summary>
+            /// 等待一定时间不适用传讯卷轴被发现(或离开一定的位置)
+            /// </summary>
+            [FieldExplan("等待一定时间不适用传讯卷轴被发现(或离开一定的位置)")]
+            WaiTimeNotSummonsScroll,
+
+        }
+
+        /// <summary>
         /// 任务进度枚举
         /// </summary>
         public enum EnumTaskProgress

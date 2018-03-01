@@ -193,24 +193,31 @@ public class UIKeySetting : MonoBehaviour
                 //}
                 //else
                 //{
-                    //设置对象的名字
-                    switch (newTarget.keyContactType)
-                    {
-                        case EnumKeyContactType.None:
-                            newTarget.name = "None";
-                            break;
-                        case EnumKeyContactType.Skill:
-                            EnumSkillType[] skillTypes = SkillCombineStaticTools.GetCombineSkills(newTarget.id);
-                            newTarget.name = SkillCombineStaticTools.GetCombineSkillsName(skillTypes);
-                            break;
-                        case EnumKeyContactType.Prap:
-                            PlayGoods playGoods = playerState.PlayerAllGoods.FirstOrDefault(temp => temp.ID == newTarget.id);
-                            newTarget.name = playGoods.GoodsInfo.GoodsName;
-                            break;
-                        case EnumKeyContactType.Action:
-                            newTarget.name = "暂无功能";
-                            break;
-                    }
+                //设置对象的名字
+                switch (newTarget.keyContactType)
+                {
+                    case EnumKeyContactType.None:
+                        newTarget.name = "None";
+                        break;
+                    case EnumKeyContactType.Skill:
+                        EnumSkillType[] skillTypes = SkillCombineStaticTools.GetCombineSkills(newTarget.id);
+                        newTarget.name = SkillCombineStaticTools.GetCombineSkillsName(skillTypes);
+                        //如果是火球术
+                        if (newTarget.id == SkillCombineStaticTools.GetCombineSkillKey(new EnumSkillType[] { EnumSkillType.FS01, EnumSkillType.YSX01 }))
+                        {
+                            //给任务系统填入状态
+                            INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+                            iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.SetFireSkillToLattice);
+                        }
+                        break;
+                    case EnumKeyContactType.Prap:
+                        PlayGoods playGoods = playerState.PlayerAllGoods.FirstOrDefault(temp => temp.ID == newTarget.id);
+                        newTarget.name = playGoods.GoodsInfo.GoodsName;
+                        break;
+                    case EnumKeyContactType.Action:
+                        newTarget.name = "暂无功能";
+                        break;
+                }
                 //}
                 keyContactData.SetKeyContactStruct(inputKey, newTarget);
             }

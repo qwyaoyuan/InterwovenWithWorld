@@ -10,11 +10,13 @@
 /Assets/TerrainData/
 /Assets/Scenes/
 /Archive/
+/数据的备份/
 # User-specific files
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.[Pp][Ss][Dd]
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

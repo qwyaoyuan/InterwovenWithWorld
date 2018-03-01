@@ -56,6 +56,7 @@ public partial class GameState : IEntrance, IBaseState
         Start_IPlayerState_IAttribute();
         Start_IPlayerState_ISkillState();
         Start_IDamageState();
+        Start_INPCSpriteState();
     }
 
     public void Update()
@@ -320,6 +321,15 @@ public partial class GameState : IEntrance, IBaseState
     /// </summary>
     partial void Start_IDamageState();
 
+    /// <summary>
+    /// (词条)加载函数调用时调用
+    /// </summary>
+    partial void Load_IEntryState();
+
+    /// <summary>
+    /// (NPC头像)加载函数调用时调用
+    /// </summary>
+    partial void Start_INPCSpriteState();
     #endregion
 }
 

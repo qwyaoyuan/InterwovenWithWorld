@@ -70,13 +70,16 @@ public class UIAction : MonoBehaviour
             }
             else
             {
-                ShowIndex(0);
+                ShowIndex(1);//第一个标签是地图则此处选取第二个标签(属性)
             }
         }
         else//如果不是则载入第一个标签
         {
             ShowIndex(0);
         }
+        //给任务系统填入状态
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+        iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.OpenMenuUI);
     }
 
     private void OnDisable()

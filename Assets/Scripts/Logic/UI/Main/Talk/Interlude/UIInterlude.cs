@@ -58,6 +58,11 @@ public class UIInterlude : MonoBehaviour
     IGameState iGameState;
 
     /// <summary>
+    /// npc图片状态
+    /// </summary>
+    INPCSpriteState iNPCSpriteState;
+
+    /// <summary>
     /// 对话条件对象 
     /// </summary>
     DialogueCondition dialogueCodition;
@@ -108,7 +113,7 @@ public class UIInterlude : MonoBehaviour
             Init();
             // 如果存在该任务且该任务是主线
             TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.StartTask, true);
-            if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && runTimeTaskInfo.TaskInfoStruct.NeedShowTalk)
+            if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && runTimeTaskInfo.TaskInfoStruct.NeedShowTalk && !runTimeTaskInfo.TaskInfoStruct.NeedShowImageTip)
             {
                 DialogueCondition dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(-1,
                     temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == iNowTaskState.StartTask).FirstOrDefault();
@@ -149,6 +154,8 @@ public class UIInterlude : MonoBehaviour
             iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         if (iGameState == null)
             iGameState = GameState.Instance.GetEntity<IGameState>();
+        if (iNPCSpriteState == null)
+            iNPCSpriteState = GameState.Instance.GetEntity<INPCSpriteState>();
     }
 
     /// <summary>
@@ -222,11 +229,13 @@ public class UIInterlude : MonoBehaviour
         if (lastNPCID != nowDialogueValue.npcID)//本次的NPCid和上次的不一致则左右显示切换
             showLeftOrRight = !showLeftOrRight;
         lastNPCID = nowDialogueValue.npcID;
+        showImage = iNPCSpriteState.GetSprite(nowDialogueValue.npcID);
         if (showLeftOrRight)
         {
             rightImage.gameObject.SetActive(false);
             leftImage.gameObject.SetActive(true);
             leftImage.sprite = showImage;
+            leftImage.enabled = showImage != null;
             leftText.text = showText;
         }
         else
@@ -234,6 +243,7 @@ public class UIInterlude : MonoBehaviour
             rightImage.gameObject.SetActive(true);
             leftImage.gameObject.SetActive(false);
             rightImage.sprite = showImage;
+            rightImage.enabled = showImage != null;
             rightText.text = showText;
         }
     }

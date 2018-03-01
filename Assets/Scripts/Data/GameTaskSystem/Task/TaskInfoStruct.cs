@@ -50,6 +50,14 @@ namespace TaskMap
         /// </summary>
         public bool NeedShowTalk { get; set; }
         /// <summary>
+        /// 直接接取任务是否需要显示图片提示栏,如果展示则直接接取
+        /// </summary>
+        public bool NeedShowImageTip { get; set; }
+        /// <summary>
+        /// 如果要显示图片提示栏,则显示的图片提示栏的文件夹名
+        /// </summary>
+        public string ShowImageTipDirectoryName { get; set; }
+        /// <summary>
         /// 需要的声望
         /// </summary>
         public int NeedReputation { get; set; }
@@ -94,6 +102,10 @@ namespace TaskMap
         /// 需要获取物品的数量
         /// </summary>
         public Dictionary<EnumGoodsType, int> NeedGetGoodsCount { get; set; }
+        /// <summary>
+        /// 特殊状态检测
+        /// </summary>
+        public  Enums.EnumTaskSpecialCheck NeedSpecialCheck;
         /// <summary>
         /// 达到足够的声望
         /// </summary>

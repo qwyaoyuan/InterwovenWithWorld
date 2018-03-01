@@ -174,12 +174,18 @@ public class PlayerState
     /// </summary>
     public List<PlayGoods> PlayerAllGoods;
 
+    /// <summary>
+    /// 可以显示的词条集合
+    /// </summary>
+    public List<int> EntryEnableList;
+
     public PlayerState()
     {
         SkillPoint = new Dictionary<EnumSkillType, int>();
         RoleOfRaceRoute = new List<RoleOfRace>();
         PlayerAllGoods = new List<PlayGoods>();
         CombineSkills = new List<EnumSkillType[]>();
+        EntryEnableList = new List<int>();
     }
 
     /// <summary>

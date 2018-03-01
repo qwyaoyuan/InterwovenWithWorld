@@ -42,6 +42,9 @@ public class UIItem : MonoBehaviour
             if (nowUIFocus)
                 nowUIFocus.SetForcus();
         }
+        //给任务系统填入状态
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+        iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.OpenItemUI);
     }
 
     private void OnDisable()

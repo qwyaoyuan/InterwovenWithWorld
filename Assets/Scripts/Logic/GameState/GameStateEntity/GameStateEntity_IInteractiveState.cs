@@ -15,6 +15,11 @@ public partial class GameState : IInteractiveState
     public bool CanInterlude { get; set; }
 
     /// <summary>
+    /// 是否可以使用主线图片展示面板
+    /// </summary>
+    public bool CanImageTip { get; set; }
+
+    /// <summary>
     /// 主线的中间过度展示
     /// </summary>
     GameObject _InterludeObj;
@@ -123,11 +128,12 @@ public partial class GameState : IInteractiveState
         get { return _ClickInteractiveNPCID; }
         set
         {
+            _ClickInteractiveNPCID = value;
+            Call<IInteractiveState, int>(temp => temp.ClickInteractiveNPCID);//通知
             switch (GameRunType)
             {
                 case EnumGameRunType.Safe:
                 case EnumGameRunType.Unsafa:
-                    _ClickInteractiveNPCID = value;
                     NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
                     IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
                     NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, _ClickInteractiveNPCID);

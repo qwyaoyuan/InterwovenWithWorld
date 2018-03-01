@@ -836,6 +836,8 @@ public class UIEntrance : MonoBehaviour
 
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
         //测试代码开始
+        //添加属性点
+        playerState.PropertyPoint = 10;
         //添加一个弓
         playerState.PlayerAllGoods.Add(new PlayGoods(100000, new Goods(EnumGoodsType.WGCSG, "王国长杉弓", 1, 100, "王国长杉弓"), GoodsLocation.Package)
         {

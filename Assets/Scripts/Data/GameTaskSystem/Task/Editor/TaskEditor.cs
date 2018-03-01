@@ -20,7 +20,7 @@ namespace TaskMap
     /// </summary>
     public class TaskEditor : EditorWindow
     {
-        public string dataPath = @"E:\MyProject\Unity\任务编辑数据\Task.txt";
+        public string dataPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Task\Task.txt";
 
         [MenuItem("小工具/任务编辑器")]
         static void AddWindow()
@@ -165,7 +165,7 @@ namespace TaskMap
                 {
                     File.Create(filePath).Close();
                     tempTaskMap = new TaskMap();
-                    string jsonValue = taskMap.Save();
+                    string jsonValue = tempTaskMap.Save();
                     File.WriteAllText(filePath, jsonValue, Encoding.UTF8);
                 }
                 else
@@ -935,8 +935,11 @@ namespace TaskMap
             SetEnumExplanDic(TaskEventKeyValueList);
             TaskProgressKeyValueList = new List<KeyValuePair<Enums.EnumTaskProgress, string>>();
             SetEnumExplanDic(TaskProgressKeyValueList);
+            TaskSpecialCheckKeyValueList = new List<KeyValuePair<Enums.EnumTaskSpecialCheck, string>>();
+            SetEnumExplanDic(TaskSpecialCheckKeyValueList);
             taskEventDataToTypeDic = new Dictionary<Enums.EnumTaskEventType, TargetTypeExplanAttribute.EnumTargetType>();
             TargetTypeExplanAttribute.SetEnumExplanDic(taskEventDataToTypeDic);
+
         }
 
         TaskEditor_Explan()
@@ -1003,6 +1006,10 @@ namespace TaskMap
         /// 任务进度与该枚举的描述键值对集合
         /// </summary>
         List<KeyValuePair<Enums.EnumTaskProgress, string>> TaskProgressKeyValueList;
+        /// <summary>
+        /// 特殊检测状态与该枚举描述键值对集合
+        /// </summary>
+        List<KeyValuePair<Enums.EnumTaskSpecialCheck, string>> TaskSpecialCheckKeyValueList;
         /// <summary>
         /// 任务事件类型对应附加数据类型的字典
         /// </summary>
@@ -1116,7 +1123,22 @@ namespace TaskMap
             nowSelectNode.Value.NeedReputation = EditorGUILayout.IntField("需要的声望", nowSelectNode.Value.NeedReputation);
             EditorGUILayout.BeginHorizontal();
             nowSelectNode.Value.NeedShowTalk = EditorGUILayout.Toggle(nowSelectNode.Value.NeedShowTalk, GUILayout.Width(20));
-            EditorGUILayout.LabelField("直接截取任务是否要显示对话(注意如果没有对话则该任务不会被接取!)");
+            EditorGUILayout.LabelField("直接接取任务是否要显示对话(注意如果不显示则直接接取,且与提示只能显示一种!)");
+            if (nowSelectNode.Value.NeedShowTalk)
+                nowSelectNode.Value.NeedShowImageTip = false;
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            nowSelectNode.Value.NeedShowImageTip = EditorGUILayout.Toggle(nowSelectNode.Value.NeedShowImageTip, GUILayout.Width(20));
+            EditorGUILayout.LabelField("直接接取任务是否要显示提示(注意如果不显示则直接接取,且与对话只能显示一种!)");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            if (nowSelectNode.Value.NeedShowImageTip)
+            {
+                nowSelectNode.Value.NeedShowTalk = false;
+                //设置文件夹路径
+                EditorGUILayout.LabelField("提示图片所在的文件夹(该文件夹的父路径为Data/Task/ImageTip):");
+                nowSelectNode.Value.ShowImageTipDirectoryName = EditorGUILayout.TextField(nowSelectNode.Value.ShowImageTipDirectoryName);
+            }
             EditorGUILayout.EndHorizontal();
             if (nowSelectNode.Value.ReceiveTaskLocation != null)
             {
@@ -1183,6 +1205,14 @@ namespace TaskMap
             EditorGUILayout.EndHorizontal();
             nowSelectNode.Value.NeedGetReputation = EditorGUILayout.IntField("达到该声望:", nowSelectNode.Value.NeedGetReputation);
             nowSelectNode.Value.TimeLimit = EditorGUILayout.IntField("经过指定游戏时间:", nowSelectNode.Value.TimeLimit);
+           List< Enums.EnumTaskSpecialCheck> taskSpecialCheckValues = TaskSpecialCheckKeyValueList.Select(temp => temp.Key).ToList();
+            string[] taskSpecialCheckShows = TaskSpecialCheckKeyValueList.Select(temp => temp.Value).ToArray();
+            int taskSpecialCheckIndex = taskSpecialCheckValues.IndexOf(nowSelectNode.Value.NeedSpecialCheck);
+            taskSpecialCheckIndex = EditorGUILayout.Popup("特殊条件检测:", taskSpecialCheckIndex, taskSpecialCheckShows);
+            if (taskSpecialCheckIndex >= 0)
+            {
+                nowSelectNode.Value.NeedSpecialCheck = taskSpecialCheckValues[taskSpecialCheckIndex];
+            }
             /*需要获取物品的数量*/
             EditorGUILayout.BeginHorizontal();
             if (nowSelectNode.Value.NeedGetGoodsCount == null)
@@ -1477,7 +1507,7 @@ namespace TaskMap
                                 item.Value[i].EventData = null;
                                 break;
                         }
-                        
+
                         DeleteEvent:
                         EditorGUILayout.Space();
                         EditorGUILayout.EndHorizontal();

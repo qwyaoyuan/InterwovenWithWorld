@@ -652,6 +652,28 @@ public enum EnumGoodsType
 
     #endregion
 
+    #region 特殊功能道具类
+    /// <summary>
+    /// 特殊功能道具类
+    /// </summary>
+    [FieldExplan("投掷道具")]
+    SpecialActionItem = 3400000,
+
+    #region 魔法卷轴类
+    /// <summary>
+    /// 魔法卷轴类
+    /// </summary>
+    [FieldExplan("魔法卷轴类")]
+    MagicScroll = 3410000,
+
+    #region 具体的魔法卷轴
+
+    #endregion
+    #endregion
+
+    #endregion
+
+
     #endregion
 
     #region 炼金药剂类
@@ -1128,6 +1150,11 @@ public enum EnumGoodsType
     [FieldExplan("藤蔓陷阱")]
     TMXX = 3310001,
     /// <summary>
+    /// 传讯魔法卷轴
+    /// </summary>
+    [FieldExplan("传讯魔法卷轴")]
+    CXMFJZ = 3410001,
+    /// <summary>
     ///个性者药剂
     /// </summary>
     [FieldExplan("个性者药剂")]
@@ -1234,7 +1261,7 @@ public static class GoodsStaticTools
                 int layer2Max = layer2 * (j + 1);
                 var layer2TempDataStruct = layer1TempDataStruct.Where(temp => temp.value >= layer2Min && temp.value < layer2Max)
                     .Select(temp => new { type = temp.type, value = temp.value % layer2, baseValue = temp.baseValue })
-                    .OrderBy(temp=>temp.value).ToArray();
+                    .OrderBy(temp => temp.value).ToArray();
                 if (layer2TempDataStruct.Length == 0)
                     continue;
                 GoodsNode layer2TreeNode = new GoodsNode();

@@ -35,6 +35,10 @@ public partial class GameState : INowTaskState
     /// 检测物品的则会能够在执行任务字典
     /// </summary>
     Dictionary<int, TaskMap.RunTimeTaskInfo> checkGoodsRunTimeDic;
+    /// <summary>
+    /// 特殊状态的检测字典 
+    /// </summary>
+    Dictionary<int, TaskMap.RunTimeTaskInfo> checkSpecialRunTimeDic;
 
     /// <summary>
     /// 检测移除的id集合
@@ -61,6 +65,7 @@ public partial class GameState : INowTaskState
     /// </summary>
     INowTaskStateEvent iNowTaskStateEvent;
 
+
     /// <summary>
     /// 任务接口实现对象的加载函数 
     /// </summary>
@@ -80,6 +85,7 @@ public partial class GameState : INowTaskState
         checkNPCRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         checkMonsterRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         checkGoodsRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
+        checkSpecialRunTimeDic = new Dictionary<int, TaskMap.RunTimeTaskInfo>();
         runTimeTaskInfos_Start.ForEach(temp => SetStartTaskCheckClassify(temp));
         //触发事件
         foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in todoList)
@@ -138,6 +144,12 @@ public partial class GameState : INowTaskState
             if (mustAdd)
                 checkGoodsRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo); ;
         }
+        //特殊状态检测
+        if (runTimeTaskInfo.TaskInfoStruct.NeedSpecialCheck != TaskMap.Enums.EnumTaskSpecialCheck.None)
+        {
+            checkSpecialRunTimeDic.Add(runTimeTaskInfo.ID, runTimeTaskInfo);
+        }
+
     }
 
     /// <summary>
@@ -179,6 +191,10 @@ public partial class GameState : INowTaskState
             case EnumCheckTaskType.NPC:
                 if (value != -1)
                     return CheckNowTaskNPC(value);
+                break;
+            case EnumCheckTaskType.Special:
+                if (value != -1)
+                    return CheckNowTaskSpecial(value);
                 break;
         }
         return false;
@@ -250,6 +266,8 @@ public partial class GameState : INowTaskState
                 if (checkMonsterRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
                     continue;
                 if (checkGoodsRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
+                    continue;
+                if (checkSpecialRunTimeDic.ContainsKey(runTimeTaskInfo.ID))
                     continue;
                 checkRemoveIDList.Add(runTimeTaskInfo.ID);
             }
@@ -432,6 +450,50 @@ public partial class GameState : INowTaskState
     }
 
     /// <summary>
+    /// 检测特殊状态所用的临时集合
+    /// </summary>
+    List<TaskMap.RunTimeTaskInfo> checkSpecialDicTempList;
+
+    /// <summary>
+    /// 检测任务(关于特殊状态)
+    /// </summary>
+    /// <param name="specialTypeID"></param>
+    /// <returns></returns>
+    bool CheckNowTaskSpecial(int specialTypeID)
+    {
+        if (checkSpecialRunTimeDic == null)
+            return false;
+        if (checkSpecialDicTempList == null)
+            checkSpecialDicTempList = new List<TaskMap.RunTimeTaskInfo>();
+        if (checkSpecialRunTimeDic.Count > 0)
+        {
+            checkSpecialDicTempList.Clear();
+            foreach (KeyValuePair<int,TaskMap.RunTimeTaskInfo> checkSpecialRunTime in checkSpecialRunTimeDic)
+            {
+                TaskMap.RunTimeTaskInfo runTimeTaskInfo = checkSpecialRunTime.Value;
+                if (runTimeTaskInfo.TaskInfoStruct.NeedSpecialCheck == TaskMap.Enums.EnumTaskSpecialCheck.None)//该任务不需要判断特殊状态 
+                    continue;
+                TaskMap.Enums.EnumTaskSpecialCheck specialType = (TaskMap.Enums.EnumTaskSpecialCheck)specialTypeID;
+                if (specialType == TaskMap.Enums.EnumTaskSpecialCheck.None)
+                    continue;
+                if (runTimeTaskInfo.TaskInfoStruct.NeedSpecialCheck != specialType)
+                    continue;
+                checkSpecialDicTempList.Add(runTimeTaskInfo);
+            }
+            if (checkSpecialDicTempList.Count > 0)
+            {
+                foreach (TaskMap.RunTimeTaskInfo runTimeTaskInfo in checkSpecialDicTempList)
+                {
+                    //如果检测出已完成则移除
+                    checkSpecialRunTimeDic.Remove(runTimeTaskInfo.ID);
+                    //此处不完成任务,因为这时候很可能处于特殊状态
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
     /// 是否存在检测的任务ID
     /// </summary>
     /// <param name="checkTaskID">检测的任务ID</param>
@@ -445,6 +507,8 @@ public partial class GameState : INowTaskState
         if (checkMonsterRunTimeDic.ContainsKey(checkTaskID))
             return false;
         if (checkGoodsRunTimeDic.ContainsKey(checkTaskID))
+            return false;
+        if (checkSpecialRunTimeDic.ContainsKey(checkTaskID))
             return false;
         return true;
     }
@@ -479,6 +543,7 @@ public partial class GameState : INowTaskState
         checkNPCRunTimeDic.Remove(taskID);
         checkMonsterRunTimeDic.Remove(taskID);
         checkGoodsRunTimeDic.Remove(taskID);
+        checkSpecialRunTimeDic.Remove(taskID);
     }
 
     /// <summary>

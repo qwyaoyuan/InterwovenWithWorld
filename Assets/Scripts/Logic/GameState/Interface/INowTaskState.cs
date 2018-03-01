@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public interface INowTaskState : IBaseState
 {
+
     /// <summary>
     /// 检测当前任务情况
     /// Update中持续检测的是位置的状态的数据
@@ -79,4 +80,9 @@ public enum EnumCheckTaskType
     /// 点击NPC
     /// </summary>
     NPC,
+    /// <summary>
+    /// 特殊的状态检测
+    /// </summary>
+    Special,
 }
+

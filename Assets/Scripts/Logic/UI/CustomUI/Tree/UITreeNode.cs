@@ -207,7 +207,7 @@ public class UITreeNode : MonoBehaviour, IEnumerable<UITreeNode>
     {
         get
         {
-            if (ChildNodes.Count < index && index >= 0)
+            if (index < ChildNodes.Count && index >= 0)
             {
                 return ChildNodes[index];
             }
@@ -358,7 +358,8 @@ public class UITreeNode : MonoBehaviour, IEnumerable<UITreeNode>
         {
             Parent.Remove(this);
         }
-        foreach (var item in ChildNodes)
+        var tempChildNodes = ChildNodes.ToArray();
+        foreach (var item in tempChildNodes)
         {
             item.DeleteObject();
         }

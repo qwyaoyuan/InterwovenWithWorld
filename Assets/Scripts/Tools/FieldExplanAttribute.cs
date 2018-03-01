@@ -84,6 +84,19 @@ public class FieldExplanAttribute : Attribute
     }
 
     /// <summary>
+    /// 获取属性上挂载的特性
+    /// </summary>
+    /// <param name="propertyInfo"></param>
+    /// <returns></returns>
+    public static FieldExplanAttribute GetPropertyExplan(PropertyInfo propertyInfo)
+    {
+        if (propertyInfo == null)
+            return null;
+        FieldExplanAttribute fieldExplanAttribute = propertyInfo.GetCustomAttributes(typeof(FieldExplanAttribute), false).OfType<FieldExplanAttribute>().FirstOrDefault();
+        return fieldExplanAttribute;
+    }
+
+    /// <summary>
     /// 设置枚举说明到键值对集合中
     /// </summary>
     /// <typeparam name="T">类型</typeparam>
@@ -189,4 +202,80 @@ public class TargetTypeExplanAttribute : Attribute
         }
     }
 
+}
+
+/// <summary>
+/// 用于限定枚举的范围
+/// </summary>
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+public class EnumRangeAttribute : Attribute
+{
+    int from;
+    int to;
+
+    public EnumRangeAttribute(int from, int to)
+    {
+        this.from = from;
+        this.to = to;
+    }
+
+    public T GetFrom<T>()
+    {
+        try
+        {
+            string value = from.ToString();
+            return (T)Enum.Parse(typeof(T), value);
+        }
+        catch
+        {
+            return default(T);
+        }
+    }
+
+    public T GetTo<T>()
+    {
+        try
+        {
+            string value = to.ToString();
+            return (T)Enum.Parse(typeof(T), value);
+        }
+        catch
+        {
+            return default(T);
+        }
+    }
+
+    public T[] GetCanUseEnum<T>()
+    {
+        int fromInt = 0;
+        int toInt = 0;
+        try
+        {
+            string value = from.ToString();
+            fromInt = (int)Enum.Parse(typeof(T), value);
+        }
+        catch { }
+        try
+        {
+            string value = to.ToString();
+            toInt = (int)Enum.Parse(typeof(T), value);
+        }
+        catch { }
+        List<T> resultList = new List<T>();
+        foreach (T item in Enum.GetValues(typeof(T)))
+        {
+            int thisInt = int.MinValue;
+            try
+            {
+                string value = item.ToString();
+                thisInt = (int)Enum.Parse(typeof(T), value);
+            }
+            catch { }
+            if (thisInt != int.MinValue && thisInt <= toInt && thisInt >= fromInt)
+            {
+                resultList.Add(item);
+            }
+        }
+        return resultList.ToArray();
+    }
 }
