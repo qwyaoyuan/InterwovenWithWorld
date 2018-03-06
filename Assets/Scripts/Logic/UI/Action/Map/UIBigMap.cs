@@ -118,13 +118,16 @@ public class UIBigMap : MonoBehaviour
         iMapState = GameState.Instance.GetEntity<IMapState>();
         iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
         npcData = DataCenter.Instance.GetMetaData<NPCData>();
+        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        playerState.UpdateMapMaskData(iGameState.SceneName);
         runTimeTasksData = DataCenter.Instance.GetEntity<RuntimeTasksData>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         UIManager.Instance.KeyPressHandle += Instance_KeyPressHandle;
         bigMapOperateState = EnumBigMapOperateState.OperateMap;
         showSettingPanel.gameObject.SetActive(false);
         ResetSceneDropDown();
-        ResetMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene, iGameState.SceneName);
+        //ResetMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene, iGameState.SceneName);
+        StartCoroutine(NextFrameInit());
         //判断是否是点击路牌打开的该界面.如果是才可以传送
         IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
         NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(iGameState.SceneName, iInteractiveState.ClickInteractiveNPCID);
@@ -135,6 +138,17 @@ public class UIBigMap : MonoBehaviour
             canTransport = false;
         }
     }
+
+    /// <summary>
+    /// 在第二帧初始化地图
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator NextFrameInit()
+    {
+        yield return null;
+        ResetMap(iMapState.MapBackSprite, iMapState.MaskMapSprite, iMapState.MapRectAtScene, iGameState.SceneName);
+    }
+
 
     /// <summary>
     /// 控件隐藏时

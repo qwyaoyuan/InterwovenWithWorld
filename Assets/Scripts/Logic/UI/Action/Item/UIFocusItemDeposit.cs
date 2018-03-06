@@ -396,7 +396,16 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
             }
             else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Elixir))//如果是炼金药剂类则直接服用
             {
-                throw new System.Exception("物品栏吃药功能暂时未实现");
+                Debug.Log("物品栏吃药功能暂时未实现");
+            }
+            else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Item))//如果是道具
+            {
+                if (enumGoodsType == EnumGoodsType.MagicScroll)//此处的魔法卷轴有一个任务的特殊检测
+                {
+                    INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+                    iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.SummonsScrollMagic);
+                }
+                Debug.Log("道具功能暂未实现");
             }
         }
     }

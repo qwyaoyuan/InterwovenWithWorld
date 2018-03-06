@@ -13,7 +13,7 @@ public interface IObjInteractive
     /// 造成伤害
     /// </summary>
     /// <param name="attackHurtStruct"></param>
-    void GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct);
+    CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct);
     /// <summary>
     /// 获取指定类型的对象
     /// </summary>
@@ -23,4 +23,5 @@ public interface IObjInteractive
 
 
 }
+
 

@@ -15,7 +15,7 @@ public class LevelManagerEditor : EditorWindow
     /// <summary>
     /// 保存等级信息的完整目录路径
     /// </summary>
-    public string dataDirecotryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Level";
+    public string dataDirecotryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Level";
 
     /// <summary>
     /// 等级与数据对应的字典
@@ -31,6 +31,9 @@ public class LevelManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataDirecotryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Level";
+
         if (!Directory.Exists(dataDirecotryPath))
             Directory.CreateDirectory(dataDirecotryPath);
         if (!File.Exists(dataDirecotryPath + "/Level.txt"))

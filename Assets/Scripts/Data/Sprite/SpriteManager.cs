@@ -94,7 +94,7 @@ public class SpriteManager
         loaded = true;
     }
 
-    static void Load()
+    public static void Load()
     {
         if (SpriteManager.CloseEnumerableLoad != null)
         {

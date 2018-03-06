@@ -209,7 +209,7 @@ public class MoveManager : IInput
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerState, ForceMoveStruct>(temp => temp.ForceMoveStruct)))
         {
             CharacterController characterController = iPlayerState.PlayerObj.GetComponent<CharacterController>();
-            Vector3 self_forward = iPlayerState.PlayerObj.transform .forward * iPlayerState.ForceMoveStruct.MoveSpeed * Time.deltaTime;
+            Vector3 self_forward = iPlayerState.PlayerObj.transform.forward * iPlayerState.ForceMoveStruct.MoveSpeed * Time.deltaTime;
             self_forward.y = 0;
             characterController.Move(self_forward);
         }
@@ -247,11 +247,13 @@ public class MoveManager : IInput
         if (CheckCanMoveState()
             && (!iAnimatorState.IsMagicActionState || (iAnimatorState.IsMagicActionState && iAnimatorState.MagicAnimatorType == EnumMagicAnimatorType.Sing))
             && !iAnimatorState.IsPhycisActionState
-            && !iAnimatorState.IsSkillState)
+            && !iAnimatorState.IsSkillState
+            && !iAnimatorState.IsDeathAnimator
+            && !iAnimatorState.IsGetHitAnimator)
         {
 
             float moveSpeed = iPlayerAttributeState.MoveSpeed;//移动速度(向前移动  向后移动0.7  左右移动0.3) 
-            if ( iAnimatorState.MagicAnimatorType == EnumMagicAnimatorType.Sing)
+            if (iAnimatorState.MagicAnimatorType == EnumMagicAnimatorType.Sing)
                 moveSpeed *= 0.3f;
             float strength = Mathf.Pow(forward.sqrMagnitude, 0.5f);//速度的力度
             float animForwardAngle = 0;//0前方向 1,-1后方向 0.5右方向 -0.5左方向
@@ -297,8 +299,8 @@ public class MoveManager : IInput
             else if (iGameState.ViewModel == EnumViewModel.Solid)//固定视角摄像机的方向判断
             {
                 //如果现在的模式不是选择怪物或者是选择怪物但是周围没有怪物则使用摇杆控制方向
-                if (iGameState.SelectTargetModel != EnumSelectTargetModel.SelectMonster||
-                    (iGameState.SelectTargetModel == EnumSelectTargetModel.SelectMonster&& !iPlayerState.SelectObj))
+                if (iGameState.SelectTargetModel != EnumSelectTargetModel.SelectMonster ||
+                    (iGameState.SelectTargetModel == EnumSelectTargetModel.SelectMonster && !iPlayerState.SelectObj))
                 {
                     if (lastView == Vector3.zero)//如果没有使用右摇杆控制方向,则方向由左摇杆来确定
                     {
@@ -393,7 +395,9 @@ public class MoveManager : IInput
     /// <param name="view"></param>
     public void View(Vector2 view)
     {
-        if (CheckCanMoveState())
+        if (CheckCanMoveState() 
+            && !iAnimatorState.IsDeathAnimator
+            && !iAnimatorState.IsGetHitAnimator)
         {
             if (iGameState.ViewModel == EnumViewModel.Free)//第三人称自由摄像机
             {

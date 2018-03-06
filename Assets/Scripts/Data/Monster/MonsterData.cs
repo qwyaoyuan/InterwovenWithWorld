@@ -115,6 +115,25 @@ public class MonsterDataInfo
     /// </summary>
     public EnumMonsterType MonsterType;
 
+    /// <summary>
+    /// 死亡动画时间
+    /// </summary>
+    public float DeathAnimTime = 3;
+    /// <summary>
+    /// 等待销毁时间
+    /// </summary>
+    public float WaitDestoryTime = 3;
+
+    /// <summary>
+    /// 符合字典中的所有任务状态下的情况可以显示,如果没有则一定显示
+    /// </summary>
+    public List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>> TaskToShowList;
+
+    /// <summary>
+    /// 符合字典中的任意一个状态的情况下不可以显示,如果没有则一定显示
+    /// </summary>
+    public List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>> TaskToHideList;
+
     [JsonProperty]
     private float Center_X, Center_Y, Center_Z;
     /// <summary>
@@ -243,6 +262,8 @@ public class MonsterDataInfo
         monsterDataInfo.Explane = Explane;
         monsterDataInfo.monsterPrefabName = monsterPrefabName;
         monsterDataInfo.MonsterPrefab = MonsterPrefab;
+        monsterDataInfo.TaskToShowList = new List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>>(TaskToShowList.ToArray());
+        monsterDataInfo.TaskToHideList = new List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>>(TaskToHideList.ToArray());
         if (MonsterBaseAttribute != null)
             monsterDataInfo.MonsterBaseAttribute = MonsterBaseAttribute.Clone();
         if (AIData != null)
@@ -275,6 +296,51 @@ public class MonsterDataInfo
             {
                 CoefficientRatioReducingDamageFactor = roleOfRaceInfoStruct.magicDefenseToHurtRateRatio
             };
+        }
+    }
+
+    /// <summary>
+    /// 是否可以显示该怪物
+    /// </summary>
+    /// <param name="GetTaskProgressFunc">通过id获取任务状态</param>
+    /// <returns></returns>
+    public bool CanShowThis(Func<int, TaskMap.Enums.EnumTaskProgress> GetTaskProgressFunc)
+    {
+        if (GetTaskProgressFunc == null)
+            return false;
+        bool mustHide = false;//必须隐藏 
+        if (TaskToHideList != null)
+        {
+            foreach (var item in TaskToHideList)
+            {
+                TaskMap.Enums.EnumTaskProgress nowState = GetTaskProgressFunc(item.Key);
+                if (item.Value == nowState)
+                {
+                    mustHide = true;
+                    break;
+                }
+            }
+        }
+        bool canShow = true;//可以显示
+        if (TaskToShowList != null)
+        {
+            foreach (var item in TaskToShowList)
+            {
+                TaskMap.Enums.EnumTaskProgress nowState = GetTaskProgressFunc(item.Key);
+                if (item.Value != nowState)
+                {
+                    canShow = false;
+                }
+            }
+        }
+        if (mustHide)
+            return false;
+        else
+        {
+            if (canShow)
+                return true;
+            else
+                return false;
         }
     }
 }
@@ -380,6 +446,12 @@ public class MonsterAIData_GoOnPatrol : MonsterAIDataStruct
     /// </summary>
     [FieldExplan("触发后是否通知同组的怪物")]
     public bool NotifyOther;
+
+    /// <summary>
+    /// 创建范围
+    /// </summary>
+    [FieldExplan("创建范围")]
+    public float CreateRange;
 
     protected override MonsterAIDataStruct CloneChild(MonsterAIDataStruct target)
     {

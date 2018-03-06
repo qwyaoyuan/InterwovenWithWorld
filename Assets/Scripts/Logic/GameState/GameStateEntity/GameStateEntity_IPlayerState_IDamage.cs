@@ -265,7 +265,11 @@ public partial class GameState
                 IncreaseRatioInjuryFactor = iPlayerState.SelfRoleOfRaceInfoStruct.magicAttackToDamageRateRatio
             }
         };
-        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        CalculateHurt.Result hurtResult = interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        if (hurtResult.IsCrit || hurtResult.hurtRate > 0.2f)
+        {
+            iPlayerState.SetVibration(0.1f, 0.8f, 0.8f);//设置手柄震动
+        }
         return true;
     }
 
@@ -289,7 +293,7 @@ public partial class GameState
         float runTime = 0;//检测超时时间
         if (physicSkillInjuryDetection != null)
         {
-            Action BeginCheckAttack = () => 
+            Action BeginCheckAttack = () =>
             {
                 runTaskStruct_NormalAttack.StopTask();//停止任务
                 physicSkillInjuryDetection.CheckAttack(EnumSkillType.PhysicAttack, _WeaponTypeByPlayerState, 1, null, (innerOrder, target) =>
@@ -300,8 +304,8 @@ public partial class GameState
                 );
             };
             //该任务用于检测是否可以进入该普通攻击的检测
-            runTaskStruct_NormalAttack.StartTask(0, 
-                () => 
+            runTaskStruct_NormalAttack.StartTask(0,
+                () =>
                 {
                     switch (attackOrder)
                     {
@@ -365,14 +369,17 @@ public partial class GameState
                 MinimumDamageFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicQuickToMinDamageRatio
             }
         };
-        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        CalculateHurt.Result hurtResult = interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        if (hurtResult.IsCrit || hurtResult.hurtRate > 0.2f)
+        {
+            iPlayerState.SetVibration(0.1f, 0.6f, 0.6f);//设置手柄震动
+        }
         //如果命中了则自身的动画造成0.1秒的延迟
         IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         if (weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Arch)
         {
             iAnimatorState.PhysicHitMonsterAnimDelay = true;
         }
-        iPlayerState.SetVibration(0.1f, 1, 1);//设置手柄震动
         //停止持续
         iAnimatorState.SkillSustainable = false;
         //判断武器类型
@@ -461,12 +468,15 @@ public partial class GameState
                 MinimumDamageFactor = iPlayerState.SelfRoleOfRaceInfoStruct.physicQuickToMinDamageRatio
             }
         };
-        interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        CalculateHurt.Result hurtResult = interactiveAsMonster.GiveAttackHurtStruct(attackHurtStruct);
+        if (hurtResult.IsCrit || hurtResult.hurtRate > 0.2f)
+        {
+            iPlayerState.SetVibration(0.1f, 0.7f, 0.7f);//设置手柄震动
+        }
         //如果命中了则自身的动画造成0.1秒的延迟
         IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         if (weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Arch)
             iAnimatorState.PhysicHitMonsterAnimDelay = true;
-        iPlayerState.SetVibration(0.1f, 1, 1);//设置手柄震动
         //停止持续
         iAnimatorState.SkillSustainable = false;
         //如果是冲锋则停止任务

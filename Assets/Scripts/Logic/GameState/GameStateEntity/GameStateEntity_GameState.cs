@@ -102,6 +102,10 @@ public partial class GameState : IGameState
         //如果要切换的场景不是当前场景则加载场景
         if (SceneName != sceneName)
         {
+            //保存原来地形的遮罩图
+            if (!string.IsNullOrEmpty(SceneName))
+                playerState.SaveGetSceneMapMaskData(SceneName);
+            //开始加载
             UIChangeScene.Instance.LoadScene(sceneName, result =>
             {
                 //自身调用初始化数据

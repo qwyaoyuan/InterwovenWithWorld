@@ -26,6 +26,10 @@ public interface ISkillState : IBaseState
     /// <returns>是否可以释放该技能</returns>
     bool EndCombineSkillRelease();
     /// <summary>
+    /// 受到攻击后的技能状态改变,如果当前是咏唱状态则打断咏唱,如果当前是释放技能状态则不做处理,如果当前在普通攻击则打断
+    /// </summary>
+    void GetHitToSkillState();
+    /// <summary>
     /// 释放普通技能,如果正在释放其他技能则无法释放 
     /// </summary>
     /// <param name="skillBaseStruct"></param>

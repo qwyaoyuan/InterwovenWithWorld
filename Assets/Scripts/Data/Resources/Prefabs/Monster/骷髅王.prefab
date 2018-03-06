@@ -646,11 +646,11 @@ GameObject:
   - component: {fileID: 54889262659006322}
   - component: {fileID: 136697297782819048}
   - component: {fileID: 136925806972193294}
-  - component: {fileID: 195401614064514268}
   - component: {fileID: 114273708860665634}
   - component: {fileID: 114666885112970878}
   - component: {fileID: 114093348328825226}
   - component: {fileID: 114175493617673330}
+  - component: {fileID: 135380431503606154}
   m_Layer: 0
   m_Name: "\u9AB7\u9AC5\u738B"
   m_TagString: Untagged
@@ -1494,7 +1494,7 @@ MonoBehaviour:
   disableAction: 0
   versionUpdateProxyGraph: {fileID: 0}
   _graph: {fileID: 11400000, guid: e436bf1e60da9ee4789e50a388983b33, type: 2}
-  _blackboard: {fileID: 0}
+  _blackboard: {fileID: 114666885112970878}
 --- !u!114 &114175493617673330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1530,7 +1530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serializedBlackboard: '{"_variables":{"HP":{"_value":100,"_name":"HP","_id":"afc5d5d4-30d4-43c6-b694-da2a5a042038","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+  _serializedBlackboard: '{"_variables":{"HP1":{"_value":100,"_name":"HP1","_id":"afc5d5d4-30d4-43c6-b694-da2a5a042038","$type":"NodeCanvas.Framework.Variable`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"HP":{"_value":100.0,"_name":"HP","_id":"babdbe4e-9526-46e5-9f71-d366b2745990","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"ActionType":{"_name":"ActionType","_id":"1627a827-bb68-4dae-891b-8a6bb2e442ef","$type":"NodeCanvas.Framework.Variable`1[[EnumBossActionType,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"SpecialState":{"_name":"SpecialState","_id":"3be155dd-c2d2-4a64-aad8-f717cfcca2c6","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"GetHit":{"_name":"GetHit","_id":"360ee146-d8e5-4c01-98e4-bc83aaa44dff","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
@@ -1541,7 +1542,7 @@ MonoBehaviour:
     UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"KeepDistance":{"_value":0.5,"_name":"KeepDistance","_id":"e08876f8-ecde-4cff-9fb4-f9b8d80f240e","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"Speed":{"_value":3.0,"_name":"Speed","_id":"24294463-2c6f-44c0-9ec1-5e1312595917","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"StartForward":{"_value":{"z":1.0},"_name":"StartForward","_id":"2d3263ce-fd41-437a-a7be-061ef69796c1","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Vector3,
-    UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"Target":{"_name":"Target","_id":"54111e9e-a31f-4529-b8ba-a8e36d1def00","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"TempTarget":{"_name":"TempTarget","_id":"54111e9e-a31f-4529-b8ba-a8e36d1def00","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
     UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"AttackSubTree":{"_value":1,"_name":"AttackSubTree","_id":"061e797a-6240-48fe-84e1-d130446c646e","$type":"NodeCanvas.Framework.Variable`1[[NodeCanvas.BehaviourTrees.BehaviourTree,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"DefenseSubTree":{"_value":2,"_name":"DefenseSubTree","_id":"797dcd62-224c-4413-ad29-d1224d2befb7","$type":"NodeCanvas.Framework.Variable`1[[NodeCanvas.BehaviourTrees.BehaviourTree,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"AttackAIDataStructList":{"_value":[{"AttackDistance":5.0,"AttackAngle":10.0,"AttackID":1,"CoolTime":0.2,"AttackDurationTime":2.0,"MaxWaitTime":5.0},{"AttackDistance":5.0,"AttackAngle":10.0,"AttackID":1,"CoolTime":0.2,"AttackDurationTime":2.0,"MaxWaitTime":5.0}],"_name":"AttackAIDataStructList","_id":"7446260a-8dcb-401b-be45-1998e2e42151","$type":"NodeCanvas.Framework.Variable`1[[System.Collections.Generic.List`1[[AttackAIDataStruct,
@@ -1553,11 +1554,24 @@ MonoBehaviour:
     Hurt":{"_name":"Target Hurt","_id":"4b93837a-14cb-4b75-b596-cfb62957ec16","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"AttackMessageName":{"_value":"AttackMessage","_name":"AttackMessageName","_id":"cad59720-8d7e-4c02-b413-906d75dcbdab","$type":"NodeCanvas.Framework.Variable`1[[System.String,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"DeffenceMessageName":{"_value":"DefenceMessage","_name":"DeffenceMessageName","_id":"a455807f-0b0e-4104-80fe-71bda71d18a0","$type":"NodeCanvas.Framework.Variable`1[[System.String,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PlayerTag":{"_value":"Player","_name":"PlayerTag","_id":"e536fd75-2946-4483-9603-c5e80a4e40f3","$type":"NodeCanvas.Framework.Variable`1[[System.String,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _objectReferences:
   - {fileID: 0}
   - {fileID: 11400000, guid: aa0d27c32274b4f40a0cf2817ec9ffe1, type: 2}
   - {fileID: 11400000, guid: 2a24139987480cc40add24bf460adcf5, type: 2}
+--- !u!135 &135380431503606154
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1880364555698850}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136697297782819048
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1765,24 +1779,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.40856808, y: -0.08656895, z: 0.020407863}
     m_Extent: {x: 0.19461936, y: 0.24860519, z: 0.20952404}
   m_DirtyAABB: 0
---- !u!195 &195401614064514268
-NavMeshAgent:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1880364555698850}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4

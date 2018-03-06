@@ -19,7 +19,7 @@ public class StatusManagerEditor : EditorWindow
     /// <summary>
     /// 保存状态信息的完整目录路径
     /// </summary>
-    public string dataDirecotryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Status";
+    public string dataDirecotryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Status";
 
     /// <summary>
     /// 数字字典
@@ -35,6 +35,9 @@ public class StatusManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataDirecotryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Status";
+
         assembly = typeof(StatusActionDataInfo_Base).Assembly;
         if (!Directory.Exists(dataDirecotryPath))
             Directory.CreateDirectory(dataDirecotryPath);

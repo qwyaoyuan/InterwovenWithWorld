@@ -130,9 +130,9 @@ public class MapDataInfo
         }
     }
 
-    public void Load()
+    public void Load(bool init = false)
     {
-        if (mapSprite == null)
+        if (mapSprite == null || init)
             if (!string.IsNullOrEmpty(mapSpriteID))
                 mapSprite = SpriteManager.GetSrpite(mapSpriteID);
     }

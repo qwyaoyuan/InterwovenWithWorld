@@ -85,6 +85,14 @@ public partial class GameState
         CreateAttributeHandle(-(int)EnumSkillType.SSS01);
         CreateAttributeHandle(-(int)EnumSkillType.SSS02);
         #endregion
+        #region 特殊状态 特殊状态从-10000开始
+        EnumStatusEffect[] enumStatusEffects = Enum.GetValues(typeof(EnumStatusEffect)).OfType<EnumStatusEffect>().ToArray();
+        foreach (EnumStatusEffect enumStatusEffect in enumStatusEffects)
+        {
+            int statusAttributeID = -10000 - (int)enumStatusEffect;
+            CreateAttributeHandle(statusAttributeID);
+        }
+        #endregion
         iAttributeHandleIndex = minDefaultIAttributeHandleIndex;
     }
 
@@ -265,10 +273,15 @@ public partial class GameState
     { }
 
     /// <summary>
-    /// 设置种族成长对象
+    /// 设置种族成长对象(设置自身的 ),也几乎没有任何作用
     /// </summary>
     /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
-    public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct) { }
+    public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct)
+    {
+        IAttributeState iAttributeState=  GetAttribute(0);//获取自身的对象
+        if (iAttributeState != null)
+            iAttributeState.SetRoleOfRaceAddition(roleOfRaceInfoStruct);
+    }
 
 
     #region IAttributeState 属性状态

@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public partial class GameState
 {
+
     #region IDebuffState Debuff状态
     /// <summary>
     /// 冰冻

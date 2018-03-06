@@ -134,5 +134,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 023eb3659c7dce047af267f7e5ad1a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followTime: 2.1
+  followTime: 0.6
   shotSpeed: 100

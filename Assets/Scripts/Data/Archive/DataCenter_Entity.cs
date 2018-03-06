@@ -179,6 +179,11 @@ public class PlayerState
     /// </summary>
     public List<int> EntryEnableList;
 
+    /// <summary>
+    /// 玩家的行动路线
+    /// </summary>
+    public List<Vector2> movePathList;
+
     public PlayerState()
     {
         SkillPoint = new Dictionary<EnumSkillType, int>();
@@ -186,6 +191,7 @@ public class PlayerState
         PlayerAllGoods = new List<PlayGoods>();
         CombineSkills = new List<EnumSkillType[]>();
         EntryEnableList = new List<int>();
+        movePathList = new List<Vector2>();
     }
 
     /// <summary>
@@ -202,6 +208,13 @@ public class PlayerState
         {
             byte[,] maskDataArray = new byte[(int)targetSceneMapSprite.rect.width, (int)targetSceneMapSprite.rect.height];
             SceneMapMaskDataDic.Add(sceneName, maskDataArray);
+            for (int i = 0; i < maskDataArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < maskDataArray.GetLength(1); j++)
+                {
+                    maskDataArray[i, j] = 255;
+                }
+            }
         }
         if (sceneMapMaskSpriteDic == null)
             sceneMapMaskSpriteDic = new Dictionary<string, Sprite>();
@@ -215,7 +228,7 @@ public class PlayerState
                 for (int j = 0; j < texture2D.height; j++)
                 {
                     float data = maskDatArray[i, j] / 255f;
-                    colors[i * texture2D.height + j] = new Color(data, data, data);
+                    colors[i * texture2D.height + j] = new Color(0, 0, 0, data);
                 }
             }
             texture2D.SetPixels(colors);
@@ -232,6 +245,7 @@ public class PlayerState
     /// <param name="sceneName">指定的场景</param>
     public void SaveGetSceneMapMaskData(string sceneName)
     {
+        UpdateMapMaskData(sceneName);
         if (sceneMapMaskSpriteDic != null && sceneMapMaskSpriteDic.ContainsKey(sceneName))
         {
             Sprite sprite = sceneMapMaskSpriteDic[sceneName];
@@ -243,7 +257,7 @@ public class PlayerState
                 for (int j = 0; j < texture2D.height; j++)
                 {
                     Color color = colors[i * texture2D.height + j];
-                    mapDataArray[i, j] = (byte)(color.r * 255);
+                    mapDataArray[i, j] = (byte)(color.a * 255);
                 }
             }
             if (SceneMapMaskDataDic.ContainsKey(sceneName))
@@ -251,6 +265,83 @@ public class PlayerState
                 SceneMapMaskDataDic[sceneName] = mapDataArray;
             }
         }
+    }
+
+    /// <summary>
+    /// 设置玩家的行动路线
+    /// </summary>
+    /// <param name="movePaths">玩家在地图上的坐标</param>
+    public void SetPlayerMovePath(string sceneName, params Vector2[] movePaths)
+    {
+        foreach (Vector2 now in movePaths)
+        {
+            bool add = true;
+            foreach (Vector2 item in movePathList)
+            {
+                if (Vector2.Distance(item, now) < 10f)
+                {
+                    add = false;
+                    break;
+                }
+            }
+            if (add)
+            {
+                movePathList.Add(now);
+            }
+        }
+        if (movePathList.Count > 2)
+            UpdateMapMaskData(sceneName);
+    }
+
+    /// <summary>
+    /// 根据设置的玩家的行动路线更新遮罩地图
+    /// </summary>
+    public void UpdateMapMaskData(string sceneName)
+    {
+        if (!sceneMapMaskSpriteDic.ContainsKey(sceneName))
+            return;
+
+        if (movePathList.Count > 0)
+        {
+            Sprite thisSprite = sceneMapMaskSpriteDic[sceneName];
+            Texture2D texture2D = thisSprite.texture;
+            int width = texture2D.width;
+            int height = texture2D.height;
+            foreach (Vector2 movePath in movePathList)
+            {
+                int centerX = (int)movePath.x;
+                int centerY = (int)movePath.y;
+                Rect rectRange = new Rect(0, 0, 0, 0);
+                rectRange.xMin = (centerX - 20) > 0 ? (centerX - 20) : 0;
+                rectRange.yMin = (centerY - 20) > 0 ? (centerY - 20) : 0;
+                rectRange.xMax = (centerX + 20) < width ? (centerX + 20) : (width - 1);
+                rectRange.yMax = (centerY + 20) < height ? (centerY + 20) : (height - 1);
+                Color[] colors = texture2D.GetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height);
+                for (int i = centerX - 20; i < centerX + 20; i++)
+                {
+                    for (int j = centerY - 20; j < centerY + 20; j++)
+                    {
+                        float distance = Mathf.Pow(centerX - i, 2) + Mathf.Pow(centerY - j, 2);
+                        if (i >= 0 && j >= 0 && i <= width && j <= height && distance < 400)
+                        {
+                            int index = (int)((j - rectRange.yMin) * rectRange.width + (i - rectRange.xMin));
+                            float rade = 0;
+                            if (distance > 50)
+                            {
+                                rade = 1- (400f - distance) / 350f;
+                                rade = Mathf.Pow(rade, 0.5f);
+                            }
+                            rade = Mathf.Clamp(rade, 0, 1);
+                            if (colors[index].a > rade)
+                                colors[index] = new Color(0, 0, 0, rade);
+                        }
+                    }
+                }
+                texture2D.SetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height, colors);
+            }
+            texture2D.Apply();
+        }
+        movePathList.Clear();
     }
 }
 

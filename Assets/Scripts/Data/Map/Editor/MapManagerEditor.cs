@@ -16,7 +16,7 @@ public class MapManagerEditor : EditorWindow
     /// <summary>
     /// 保存地图配置信息的文件夹路径
     /// </summary>
-    public string dataDirectoryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Map";
+    public string dataDirectoryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Map";
 
     /// <summary>
     /// 场景对应地图数组字典
@@ -32,6 +32,9 @@ public class MapManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataDirectoryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Map";
+
         if (!Directory.Exists(dataDirectoryPath))
             Directory.CreateDirectory(dataDirectoryPath);
         if (!File.Exists(dataDirectoryPath + "/Map.txt"))
@@ -165,6 +168,10 @@ public class MapManagerEditor : EditorWindow
             string thisSceneName = sceneToMapDataDic.Where(temp => object.Equals(temp.Value, tempMapDataInfo)).Select(temp => temp.Key).FirstOrDefault();
             if (!string.IsNullOrEmpty(thisSceneName))
             {
+                if ( GUILayout.Button("刷新精灵库" )&& EditorUtility.DisplayDialog("请再次确认","是否刷新?","是","否"))
+                {
+                    SpriteManager.Load();
+                }
                 ReflectUnit<MapDataInfo> mapDataInfoUnit = Entry.On(tempMapDataInfo);
                 //设置场景名
                 if (!string.Equals(tempMapDataInfo.SceneName, thisSceneName))
@@ -183,6 +190,7 @@ public class MapManagerEditor : EditorWindow
                 {
                     string mapSpriteID = SpriteManager.GetName(mapSprite);
                     mapDataInfoUnit.Field("mapSpriteID", mapSpriteID).End();
+                    tempMapDataInfo.Load(true);
                 }
             }
         }

@@ -91,7 +91,12 @@ public class MonsterBaseLogic : MonoBehaviour
     /// <param name="iOjbInteractive"></param>
     protected virtual void CheckTargetResult(IObjInteractive iOjbInteractive)
     {
-        if (tempCheckedTargetList.Contains(iOjbInteractive)) return;
+        if (NowCheckFrame == null)
+            return;
+        if (attackAnimationTime > NowCheckFrame.endTime || attackAnimationTime < NowCheckFrame.startTime)
+            return;
+        if (tempCheckedTargetList.Contains(iOjbInteractive))
+            return;
         tempCheckedTargetList.Add(iOjbInteractive);
         //计算伤害
         MonsterControl monsterControl = GetComponent<MonsterControl>();
@@ -120,7 +125,7 @@ public class MonsterBaseLogic : MonoBehaviour
             attackAnimationTime += Time.deltaTime;
             if (NowCheckFrame == null)// 如果检测片段是空的不需要下次检测了
                 attackAnimationTime = -1;
-            if (NowCheckFrame !=null && NowCheckFrame.endTime < attackAnimationTime)//如果超过判断时间则不需要检测了
+            if (NowCheckFrame != null && NowCheckFrame.endTime < attackAnimationTime)//如果超过判断时间则不需要检测了
             {
                 NowCheckFrame = null;
                 attackAnimationTime = -1;

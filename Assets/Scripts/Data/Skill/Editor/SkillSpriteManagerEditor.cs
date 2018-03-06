@@ -17,7 +17,7 @@ public class SkillSpriteManagerEditor : EditorWindow
     /// <summary>
     /// 保存信息的文件夹路径
     /// </summary>
-    public string dataDirectoryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\SkillSprite";
+    public string dataDirectoryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\SkillSprite";
     //SkillSprite.txt   用于显示
     //SkillSprite_Combine.txt  用于组合
 
@@ -55,6 +55,9 @@ public class SkillSpriteManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataDirectoryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\SkillSprite";
+
         skillTypeToSpriteShowDic = new Dictionary<EnumSkillType, Sprite>();
         skillTypeToSpriteCombineDic = new Dictionary<EnumSkillType, Sprite>();
         skillTypeToExplanDic = new Dictionary<EnumSkillType, string>();

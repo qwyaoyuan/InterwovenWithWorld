@@ -161,13 +161,19 @@ public partial class GameState : INowTaskState
             (iGameState.GameRunType == EnumGameRunType.Safe || iGameState.GameRunType == EnumGameRunType.Unsafa) &&
             iInteractiveState != null && iInteractiveState.CanInterlude)
         {
+            if (runTimeTaskInfos_Wait.Count > 0)
+                Debug.Log("CheckStart:" + runTimeTaskInfos_Wait[0].ID);
             //检测可以完成的任务
-            CheckNowTask(EnumCheckTaskType.Position);
+            bool result = CheckNowTask(EnumCheckTaskType.Position);
+            if (runTimeTaskInfos_Wait.Count > 0)
+                Debug.Log("CheckEnd:" + runTimeTaskInfos_Wait[0].ID);
+            //如果没有检测出可以完成的任务,则继续检测
             //如果此时没有主线但是有未接取的主线,则持续检测
-            if (runTimeTaskInfos_Start != null && runTimeTaskInfos_Wait != null
+            if (!result && runTimeTaskInfos_Start != null && runTimeTaskInfos_Wait != null
                 && runTimeTaskInfos_Start.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) == 0
                 && runTimeTaskInfos_Wait.Count(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main) > 0)
             {
+                Debug.Log("GetTask");
                 //检测新任务
                 CheckNewTask();
             }
@@ -357,7 +363,7 @@ public partial class GameState : INowTaskState
                 bool isOver = true;
                 foreach (KeyValuePair<EnumMonsterType, int> item in runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount)
                 {
-                    if (runTimeTaskInfo.TaskInfoStruct.GameKillMonsterCount[item.Key] < item.Value)
+                    if (item.Value < runTimeTaskInfo.TaskInfoStruct.NeedKillMonsterCount[(EnumMonsterType)monsterID])
                     {
                         isOver = false;
                         break;
@@ -468,7 +474,7 @@ public partial class GameState : INowTaskState
         if (checkSpecialRunTimeDic.Count > 0)
         {
             checkSpecialDicTempList.Clear();
-            foreach (KeyValuePair<int,TaskMap.RunTimeTaskInfo> checkSpecialRunTime in checkSpecialRunTimeDic)
+            foreach (KeyValuePair<int, TaskMap.RunTimeTaskInfo> checkSpecialRunTime in checkSpecialRunTimeDic)
             {
                 TaskMap.RunTimeTaskInfo runTimeTaskInfo = checkSpecialRunTime.Value;
                 if (runTimeTaskInfo.TaskInfoStruct.NeedSpecialCheck == TaskMap.Enums.EnumTaskSpecialCheck.None)//该任务不需要判断特殊状态 
@@ -625,8 +631,8 @@ public partial class GameState : INowTaskState
                 {
                     RemoveTaskByIDAtDicAndList(mustRemoveMutexTaskID, true);
                 }
-                //检测可以接取的任务
-                CheckNewTask();
+                //检测可以接取的任务,这里只进行下一步的检测不接收任务
+                CheckNewTask(true);
                 //调用通知外部任务完成了
                 Call<INowTaskState, int>(temp => temp.OverTaskID);
                 //触发事件
@@ -642,7 +648,8 @@ public partial class GameState : INowTaskState
     /// <summary>
     /// 检测当前可以直接接取的任务
     /// </summary>
-    private void CheckNewTask()
+    /// <param name="onlyCheck">是否只进行检测不接收任务</param>
+    private void CheckNewTask(bool onlyCheck = false)
     {
         if (PlayerObj == null)
             return;
@@ -656,54 +663,31 @@ public partial class GameState : INowTaskState
                 {
                     runTimeTaskInfos_Wait.Add(todoTaskInfo);
                 }
-                //如果可以直接接取则接取该任务
-                if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId <= 0)//直接接取
+                if (!onlyCheck)
                 {
-                    bool canStart = false;
-                    if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
-                        canStart = true;
-                    else
+                    //如果可以直接接取则接取该任务
+                    if (todoTaskInfo.TaskInfoStruct.ReceiveTaskNpcId <= 0)//直接接取
                     {
-                        Vector3 playerNowPos = PlayerObj.transform.position;
-                        playerNowPos.y = 0;//忽略y轴
-                        Vector3 targetPos = todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.ArrivedCenterPos;
-                        targetPos.y = 0;
-                        Vector3 offsetDis = targetPos - playerNowPos;
-                        float sqrDis = Vector3.SqrMagnitude(offsetDis);
-                        if (sqrDis < Mathf.Pow(todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.Radius, 2))
+                        bool canStart = false;
+                        if (todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation == null)
                             canStart = true;
-                    }
-                    if (canStart)
-                    {
-                        //if (todoTaskInfo.TaskInfoStruct.NeedShowTalk)
-                        //{
-                        //    //调用对话框,让对话框完成后实现接取
-                        //    IInteractiveState iInteractiveState = GameState.Instance.GetEntity<IInteractiveState>();
-                        //    if (iInteractiveState.InterludeObj != null)
-                        //    {
-                        //        iInteractiveState.InterludeObj.SetActive(true);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        StartTask = todoTaskInfo.ID;
-                        //}
-                        //StartTask = todoTaskInfo.ID;
-                        //todoTaskInfo.IsStart = true;
-                        ////将任务添加到分类中
-                        //runTimeTaskInfos_Start.Add(todoTaskInfo);
-                        //runTimeTaskInfos_Wait.RemoveAll(temp => temp.ID == todoTaskInfo.ID);
-                        //SetStartTaskCheckClassify(todoTaskInfo);
+                        else
+                        {
+                            Vector3 playerNowPos = PlayerObj.transform.position;
+                            playerNowPos.y = 0;//忽略y轴
+                            Vector3 targetPos = todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.ArrivedCenterPos;
+                            targetPos.y = 0;
+                            Vector3 offsetDis = targetPos - playerNowPos;
+                            float sqrDis = Vector3.SqrMagnitude(offsetDis);
+                            if (sqrDis < Mathf.Pow(todoTaskInfo.TaskInfoStruct.ReceiveTaskLocation.Radius, 2))
+                                canStart = true;
+                        }
+                        if (canStart)
+                        {
+                            StartTask = todoTaskInfo.ID;
+                        }
                     }
                 }
-                //else//如果不是直接接取的
-                //{
-                //    //判断是否存在于等待截取集合中,不存在则添加
-                //    if (runTimeTaskInfos_Wait.Count(temp => temp.ID == todoTaskInfo.ID) <= 0)
-                //    {
-                //        runTimeTaskInfos_Wait.Add(todoTaskInfo);
-                //    }
-                //}
             }
         }
     }

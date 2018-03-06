@@ -18,11 +18,11 @@ public class InterludesDataEditor : EditorWindow
     /// <summary>
     /// 保存过场信息的文件路径
     /// </summary>
-    public string dataInterludesFilePath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Interludes\InterludesData.json";
+    public string dataInterludesFilePath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Interludes\InterludesData.json";
     /// <summary>
     /// 保存摄像机动画的预设体的文件夹路径
     /// </summary>
-    public string cameraPathDirectoryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Interludes\CameraPath";
+    public string cameraPathDirectoryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Interludes\CameraPath";
 
     /// <summary>
     /// 摄像机动画显示选择路径
@@ -53,6 +53,10 @@ public class InterludesDataEditor : EditorWindow
 
     void Awake()
     {
+        //重置路径
+        dataInterludesFilePath = Application.dataPath + @"\Scripts\Data\Resources\Data\Interludes\InterludesData.json";
+        cameraPathDirectoryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Interludes\CameraPath";
+
         interludesShowTimeExplanList = new List<KeyValuePair<InterludesItemStruct.EnumInterludesShowTime, string>>();
         FieldExplanAttribute.SetEnumExplanDic(interludesShowTimeExplanList);
 

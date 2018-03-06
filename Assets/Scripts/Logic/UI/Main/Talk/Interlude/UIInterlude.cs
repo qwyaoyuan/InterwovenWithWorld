@@ -128,9 +128,10 @@ public class UIInterlude : MonoBehaviour
         {
             Init();
             // 如果存在该任务且该任务是主线
-            TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.StartTask, false);
+            TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.OverTaskID, false);
             if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && runTimeTaskInfo.TaskInfoStruct.NeedShowTalk)
             {
+                Debug.Log("显示结束任务对话:" + runTimeTaskInfo.ID);
                 DialogueCondition dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(-1,
                    temp => temp.enumDialogueType == EnumDialogueType.Task && temp.overTask == iNowTaskState.OverTaskID).FirstOrDefault();
                 if (dialogueCodition != null)
@@ -181,41 +182,6 @@ public class UIInterlude : MonoBehaviour
         ShowTalk();
     }
 
-    /// <summary>
-    /// 初始化对话
-    /// 展示的是接取主线任务前的对话
-    /// </summary>
-    //private void InitTalk()
-    //{
-    //    fisrtKeyUP = false;
-    //    int touchNPCID = iInteractiveState.ClickInteractiveNPCID;
-    //    INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
-    //    TaskMap.RunTimeTaskInfo[] runTimeTaskInfos = runtimeTasksData.GetAllToDoList()
-    //                   .Where(temp => temp.TaskInfoStruct.ReceiveTaskNpcId == touchNPCID && temp.IsOver == false && temp.IsStart == false)
-    //                   .ToArray();
-    //    TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos.Where(temp => temp.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main).FirstOrDefault();
-    //    if (runTimeTaskInfo != null)
-    //    {
-    //        this.runTimeTaskInfo = runTimeTaskInfo;
-    //        this.dialogueCodition = dialogueStructData.SearchDialogueConditionsByNPCID(runTimeTaskInfo.TaskInfoStruct.ReceiveTaskNpcId,
-    //            temp => temp.enumDialogueType == EnumDialogueType.Task && temp.thisTask == runTimeTaskInfo.ID).FirstOrDefault();
-    //        if (this.dialogueCodition != null)
-    //        {
-    //            this.nowDialoguePoint = this.dialogueCodition.topPoint;
-    //            showLeftOrRight = true;
-    //            ShowTalk();
-    //        }
-    //        else
-    //        {
-    //            gameObject.SetActive(false);
-    //            iNowTaskState.StartTask = runTimeTaskInfo.ID;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        gameObject.SetActive(false);
-    //    }
-    //}
 
     /// <summary>
     /// 展示对话

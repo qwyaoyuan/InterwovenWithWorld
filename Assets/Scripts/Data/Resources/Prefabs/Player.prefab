@@ -455,6 +455,8 @@ GameObject:
   - component: {fileID: 114734331079546530}
   - component: {fileID: 114501310805186558}
   - component: {fileID: 114912693062268698}
+  - component: {fileID: 136637968130364368}
+  - component: {fileID: 114180356878876690}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -1181,6 +1183,7 @@ GameObject:
   - component: {fileID: 114791824232909390}
   - component: {fileID: 114933066528065710}
   - component: {fileID: 114236541665328702}
+  - component: {fileID: 114807893563948134}
   m_Layer: 12
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5373,6 +5376,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114180356878876690
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1163657207144906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481ee9efdbbc93040975ba4057bb8cff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114192735003287828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5391,11 +5405,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 1
       Collider: {fileID: 65428878669652540}
-      StartCheckTime: 0.52
-      DurationCheck: 0.3
+      StartCheckTime: 0.4
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.3
+    - StartParticalTime: 0.2
       Duration: 0.5
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
@@ -5407,11 +5421,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 2
       Collider: {fileID: 65344605672043642}
-      StartCheckTime: 0.72
-      DurationCheck: 0.3
+      StartCheckTime: 0.4
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.4
+    - StartParticalTime: 0.1
       Duration: 0.4
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
@@ -5423,11 +5437,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 3
       Collider: {fileID: 65547869808732652}
-      StartCheckTime: 0.6
-      DurationCheck: 0.3
+      StartCheckTime: 0.3
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.4
+    - StartParticalTime: 0.1
       Duration: 0.4
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
@@ -5477,11 +5491,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 1
       Collider: {fileID: 65748005544165618}
-      StartCheckTime: 0.83
-      DurationCheck: 1
+      StartCheckTime: 0.6
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.3
+    - StartParticalTime: 0.05
       Duration: 1
       ParticalPrefab: {fileID: 1335812190172538, guid: c3e042a6a816d8544b15342e8781d2a7,
         type: 2}
@@ -5491,13 +5505,13 @@ MonoBehaviour:
     WeaponType: 4
     OtherCheck: 2
     CheckStructs:
-    - InnerDamageOrder: 1
+    - InnerDamageOrder: 2
       Collider: {fileID: 65205328682727880}
-      StartCheckTime: 0.83
-      DurationCheck: 1
+      StartCheckTime: 0.5
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.3
+    - StartParticalTime: 0.05
       Duration: 1
       ParticalPrefab: {fileID: 1335812190172538, guid: f7676cda29ffa2e4282b726bdd604a4b,
         type: 2}
@@ -5507,14 +5521,14 @@ MonoBehaviour:
     WeaponType: 4
     OtherCheck: 3
     CheckStructs:
-    - InnerDamageOrder: 1
+    - InnerDamageOrder: 3
       Collider: {fileID: 65524752058675164}
-      StartCheckTime: 2.5
-      DurationCheck: 1
+      StartCheckTime: 1.15
+      DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
     - StartParticalTime: 0.3
-      Duration: 1
+      Duration: 2
       ParticalPrefab: {fileID: 1335812190172538, guid: 1208e2dc078d09c4e85458d4ba46842f,
         type: 2}
       ShowType: 1
@@ -5525,11 +5539,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 1
       Collider: {fileID: 65564749268554598}
-      StartCheckTime: 0.7
+      StartCheckTime: 0.45
       DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.5
+    - StartParticalTime: 0.2
       Duration: 0.4
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
@@ -5541,11 +5555,11 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 1
       Collider: {fileID: 65622584895719620}
-      StartCheckTime: 0.75
+      StartCheckTime: 0.3
       DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
-    - StartParticalTime: 0.4
+    - StartParticalTime: 0.1
       Duration: 0.4
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
@@ -5557,22 +5571,22 @@ MonoBehaviour:
     CheckStructs:
     - InnerDamageOrder: 1
       Collider: {fileID: 65895114857121054}
-      StartCheckTime: 0.5
+      StartCheckTime: 0.6
       DurationCheck: 0.1
       ParticalPrefab: {fileID: 0}
     - InnerDamageOrder: 2
       Collider: {fileID: 65142489145402206}
-      StartCheckTime: 0.7
+      StartCheckTime: 1
       DurationCheck: 0.1
       ParticalPrefab: {fileID: 0}
     - InnerDamageOrder: 3
       Collider: {fileID: 65546568948912566}
-      StartCheckTime: 0.8
+      StartCheckTime: 1.5
       DurationCheck: 0.2
       ParticalPrefab: {fileID: 0}
     SoildSkillParticals:
     - StartParticalTime: 0.3
-      Duration: 2
+      Duration: 1.6
       ParticalPrefab: {fileID: 1527327215417696, guid: 57cd7c6c842f17a4598a2375bab401c9,
         type: 2}
       ShowType: 1
@@ -6083,6 +6097,18 @@ MonoBehaviour:
   adaptionSpeed: 1
   tonemapper: {fileID: 4800000, guid: 003377fc2620a44939dadde6fe3f8190, type: 3}
   validRenderTextureFormat: 1
+--- !u!114 &114807893563948134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1465338661851366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 45f19c10b3a759741b9436baef458128, type: 2}
 --- !u!114 &114828472831255764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6344,6 +6370,19 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1465338661851366}
   m_Enabled: 1
+--- !u!136 &136637968130364368
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1163657207144906}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!137 &137023607670344336
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

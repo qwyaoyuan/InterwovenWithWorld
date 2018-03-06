@@ -53,11 +53,11 @@ public class PlayerAnimControl : MonoBehaviour
         GameState.Instance.Registor<IPlayerState>(CallBackIPlayerStateState);
         GameState.Instance.Registor<IAnimatorState>(CallBackIAnimatorState);
         GameState.Instance.Registor<ISpecialState>(CallBackISpecialState);
-        GameState.Instance.Registor<IAttributeState>(CallBackIAttributeState);
+        GameState.Instance.Registor<IPlayerAttributeState>(CallBackIAttributeState);
         //设置初始武器状态
         CallBackIPlayerStateState(GameState.Instance.GetEntity<IPlayerState>(), GameState.GetFieldNameStatic<IPlayerState, bool>(temp => temp.EquipmentChanged));
         //设置初始速度
-        CallBackIAttributeState(GameState.Instance.GetEntity<IAttributeState>(), GameState.GetFieldNameStatic<IAttributeState, float>(temp => temp.AttackSpeed));
+        CallBackIAttributeState(GameState.Instance.GetEntity<IPlayerAttributeState>(), GameState.GetFieldNameStatic<IPlayerAttributeState, float>(temp => temp.AttackSpeed));
     }
 
     private void OnDestroy()
@@ -65,7 +65,7 @@ public class PlayerAnimControl : MonoBehaviour
         GameState.Instance.UnRegistor<IPlayerState>(CallBackIPlayerStateState);
         GameState.Instance.UnRegistor<IAnimatorState>(CallBackIAnimatorState);
         GameState.Instance.UnRegistor<ISpecialState>(CallBackISpecialState);
-        GameState.Instance.UnRegistor<IAttributeState>(CallBackIAttributeState);
+        GameState.Instance.UnRegistor<IPlayerAttributeState>(CallBackIAttributeState);
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class PlayerAnimControl : MonoBehaviour
                 SetAttackAction();
                 if (clipTimeType == EnumAnimationClipTimeType.In)
                     iAnimatorState.PhycisActionNowType = 1;
-                    break;
+                break;
             case EnumAnimationClipType.Attack2:
                 SetAttackAction();
                 if (clipTimeType == EnumAnimationClipTimeType.In)
@@ -145,10 +145,38 @@ public class PlayerAnimControl : MonoBehaviour
                     iAnimatorState.IsPhycisActionState = false;
                     iAnimatorState.IsSkillState = false;
                     iAnimatorState.IsMagicActionState = false;
+                    iAnimatorState.IsGetHitAnimator = false;
                     playerAnimator.SetLayerWeight(1, 0f);
                 }
                 break;
             case EnumAnimationClipType.Roll:
+                break;
+            case EnumAnimationClipType.GetHit:
+                if (clipTimeType == EnumAnimationClipTimeType.Out)
+                {
+                    iAnimatorState.PhycisActionNowType = 0;
+                    iAnimatorState.IsPhycisActionState = false;
+                    iAnimatorState.IsSkillState = false;
+                    iAnimatorState.IsMagicActionState = false;
+                    iAnimatorState.IsGetHitAnimator = false;
+                    playerAnimator.SetLayerWeight(1, 0f);
+                }
+                break;
+            case EnumAnimationClipType.Death:
+                if (clipTimeType == EnumAnimationClipTimeType.Out)
+                {
+                    iAnimatorState.PhycisActionNowType = 0;
+                    iAnimatorState.IsPhycisActionState = false;
+                    iAnimatorState.IsSkillState = false;
+                    iAnimatorState.IsMagicActionState = false;
+                    iAnimatorState.IsGetHitAnimator = false;
+                    iAnimatorState.IsDeathAnimator = true;
+                    playerAnimator.SetLayerWeight(1, 0f);
+                }
+                else if (clipTimeType == EnumAnimationClipTimeType.In)//进入死亡状态
+                {
+                    iAnimatorState.IsDeathAnimator = false;
+                }
                 break;
         }
         UpdateAnimationClipTypeState();
@@ -179,7 +207,7 @@ public class PlayerAnimControl : MonoBehaviour
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerState, bool>(temp => temp.EquipmentChanged)))
         {
             PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
-            PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == false).FirstOrDefault();
+            PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing && temp.leftRightArms != null && temp.leftRightArms.Value == true).FirstOrDefault();
             if (playGoods != null)
             {
                 EnumGoodsType enumGoodsType = playGoods.GoodsInfo.EnumGoodsType;
@@ -201,20 +229,25 @@ public class PlayerAnimControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 监听角色属性更改(主要是速度)
+    /// 监听角色属性更改(主要是速度,还有血量)
     /// </summary>
     /// <param name="iPlayerState"></param>
     /// <param name="fieldName"></param>
-    private void CallBackIAttributeState(IAttributeState iAttribute, string fieldName)
+    private void CallBackIAttributeState(IPlayerAttributeState iPlayerAttribute, string fieldName)
     {
         if (!playerAnimator)
             return;
-        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAttributeState, float>(temp => temp.AttackSpeed)))
+        if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.AttackSpeed)))
         {
             if (physicAttackDelayCoroutine == null)//如果正在执行携程则不做该操作,携程处理完成后会自动处理该操作
             {
-                PlayerAnimSpeed.speedRate = iAttribute.AttackSpeed;
+                PlayerAnimSpeed.speedRate = iPlayerAttribute.AttackSpeed;
             }
+        }
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerAttributeState, float>(temp => temp.HP)))
+        {
+            //设置动画状态
+            playerAnimator.SetBool("Death", iPlayerAttribute.HP <= 0);
         }
     }
 
@@ -311,6 +344,19 @@ public class PlayerAnimControl : MonoBehaviour
         else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAnimatorState, bool>(temp => temp.SkillSustainable)))
         {
             playerAnimator.SetBool("SkillSustainable", iAnimatorState.SkillSustainable);//技能保持持续(主要是有些技能可能会有持续动
+        }
+        //被攻击
+        else if (string.Equals(fieldName, GameState.Instance.GetFieldName<IAnimatorState, bool>(temp => temp.IsGetHitAnimator)))
+        {
+            if (iAnimatorState.IsGetHitAnimator //被攻击状态
+                && iSpecialState.Xuanyun.Time <= 0)//没有处于眩晕,其他状态后期再加
+            {
+                playerAnimator.SetTrigger("GetHit");
+            }
+            else//否则重置回false
+            {
+                iAnimatorState.IsGetHitAnimator = false;
+            }
         }
     }
 

@@ -835,31 +835,35 @@ public class UIEntrance : MonoBehaviour
         entranceType = EnumEntranceType.Transition;
 
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
-        //测试代码开始
+        #region  测试代码开始
+        playerState.PlayerAllGoods.Clear();
         //添加属性点
         playerState.PropertyPoint = 10;
         //添加一个弓
         playerState.PlayerAllGoods.Add(new PlayGoods(100000, new Goods(EnumGoodsType.WGCSG, "王国长杉弓", 1, 100, "王国长杉弓"), GoodsLocation.Package)
         {
-            leftRightArms =false,
+            leftRightArms =true,
             QualityType = EnumQualityType.Blue,
             Count =1
         });
         //添加一个剑
         playerState.PlayerAllGoods.Add(new PlayGoods(100001, new Goods(EnumGoodsType.TJ, "铁剑", 1, 100, "铁剑"), GoodsLocation.Package)
         {
-            leftRightArms = false,
+            leftRightArms = true,
             QualityType = EnumQualityType.Blue,
             Count = 1
         });
         //添加一个巨剑
         playerState.PlayerAllGoods.Add(new PlayGoods(100002, new Goods(EnumGoodsType.YGDJ, "精钢大剑", 1, 100, "精钢大剑"), GoodsLocation.Wearing)
         {
-            leftRightArms = false,
+            leftRightArms = true,
             QualityType = EnumQualityType.Blue,
             Count = 1
         });
         //测试代码结束
+        
+        #endregion
+
 
         //通知运行时数据状态中心加载数据
         GameState.Instance.LoadArchive();

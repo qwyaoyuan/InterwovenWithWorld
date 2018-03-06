@@ -17,7 +17,7 @@ public class RoleOfRaceEditor : EditorWindow
     /// <summary>
     /// 保存种族信息的完整路径
     /// </summary>
-    public string dataFilePath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\RoleOfRaceData\RoleOfRaceData.json";
+    public string dataFilePath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\RoleOfRaceData\RoleOfRaceData.json";
 
 
     [MenuItem("小工具/种族数据编辑器")]
@@ -48,6 +48,9 @@ public class RoleOfRaceEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataFilePath = Application.dataPath + @"\Scripts\Data\Resources\Data\RoleOfRaceData\RoleOfRaceData.json";
+
         if (!File.Exists(dataFilePath))
         {
             File.Create(dataFilePath).Close();

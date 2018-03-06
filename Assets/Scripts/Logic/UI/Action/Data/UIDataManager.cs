@@ -130,6 +130,14 @@ public class UIDataManager : MonoBehaviour
         UIAction.isSaving = true;
         saveingImage.gameObject.SetActive(true);
         float savingTime = 0;
+        IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+        IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        playerState.Scene = iGameState.SceneName;
+        playerState.Location = iPlayerState.PlayerObj.transform.position + Vector3.up * 0.2f;
+        //保存原来地形的遮罩图
+        if (!string.IsNullOrEmpty(iGameState.SceneName))
+            playerState.SaveGetSceneMapMaskData(iGameState.SceneName);
         DataCenter.Instance.Save(1);
         while (savingTime < 3)
         {

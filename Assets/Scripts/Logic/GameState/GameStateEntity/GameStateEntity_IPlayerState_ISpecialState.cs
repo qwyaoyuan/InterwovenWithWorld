@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public partial class GameState
 {
+
     #region ISpecialState 特殊状态
 
     /// <summary>

@@ -69,6 +69,8 @@ public class UIEntryManager : MonoBehaviour
         entryData = DataCenter.Instance.GetMetaData<EntryData>();
         UIManager.Instance.KeyUpHandle += Instance_KeyUpHandle;
         UIManager.Instance.KeyPressHandle += Instance_KeyPressHandle;
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+        iNowTaskState.CheckNowTask(EnumCheckTaskType.Special, (int)TaskMap.Enums.EnumTaskSpecialCheck.OpenEntryUI);
         InitShow();
     }
 

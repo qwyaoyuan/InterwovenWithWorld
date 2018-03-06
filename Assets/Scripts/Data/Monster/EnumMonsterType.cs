@@ -13,6 +13,11 @@ public enum EnumMonsterType
     [FieldExplan("小猪")]
     LittlePig,
     /// <summary>
+    /// 犀牛
+    /// </summary>
+    [FieldExplan("犀牛")]
+    Rhinoceros,
+    /// <summary>
     /// 骷髅王
     /// </summary>
 	[FieldExplan("骷髅王")]
@@ -26,7 +31,22 @@ public enum EnumMonsterType
     /// 土匪
     /// </summary>
     [FieldExplan("土匪")]
-    Bandit
+    Bandit,
+    /// <summary>
+    /// 木桩 
+    /// </summary>
+    [FieldExplan("木桩")]
+    WoodPile,
+    /// <summary>
+    /// 老鼠
+    /// </summary>
+    [FieldExplan("老鼠")]
+    Mouse,
+    /// <summary>
+    ///  水晶
+    /// </summary>
+    [FieldExplan("水晶")]
+    Crystal
 }
 
 /// <summary>

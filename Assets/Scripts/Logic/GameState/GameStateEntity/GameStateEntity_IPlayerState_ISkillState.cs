@@ -276,7 +276,7 @@ public partial class GameState
         IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         if (canRelease)//判断角色动作
         {
-            canRelease = canRelease && (!iAnimatorState.IsSkillState && !iAnimatorState.IsPhycisActionState && !iAnimatorState.IsMagicActionState);
+            canRelease = canRelease && (!iAnimatorState.IsSkillState && !iAnimatorState.IsPhycisActionState && !iAnimatorState.IsMagicActionState && !iAnimatorState.IsGetHitAnimator && !iAnimatorState.IsDeathAnimator);
         }
         if (canRelease)
         {
@@ -329,6 +329,26 @@ public partial class GameState
             SkillStartHoldingTime = 0;
         }
         return canRelease;
+    }
+
+    /// <summary>
+    /// 受到攻击后的技能状态改变,如果当前是咏唱状态则打断咏唱,如果当前是释放技能状态则不做处理,如果当前在普通攻击则打断
+    /// </summary>
+    public void GetHitToSkillState()
+    {
+        IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
+        if ((IsSkillStartHolding && iAnimatorState.IsMagicActionState)//此时正在进行魔法动作(咏唱)
+            //|| (!IsSkillStartHolding && iAnimatorState.IsPhycisActionState)//此时正在进行普通攻击
+           ||(!IsSkillStartHolding&& !iAnimatorState.IsMagicActionState && !iAnimatorState.IsPhycisActionState&& !iAnimatorState.IsSkillState && !iAnimatorState.RollAnimator) )
+        {
+            if (ClearTempCombineSkillAttributeAction != null)
+            {
+                ClearTempCombineSkillAttributeAction();
+            }
+            IsSkillStartHolding = false;
+            SkillStartHoldingTime = 0;
+            iAnimatorState.IsGetHitAnimator = true;
+        }
     }
 
     /// <summary>
@@ -693,10 +713,14 @@ public partial class GameState
         //判断是否在蓄力(魔法组合技能) 是否在公共冷却时间中 是否在技能冷却时间中
         //判断是否在魔法动作(吟唱 释放)
         //判断是否在技能动作
+        //判断是否在被攻击中
+        //判断是否是死亡状态
         //如果是普通攻击中,则可以衔接技能,也可以接下一段攻击
         if (!IsSkillStartHolding && PublicCoolingTime <= 0 && thisSkillCoolingTime <= 0
             && !iAnimatorState.IsMagicActionState
-            && !iAnimatorState.IsSkillState)
+            && !iAnimatorState.IsSkillState
+            && !iAnimatorState.IsGetHitAnimator
+            && !iAnimatorState.IsDeathAnimator)
         {
             IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
             SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();

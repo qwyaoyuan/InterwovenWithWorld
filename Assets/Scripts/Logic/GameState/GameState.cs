@@ -327,9 +327,10 @@ public partial class GameState : IEntrance, IBaseState
     partial void Load_IEntryState();
 
     /// <summary>
-    /// (NPC头像)加载函数调用时调用
+    /// NPC头像的开始方法
     /// </summary>
     partial void Start_INPCSpriteState();
+
     #endregion
 }
 

@@ -16,7 +16,7 @@ namespace TaskMap
         /// <summary>
         /// 任务图对象
         /// </summary>
-        Map<TaskInfoStruct> taskMap;
+        public Map<TaskInfoStruct> taskMap;
         /// <summary>
         /// 节点关系集合
         /// </summary>

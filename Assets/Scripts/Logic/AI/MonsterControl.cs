@@ -30,6 +30,11 @@ public class MonsterControl : MonoBehaviour
 #endif
 
     /// <summary>
+    /// 销毁携程对象
+    /// </summary>
+    Coroutine destroyCoroutine;
+
+    /// <summary>
     /// 更新位置到地面并初始化导航网格
     /// </summary>
     public void Start()
@@ -49,12 +54,13 @@ public class MonsterControl : MonoBehaviour
         NavMeshAgent navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
         navMeshAgent.radius = 0.2f;
         navMeshAgent.height = 1.8f;
+        navMeshAgent.baseOffset = 0;
         blackboard = GetComponent<Blackboard>();
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         if (blackboard != null)
         {
             if (monsterDataInfo.MonsterBaseAttribute != null)
-                blackboard.SetValue("HP", (int)monsterDataInfo.MonsterBaseAttribute.HP);
+                blackboard.SetValue("HP", monsterDataInfo.MonsterBaseAttribute.HP);
             switch (monsterDataInfo.AIType)
             {
                 case EnumMonsterAIType.Trigger:
@@ -112,9 +118,61 @@ public class MonsterControl : MonoBehaviour
     {
         if (string.Equals(fieldName, GameState.GetFieldNameStatic<IAttributeState, float>(temp => temp.HP)))
         {
-            blackboard.SetValue("HP", (int)iAttribute.HP);
+            if (blackboard != null)
+                blackboard.SetValue("HP", iAttribute.HP);
+            if (iAttribute.HP <= 0 && destroyCoroutine == null)
+            {
+                destroyCoroutine = StartCoroutine(DestoryThis());
+            }
         }
     }
+
+    /// <summary>
+    /// 等待一定时间销毁
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DestoryThis()
+    {
+        yield return null;
+        //取消注册(其实也可以不用管)
+        if (monsterDataInfo != null && monsterDataInfo.MonsterBaseAttribute != null)
+        {
+            monsterDataInfo.MonsterBaseAttribute.UnRegistor<IAttributeState>(IAttribute_Changed);
+        }
+        //通知杀死了某种怪物
+        INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
+        if (iNowTaskState != null && monsterDataInfo != null)
+        {
+            iNowTaskState.CheckNowTask(EnumCheckTaskType.Monster, (int)monsterDataInfo.MonsterType);
+        }
+        //移除组件
+        NavMeshAgent navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+        if (navMeshAgent != null)
+            GameObject.Destroy(navMeshAgent);
+        Rigidbody rigibody = GetComponent<Rigidbody>();
+        if (rigibody != null)
+            GameObject.Destroy(rigibody);
+        Collider[] colliders = GetComponents<Collider>();
+        foreach (Collider collider in colliders)
+        {
+            if (collider != null)
+                GameObject.Destroy(collider);
+        }
+        if (monsterDataInfo != null)
+            yield return new WaitForSeconds(monsterDataInfo.DeathAnimTime);
+        else
+            yield return new WaitForSeconds(3);
+        float animatorTime = 0;
+        float maxAnimatorTime = monsterDataInfo != null ? monsterDataInfo.DeathAnimTime : 3;
+        while (animatorTime < maxAnimatorTime)
+        {
+            animatorTime += Time.deltaTime;
+            gameObject.transform.position -= Vector3.up * Time.deltaTime * 0.5f;
+            yield return null;
+        }
+        GameObject.Destroy(gameObject);
+    }
+
 
     /// <summary>
     /// 随机一个vector3
@@ -192,7 +250,8 @@ public class MonsterControl : MonoBehaviour
     public void GiveHit()
     {
         //暂时为所有时刻都处于可以被攻击状态
-        blackboard.SetValue("GetHit", true);
+        if (blackboard != null)
+            blackboard.SetValue("GetHit", true);
     }
     #endregion
 }

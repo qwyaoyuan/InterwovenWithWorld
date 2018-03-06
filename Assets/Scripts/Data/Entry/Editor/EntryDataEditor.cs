@@ -19,7 +19,7 @@ public class EntryDataEditor : EditorWindow
     /// <summary>
     /// 保存词条信息的完整路径
     /// </summary>
-    public string dataFilePath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Entry\Entry.json";
+    public string dataFilePath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Entry\Entry.json";
 
     /// <summary>
     /// 数据的图形结构
@@ -73,6 +73,10 @@ public class EntryDataEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        //Debug.Log(Application.dataPath);
+        dataFilePath = Application.dataPath + @"\Scripts\Data\Resources\Data\Entry\Entry.json";
+        //
         dataMap = new Map<EntryDataInfo>();
         if (!File.Exists(dataFilePath))
         {

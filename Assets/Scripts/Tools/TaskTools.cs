@@ -93,6 +93,9 @@ public class TaskTools : IEntrance
         }
         foreach (RunTaskStruct runTaskStruct in removeTaskList)
         {
+            RunTaskStruct.RunTaskStructHandle runTaskStructHandle = null;
+            if (taskHandleDic.TryGetValue(runTaskStruct, out runTaskStructHandle))
+            { }
             taskList.Remove(runTaskStruct);
         }
         removeTaskList.Clear();

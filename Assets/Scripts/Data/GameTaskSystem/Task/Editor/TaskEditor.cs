@@ -20,7 +20,7 @@ namespace TaskMap
     /// </summary>
     public class TaskEditor : EditorWindow
     {
-        public string dataPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Task\Task.txt";
+        public string dataPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Task\Task.txt";
 
         [MenuItem("小工具/任务编辑器")]
         static void AddWindow()
@@ -102,21 +102,9 @@ namespace TaskMap
 
         private void Awake()
         {
-            //if (!File.Exists(dataPath))
-            //{
-            //    File.Create(dataPath).Close();
-            //    taskMap = new TaskMap();
-            //    string jsonValue = taskMap.Save();
-            //    File.WriteAllText(dataPath, jsonValue, Encoding.UTF8);
-            //}
-            //else
-            //{
-            //    string jsonValue = File.ReadAllText(dataPath, Encoding.UTF8);
-            //    taskMap = new TaskMap();
-            //    taskMap.Load(jsonValue);
-            //}
-            //secondScroll = new Vector2(RelationShipWidth / 2, RelationShipHeight / 2);
-            //ShowBackImage = Resources.Load<Texture2D>("Task/ShowBack");
+            //重置路径
+            dataPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Task\Task.txt";
+
             LoadFile(dataPath);
             //按钮样式
             buttonSelectStyle = new GUIStyle();
@@ -215,10 +203,6 @@ namespace TaskMap
         {
             this.Repaint();
         }
-
-
-
-
 
         /// <summary>
         /// 当前选择的节点

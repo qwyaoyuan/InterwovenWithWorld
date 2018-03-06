@@ -141,7 +141,7 @@ namespace TaskMap
         /// 任务进度
         /// </summary>
         [JsonProperty]
-        internal Enums.EnumTaskProgress TaskProgress { get; set; }
+        public Enums.EnumTaskProgress TaskProgress { get; set; }
         /// <summary>
         /// 游戏中获得的物品数量
         /// </summary>

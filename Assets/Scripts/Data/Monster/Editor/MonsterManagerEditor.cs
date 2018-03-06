@@ -19,7 +19,7 @@ public class MonsterManagerEditor : EditorWindow
     /// <summary>
     /// 保存怪物信息的完整路径
     /// </summary>
-    public string dataDirectoryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Monster";
+    public string dataDirectoryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Monster";
 
     [MenuItem("小工具/怪物编辑器(类型场景与位置)")]
     static void AddWindown()
@@ -59,12 +59,19 @@ public class MonsterManagerEditor : EditorWindow
     private List<KeyValuePair<RoleOfRace, string>> roleOfRaceToFieldNameDic;
 
     /// <summary>
+    /// 任务状态对应说明的字典 
+    /// </summary>
+    private List<KeyValuePair<TaskMap.Enums.EnumTaskProgress, string>> taskProgressToFieldNameDic;
+
+    /// <summary>
     /// 用于显示范围的游戏对象
     /// </summary>
     private GameObject rangeObj;
 
     private void Awake()
     {
+        //重置路径
+        dataDirectoryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Monster";
 
         if (!Directory.Exists(dataDirectoryPath))
             Directory.CreateDirectory(dataDirectoryPath);
@@ -146,6 +153,8 @@ public class MonsterManagerEditor : EditorWindow
 
         roleOfRaceToFieldNameDic = new List<KeyValuePair<RoleOfRace, string>>();
         FieldExplanAttribute.SetEnumExplanDic(roleOfRaceToFieldNameDic, 0);
+        taskProgressToFieldNameDic = new List<KeyValuePair<TaskMap.Enums.EnumTaskProgress, string>>();
+        FieldExplanAttribute.SetEnumExplanDic(taskProgressToFieldNameDic);
     }
 
     private void OnDestroy()
@@ -379,11 +388,50 @@ public class MonsterManagerEditor : EditorWindow
             List<RoleOfRace> roleOfRaceValues = roleOfRaceToFieldNameDic.Select(temp => temp.Key).ToList();
             string[] roleOfRaceExplans = roleOfRaceToFieldNameDic.Select(temp => temp.Value).ToArray();
             int roleOfRaceIndex = roleOfRaceValues.IndexOf(monsterDataInfo.roleOfRace);
-            roleOfRaceIndex = EditorGUILayout.Popup("种族:",roleOfRaceIndex, roleOfRaceExplans);
+            roleOfRaceIndex = EditorGUILayout.Popup("种族:", roleOfRaceIndex, roleOfRaceExplans);
             if (roleOfRaceIndex > -1)
             {
                 monsterDataInfo.roleOfRace = roleOfRaceValues[roleOfRaceIndex];
             }
+            //设置显示和隐藏条件 
+            List<TaskMap.Enums.EnumTaskProgress> taskProgressValues = taskProgressToFieldNameDic.Select(temp => temp.Key).ToList();
+            string[] taskProgressExplans = taskProgressToFieldNameDic.Select(temp => temp.Value).ToArray();
+            Action<List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>>> ShowHideTaskAction = (targetList) =>
+             {
+                 for (int i = 0; i < targetList.Count; i++)
+                 {
+                     EditorGUILayout.BeginHorizontal();
+                     if (GUILayout.Button("×", GUILayout.Width(20)) && EditorUtility.DisplayDialog("请再次确认!", "是否删除该条件?", "确认删除", "取消"))
+                     {
+                         targetList.RemoveAt(i);
+                         EditorGUILayout.EndHorizontal();
+                         break;
+                     }
+                     KeyValuePair<int, TaskMap.Enums.EnumTaskProgress> tempValue = targetList[i];
+                     EditorGUILayout.LabelField("任务ID:", GUILayout.Width(40));
+                     int tempKey = EditorGUILayout.IntField(tempValue.Key, GUILayout.Width(30));
+                     EditorGUILayout.LabelField("任务状态:", GUILayout.Width(50));
+                     int index = taskProgressValues.IndexOf(tempValue.Value);
+                     index = EditorGUILayout.Popup(index, taskProgressExplans, GUILayout.Width(50));
+                     TaskMap.Enums.EnumTaskProgress tempTaskProgress = tempValue.Value;
+                     if (index >= 0)
+                         tempTaskProgress = taskProgressValues[index];
+                     targetList[i] = new KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>(tempKey, tempTaskProgress);
+                     EditorGUILayout.EndHorizontal();
+                 }
+             };
+            //显示条件
+            if (monsterDataInfo.TaskToShowList == null)
+                monsterDataInfo.TaskToShowList = new List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>>();
+            if (GUILayout.Button("添加显示条件"))
+                monsterDataInfo.TaskToShowList.Add(new KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>());
+            ShowHideTaskAction(monsterDataInfo.TaskToShowList);
+            //隐藏条件
+            if (monsterDataInfo.TaskToHideList == null)
+                monsterDataInfo.TaskToHideList = new List<KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>>();
+            if (GUILayout.Button("添加隐藏条件"))
+                monsterDataInfo.TaskToHideList.Add(new KeyValuePair<int, TaskMap.Enums.EnumTaskProgress>());
+            ShowHideTaskAction(monsterDataInfo.TaskToHideList);
             //物品掉落
             if (monsterDataInfo.ItemDropRates == null)
                 monsterDataInfo.ItemDropRates = new float[0];

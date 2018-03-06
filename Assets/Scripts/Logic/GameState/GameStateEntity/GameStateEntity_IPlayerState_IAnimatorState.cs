@@ -196,6 +196,32 @@ public partial class GameState
     /// 获取当前动画剪辑状态对象 
     /// </summary>
     public AnimationClipTypeState AnimationClipTypeState { get; set; }
+
+    /// <summary>
+    /// 受到攻击动画
+    /// </summary>
+    private bool _IsGetHitAnimator;
+    /// <summary>
+    /// 受到攻击动画
+    /// </summary>
+    public bool IsGetHitAnimator
+    {
+        get { return _IsGetHitAnimator; }
+        set
+        {
+            bool tempGetHitAnimator = _IsGetHitAnimator;
+            _IsGetHitAnimator = value;
+            if (_IsGetHitAnimator)
+            {
+                Call<IAnimatorState, bool>(temp => temp.IsGetHitAnimator);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 是否是死亡状态
+    /// </summary>
+    public bool IsDeathAnimator { get; set; }
     #endregion
     #region 内部设置
     /// <summary>

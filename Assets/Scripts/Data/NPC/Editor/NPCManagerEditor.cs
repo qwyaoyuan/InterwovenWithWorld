@@ -18,7 +18,7 @@ public class NPCManagerEditor : EditorWindow
     /// <summary>
     /// 保存NPC信息的完整路径
     /// </summary>
-    public string dataAllPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\NPC";
+    public string dataAllPath = "";// @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\NPC";
 
     /// <summary>
     /// 数据字典
@@ -59,6 +59,9 @@ public class NPCManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径 
+        dataAllPath = Application.dataPath + @"\Scripts\Data\Resources\Data\NPC";
+
         dataDic = new Dictionary<string, TextAsset>();
         npcDataDic = new Dictionary<string, GameObject>();
 

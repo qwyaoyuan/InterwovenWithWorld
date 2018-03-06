@@ -7,6 +7,13 @@ using UnityEngine;
 /// </summary>
 public partial class GameState
 {
+
+    /// <summary>
+    /// buff状态的更新
+    /// </summary>
+    void IBuffStateUpdate()
+    { }
+
     #region IBuffSate  Buff状态
     /// <summary>
     /// 活力

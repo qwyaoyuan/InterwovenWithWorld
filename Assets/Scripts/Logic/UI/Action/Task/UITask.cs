@@ -58,7 +58,9 @@ public class UITask : MonoBehaviour
             nowTaskItem.childImage.enabled = false;
         nowTaskItem = target;
         nowTaskItem.childImage.enabled = true;
-        MarkTaskToMap();
+        if (mouseType == UIList.ItemClickMouseType.Right)//标记任务
+            MarkTaskToMap();
+        ExplanNowItem();
     }
 
     private void OnEnable()

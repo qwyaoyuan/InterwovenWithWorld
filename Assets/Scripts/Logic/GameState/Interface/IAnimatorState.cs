@@ -46,10 +46,17 @@ public interface IAnimatorState : IBaseState
     /// </summary>
     bool PhysicHitMonsterAnimDelay { get; set; }
     /// <summary>
+    /// 受到攻击动画
+    /// </summary>
+    bool IsGetHitAnimator { get; set; }
+    /// <summary>
     /// 当前动画剪辑状态对象 
     /// </summary>
     AnimationClipTypeState AnimationClipTypeState { get; set; }
-
+    /// <summary>
+    /// 是否是死亡状态
+    /// </summary>
+    bool IsDeathAnimator { get; set; }
     #endregion
     #region 内部设置 
     /// <summary>
@@ -134,6 +141,14 @@ public enum EnumAnimationClipType
     /// 翻滚
     /// </summary>
     Roll,
+    /// <summary>
+    /// 受到攻击
+    /// </summary>
+    GetHit,
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    Death,
 }
 
 /// <summary>

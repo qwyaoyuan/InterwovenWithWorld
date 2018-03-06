@@ -110,7 +110,6 @@ public partial class GameState : IMonsterCollection
             return;
         //判断大区域
         bool objListChanged = false;//对象集合是否发生了变化
-
         //检测触发区域是否会发生变化
         foreach (MonsterDataInfo monsterDataInfo in monsterDataInfos)
         {
@@ -127,12 +126,31 @@ public partial class GameState : IMonsterCollection
             }
             else if (distance <= monsterDataInfo.Range)
             {
-                if (!thisSceneCanCheckMonsterObjDic.ContainsKey(monsterDataInfo))
+                //获取当前任务状态是否可以显示
+                bool taskPass = monsterDataInfo.CanShowThis(temp =>
                 {
-                    if (!allMonsterObjDic.ContainsKey(monsterDataInfo))
-                        allMonsterObjDic.Add(monsterDataInfo, new List<GameObject>());
-                    thisSceneCanCheckMonsterObjDic.Add(monsterDataInfo, allMonsterObjDic[monsterDataInfo]);
-                    objListChanged = true;
+                    TaskMap.RunTimeTaskInfo tempTaskInfoStruct = runtimeTaskData.GetTasksWithID(temp, false);
+                    if (tempTaskInfoStruct == null)
+                        return TaskMap.Enums.EnumTaskProgress.NoTake;
+                    return tempTaskInfoStruct.TaskProgress;
+                });
+                if (taskPass)//可以显示
+                {
+                    if (!thisSceneCanCheckMonsterObjDic.ContainsKey(monsterDataInfo))
+                    {
+                        if (!allMonsterObjDic.ContainsKey(monsterDataInfo))
+                            allMonsterObjDic.Add(monsterDataInfo, new List<GameObject>());
+                        thisSceneCanCheckMonsterObjDic.Add(monsterDataInfo, allMonsterObjDic[monsterDataInfo]);
+                        objListChanged = true;
+                    }
+                }
+                else//不可以显示
+                {
+                    if (thisSceneCanCheckMonsterObjDic.ContainsKey(monsterDataInfo))
+                    {
+                        thisSceneCanCheckMonsterObjDic.Remove(monsterDataInfo);
+                        objListChanged = true;
+                    }
                 }
             }
         }
@@ -186,16 +204,20 @@ public partial class GameState : IMonsterCollection
                         int createCount = monsterAIData_GoOnPatrol.Count - tempData.Value.Count;
                         for (int i = 0; i < createCount; i++)
                         {
-                            GameObject createObj = GameObject.Instantiate<GameObject>(monsterDataInfo.MonsterPrefab);
+                            Vector3 createPos = new Vector3(
+                                UnityEngine.Random.Range(monsterDataInfo.Center.x - monsterAIData_GoOnPatrol.CreateRange, monsterDataInfo.Center.x + monsterAIData_GoOnPatrol.CreateRange),
+                                monsterDataInfo.Center.y,
+                                UnityEngine.Random.Range(monsterDataInfo.Center.z - monsterAIData_GoOnPatrol.CreateRange, monsterDataInfo.Center.z + monsterAIData_GoOnPatrol.CreateRange));
+                            GameObject createObj = GameObject.Instantiate<GameObject>(monsterDataInfo.MonsterPrefab, createPos, Quaternion.identity);
                             MonsterControl monsterControl = createObj.AddComponent<MonsterControl>();
                             monsterControl.SameGroupObjList = tempData.Value;
                             monsterControl.monsterDataInfo = tempData.Key;
                             tempData.Value.Add(createObj);
                             //设置位置(MonsterControl内部会进行y轴的设置)
-                            createObj.transform.position = new Vector3(
-                                UnityEngine.Random.Range(monsterDataInfo.Center.x - tempData.Key.Range, monsterDataInfo.Center.x + tempData.Key.Range),
-                                monsterDataInfo.Center.y,
-                                UnityEngine.Random.Range(monsterDataInfo.Center.z - tempData.Key.Range, monsterDataInfo.Center.z + tempData.Key.Range));
+                            //createObj.transform.position = new Vector3(
+                            //    UnityEngine.Random.Range(monsterDataInfo.Center.x - monsterAIData_GoOnPatrol.CreateRange, monsterDataInfo.Center.x + monsterAIData_GoOnPatrol.CreateRange),
+                            //    monsterDataInfo.Center.y,
+                            //    UnityEngine.Random.Range(monsterDataInfo.Center.z - monsterAIData_GoOnPatrol.CreateRange, monsterDataInfo.Center.z + monsterAIData_GoOnPatrol.CreateRange));
                         }
                         objListChanged = true;
                     }

@@ -18,7 +18,7 @@ public class CombineSkillParticalManagerEditor : EditorWindow
     /// <summary>
     /// 保存组合技能粒子信息的完整目录路径
     /// </summary>
-    public string dataDirecotryPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Skill\CombinePartical";
+    public string dataDirecotryPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Skill\CombinePartical";
 
     /// <summary>
     /// 组合技能与粒子对应的字典
@@ -34,6 +34,9 @@ public class CombineSkillParticalManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataDirecotryPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Skill\CombinePartical";
+
         allSkillTypes = Enum.GetValues(typeof(EnumSkillType)).OfType<EnumSkillType>().ToArray();
         if (!Directory.Exists(dataDirecotryPath))
             Directory.CreateDirectory(dataDirecotryPath);

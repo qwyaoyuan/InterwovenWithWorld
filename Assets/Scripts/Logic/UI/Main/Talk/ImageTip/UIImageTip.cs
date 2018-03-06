@@ -218,6 +218,7 @@ public class UIImageTip : MonoBehaviour
             TaskMap.RunTimeTaskInfo runTimeTaskInfo = runtimeTasksData.GetTasksWithID(iNowTaskState.StartTask, true);
             if (runTimeTaskInfo != null && runTimeTaskInfo.TaskInfoStruct.TaskType == TaskMap.Enums.EnumTaskType.Main && !runTimeTaskInfo.TaskInfoStruct.NeedShowTalk && runTimeTaskInfo.TaskInfoStruct.NeedShowImageTip)
             {
+                Debug.Log("显示图片提示:" + runTimeTaskInfo.ID);
                 string directoryPath = runTimeTaskInfo.TaskInfoStruct.ShowImageTipDirectoryName;
                 if (!string.IsNullOrEmpty(directoryPath))//该文件夹不为空
                 {

@@ -38,6 +38,7 @@ namespace TaskMap
         [JsonProperty]
         private Dictionary<int, RunTimeTaskInfo> idToRunTimeTaskInfo;
 
+
         public RunTimeTaskData()
         {
             idToRunTimeTaskInfo = new Dictionary<int, RunTimeTaskInfo>();
@@ -65,6 +66,24 @@ namespace TaskMap
             }
             taskMap = new TaskMap();
             taskMap.Load(TaskDataJson);
+            //加载完成后重新设置字典的taskMap对象
+            Dictionary<int, RunTimeTaskInfo> idToRunTimeTaskInfo_temp = idToRunTimeTaskInfo;
+            idToRunTimeTaskInfo.Clear();
+            foreach (var item in idToRunTimeTaskInfo_temp)
+            {
+                MapElement<TaskInfoStruct> taskInfoStruct = taskMap.GetElement(item.Key);
+                idToRunTimeTaskInfo_temp.Add(item.Key,new RunTimeTaskInfo ()
+                {
+                    ID = item.Key,
+                    TaskInfoStruct = taskInfoStruct.Value,
+                    TaskInfoNode = taskInfoStruct,
+                    TaskMap = taskMap
+                });
+                taskInfoStruct.Value.GameTimeLimit = item.Value.TaskInfoStruct.GameTimeLimit;
+                taskInfoStruct.Value.GameKillMonsterCount = item.Value.TaskInfoStruct.GameKillMonsterCount;
+                taskInfoStruct.Value.TaskProgress = item.Value.TaskInfoStruct.TaskProgress;
+                taskInfoStruct.Value.GameGetGoodsCount = item.Value.TaskInfoStruct.GameGetGoodsCount;
+            }
         }
 
         [OnSerializing]
@@ -83,6 +102,7 @@ namespace TaskMap
             List<RunTimeTaskInfo> resultList = taskMap.GetLastFrameNodes().Select(temp =>
             {
                 if (!idToRunTimeTaskInfo.ContainsKey(temp.ID))
+                {
                     idToRunTimeTaskInfo.Add(temp.ID, new RunTimeTaskInfo()
                     {
                         ID = temp.ID,
@@ -90,6 +110,7 @@ namespace TaskMap
                         TaskInfoNode = temp,
                         TaskMap = taskMap
                     });
+                }
                 return idToRunTimeTaskInfo[temp.ID];
             }).ToList();
             return resultList;

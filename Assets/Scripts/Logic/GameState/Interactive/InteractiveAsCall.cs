@@ -14,7 +14,7 @@ class InteractiveAsCall : MonoBehaviour, IObjInteractive
         throw new NotImplementedException();
     }
 
-    public void GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
+    public CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
     {
         throw new NotImplementedException();
     }

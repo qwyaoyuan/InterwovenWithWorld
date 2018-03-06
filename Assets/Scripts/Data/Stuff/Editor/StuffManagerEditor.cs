@@ -19,7 +19,7 @@ public class StuffManagerEditor : EditorWindow
     /// <summary>
     /// 保存采集点信息的完整路径
     /// </summary>
-    public string dataAllPath = @"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Stuff";
+    public string dataAllPath = "";//@"E:\MyProject\Unity\InterwovenWithWorld\InterwovenWithWorld\Assets\Scripts\Data\Resources\Data\Stuff";
 
     /// <summary>
     /// 数据字典
@@ -58,6 +58,9 @@ public class StuffManagerEditor : EditorWindow
 
     private void Awake()
     {
+        //重置路径
+        dataAllPath = Application.dataPath + @"\Scripts\Data\Resources\Data\Stuff";
+
         dataDic = new Dictionary<string, TextAsset>();
         stuffDataDic = new Dictionary<string, GameObject>();
 

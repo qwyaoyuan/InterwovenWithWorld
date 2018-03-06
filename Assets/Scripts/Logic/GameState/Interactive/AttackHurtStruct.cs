@@ -118,6 +118,7 @@ public struct MagicDefenseFactor
 /// </summary>
 public static class CalculateHurt
 {
+
     /// <summary>
     /// 具体的计算
     /// </summary>
@@ -125,14 +126,19 @@ public static class CalculateHurt
     /// <param name="to">伤害指向</param>
     /// <param name="physicDefenseFactor">物理防御系数</param>
     /// <param name="magicDefenseFactor">魔法防御系数</param>
-    public static void Calculate(AttackHurtStruct from, IAttributeState to, PhysicDefenseFactor physicDefenseFactor, MagicDefenseFactor magicDefenseFactor)
+    public static Result Calculate(AttackHurtStruct from, IAttributeState to, PhysicDefenseFactor physicDefenseFactor, MagicDefenseFactor magicDefenseFactor)
     {
+        //计算本次伤害造成的结果 
+        Result calculateHurtResult;
+        calculateHurtResult.IsCrit = false;
+        float maxHP = to.MaxHP;
         //先判断是否命中
         float isHitRate = from.attributeState.HitRate - to.EvadeRate;//本次攻击是否命中的概率(0-?(1))
         if (isHitRate < 1 && Random.Range(0, 1) > isHitRate)//如果本次攻击有几率命中且本次攻击没有命中则返回
         {
-            return;
+            return default(Result);
         }
+        isHitRate = 1;
         float baseDamage = 0;
         //根据攻击防御计算初步的基础伤害
         switch (from.hurtType)
@@ -164,20 +170,64 @@ public static class CalculateHurt
         }
         //计算暴击
         float isCrit = from.attributeState.CritRate;
-        if (isHitRate >= 1 || Random.Range(0, 1) < isHitRate)//如果一定暴击或者本次攻击随机到了暴击概率阶段
+        if (isHitRate >= 1 && Random.Range(0f, 1f) < isCrit)//如果命中并且本次攻击随机到了暴击概率阶段
         {
+            calculateHurtResult.IsCrit = true;
             float critDamageRatio = from.attributeState.CritDamageRatio - to.CriticalDef;
             critDamageRatio = Mathf.Clamp(critDamageRatio, 0.2f, 10);//将暴击倍率倍率范围限定在0.2到10之间,也就是有可能暴击伤害可能会更低
             baseDamage *= critDamageRatio;
         }
         //计算格挡
-        float isEquipBlock = to.EquipBlock;
-        if (isHitRate >= 1 || Random.Range(0, 1) < isEquipBlock)//如果一定会格挡或者本次随机到了格挡概率阶段
+        float isEquipBlock = to.EquipBlock;   
+        if (isHitRate >= 1 && Random.Range(0f, 1f) < isEquipBlock)//如果命中并且本次随机到了格挡概率阶段
         {
             baseDamage *= 0.7f;
         }
         //附加或倍率等处理
         //.......
         to.HP -= baseDamage;
+
+        calculateHurtResult.hurtRate = baseDamage / maxHP;
+        calculateHurtResult.hurt = baseDamage;
+        if (from.statusLevelDataInfos != null && from.statusLevelDataInfos.Length > 0)
+        {
+            float specialRate = from.attributeState.EffectAffine - to.AbnormalStateResistance;
+            List<StatusDataInfo.StatusLevelDataInfo> tempStatusLevelDataInfos = new List<StatusDataInfo.StatusLevelDataInfo>();
+            foreach (StatusDataInfo.StatusLevelDataInfo tempStatusLevelDataInfo in from.statusLevelDataInfos)
+            {
+                float tempSpecialRate = Random.Range(0, 100);
+                if (tempSpecialRate < specialRate)
+                {
+                    tempStatusLevelDataInfos.Add(tempStatusLevelDataInfo);
+                }
+            }         
+            calculateHurtResult.statusDatas = tempStatusLevelDataInfos.ToArray();
+        }
+        else
+            calculateHurtResult.statusDatas = new StatusDataInfo.StatusLevelDataInfo[0];
+        return calculateHurtResult;
+    }
+
+    /// <summary>
+    /// 伤害计算后的结果
+    /// </summary>
+    public struct Result
+    {
+        /// <summary>
+        /// 造成的伤害
+        /// </summary>
+        public float hurt;
+        /// <summary>
+        /// 造成伤害的百分比
+        /// </summary>
+        public float hurtRate;
+        /// <summary>
+        /// 异常状态的数据
+        /// </summary>
+        public StatusDataInfo.StatusLevelDataInfo[] statusDatas;
+        /// <summary>
+        /// 是否暴击
+        /// </summary>
+        public bool IsCrit;
     }
 }

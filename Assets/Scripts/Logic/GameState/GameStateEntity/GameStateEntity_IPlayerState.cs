@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Reflection;
 
 /// <summary>
 /// 实现了IPlayerState接口的GameState类的一个分支实体
@@ -20,6 +21,21 @@ public partial class GameState : IPlayerState
     RunTaskStruct runTaskStruct_Vibration;
 
     /// <summary>
+    /// 用于处理等待死亡状态的任务对象
+    /// </summary>
+    RunTaskStruct runTaskStruct_WaitDeath;
+
+    /// <summary>
+    /// buff状态的属性数组
+    /// </summary>
+    Dictionary<string, PropertyInfo> buffStatePropertyDic;
+
+    /// <summary>
+    /// buff状态有更新的字典
+    /// </summary>
+    Dictionary<string, PropertyInfo> buffStateUpdatePropertyDic;
+
+    /// <summary>
     /// 玩家状态接口实现对象的开始函数
     /// </summary>
     partial void Start_IPlayerState()
@@ -30,8 +46,14 @@ public partial class GameState : IPlayerState
         GameState.Instance.Registor<IGameState>(IGameState_Changed);
         //注册监听属性变化
         GameState.Instance.Registor<IPlayerAttributeState>(IPlayerAttributeState_Changed);
-
+        //手柄震动的携程对象
         runTaskStruct_Vibration = TaskTools.Instance.GetRunTaskStruct();
+        //使用反射初始化buff状态的属性数组
+        PropertyInfo[] buffStates = MyReflectionTools.GetPropertys<IBuffState, BuffState>();
+        PropertyInfo[] debuffStates = MyReflectionTools.GetPropertys<IDebuffState, BuffState>();
+        PropertyInfo[] specialStates = MyReflectionTools.GetPropertys<ISpecialState, BuffState>();
+        buffStatePropertyDic = buffStates.Concat(debuffStates).Concat(specialStates).ToDictionary(temp => temp.Name, temp => temp);
+        buffStateUpdatePropertyDic = new Dictionary<string, PropertyInfo>();
     }
 
     /// <summary>
@@ -50,6 +72,13 @@ public partial class GameState : IPlayerState
         EquipmentChanged = true;
         //更新属性
         UpdateAttribute();
+        //注册buff更新
+        GameState.Instance.UnRegistor<IBuffState>(IBuffStateChanged_IPlayer);
+        GameState.Instance.Registor<IBuffState>(IBuffStateChanged_IPlayer);
+        GameState.Instance.UnRegistor<IDebuffState>(IDebuffStateChanged_IPlayer);
+        GameState.Instance.Registor<IDebuffState>(IDebuffStateChanged_IPlayer);
+        GameState.Instance.UnRegistor<ISpecialState>(ISpecialStateChanged_IPlayer);
+        GameState.Instance.Registor<ISpecialState>(ISpecialStateChanged_IPlayer);
     }
 
     /// <summary>
@@ -61,6 +90,8 @@ public partial class GameState : IPlayerState
     {
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<IGameState, Action>(temp => temp.LoadArchive)))
         {
+            MapData mapData_PlayState = DataCenter.Instance.GetMetaData<MapData>();
+            mapDataInfo_PlayerState = mapData_PlayState[iGameState.SceneName];
             UpdateAttribute();
             InitPlayAttributeState();
         }
@@ -110,19 +141,30 @@ public partial class GameState : IPlayerState
                 }
                 else
                 {
-                    //回去复活
-                    //获取最后一个路牌的ID
-                    int lastStreetID = playerState.StreetID;
-                    string lastStreetScene = playerState.StreetScene;
-                    //判断获取路牌,如果不存在则查找最初的路牌,如果还不存在则原地复活 
-                    NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
-                    NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(lastStreetScene, lastStreetID);
-                    if (npcDataInfo == null)
-                        npcDataInfo = npcData.GetNPCDataInfo(temp => temp.NPCType == EnumNPCType.Street).FirstOrDefault();
-                    IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
-                    iGameState.ChangedScene(npcDataInfo != null ? lastStreetScene : iGameState.SceneName, npcDataInfo != null ? (npcDataInfo.NPCLocation + Vector3.forward) : PlayerObj.transform.position);
-                    //修改血量
-                    HP = MaxHP;
+                    if (runTaskStruct_WaitDeath == null)
+                    //死亡状态的携程对象
+                    {
+                        runTaskStruct_WaitDeath = TaskTools.Instance.GetRunTaskStruct();
+                        //回去复活
+                        runTaskStruct_WaitDeath.StartTask(3f,
+                                () =>
+                                {
+                                    //获取最后一个路牌的ID
+                                    int lastStreetID = playerState.StreetID;
+                                    string lastStreetScene = playerState.StreetScene;
+                                    //判断获取路牌,如果不存在则查找最初的路牌,如果还不存在则原地复活 
+                                    NPCData npcData = DataCenter.Instance.GetMetaData<NPCData>();
+                                    NPCDataInfo npcDataInfo = npcData.GetNPCDataInfo(lastStreetScene, lastStreetID);
+                                    if (npcDataInfo == null)
+                                        npcDataInfo = npcData.GetNPCDataInfo(temp => temp.NPCType == EnumNPCType.Street).FirstOrDefault();
+                                    IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+                                    iGameState.ChangedScene(npcDataInfo != null ? lastStreetScene : iGameState.SceneName, npcDataInfo != null ? (npcDataInfo.NPCLocation + Vector3.forward) : PlayerObj.transform.position);
+                                    //修改血量
+                                    HP = MaxHP;
+                                    runTaskStruct_WaitDeath = null;
+                                }, 1, false);
+                    }
+
                 }
             }
         }
@@ -168,6 +210,8 @@ public partial class GameState : IPlayerState
     partial void Update_IPlayerState()
     {
         UpdateCheckChanChangingAttribute();
+        UpdatePlayerBuffState();
+        UpdatePlayerMovePath();
     }
 
     #region IPlayerState的自身状态
@@ -455,7 +499,7 @@ public partial class GameState : IPlayerState
                     iAttributeState_DZ02.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族成长对象
                     if (waitTime_DZ02 < intervalChangeWeaponTime) //在效果时间内,则更新暴击率和暴击伤害
                     {
-                        iAttributeState_DZ02.CritRate = skillAttributeStruct_DZ02.IncreasedCritRate;
+                        iAttributeState_DZ02.CritRate = skillAttributeStruct_DZ02.IncreasedCritRate / 100f;
                         iAttributeState_DZ02.CritDamageRatio = skillAttributeStruct_DZ02.CritDamagePromotion / 100f;
                     }
                     else //在效果时间外,则归零
@@ -966,7 +1010,7 @@ public partial class GameState : IPlayerState
                 {
                     EnumWeaponTypeByPlayerState thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.None;
                     //再次获取右手武器的信息
-                    PlayGoods rightWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == false).FirstOrDefault();
+                    PlayGoods rightWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == true).FirstOrDefault();
                     if (rightWeaponGoods != null)
                     {
                         //判断武器的类型
@@ -990,7 +1034,7 @@ public partial class GameState : IPlayerState
                             thisWeaponTypeByPlayerState = EnumWeaponTypeByPlayerState.CrystalBall;
                     }
                     //再次获取左手武器的信息
-                    PlayGoods leftWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == true).FirstOrDefault();
+                    PlayGoods leftWeaponGoods = checkWeapons.Where(temp => temp.leftRightArms != null && temp.leftRightArms.Value == false).FirstOrDefault();
                     if (leftWeaponGoods != null)
                     {
                         //判断如果是盾牌则附加
@@ -1253,11 +1297,11 @@ public partial class GameState : IPlayerState
     {
         XInputDotNetPure.PlayerIndex _type = XInputDotNetPure.PlayerIndex.One;
         XInputDotNetPure.GamePad.SetVibration(_type, left, right);//设置震动
-        runTaskStruct_Vibration.StartTask(time, 
-            () => 
+        runTaskStruct_Vibration.StartTask(time,
+            () =>
             {
                 XInputDotNetPure.GamePad.SetVibration(_type, 0, 0);//等待指定时间后归位
-            }, 1,false);
+            }, 1, false);
     }
 
     /// <summary>
@@ -1282,6 +1326,283 @@ public partial class GameState : IPlayerState
     #endregion
     #endregion
 
+    #region 玩家的特殊状态(buff debuff  special )
 
+    /// <summary>
+    /// buff状态发生变化时触发
+    /// </summary>
+    /// <param name="iBuffState"></param>
+    /// <param name="fieldName"></param>
+    private void IBuffStateChanged_IPlayer(IBuffState iBuffState, string fieldName)
+    {
+        if (buffStatePropertyDic.ContainsKey(fieldName) && !buffStateUpdatePropertyDic.ContainsKey(fieldName))
+        {
+            buffStateUpdatePropertyDic.Add(fieldName, buffStatePropertyDic[fieldName]);
+            //更新属性
+            SetBuffStateAttribute(buffStatePropertyDic[fieldName], true);
+        }
+    }
+
+    /// <summary>
+    /// debuff状态发生变化时触发
+    /// </summary>
+    /// <param name="iDebuffState"></param>
+    /// <param name="fieldName"></param>
+    private void IDebuffStateChanged_IPlayer(IDebuffState iDebuffState, string fieldName)
+    {
+        if (buffStatePropertyDic.ContainsKey(fieldName) && !buffStateUpdatePropertyDic.ContainsKey(fieldName))
+        {
+            buffStateUpdatePropertyDic.Add(fieldName, buffStatePropertyDic[fieldName]);
+            //更新属性
+            SetBuffStateAttribute(buffStatePropertyDic[fieldName], true);
+        }
+    }
+
+    /// <summary>
+    /// special状态发生变化时触发
+    /// </summary>
+    /// <param name="iSpecialState"></param>
+    /// <param name="fieldName"></param>
+    private void ISpecialStateChanged_IPlayer(ISpecialState iSpecialState, string fieldName)
+    {
+        if (buffStatePropertyDic.ContainsKey(fieldName) && !buffStateUpdatePropertyDic.ContainsKey(fieldName))
+        {
+            buffStateUpdatePropertyDic.Add(fieldName, buffStatePropertyDic[fieldName]);
+            //更新属性
+            SetBuffStateAttribute(buffStatePropertyDic[fieldName], true);
+        }
+    }
+
+    /// <summary>
+    /// 更新玩家的状态
+    /// </summary>
+    private void UpdatePlayerBuffState()
+    {
+        List<string> mustMove = null;
+        foreach (KeyValuePair<string, PropertyInfo> buffStateUpdateProperty in buffStateUpdatePropertyDic)
+        {
+            MethodInfo getMethod = buffStateUpdateProperty.Value.GetGetMethod();
+            MethodInfo setMethod = buffStateUpdateProperty.Value.GetSetMethod();
+            if (getMethod != null && setMethod != null)
+            {
+                object tempObj = getMethod.Invoke(this, null);
+                if (tempObj != null && tempObj.GetType().Equals(typeof(BuffState)))
+                {
+                    BuffState buffState = (BuffState)tempObj;
+                    buffState.Time -= Time.deltaTime;
+                    setMethod.Invoke(this, new object[] { buffState });
+                    if (buffState.Time < 0)
+                    {
+                        if (mustMove == null)
+                            mustMove = new List<string>();
+                        mustMove.Add(buffStateUpdateProperty.Key);
+                    }
+                }
+            }
+        }
+        if (mustMove != null)
+        {
+            foreach (string item in mustMove)
+            {
+                PropertyInfo mustMoveInfo = buffStateUpdatePropertyDic[item];
+                SetBuffStateAttribute(mustMoveInfo, false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 设置buff状态的属性,true表示添加,false表示移除
+    /// </summary>
+    /// <param name="mustMoveInfo"></param>
+    /// <param name="add"></param>
+    private void SetBuffStateAttribute(PropertyInfo mustMoveInfo, bool add)
+    {
+        MethodInfo getMethod = mustMoveInfo.GetGetMethod();
+        if (getMethod != null)
+        {
+            object tempObj = getMethod.Invoke(this, null);
+            if (tempObj != null && tempObj.GetType().Equals(typeof(BuffState)))
+            {
+                BuffState buffState = (BuffState)tempObj;
+                int buffStateAttributeID = -10000 - (int)buffState.statusEffect;
+                IPlayerAttributeState iPlayerAttributeState = GameState.Instance.GetEntity<IPlayerAttributeState>();
+                IAttributeState iAttributeState = iPlayerAttributeState.GetAttribute(buffStateAttributeID);
+                if (iAttributeState != null)
+                {
+                    if (!add)
+                        iAttributeState.Init();
+                    else
+                    {
+                        iAttributeState.SetRoleOfRaceAddition(SelfRoleOfRaceInfoStruct);//设置种族数据
+                        SetStateEffectDataToAttribute(buffState, iAttributeState);
+                    }
+                }
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 设置该buff对应的属性
+    /// </summary>
+    /// <param name="buffState"></param>
+    /// <param name="iAttributeState"></param>
+    private void SetStateEffectDataToAttribute(BuffState buffState, IAttributeState iAttributeState)
+    {
+        StatusDataInfo.StatusLevelDataInfo data = buffState.tempData as StatusDataInfo.StatusLevelDataInfo;
+        IAttributeState iAttributeBase = GetAttribute(0);//基础属性
+        if (data != null && data.StatusActionDataInfoDic != null && iAttributeBase != null)
+        {
+            foreach (KeyValuePair<EnumStatusAction, StatusActionDataInfo_Base> kvp in data.StatusActionDataInfoDic)
+            {
+                Type t = Type.GetType("StatusActionDataInfo_" + kvp.Key.ToString());
+                if (t == null)
+                    continue;
+                FieldInfo variationInfo = t.GetField("Variation", BindingFlags.Public | BindingFlags.Instance);
+                if (variationInfo != null)
+                {
+                    int variationValue = (int)variationInfo.GetValue(data);
+                    switch (kvp.Key)
+                    {
+                        case EnumStatusAction.MoveSpeed:
+                            iAttributeState.MoveSpeed = iAttributeBase.MoveSpeed * variationValue / 100f;
+                            break;
+                        case EnumStatusAction.AttackSpeed:
+                            iAttributeState.AttackSpeed = iAttributeBase.AttackSpeed * variationValue / 100f;
+                            break;
+                        case EnumStatusAction.StateResistance:
+                            iAttributeState.AbnormalStateResistance = variationValue / 100f;
+                            break;
+                        case EnumStatusAction.Life:
+                            iAttributeState.HP += variationValue * Time.deltaTime;
+                            break;
+                        case EnumStatusAction.ElementResistance:
+
+                            break;
+                        case EnumStatusAction.ElementAffine:
+                            iAttributeState.EffectAffine = variationValue;
+                            break;
+                        case EnumStatusAction.MagicAffine:
+                            iAttributeState.MagicFit = variationValue;
+                            break;
+                        case EnumStatusAction.LifeRecoverySpeed:
+                            iAttributeState.LifeRecovery = variationValue;
+                            break;
+                        case EnumStatusAction.ManaRecoverySpeed:
+                            iAttributeState.ManaRecovery = variationValue;
+                            break;
+                        case EnumStatusAction.HitRate:
+                            iAttributeState.HitRate = variationValue / 100f;
+                            break;
+                        case EnumStatusAction.EvadeRate:
+                            iAttributeState.EvadeRate = variationValue / 100f;
+                            break;
+                        case EnumStatusAction.CritRate:
+                            iAttributeState.CritRate = variationValue / 100f;
+                            break;
+                        case EnumStatusAction.ImproveExperience:
+                            iAttributeState.ExperienceValuePlus = 1 + variationValue / 100f;
+                            break;
+                        case EnumStatusAction.View:
+                            iAttributeState.View = variationValue;
+                            break;
+                        case EnumStatusAction.AttributeChange:
+                            iAttributeState.Power = iAttributeBase.Power * variationValue / 100f;
+                            iAttributeState.Mental = iAttributeBase.Mental * variationValue / 100f;
+                            iAttributeState.Quick = iAttributeBase.Quick * variationValue / 100f;
+                            break;
+                        case EnumStatusAction.MagicSuckBlood:
+                            //暂时未实现
+                            break;
+                        case EnumStatusAction.PhysicsSuckBlood:
+                            //暂时未实现
+                            break;
+                        case EnumStatusAction.MagicResisitance:
+                            iAttributeState.MagicResistance = variationValue;
+                            break;
+                        case EnumStatusAction.PhysicsResisitance:
+                            iAttributeState.PhysicsResistance = variationValue;
+                            break;
+                        case EnumStatusAction.MagicPenetrate:
+                            iAttributeState.MagicPenetrate = variationValue;
+                            break;
+                        case EnumStatusAction.PhysicsPenetrate:
+                            iAttributeState.PhysicsPenetrate = variationValue;
+                            break;
+                        case EnumStatusAction.MagicAdditionalDamage:
+                            iAttributeState.MagicAdditionalDamage = variationValue;
+                            break;
+                        case EnumStatusAction.PhysicsAdditionalDamage:
+                            iAttributeState.PhysicsAdditionalDamage = variationValue;
+                            break;
+                        case EnumStatusAction.MagicFinalDamage:
+                            iAttributeState.MagicFinalDamage = variationValue / 100f;
+                            break;
+                        case EnumStatusAction.PhysicsFinalDamage:
+                            iAttributeState.PhysicsFinalDamage = variationValue / 100f;
+                            break;
+                    }
+                }
+                //一些没有子类或者需要特殊类处理的类型
+                switch (kvp.Key)
+                {
+                    case EnumStatusAction.Stiff:
+                        break;
+                    case EnumStatusAction.CantMove:
+                        break;
+                    case EnumStatusAction.CantLeaveTheFight:
+                        break;
+                    case EnumStatusAction.HitOtherHurt:
+                        break;
+                    case EnumStatusAction.HitTargetHurt:
+                        break;
+                    case EnumStatusAction.CantReadTheArticle:
+                        break;
+                    case EnumStatusAction.CantMagic:
+                        break;
+                    case EnumStatusAction.CanPhysics:
+                        break;
+                    case EnumStatusAction.Vertigo:
+                        break;
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    #region 玩家的行动路线
+
+    MapDataInfo mapDataInfo_PlayerState;
+    /// <summary>
+    /// 玩家之前的位置
+    /// </summary>
+    Vector3 playerLastPos;
+    /// <summary>
+    /// 更新玩家的行动路线
+    /// </summary>
+    private void UpdatePlayerMovePath()
+    {
+        if (playerState != null && PlayerObj != null && Vector3.Distance(playerLastPos, PlayerObj.transform.position) > 1)
+        {
+            playerLastPos = PlayerObj.transform.position;
+            //转换为地图坐标 
+            if (mapDataInfo_PlayerState == null)
+            {
+                MapData mapData_PlayState = DataCenter.Instance.GetMetaData<MapData>();
+                mapDataInfo_PlayerState = mapData_PlayState[iGameState.SceneName];
+            }
+            if (mapDataInfo_PlayerState != null && mapDataInfo_PlayerState.MapSprite!=null)
+            {
+                Rect spriteRect = mapDataInfo_PlayerState.MapSprite.rect;
+                Rect mapRect = mapDataInfo_PlayerState.SceneRect;
+                Vector2 nowSpriteVec = new Vector2(
+                    spriteRect.xMin + spriteRect.width * ((PlayerObj.transform.position.x - mapRect.xMin) / mapRect.width),
+                    spriteRect.yMin+ spriteRect.height*((PlayerObj.transform.position.z-mapRect.yMin)/mapRect.height));
+                playerState.SetPlayerMovePath(SceneName, nowSpriteVec);
+            }
+        }
+    }
+    #endregion
 
 }
