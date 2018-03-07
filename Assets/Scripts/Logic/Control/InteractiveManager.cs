@@ -130,6 +130,15 @@ public class InteractiveManager : IInput
                         iInteractiveState.ClickInteractiveNPCID = iPlayerState.TouchTargetStruct.ID;
                     }
                 break;
+            case EnumKeyContactDataZone.Action:
+                if (keyContactStructs[0].id == 3)
+                {
+                    if (iPlayerState.TouchTargetStruct.ID > -1)
+                    {
+                        iInteractiveState.ClickActionInteractiveID = iPlayerState.TouchTargetStruct.ID;
+                    }
+                }
+                break;
         }
     }
 }

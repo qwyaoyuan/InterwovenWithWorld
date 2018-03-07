@@ -1700,8 +1700,8 @@ MonoBehaviour:
   monsterAttackStruct:
     checkFrames:
     - ActionAnimationTag: Attack1
-      startTime: 0.2
-      endTime: 0.5
+      startTime: 0.5
+      endTime: 0.8
       magnification: 1
       monsterAttackCheck: {fileID: 114605173200319898}
 --- !u!114 &114269729491478770

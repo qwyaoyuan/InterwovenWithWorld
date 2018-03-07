@@ -127,14 +127,21 @@ public partial class GameState : IGameState
                 NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(sceneName);
                 foreach (NPCDataInfo npcDataInfo in npcDataInfos)
                 {
-                    npcDataInfo.Load();//切换场景是有时候会导致游戏对象被删除,需要重新Load
+                    npcDataInfo.Load();//切换场景时有时候会导致游戏对象被删除,需要重新Load
                 }
                 //初始化采集点与采集点的位置
                 StuffData stuffData = DataCenter.Instance.GetMetaData<StuffData>();
                 StuffDataInfo[] stuffDataInfos = stuffData.GetStuffDataInfos(sceneName);
                 foreach (StuffDataInfo stuffDataInfo in stuffDataInfos)
                 {
-                    stuffDataInfo.Load();//切换场景是有时候会导致游戏对象被删除,需要重新Load
+                    stuffDataInfo.Load();//切换场景时有时候会导致游戏对象被删除,需要重新Load
+                }
+                //初始化功能交互对象
+                ActionInteractiveData actionInteractiveData = DataCenter.Instance.GetMetaData<ActionInteractiveData>();
+                ActionInteractiveDataInfo[] actionInteractiveDataInfos = actionInteractiveData.GetActionInteractiveDataInfos(sceneName);
+                foreach (ActionInteractiveDataInfo actionInteractiveDataInfo in actionInteractiveDataInfos)
+                {
+                    actionInteractiveDataInfo.Load();//切换场景时有时候会导致游戏对象被删除,需要重新Load 
                 }
                 //创建UI
                 GameObject mainCanvasPrefab = Resources.Load<GameObject>("UI/MainCanvas");

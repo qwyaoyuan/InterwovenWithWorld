@@ -238,7 +238,11 @@ public struct TouchTargetStruct
         /// <summary>
         /// 触碰到保存点
         /// </summary>
-        Save
+        Save,
+        /// <summary>
+        /// 触碰到功能物体
+        /// </summary>
+        Action,
     }
 
     public static bool Equals(TouchTargetStruct source, TouchTargetStruct target)

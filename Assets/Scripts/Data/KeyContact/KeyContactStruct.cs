@@ -19,7 +19,7 @@ public struct KeyContactStruct
     /// <summary>
     /// 对应的id
     /// 如果是技能则对应的是技能的枚举值
-    /// 如果是功能,暂定 1:采集 2:交谈
+    /// 如果是功能,暂定 1:采集 2:交谈 3:功能
     /// </summary>
     public int id;
 

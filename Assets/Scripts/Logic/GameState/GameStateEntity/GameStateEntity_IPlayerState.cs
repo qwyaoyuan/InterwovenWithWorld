@@ -1155,6 +1155,9 @@ public partial class GameState : IPlayerState
                             case TouchTargetStruct.EnumTouchTargetType.Stuff:
                                 KeyContactDataZone = EnumKeyContactDataZone.Collect;
                                 break;
+                            case TouchTargetStruct.EnumTouchTargetType.Action:
+                                KeyContactDataZone = EnumKeyContactDataZone.Action;
+                                break;
                         }
                         break;
                     default:

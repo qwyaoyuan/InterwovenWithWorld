@@ -201,7 +201,7 @@ public class StuffManagerEditor : EditorWindow
         EditorGUILayout.LabelField("当前场景:" + nowSceneName);
         if (nowStuffDataInfoCollection == null)//如果当前场景不存在数据
         {
-            if (GUILayout.Button("创建该场景的NPC信息数据"))
+            if (GUILayout.Button("创建该场景的采集点信息数据"))
             {
                 nowStuffDataInfoCollection = new StuffDataInfoCollection();
                 nowStuffDataInfoCollection.sceneName = nowSceneName;
@@ -314,6 +314,7 @@ public class StuffManagerEditor : EditorWindow
                 }
                 EditorGUILayout.EndHorizontal();
             }
+            EditorGUILayout.EndScrollView();
             if (GUILayout.Button("添加"))
             {
                 nowStuffDataInfoCollection.StuffDataInfos.Add(
@@ -322,7 +323,6 @@ public class StuffManagerEditor : EditorWindow
                         StuffID = nowStuffDataInfoCollection.StuffDataInfos.Count() > 0 ? (nowStuffDataInfoCollection.StuffDataInfos.Max(temp => temp.StuffID) + 1) : 0
                     });
             }
-            EditorGUILayout.EndScrollView();
         }
         EditorGUILayout.EndVertical();
     }

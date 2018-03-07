@@ -108,6 +108,26 @@ namespace TaskMap
             /// </summary>
             [FieldExplan("等待一定时间不适用传讯卷轴被发现(或离开一定的位置)")]
             WaiTimeNotSummonsScroll,
+            /// <summary>
+            /// 地下迷宫火炬1
+            /// </summary>
+            [FieldExplan("地下迷宫火炬1")]
+            DXMG_TorchLight1,
+            /// <summary>
+            /// 地下迷宫火炬2
+            /// </summary>
+            [FieldExplan("地下迷宫火炬2")]
+            DXMG_TorchLight2,
+            /// <summary>
+            /// 地下迷宫火炬3
+            /// </summary>
+            [FieldExplan("地下迷宫火炬3")]
+            DXMG_TorchLight3,
+            /// <summary>
+            /// 地下迷宫火炬4
+            /// </summary>
+            [FieldExplan("地下迷宫火炬4")]
+            DXMG_TorchLight4,
 
         }
 

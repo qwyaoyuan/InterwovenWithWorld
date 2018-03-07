@@ -551,6 +551,9 @@ public class UIEntrance : MonoBehaviour
             //设置对话键
             Sprite talkSprite = SpriteManager.GetSrpite("1:1_165");
             keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交谈", Sprite = talkSprite, id = 2 }, EnumKeyContactDataZone.Dialogue);
+            //设置功能键
+            Sprite actionSprite = SpriteManager.GetSrpite("1:1_183");
+            keyContactData.SetKeyContactStruct((int)EnumInputType.A, new KeyContactStruct() { keyContactType = EnumKeyContactType.Action, name = "交互", Sprite = actionSprite, id = 3 }, EnumKeyContactDataZone.Action);
             //设置默认的等级
             PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
             playerState.Level = 1;

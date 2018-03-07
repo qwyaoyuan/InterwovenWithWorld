@@ -67,6 +67,16 @@ public class DetectingTheObjectAhead : MonoBehaviour
                             TouchTargetType = TouchTargetStruct.EnumTouchTargetType.NPC
                         };
                     }
+                    else if (Type.Equals(iDataInfoType.T, typeof(ActionInteractiveDataInfoMono)))
+                    {
+                        ActionInteractiveDataInfoMono actionInteractiveDataInfoMono = iDataInfoType as ActionInteractiveDataInfoMono;
+                        iPlayerState.TouchTargetStruct = new TouchTargetStruct()
+                        {
+                            ID = actionInteractiveDataInfoMono.ActionInteractiveDataInfo.ActionInteractiveID,
+                            TerrainName = actionInteractiveDataInfoMono.ActionInteractiveDataInfo.SceneName,
+                            TouchTargetType = TouchTargetStruct.EnumTouchTargetType.Action
+                        };
+                    }
                     
                 }
             }

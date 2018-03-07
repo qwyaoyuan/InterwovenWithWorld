@@ -395,7 +395,7 @@ public class MoveManager : IInput
     /// <param name="view"></param>
     public void View(Vector2 view)
     {
-        if (CheckCanMoveState() 
+        if (CheckCanMoveState()
             && !iAnimatorState.IsDeathAnimator
             && !iAnimatorState.IsGetHitAnimator)
         {
@@ -447,7 +447,12 @@ public class MoveManager : IInput
     /// <param name="playerForward">角色的朝向</param>
     private void SetNowSolidCameraPosAndPlayerRotate(Vector3 playerForward)
     {
-        iPlayerState.PlayerObj.transform.forward = playerForward;
+        Vector3 fromVec = new Vector3(iPlayerState.PlayerObj.transform.forward.x, 0, iPlayerState.PlayerObj.transform.forward.z);
+        playerForward.y = 0;
+        float angle = Vector3.Angle(fromVec, playerForward);
+        float rotateTime = 1 / 720f * angle;
+        Vector3 tempForward = Vector3.Slerp(fromVec, playerForward, Time.deltaTime / rotateTime);
+        iPlayerState.PlayerObj.transform.forward = tempForward;
         iPlayerState.PlayerCamera.transform.position = iPlayerState.PlayerObj.transform.position + Vector3.back * iGameState.CameraPosOffsetZ + Vector3.up * iGameState.CameraPosOffsetY;
         iPlayerState.PlayerCamera.transform.LookAt(iPlayerState.PlayerObj.transform.position + Vector3.forward * iGameState.CameraArmOffsetZ, Vector3.up);
     }

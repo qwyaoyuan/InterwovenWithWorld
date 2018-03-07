@@ -40,6 +40,11 @@ public partial class DataCenter
     /// </summary>
     private GameRunningStateData GameRunningStaetData;
 
+    /// <summary>
+    /// 功能交互信息的状态数据
+    /// </summary>
+    private ActionInteractiveStateData ActionInteractiveStateData;
+
     public DataCenter()
     {
         PlayerState = new PlayerState();
@@ -49,6 +54,7 @@ public partial class DataCenter
         RuntimeTaskMap = new TaskMap.RunTimeTaskData();
         BusinessmanStates = new BusinessmanStates();
         GameRunningStaetData = new GameRunningStateData();
+        ActionInteractiveStateData = new ActionInteractiveStateData();
     }
 
 
@@ -328,7 +334,7 @@ public class PlayerState
                             float rade = 0;
                             if (distance > 50)
                             {
-                                rade = 1- (400f - distance) / 350f;
+                                rade = 1 - (400f - distance) / 350f;
                                 rade = Mathf.Pow(rade, 0.5f);
                             }
                             rade = Mathf.Clamp(rade, 0, 1);
@@ -503,4 +509,34 @@ public class GameRunningStateData
     public bool CanBigMap;
 }
 
+/// <summary>
+/// 功能交互信息存储的状态
+/// </summary>
+public class ActionInteractiveStateData
+{
+    /// <summary>
+    /// 场景对应数据字典
+    /// </summary>
+    public Dictionary<string, SceneData> SceneDic;
 
+    public ActionInteractiveStateData()
+    {
+        SceneDic = new Dictionary<string, SceneData>();
+    }
+
+    /// <summary>
+    /// 该场景保存的功能交互信息状态
+    /// </summary>
+    public class SceneData
+    {
+        /// <summary>
+        /// ID保存的数据字典
+        /// </summary>
+        public Dictionary<int, object> IDDic;
+
+        public SceneData()
+        {
+            IDDic = new Dictionary<int, object>();
+        }
+    }
+}

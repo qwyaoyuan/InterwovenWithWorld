@@ -123,4 +123,8 @@ public enum EnumKeyContactDataZone
     /// 对话
     /// </summary>
     Dialogue,
+    /// <summary>
+    /// 特殊功能,点击后需要给与对方反馈
+    /// </summary>
+    Action,
 }

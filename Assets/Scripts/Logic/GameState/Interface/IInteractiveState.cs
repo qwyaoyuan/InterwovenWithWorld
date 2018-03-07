@@ -49,4 +49,8 @@ public interface IInteractiveState : IBaseState
     /// 点击的采集点ID
     /// </summary>
     int ClickInteractiveStuffID { get; set; }
+    /// <summary>
+    /// 点击功能交互对象ID
+    /// </summary>
+    int ClickActionInteractiveID { get; set; }
 }

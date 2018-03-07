@@ -122,7 +122,7 @@ public class StuffDataInfoCollection
 }
 
 /// <summary>
-/// 单个采集点信息集合
+/// 单个采集点信息
 /// </summary>
 [Serializable]
 public class StuffDataInfo

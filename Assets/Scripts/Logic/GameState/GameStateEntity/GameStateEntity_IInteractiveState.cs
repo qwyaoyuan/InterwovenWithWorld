@@ -311,4 +311,37 @@ public partial class GameState : IInteractiveState
             }
         }
     }
+
+    /// <summary>
+    /// 点击功能交互对象ID
+    /// </summary>
+    private int _ClickActionInteractiveID;
+    /// <summary>
+    /// 点击功能交互对象ID
+    /// </summary>
+    public int ClickActionInteractiveID
+    {
+        get { return _ClickActionInteractiveID; }
+        set
+        {
+            switch (GameRunType)
+            {
+                case EnumGameRunType.Safe:
+                case EnumGameRunType.Unsafa:
+                    _ClickActionInteractiveID = value;
+                    ActionInteractiveData actionInteractiveData = DataCenter.Instance.GetMetaData<ActionInteractiveData>();
+                    IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
+                    if (actionInteractiveData == null || iGameState == null)
+                        return;
+                    ActionInteractiveDataInfo actionInteractiveDataInfo = actionInteractiveData.GetActionInteractiveDataInfo(iGameState.SceneName, _ClickActionInteractiveID);
+                    if (actionInteractiveDataInfo == null || actionInteractiveDataInfo.ActionInteractiveObj == null)
+                        return;
+                    ActionInteractiveDataInfoMono actionInteractiveDataInfoMono = actionInteractiveDataInfo.ActionInteractiveObj.GetComponent<ActionInteractiveDataInfoMono>();
+                    if (actionInteractiveDataInfoMono == null)
+                        return;
+                    actionInteractiveDataInfoMono.ActionTrigger();
+                    break;
+            }
+        }
+    }
 }
