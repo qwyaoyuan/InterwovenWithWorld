@@ -76,6 +76,7 @@ public partial class GameState : INowTaskStateEvent
                     foreach (TaskMap.TaskEventData taskEventData in taskEventDataList)
                     {
                         TaskMap.TaskEventData taskEventData_clone = taskEventData.Clone();
+                        taskEventData_clone.TaskID = runTimeTaskInfo.ID;
                         if (taskEventData != null)
                         {
                             List<int> ids = eventTypeToIDsDic[taskEventData.EventType];

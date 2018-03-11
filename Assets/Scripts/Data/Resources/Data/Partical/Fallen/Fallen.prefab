@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 19949156}
   - component: {fileID: 11405620}
   - component: {fileID: 114012011197789864}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   m_Component:
   - component: {fileID: 442698}
   - component: {fileID: 114054144024275012}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fallen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 481204}
   - component: {fileID: 11487958}
   - component: {fileID: 114426025678165128}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 11470074}
   - component: {fileID: 11472594}
   - component: {fileID: 114472825030569124}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.5
   Shadows: 0
+  isLoop: 0
 --- !u!114 &11487958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6403,7 +6404,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollisionPartical: {fileID: 1114792695568908, guid: 3e10247ad7461794abb0f67d6abe636f,
     type: 2}
-  testObj: {fileID: 0}
 --- !u!114 &114426025678165128
 MonoBehaviour:
   m_ObjectHideFlags: 1

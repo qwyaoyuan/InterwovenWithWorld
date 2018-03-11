@@ -13,6 +13,11 @@ public class SetLightningImapactParticalRange : MonoBehaviour, IParticalConduct
     /// </summary>
     public float clamp;
 
+    public void Open()
+    {
+      
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
     

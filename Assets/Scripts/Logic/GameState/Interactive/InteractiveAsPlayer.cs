@@ -7,18 +7,13 @@ using UnityEngine;
 /// <summary>
 /// 玩家身上的交互脚本
 /// </summary>
-class InteractiveAsPlayer : MonoBehaviour, IObjInteractive
+class InteractiveAsPlayer : InteractiveBaseMono, IObjInteractive
 {
-    public T GetEntity<T>() where T : IBaseState
-    {
-        return default(T);
-    }
-
     /// <summary>
     /// 造成伤害
     /// </summary>
     /// <param name="attackHurtStruct"></param>
-    public CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
+    public override CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
     {
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
         IAttributeState playerAttribute = iPlayerState.GetResultAttribute();
@@ -39,6 +34,8 @@ class InteractiveAsPlayer : MonoBehaviour, IObjInteractive
             iSkillState.GetHitToSkillState();
             //手柄震动
             iPlayerState.SetVibration(0.1f, 0.7f, 0.7f);
+            //显示伤害 
+            base.ShowHurt(calculateHurtResult, iPlayerState.PlayerObj);
         }
         return calculateHurtResult;
     }

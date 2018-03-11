@@ -10,6 +10,10 @@ using System.Text;
 public interface IObjInteractive
 {
     /// <summary>
+    /// 伤害字体相对于对象的偏差值
+    /// </summary>
+    float HurtFontOffset { get; }
+    /// <summary>
     /// 造成伤害
     /// </summary>
     /// <param name="attackHurtStruct"></param>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using System.Linq;
 
 public partial class DataCenter
 {
@@ -45,6 +46,11 @@ public partial class DataCenter
     /// </summary>
     private ActionInteractiveStateData ActionInteractiveStateData;
 
+    /// <summary>
+    /// 场景状态数据
+    /// </summary>
+    private SceneStateDatas SceneStateDatas;
+
     public DataCenter()
     {
         PlayerState = new PlayerState();
@@ -55,6 +61,7 @@ public partial class DataCenter
         BusinessmanStates = new BusinessmanStates();
         GameRunningStaetData = new GameRunningStateData();
         ActionInteractiveStateData = new ActionInteractiveStateData();
+        SceneStateDatas = new SceneStateDatas();
     }
 
 
@@ -322,28 +329,33 @@ public class PlayerState
                 rectRange.yMin = (centerY - 20) > 0 ? (centerY - 20) : 0;
                 rectRange.xMax = (centerX + 20) < width ? (centerX + 20) : (width - 1);
                 rectRange.yMax = (centerY + 20) < height ? (centerY + 20) : (height - 1);
-                Color[] colors = texture2D.GetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height);
-                for (int i = centerX - 20; i < centerX + 20; i++)
+                try
                 {
-                    for (int j = centerY - 20; j < centerY + 20; j++)
+                    Color[] colors = texture2D.GetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height);
+                    for (int i = centerX - 20; i < centerX + 20; i++)
                     {
-                        float distance = Mathf.Pow(centerX - i, 2) + Mathf.Pow(centerY - j, 2);
-                        if (i >= 0 && j >= 0 && i <= width && j <= height && distance < 400)
+                        for (int j = centerY - 20; j < centerY + 20; j++)
                         {
-                            int index = (int)((j - rectRange.yMin) * rectRange.width + (i - rectRange.xMin));
-                            float rade = 0;
-                            if (distance > 50)
+                            float distance = Mathf.Pow(centerX - i, 2) + Mathf.Pow(centerY - j, 2);
+                            if (i >= 0 && j >= 0 && i <= width && j <= height && distance < 400)
                             {
-                                rade = 1 - (400f - distance) / 350f;
-                                rade = Mathf.Pow(rade, 0.5f);
+                                int index = (int)((j - rectRange.yMin) * rectRange.width + (i - rectRange.xMin));
+                                float rade = 0;
+                                if (distance > 50)
+                                {
+                                    rade = 1 - (400f - distance) / 350f;
+                                    rade = Mathf.Pow(rade, 0.5f);
+                                }
+                                rade = Mathf.Clamp(rade, 0, 1);
+                                if (colors[index].a > rade)
+                                    colors[index] = new Color(0, 0, 0, rade);
                             }
-                            rade = Mathf.Clamp(rade, 0, 1);
-                            if (colors[index].a > rade)
-                                colors[index] = new Color(0, 0, 0, rade);
                         }
                     }
+                    texture2D.SetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height, colors);
                 }
-                texture2D.SetPixels((int)rectRange.xMin, (int)rectRange.yMin, (int)rectRange.width, (int)rectRange.height, colors);
+                catch { }
+
             }
             texture2D.Apply();
         }
@@ -538,5 +550,75 @@ public class ActionInteractiveStateData
         {
             IDDic = new Dictionary<int, object>();
         }
+    }
+}
+
+/// <summary>
+/// 场景状态数据
+/// 主要是存储场景中的状态,这些状态可能会根据任务发生变化,但是在任务中无法进行保存,因此需要在这里进行保存
+/// </summary>
+public class SceneStateDatas
+{
+    /// <summary>
+    /// 数据集合
+    /// </summary>
+    public List<SceneStateDataInfo> DataInfos;
+
+    public SceneStateDatas()
+    {
+        DataInfos = new List<SceneStateDataInfo>();
+    }
+
+    /// <summary>
+    /// 获取该状态的数据
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="SceneName"></param>
+    /// <returns></returns>
+    public object GetData(int id, string SceneName)
+    {
+        SceneStateDataInfo dataInfo = DataInfos.FirstOrDefault(temp => temp.ID == id && string.Equals(temp.SceneName, SceneName));
+        if (dataInfo == null)
+        {
+            dataInfo = new SceneStateDataInfo() { ID = id, SceneName = SceneName };
+            DataInfos.Add(dataInfo);
+        }
+        return dataInfo.Data;
+    }
+
+    /// <summary>
+    /// 设置该状态的数据
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="sceneName"></param>
+    /// <param name="data"></param>
+    public void SetData(int id, string sceneName, object data)
+    {
+        SceneStateDataInfo dataInfo = DataInfos.FirstOrDefault(temp => temp.ID == id && string.Equals(temp.SceneName, sceneName));
+        if (dataInfo == null)
+        {
+            dataInfo = new SceneStateDataInfo() { ID = id, SceneName = sceneName ,Data = data};
+            DataInfos.Add(dataInfo);
+        }
+        else
+        {
+            dataInfo.Data = data;
+        }
+    }
+
+    public class SceneStateDataInfo
+    {
+        /// <summary>
+        /// 该条数据的ID
+        /// </summary>
+        public int ID;
+        /// <summary>
+        /// 场景名
+        /// </summary>
+        public string SceneName;
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public object Data;
     }
 }

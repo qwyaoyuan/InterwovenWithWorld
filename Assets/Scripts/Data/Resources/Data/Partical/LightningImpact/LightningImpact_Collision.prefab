@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 11986698}
   - component: {fileID: 11449846}
   - component: {fileID: 11429492}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 11922282}
   - component: {fileID: 11465816}
   - component: {fileID: 11422184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 417068}
   - component: {fileID: 10824112}
   - component: {fileID: 11458098}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 468000}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 403686}
   - component: {fileID: 11927478}
   - component: {fileID: 11403390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 401770}
   - component: {fileID: 11478020}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 19986294}
   - component: {fileID: 11455688}
   - component: {fileID: 11485562}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightningImpact_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 484218}
   - component: {fileID: 8272084}
   - component: {fileID: 16634562}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1196,7 +1196,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 5000
+    maxNumParticles: 500
     size3D: 0
     rotation3D: 0
     gravityModifier:

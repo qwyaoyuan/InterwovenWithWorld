@@ -214,7 +214,13 @@ namespace TaskMap
             /// </summary>
             [FieldExplan("大地图功能是否可以使用")]
             [TargetTypeExplan(TargetTypeExplanAttribute.EnumTargetType.Bool)]
-            CanBigMap
+            CanBigMap,
+            /// <summary>
+            /// 触发状态
+            /// </summary>
+            [FieldExplan("触发状态")]
+            [TargetTypeExplan(TargetTypeExplanAttribute.EnumTargetType.Int)]
+            Trigger,
         }
     }
 }

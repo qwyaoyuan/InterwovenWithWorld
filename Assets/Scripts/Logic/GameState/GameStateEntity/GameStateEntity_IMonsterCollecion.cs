@@ -171,25 +171,29 @@ public partial class GameState : IMonsterCollection
                     MonsterAIData_Trigger monsterAIData_Trigger = monsterDataInfo.AIData as MonsterAIData_Trigger;
                     if (monsterAIData_Trigger != null && tempData.Value.Count == 0 && monsterAIData_Trigger.NowUpdateTime <= 0)
                     {
-                        monsterAIData_Trigger.NowUpdateTime = monsterAIData_Trigger.UpdateTime;
                         float distance = Vector2.Distance(
                             new Vector2(monsterDataInfo.Center.x, monsterDataInfo.Center.z)
                             , new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z));
                         if (distance < monsterAIData_Trigger.TriggerRange && monsterDataInfo.MonsterPrefab != null)
                         {
+                            monsterAIData_Trigger.NowUpdateTime = monsterAIData_Trigger.UpdateTime;
                             //生成怪物
                             for (int i = 0; i < monsterAIData_Trigger.Count; i++)
                             {
-                                GameObject createObj = GameObject.Instantiate<GameObject>(monsterDataInfo.MonsterPrefab);
+                                Vector3 createPos = new Vector3(
+                                    UnityEngine.Random.Range(monsterDataInfo.Center.x - monsterAIData_Trigger.CreateRange, monsterDataInfo.Center.x + monsterAIData_Trigger.CreateRange),
+                                    monsterDataInfo.Center.y,
+                                    UnityEngine.Random.Range(monsterDataInfo.Center.z - monsterAIData_Trigger.CreateRange, monsterDataInfo.Center.z + monsterAIData_Trigger.CreateRange));
+                                GameObject createObj = GameObject.Instantiate<GameObject>(monsterDataInfo.MonsterPrefab, createPos, Quaternion.identity);
                                 MonsterControl monsterControl = createObj.AddComponent<MonsterControl>();
                                 monsterControl.SameGroupObjList = tempData.Value;
                                 monsterControl.monsterDataInfo = tempData.Key;
                                 tempData.Value.Add(createObj);
                                 //设置位置(MonsterControl内部会进行y轴的设置)
-                                createObj.transform.position = new Vector3(
-                                    UnityEngine.Random.Range(monsterDataInfo.Center.x - monsterAIData_Trigger.TriggerRange, monsterDataInfo.Center.x + monsterAIData_Trigger.TriggerRange),
-                                    monsterDataInfo.Center.y,
-                                    UnityEngine.Random.Range(monsterDataInfo.Center.z - monsterAIData_Trigger.TriggerRange, monsterDataInfo.Center.z + monsterAIData_Trigger.TriggerRange));
+                                //createObj.transform.position = new Vector3(
+                                //    UnityEngine.Random.Range(monsterDataInfo.Center.x - monsterAIData_Trigger.TriggerRange, monsterDataInfo.Center.x + monsterAIData_Trigger.TriggerRange),
+                                //    monsterDataInfo.Center.y,
+                                //    UnityEngine.Random.Range(monsterDataInfo.Center.z - monsterAIData_Trigger.TriggerRange, monsterDataInfo.Center.z + monsterAIData_Trigger.TriggerRange));
                             }
                             objListChanged = true;
                         }

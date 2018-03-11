@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 19934856}
   - component: {fileID: 11407128}
   - component: {fileID: 114541250208569074}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ GameObject:
   - component: {fileID: 19843936}
   - component: {fileID: 19987532}
   - component: {fileID: 114415727290494474}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 416092}
   - component: {fileID: 11473014}
   - component: {fileID: 114958007816879516}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 19910628}
   - component: {fileID: 11456668}
   - component: {fileID: 114742388311209786}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 467330}
   - component: {fileID: 10870320}
   - component: {fileID: 114893293381842502}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 19821716}
   - component: {fileID: 19995536}
   - component: {fileID: 114976650586023660}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoreLighting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 19995806}
   - component: {fileID: 11497082}
   - component: {fileID: 114663892018108146}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 482048}
   - component: {fileID: 8290244}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497360}
   - component: {fileID: 8220432}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 492396}
   - component: {fileID: 11437246}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 478664}
   - component: {fileID: 114365942969335062}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 402448}
   - component: {fileID: 11403696}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 10814422}
   - component: {fileID: 11452358}
   - component: {fileID: 114659906817505536}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

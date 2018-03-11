@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 467784}
   - component: {fileID: 19888192}
   - component: {fileID: 19952374}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - component: {fileID: 488262}
   - component: {fileID: 8233502}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 467118}
   - component: {fileID: 19856918}
   - component: {fileID: 19938684}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 422314}
   - component: {fileID: 19811360}
   - component: {fileID: 19990426}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PortaBlackHole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 418462}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 426534}
   - component: {fileID: 19889300}
   - component: {fileID: 19906258}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortSwirl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 447948}
   - component: {fileID: 19882884}
   - component: {fileID: 19993818}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Portal (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 427848}
   - component: {fileID: 19865700}
   - component: {fileID: 19977822}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 459910}
   - component: {fileID: 10806274}
   - component: {fileID: 11488468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 442768}
   - component: {fileID: 8218438}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 408154}
   - component: {fileID: 19893046}
   - component: {fileID: 19903804}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Distort (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 11445608}
   - component: {fileID: 11434440}
   - component: {fileID: 114715910454007920}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DarkShock_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 456742}
   - component: {fileID: 8257732}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 482838}
   - component: {fileID: 19865228}
   - component: {fileID: 19906640}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -34,6 +34,11 @@ public class ArcaneShockPartical : ParticalControlEntry
     /// </summary>
     private float nowCheckTime;
 
+    /// <summary>
+    /// 已经检测过了 
+    /// </summary>
+    private bool isChecked;
+
     private void Awake()
     {
         sphereCollider = GetComponent<SphereCollider>();
@@ -73,7 +78,7 @@ public class ArcaneShockPartical : ParticalControlEntry
         nowCheckTime += Time.deltaTime;
         if (nowCheckTime > StartCheckTime)
         {
-            if (nowCheckTime - StartCheckTime < 1)
+            if (!isChecked)
             {
                 sphereCollider.enabled = true;
             }
@@ -92,6 +97,7 @@ public class ArcaneShockPartical : ParticalControlEntry
     {
         if (nowCheckTime>StartCheckTime  && CallBack != null)
         {
+            isChecked = true;
             int layer = (int)Math.Pow(2, other.gameObject.layer);
             int endLayer = layer | layerMask;
             if (endLayer == layerMask)

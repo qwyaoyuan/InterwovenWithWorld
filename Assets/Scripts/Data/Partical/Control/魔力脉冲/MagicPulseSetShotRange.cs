@@ -8,6 +8,11 @@ using UnityEngine;
 /// </summary>
 public class MagicPulseSetShotRange : MonoBehaviour, IParticalConduct
 {
+    public void Open()
+    {
+     
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
      

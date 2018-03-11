@@ -14,6 +14,11 @@ public class SetPartical_RFX4_RaycastCollision : MonoBehaviour, IParticalConduct
     /// </summary>
     private EventHandler<RFX4_RaycastCollision.RFX4_RaycastCollision_Data> nowCallBack;
 
+    public void Open()
+    {
+    
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
         RFX4_RaycastCollision rfx4_RaycastCollision = GetComponent<RFX4_RaycastCollision>();

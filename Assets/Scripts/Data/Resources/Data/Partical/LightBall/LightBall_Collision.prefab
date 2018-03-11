@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 19810504}
   - component: {fileID: 19907530}
   - component: {fileID: 11459982}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   m_Component:
   - component: {fileID: 462090}
   - component: {fileID: 11431734}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 492822}
   - component: {fileID: 8299502}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 469246}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightBall_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 420498}
   - component: {fileID: 11923778}
   - component: {fileID: 11493228}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 416776}
   - component: {fileID: 19839022}
   - component: {fileID: 19974524}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 8224584}
   - component: {fileID: 16661200}
   - component: {fileID: 11460720}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 19991372}
   - component: {fileID: 11406396}
   - component: {fileID: 11441190}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 445156}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 19882322}
   - component: {fileID: 19927324}
   - component: {fileID: 11457674}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,6 +594,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.3
   Shadows: 0
+  isLoop: 0
 --- !u!114 &11457674
 MonoBehaviour:
   m_ObjectHideFlags: 1

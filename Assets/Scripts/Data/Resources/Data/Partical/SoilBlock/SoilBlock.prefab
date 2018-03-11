@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 54977420321323980}
   - component: {fileID: 64093415701447562}
   - component: {fileID: 114031366893565350}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 54620920690198444}
   - component: {fileID: 64370728389253666}
   - component: {fileID: 114975399369464724}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4500391243535108}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 54936115355314012}
   - component: {fileID: 64640485164352858}
   - component: {fileID: 114815654036939142}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 54616165642816226}
   - component: {fileID: 64743165728563088}
   - component: {fileID: 114892638735139942}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 54322558579874892}
   - component: {fileID: 64382460445005002}
   - component: {fileID: 114232770644475632}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 4069341792249018}
   - component: {fileID: 114237162888081780}
   - component: {fileID: 114567006771536628}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4078541356679274}
   - component: {fileID: 114774697555457630}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 54643654747236122}
   - component: {fileID: 64942888416873744}
   - component: {fileID: 114136718019788888}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 54616048930547816}
   - component: {fileID: 64054533380695648}
   - component: {fileID: 114669123696642730}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 198137777787791552}
   - component: {fileID: 199288364996532116}
   - component: {fileID: 114131903140129454}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion1Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 54643974690846680}
   - component: {fileID: 64845038187912208}
   - component: {fileID: 114134789843554280}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 198410931621262646}
   - component: {fileID: 199501152541907538}
   - component: {fileID: 114239600121220826}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion1Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 54639330820549398}
   - component: {fileID: 64481513531804604}
   - component: {fileID: 114049824924831170}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 4445890252721844}
   - component: {fileID: 33031163846045202}
   - component: {fileID: 23421815052769120}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Portal1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4075664943535748}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RockParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 54327810534106222}
   - component: {fileID: 64912826510552644}
   - component: {fileID: 114215323759795604}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4259464682512360}
   - component: {fileID: 114763873558250966}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 4013757655529202}
   - component: {fileID: 33288540923321250}
   - component: {fileID: 23057145303558548}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Sky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 54158416931857090}
   - component: {fileID: 64203707824998246}
   - component: {fileID: 114266462916303852}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -389,7 +389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4507488434914428}
   - component: {fileID: 82438064595573318}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PortalOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 54751149521769458}
   - component: {fileID: 64281731519833240}
   - component: {fileID: 114963132544417898}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4762234043120510}
   - component: {fileID: 82040997245390556}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 54889371305186456}
   - component: {fileID: 64720078691174338}
   - component: {fileID: 114423478296895646}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 4551429557761242}
   - component: {fileID: 33314111289358372}
   - component: {fileID: 23300785213456196}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fringe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 4547647521892094}
   - component: {fileID: 198601218008120884}
   - component: {fileID: 199853019128318550}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 54393735530383978}
   - component: {fileID: 64377821018396760}
   - component: {fileID: 114993522887961360}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 4199085457467898}
   - component: {fileID: 82668507993981200}
   - component: {fileID: 114832521116294794}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 54350095042373754}
   - component: {fileID: 64660478032826386}
   - component: {fileID: 114011809443094230}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 54530244799704256}
   - component: {fileID: 64699974410354606}
   - component: {fileID: 114260867175843140}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 54577410154745002}
   - component: {fileID: 64851965454306454}
   - component: {fileID: 114600183576180224}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_040
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 4289259406505072}
   - component: {fileID: 198401761352751526}
   - component: {fileID: 199321311201502062}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4587759617001296}
   - component: {fileID: 114757317892219696}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SoilBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 199945884719214562}
   - component: {fileID: 114044812649742792}
   - component: {fileID: 114828822135474904}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ExplosionIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 54064980937837424}
   - component: {fileID: 64117433870369314}
   - component: {fileID: 114498071770798318}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_029
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 54808460848642894}
   - component: {fileID: 64790493633610780}
   - component: {fileID: 114566987866187392}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_027
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 54122220065913434}
   - component: {fileID: 64391773600822884}
   - component: {fileID: 114260748917705868}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 54811776204874686}
   - component: {fileID: 64580522007380160}
   - component: {fileID: 114892077997657432}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +728,7 @@ GameObject:
   - component: {fileID: 54741268914383090}
   - component: {fileID: 64393048735644564}
   - component: {fileID: 114216821008169814}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 4635667155160394}
   - component: {fileID: 198415539462965738}
   - component: {fileID: 199353758913874276}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 54597701708772094}
   - component: {fileID: 64342661065160706}
   - component: {fileID: 114648306529703570}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -788,7 +788,7 @@ GameObject:
   - component: {fileID: 114378308027420308}
   - component: {fileID: 114182621704338772}
   - component: {fileID: 114713021261144816}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 4684103652039208}
   - component: {fileID: 82582882277435064}
   - component: {fileID: 114802428429085078}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PortalIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 54565203602512888}
   - component: {fileID: 64093677104014110}
   - component: {fileID: 114175800299038774}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 54786195534857536}
   - component: {fileID: 64992467445618018}
   - component: {fileID: 114019616860443348}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_038
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 4026081146594086}
   - component: {fileID: 198792019644403316}
   - component: {fileID: 199166310237106214}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trails (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,7 +882,7 @@ GameObject:
   - component: {fileID: 54067615233005132}
   - component: {fileID: 64443903424406932}
   - component: {fileID: 114990170388205680}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -902,7 +902,7 @@ GameObject:
   - component: {fileID: 54453613363161846}
   - component: {fileID: 64564263004557182}
   - component: {fileID: 114080764211484054}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 54805449337302524}
   - component: {fileID: 64467592073537340}
   - component: {fileID: 114036476584441916}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -942,7 +942,7 @@ GameObject:
   - component: {fileID: 54924957912517778}
   - component: {fileID: 64661981652392784}
   - component: {fileID: 114456595088482722}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 4554102449142338}
   - component: {fileID: 82525474455218056}
   - component: {fileID: 114741803187784124}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -979,7 +979,7 @@ GameObject:
   - component: {fileID: 54709743198409264}
   - component: {fileID: 64079204654722656}
   - component: {fileID: 114524263494626604}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -999,7 +999,7 @@ GameObject:
   - component: {fileID: 54264500233456116}
   - component: {fileID: 64674713221706838}
   - component: {fileID: 114537106586516210}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1016,7 @@ GameObject:
   - component: {fileID: 4415427005437322}
   - component: {fileID: 33026244543037722}
   - component: {fileID: 23179227230367722}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Portal2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 54529627725277034}
   - component: {fileID: 64189955183707310}
   - component: {fileID: 114434780808155602}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1056,7 +1056,7 @@ GameObject:
   - component: {fileID: 54595770210080138}
   - component: {fileID: 64371233053515450}
   - component: {fileID: 114822856808128240}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1076,7 +1076,7 @@ GameObject:
   - component: {fileID: 54867809940272674}
   - component: {fileID: 64037128956682316}
   - component: {fileID: 114707533163746594}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 4941174743842254}
   - component: {fileID: 33516101950398628}
   - component: {fileID: 23294810474531138}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PortalMaskExtrude
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 54442070948672142}
   - component: {fileID: 64537380133315884}
   - component: {fileID: 114981683358741234}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_036
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1130,7 @@ GameObject:
   - component: {fileID: 4004662063545998}
   - component: {fileID: 198388916629789424}
   - component: {fileID: 199605618568844096}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Distort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1150,7 +1150,7 @@ GameObject:
   - component: {fileID: 54440807851495578}
   - component: {fileID: 64847747310542158}
   - component: {fileID: 114754577367877126}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1170,7 +1170,7 @@ GameObject:
   - component: {fileID: 54167049985196106}
   - component: {fileID: 64831069044255590}
   - component: {fileID: 114475111904917924}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1190,7 +1190,7 @@ GameObject:
   - component: {fileID: 54845877046638132}
   - component: {fileID: 64949814348782194}
   - component: {fileID: 114207624883556256}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1210,7 +1210,7 @@ GameObject:
   - component: {fileID: 54408419817109044}
   - component: {fileID: 64690705738921828}
   - component: {fileID: 114601244492224578}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 54051869744549734}
   - component: {fileID: 64825038689722576}
   - component: {fileID: 114125429810569388}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1248,7 +1248,7 @@ GameObject:
   - component: {fileID: 198195864553061536}
   - component: {fileID: 199656567700503734}
   - component: {fileID: 114338519690852184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ExplosionOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1268,7 +1268,7 @@ GameObject:
   - component: {fileID: 54858823567696976}
   - component: {fileID: 64238745080681018}
   - component: {fileID: 114441024552601542}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1288,7 +1288,7 @@ GameObject:
   - component: {fileID: 54917931674198346}
   - component: {fileID: 64234048760839868}
   - component: {fileID: 114253980845854840}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_042
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1304,7 +1304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4468958800323120}
   - component: {fileID: 114564323567747988}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1321,7 +1321,7 @@ GameObject:
   - component: {fileID: 4254832484022944}
   - component: {fileID: 33875126344447356}
   - component: {fileID: 23342870806188112}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6022,6 +6022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.8
   Shadows: 0
+  isLoop: 0
 --- !u!114 &114134789843554280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6207,6 +6208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.8
   Shadows: 0
+  isLoop: 0
 --- !u!114 &114253980845854840
 MonoBehaviour:
   m_ObjectHideFlags: 1

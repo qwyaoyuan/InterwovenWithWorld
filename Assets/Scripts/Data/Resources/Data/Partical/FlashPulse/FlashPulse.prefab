@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - component: {fileID: 462034}
   - component: {fileID: 114775710401560056}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FlashPulse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 432368}
   - component: {fileID: 18247632}
   - component: {fileID: 11453872}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 19933734}
   - component: {fileID: 11417248}
   - component: {fileID: 114843813844525886}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 19840384}
   - component: {fileID: 19997268}
   - component: {fileID: 114713425874568624}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 19842346}
   - component: {fileID: 19971306}
   - component: {fileID: 114320550106213034}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: FogExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 19869554}
   - component: {fileID: 19948184}
   - component: {fileID: 114451880396329382}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Distortion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497416}
   - component: {fileID: 11438166}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 11413994}
   - component: {fileID: 11487046}
   - component: {fileID: 114785068154024286}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 422070}
   - component: {fileID: 11421082}
   - component: {fileID: 114378554058366818}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 19880804}
   - component: {fileID: 19925522}
   - component: {fileID: 11400774}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TrailShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 462486}
   - component: {fileID: 19874848}
   - component: {fileID: 19941424}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fog (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 496338}
   - component: {fileID: 19862396}
   - component: {fileID: 19940784}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticleShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

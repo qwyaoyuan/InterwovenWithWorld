@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4780532428457034}
   - component: {fileID: 182441474470432736}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 82111211121243818}
   - component: {fileID: 114078249393511080}
   - component: {fileID: 166829853313821652}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4794439371440198}
   - component: {fileID: 108807637389375168}
   - component: {fileID: 114598092756668970}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 198253669397895900}
   - component: {fileID: 199139059866461644}
   - component: {fileID: 114902576571426236}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoreFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4887435869845586}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BlessingPulse_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 198883625658988950}
   - component: {fileID: 199515224300296590}
   - component: {fileID: 114823083583026856}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 413086}
   - component: {fileID: 19827650}
   - component: {fileID: 19937218}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 421172}
   - component: {fileID: 19846854}
   - component: {fileID: 19955298}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 477992}
   - component: {fileID: 114898687459660320}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightningStroke_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 6426394}
   - component: {fileID: 11457128}
   - component: {fileID: 11448232}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 6490378}
   - component: {fileID: 11453094}
   - component: {fileID: 11457272}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 420600}
   - component: {fileID: 11999014}
   - component: {fileID: 11457188}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 6463236}
   - component: {fileID: 11430104}
   - component: {fileID: 11481866}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_095
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 6458218}
   - component: {fileID: 11414424}
   - component: {fileID: 11434962}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_084
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 444912}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightningStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 6403604}
   - component: {fileID: 11494158}
   - component: {fileID: 11470570}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_161
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 6495568}
   - component: {fileID: 11431236}
   - component: {fileID: 11442278}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 6470340}
   - component: {fileID: 11477410}
   - component: {fileID: 11430638}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 6421056}
   - component: {fileID: 11418370}
   - component: {fileID: 11409010}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 6413314}
   - component: {fileID: 11491530}
   - component: {fileID: 11440592}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 6425576}
   - component: {fileID: 11472366}
   - component: {fileID: 11428490}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_074
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 495544}
   - component: {fileID: 19824356}
   - component: {fileID: 19954958}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Magma
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,7 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 455232}
   - component: {fileID: 11474950}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 412018}
   - component: {fileID: 11498274}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 6449878}
   - component: {fileID: 11494164}
   - component: {fileID: 11497846}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_153
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 6494864}
   - component: {fileID: 11467368}
   - component: {fileID: 11470100}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_127
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 6471362}
   - component: {fileID: 11422868}
   - component: {fileID: 11432976}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_113
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 6413066}
   - component: {fileID: 11458406}
   - component: {fileID: 11433914}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Box002_frag_060
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 437344}
   - component: {fileID: 10857662}
   - component: {fileID: 11445806}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

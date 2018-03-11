@@ -151,6 +151,11 @@ public abstract class ParticalControlEntry : MonoBehaviour, IParticalConduct
     {
         ForeachChildNode<IParticalConduct>(transform, temp => temp.SetRange(range));
     }
+
+    public void Open()
+    {
+        ForeachChildNode<IParticalConduct>(transform, temp => temp.Open());
+    }
 }
 
 /// <summary>

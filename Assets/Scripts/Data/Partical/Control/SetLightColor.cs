@@ -8,6 +8,11 @@ using UnityEngine;
 /// </summary>
 class SetLightColor : MonoBehaviour, IParticalConduct
 {
+    public void Open()
+    {
+       
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
 

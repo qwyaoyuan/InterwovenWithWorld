@@ -47,5 +47,10 @@ class SetPartical_FireDanceRange_Decal_Loop : MonoBehaviour, IParticalConduct
     {
         projector.orthographicSize = baseSize * range;
     }
+
+    public void Open()
+    {
+      
+    }
 }
 

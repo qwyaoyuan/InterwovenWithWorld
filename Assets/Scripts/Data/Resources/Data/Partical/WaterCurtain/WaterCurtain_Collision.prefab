@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4036329302458070}
   - component: {fileID: 108224249108066972}
   - component: {fileID: 114017602959620538}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 82223348783738896}
   - component: {fileID: 114510013832274636}
   - component: {fileID: 166459679852289408}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 198812610650526274}
   - component: {fileID: 199640190490335880}
   - component: {fileID: 114236973144456920}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4642022568734348}
   - component: {fileID: 182973869125204724}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 198025172269082122}
   - component: {fileID: 199581884187161464}
   - component: {fileID: 114126818014715376}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CoreFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4249814134872764}
   - component: {fileID: 114216244033463932}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WaterCurtain_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

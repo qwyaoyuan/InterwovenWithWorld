@@ -205,7 +205,7 @@ public class UIBigMap : MonoBehaviour
         NPCDataInfo[] npcDataInfos = npcData.GetNPCDataInfos(sceneName);
         foreach (NPCDataInfo npcDataInfo in npcDataInfos)
         {
-            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(npcDataInfo.NPCSprite, new Vector2(20, 20), new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
+            UIMapIconStruct uiMapIconStruct = uiMapControl.AddIcon(npcDataInfo.NPCSprite, new Vector2(30, 30), new Vector2(npcDataInfo.NPCLocation.x, npcDataInfo.NPCLocation.z));
             object[] innerValue = new object[]
             {
                 npcDataInfo.NPCType!= EnumNPCType.Street?EnumBigMapIconCheck.Action : EnumBigMapIconCheck.Street,
@@ -277,6 +277,11 @@ public class UIBigMap : MonoBehaviour
             uiMapIconStruct.value = innerValue;
             uiMapIconStructList.Add(uiMapIconStruct);
         }
+        //设置玩家的图标        //1_272
+        Sprite playerSprite = SpriteManager.GetSrpite("1:1_272");
+        UIMapIconStruct uiMapIconStruct_Player = uiMapControl.AddIcon(playerSprite, new Vector2(30, 40), new Vector2(iPlayerState.PlayerObj.transform.position.x, iPlayerState.PlayerObj.transform.position.z));
+        uiMapIconStruct_Player.value = null;
+        uiMapIconStructList.Add(uiMapIconStruct_Player);
         if (string.Equals(iGameState.SceneName, sceneName))//如果这个场景是玩家所在的场景则设置场景的中心位置为玩家的位置
         {
             //根据玩家位置设置地图中心位置

@@ -9,6 +9,11 @@ using UnityEngine;
 /// </summary>
 public class SetMeshRendererColor_Materials_KriptoFX_RFX4_DistortionParticlesAdditive : MonoBehaviour, IParticalConduct
 {
+    public void Open()
+    {
+      
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
 

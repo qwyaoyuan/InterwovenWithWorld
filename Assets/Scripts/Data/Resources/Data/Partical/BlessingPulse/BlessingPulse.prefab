@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 416936}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BlessingPulse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 19860496}
   - component: {fileID: 19924424}
   - component: {fileID: 11429368}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core_Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 430076}
   - component: {fileID: 10813718}
   - component: {fileID: 11453992}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 19808882}
   - component: {fileID: 19943046}
   - component: {fileID: 11488782}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: StartFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 451466}
   - component: {fileID: 11403714}
   - component: {fileID: 114656319350400074}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 19887178}
   - component: {fileID: 19993140}
   - component: {fileID: 11428614}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Waves_Distance 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 8298560}
   - component: {fileID: 11496444}
   - component: {fileID: 16673026}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 460954}
   - component: {fileID: 10887970}
   - component: {fileID: 11469388}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: StartLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10201,7 +10201,7 @@ GameObject:
   - component: {fileID: 198630569966107582}
   - component: {fileID: 199954308098136498}
   - component: {fileID: 114753756212018532}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Waves_Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}

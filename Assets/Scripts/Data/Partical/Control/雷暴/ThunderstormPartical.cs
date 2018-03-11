@@ -60,7 +60,7 @@ public class ThunderstormPartical : ParticalControlEntry
         layerValue -= defaultValue;
 
         //雷暴不需要方向
-        transform.position = pos;
+        transform.position = pos + Vector3.up * 3.5f;
         SetLayerMask(layerValue);
         SetCollisionCallback(CollisionCallback);
         SetRange(range);

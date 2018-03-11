@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 414464}
   - component: {fileID: 8212612}
   - component: {fileID: 182020791317796892}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 19966084}
   - component: {fileID: 11462036}
   - component: {fileID: 114720014100591030}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 10873000}
   - component: {fileID: 11416646}
   - component: {fileID: 114063213022457742}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PointLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 10890662}
   - component: {fileID: 11400892}
   - component: {fileID: 114512342152652112}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PointLightBackLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 11433160}
   - component: {fileID: 16658874}
   - component: {fileID: 182184271107084578}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400368}
   - component: {fileID: 114978449417045588}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 407126}
   - component: {fileID: 19844138}
   - component: {fileID: 19929004}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DistortionDisk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 54326821320281274}
   - component: {fileID: 136058820713027608}
   - component: {fileID: 114154980499845670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Buff
   m_TagString: Untagged
   m_Icon: {fileID: 0}

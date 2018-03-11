@@ -446,6 +446,40 @@ public partial class GameState : IGameState
                 Call<IGameState, Camera>(temp => temp.InterludesCamera);
         }
     }
+
+    /// <summary>
+    /// 设置伤害字体数据
+    /// </summary>
+    private HurtFontStruct _ShowHurtFont;
+    /// <summary>
+    /// 设置伤害字体数据
+    /// </summary>
+    public HurtFontStruct ShowHurtFont
+    {
+        get { return _ShowHurtFont; }
+        set
+        {
+            _ShowHurtFont = value;
+            Call<IGameState, HurtFontStruct>(temp => temp.ShowHurtFont);
+        }
+    }
+
+    /// <summary>
+    /// 显示怪物的当前血量
+    /// </summary>
+    private MonsterHPUIStruct _ShowMonsterHP;
+    /// <summary>
+    /// 显示怪物的当前血量 
+    /// </summary>
+    public MonsterHPUIStruct ShowMonsterHP
+    {
+        get { return _ShowMonsterHP; }
+        set
+        {
+            _ShowMonsterHP = value;
+            Call<IGameState, MonsterHPUIStruct>(temp => temp.ShowMonsterHP);
+        }
+    }
     #endregion
 
 }

@@ -108,7 +108,14 @@ public interface IGameState : IBaseState
     /// 过场动画用到的摄像机
     /// </summary>
     Camera InterludesCamera { get; set; }
-
+    /// <summary>
+    /// 设置伤害字体数据
+    /// </summary>
+    HurtFontStruct ShowHurtFont { get; set; }
+    /// <summary>
+    /// 显示怪物的当前血量 
+    /// </summary>
+    MonsterHPUIStruct ShowMonsterHP { get; set; }
 }
 
 /// <summary>
@@ -178,4 +185,72 @@ public enum EnumGameRunType
     /// 合成界面
     /// </summary>
     Synthesis,
+}
+
+
+/// <summary>
+/// 怪物血条UI结构
+/// </summary>
+public struct MonsterHPUIStruct
+{
+    /// <summary>
+    /// 怪物名
+    /// </summary>
+    public string monsterName;
+
+    /// <summary>
+    /// 怪物的图片
+    /// </summary>
+    public Sprite monsterSprite;
+
+    /// <summary>
+    /// 最大血量
+    /// </summary>
+    public float maxHP;
+
+    /// <summary>
+    /// 当前血量
+    /// </summary>
+    public float nowHP;
+
+    /// <summary>
+    /// 怪物对象
+    /// </summary>
+    public GameObject monsterObj;
+
+    /// <summary>
+    /// 异常数据 
+    /// </summary>
+    public StatusDataInfo.StatusLevelDataInfo[] statusDatas;
+
+    /// <summary>
+    /// 本次技能的耗魔量(仅用于组合魔法,配合异常使用)
+    /// </summary>
+    public float thisUsedMana;
+}
+
+/// <summary>
+/// 伤害字体数据结构
+/// </summary>
+public struct HurtFontStruct
+{
+    /// <summary>
+    /// 目标对象
+    /// </summary>
+    public GameObject TargetObj;
+
+    /// <summary>
+    /// 伤害
+    /// </summary>
+    public float Hurt;
+
+    /// <summary>
+    /// 是否暴击
+    /// </summary>
+    public bool IsCrit;
+
+    /// <summary>
+    /// 偏差值
+    /// </summary>
+    public float Offset;
 }

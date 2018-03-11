@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - component: {fileID: 462396}
   - component: {fileID: 11460982}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 483648}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 454906}
   - component: {fileID: 11964496}
   - component: {fileID: 11411180}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 407582}
   - component: {fileID: 10866444}
   - component: {fileID: 11412050}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 469902}
   - component: {fileID: 19817756}
   - component: {fileID: 19921250}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 8290600}
   - component: {fileID: 11493414}
   - component: {fileID: 16625718}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 421294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fireball_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 478854}
   - component: {fileID: 11428694}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 457570}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 415496}
   - component: {fileID: 8223704}
   - component: {fileID: 16639482}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

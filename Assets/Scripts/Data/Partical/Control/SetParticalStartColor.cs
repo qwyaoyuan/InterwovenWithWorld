@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class SetParticalStartColor : MonoBehaviour, IParticalConduct
 {
+    public void Open()
+    {
+     
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
  

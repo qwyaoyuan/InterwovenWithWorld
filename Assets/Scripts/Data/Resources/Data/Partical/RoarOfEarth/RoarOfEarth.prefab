@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6486006}
   - component: {fileID: 11406308}
   - component: {fileID: 11497140}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   - component: {fileID: 6499540}
   - component: {fileID: 11426390}
   - component: {fileID: 11403166}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 6440410}
   - component: {fileID: 11442522}
   - component: {fileID: 11412002}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 490810}
   - component: {fileID: 3374800}
   - component: {fileID: 2300338}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 422546}
   - component: {fileID: 8299158}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 6446086}
   - component: {fileID: 11456824}
   - component: {fileID: 11402986}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 436978}
   - component: {fileID: 11485074}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 6483022}
   - component: {fileID: 11461552}
   - component: {fileID: 11494956}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 449434}
   - component: {fileID: 3383910}
   - component: {fileID: 2312688}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 403080}
   - component: {fileID: 3363208}
   - component: {fileID: 2339968}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_054
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 467660}
   - component: {fileID: 3318702}
   - component: {fileID: 2388468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 478906}
   - component: {fileID: 9524378}
   - component: {fileID: 11401356}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RockAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 443904}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 482456}
   - component: {fileID: 3328720}
   - component: {fileID: 2352200}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_067
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 422256}
   - component: {fileID: 3396988}
   - component: {fileID: 2362384}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_056
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 6474990}
   - component: {fileID: 11412732}
   - component: {fileID: 11417202}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 447022}
   - component: {fileID: 3381232}
   - component: {fileID: 2304398}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_051
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 477874}
   - component: {fileID: 11490266}
   - component: {fileID: 11954744}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Crater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 423922}
   - component: {fileID: 3341482}
   - component: {fileID: 2317130}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_066
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 409202}
   - component: {fileID: 3375242}
   - component: {fileID: 2339826}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 406528}
   - component: {fileID: 3331144}
   - component: {fileID: 2388808}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_027
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 429720}
   - component: {fileID: 3384982}
   - component: {fileID: 2374846}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 472134}
   - component: {fileID: 3335822}
   - component: {fileID: 2303920}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_038
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 493176}
   - component: {fileID: 3354344}
   - component: {fileID: 2384388}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 463658}
   - component: {fileID: 3368180}
   - component: {fileID: 2312862}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +455,7 @@ GameObject:
   - component: {fileID: 483812}
   - component: {fileID: 3378152}
   - component: {fileID: 2346768}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 471832}
   - component: {fileID: 10856408}
   - component: {fileID: 11476230}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 493576}
   - component: {fileID: 9594974}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ZeroGravityRocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 490920}
   - component: {fileID: 3318558}
   - component: {fileID: 2349654}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_059
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 441218}
   - component: {fileID: 3313602}
   - component: {fileID: 2355978}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_049
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 476980}
   - component: {fileID: 3388452}
   - component: {fileID: 2337180}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 6428060}
   - component: {fileID: 11424958}
   - component: {fileID: 11433214}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 469390}
   - component: {fileID: 3307402}
   - component: {fileID: 2313796}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_052
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468308}
   - component: {fileID: 11443742}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RockStaticGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,7 +610,7 @@ GameObject:
   - component: {fileID: 470778}
   - component: {fileID: 19850738}
   - component: {fileID: 19977256}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 11440632}
   - component: {fileID: 11405326}
   - component: {fileID: 11485670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EarlyEffectCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 6481812}
   - component: {fileID: 11437186}
   - component: {fileID: 11444776}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 498456}
   - component: {fileID: 3359980}
   - component: {fileID: 2315550}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_024
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 436700}
   - component: {fileID: 3378856}
   - component: {fileID: 2305388}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_043
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 11470872}
   - component: {fileID: 11463856}
   - component: {fileID: 11476560}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +724,7 @@ GameObject:
   - component: {fileID: 460542}
   - component: {fileID: 3376986}
   - component: {fileID: 2345512}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_047
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 6406364}
   - component: {fileID: 11440852}
   - component: {fileID: 11473280}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 54076056979187754}
   - component: {fileID: 136101924822540368}
   - component: {fileID: 114857471083991926}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -780,7 +780,7 @@ GameObject:
   - component: {fileID: 465704}
   - component: {fileID: 3399030}
   - component: {fileID: 2325486}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -796,7 +796,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452640}
   - component: {fileID: 11490460}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +813,7 @@ GameObject:
   - component: {fileID: 481342}
   - component: {fileID: 3385408}
   - component: {fileID: 2357572}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_061
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 6449754}
   - component: {fileID: 11483562}
   - component: {fileID: 11412714}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 8278296}
   - component: {fileID: 11461484}
   - component: {fileID: 16620292}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -869,7 +869,7 @@ GameObject:
   - component: {fileID: 468206}
   - component: {fileID: 3314726}
   - component: {fileID: 2331934}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_068
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -886,7 +886,7 @@ GameObject:
   - component: {fileID: 441086}
   - component: {fileID: 3304134}
   - component: {fileID: 2353932}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -903,7 +903,7 @@ GameObject:
   - component: {fileID: 446290}
   - component: {fileID: 3347336}
   - component: {fileID: 2301424}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -920,7 +920,7 @@ GameObject:
   - component: {fileID: 496456}
   - component: {fileID: 3384798}
   - component: {fileID: 2319892}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -937,7 +937,7 @@ GameObject:
   - component: {fileID: 417940}
   - component: {fileID: 3322894}
   - component: {fileID: 2363422}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -958,7 +958,7 @@ GameObject:
   - component: {fileID: 6471912}
   - component: {fileID: 11459894}
   - component: {fileID: 11473822}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 470660}
   - component: {fileID: 3381508}
   - component: {fileID: 2387500}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 19858912}
   - component: {fileID: 19977076}
   - component: {fileID: 11402174}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1012,7 +1012,7 @@ GameObject:
   - component: {fileID: 11464454}
   - component: {fileID: 11921896}
   - component: {fileID: 11452016}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CraterEmission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1028,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491314}
   - component: {fileID: 114066477678821644}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RoarOfEarth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1049,7 +1049,7 @@ GameObject:
   - component: {fileID: 6455476}
   - component: {fileID: 11489494}
   - component: {fileID: 11403404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_038
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1070,7 +1070,7 @@ GameObject:
   - component: {fileID: 6477188}
   - component: {fileID: 11454072}
   - component: {fileID: 11490184}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1087,7 +1087,7 @@ GameObject:
   - component: {fileID: 411594}
   - component: {fileID: 3357858}
   - component: {fileID: 2321582}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1104,7 +1104,7 @@ GameObject:
   - component: {fileID: 491820}
   - component: {fileID: 3372290}
   - component: {fileID: 2300198}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1125,7 +1125,7 @@ GameObject:
   - component: {fileID: 6499886}
   - component: {fileID: 11495650}
   - component: {fileID: 11463844}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1142,7 @@ GameObject:
   - component: {fileID: 478726}
   - component: {fileID: 3372270}
   - component: {fileID: 2340516}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1159,7 +1159,7 @@ GameObject:
   - component: {fileID: 478298}
   - component: {fileID: 3308220}
   - component: {fileID: 2399196}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_036
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1180,7 +1180,7 @@ GameObject:
   - component: {fileID: 6426030}
   - component: {fileID: 11467194}
   - component: {fileID: 11434976}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1201,7 +1201,7 @@ GameObject:
   - component: {fileID: 6449192}
   - component: {fileID: 11491896}
   - component: {fileID: 11427908}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1218,7 +1218,7 @@ GameObject:
   - component: {fileID: 485266}
   - component: {fileID: 19888738}
   - component: {fileID: 19957842}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1239,7 +1239,7 @@ GameObject:
   - component: {fileID: 6479670}
   - component: {fileID: 11484560}
   - component: {fileID: 11438656}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1260,7 +1260,7 @@ GameObject:
   - component: {fileID: 6403134}
   - component: {fileID: 11408484}
   - component: {fileID: 11404774}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_040
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1281,7 +1281,7 @@ GameObject:
   - component: {fileID: 6463592}
   - component: {fileID: 11499030}
   - component: {fileID: 11407922}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 479398}
   - component: {fileID: 3359968}
   - component: {fileID: 2388264}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_053
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1315,7 +1315,7 @@ GameObject:
   - component: {fileID: 447320}
   - component: {fileID: 3361180}
   - component: {fileID: 2366830}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1332,7 +1332,7 @@ GameObject:
   - component: {fileID: 419924}
   - component: {fileID: 3313520}
   - component: {fileID: 2373936}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1349,7 +1349,7 @@ GameObject:
   - component: {fileID: 428992}
   - component: {fileID: 3369026}
   - component: {fileID: 2328066}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_044
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1370,7 +1370,7 @@ GameObject:
   - component: {fileID: 6409004}
   - component: {fileID: 11430824}
   - component: {fileID: 11404166}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1391,7 +1391,7 @@ GameObject:
   - component: {fileID: 6463826}
   - component: {fileID: 11475152}
   - component: {fileID: 11478142}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_028
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1408,7 +1408,7 @@ GameObject:
   - component: {fileID: 449732}
   - component: {fileID: 3385960}
   - component: {fileID: 2327208}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_071
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1425,7 +1425,7 @@ GameObject:
   - component: {fileID: 466664}
   - component: {fileID: 3327984}
   - component: {fileID: 2330058}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_055
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1442,7 +1442,7 @@ GameObject:
   - component: {fileID: 433476}
   - component: {fileID: 3352990}
   - component: {fileID: 2387994}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1459,7 +1459,7 @@ GameObject:
   - component: {fileID: 470540}
   - component: {fileID: 3374796}
   - component: {fileID: 2344114}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_074
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1480,7 +1480,7 @@ GameObject:
   - component: {fileID: 6409286}
   - component: {fileID: 11465670}
   - component: {fileID: 11488456}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_027
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1497,7 +1497,7 @@ GameObject:
   - component: {fileID: 426094}
   - component: {fileID: 3380930}
   - component: {fileID: 2362414}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_063
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1518,7 +1518,7 @@ GameObject:
   - component: {fileID: 6412244}
   - component: {fileID: 11470208}
   - component: {fileID: 11434716}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1539,7 +1539,7 @@ GameObject:
   - component: {fileID: 6448804}
   - component: {fileID: 11490956}
   - component: {fileID: 11438638}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1556,7 +1556,7 @@ GameObject:
   - component: {fileID: 481710}
   - component: {fileID: 9566274}
   - component: {fileID: 11478218}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1573,7 +1573,7 @@ GameObject:
   - component: {fileID: 445888}
   - component: {fileID: 3372842}
   - component: {fileID: 2367018}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_057
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1594,7 +1594,7 @@ GameObject:
   - component: {fileID: 6440776}
   - component: {fileID: 11496424}
   - component: {fileID: 11441946}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_029
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1611,7 @@ GameObject:
   - component: {fileID: 409676}
   - component: {fileID: 3337766}
   - component: {fileID: 2314046}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_069
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1632,7 +1632,7 @@ GameObject:
   - component: {fileID: 6448092}
   - component: {fileID: 11466438}
   - component: {fileID: 11427080}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1653,7 +1653,7 @@ GameObject:
   - component: {fileID: 6439226}
   - component: {fileID: 11499698}
   - component: {fileID: 11469344}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1674,7 +1674,7 @@ GameObject:
   - component: {fileID: 6443152}
   - component: {fileID: 11449598}
   - component: {fileID: 11478038}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 457656}
   - component: {fileID: 3348842}
   - component: {fileID: 2313326}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_042
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1708,7 +1708,7 @@ GameObject:
   - component: {fileID: 411466}
   - component: {fileID: 3323560}
   - component: {fileID: 2391688}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1725,7 +1725,7 @@ GameObject:
   - component: {fileID: 480208}
   - component: {fileID: 3353812}
   - component: {fileID: 2363612}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_029
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1742,7 +1742,7 @@ GameObject:
   - component: {fileID: 437758}
   - component: {fileID: 3307912}
   - component: {fileID: 2302202}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_050
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1763,7 +1763,7 @@ GameObject:
   - component: {fileID: 6483684}
   - component: {fileID: 11424786}
   - component: {fileID: 11470222}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1784,7 +1784,7 @@ GameObject:
   - component: {fileID: 6450836}
   - component: {fileID: 11480564}
   - component: {fileID: 11471588}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_036
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1801,7 +1801,7 @@ GameObject:
   - component: {fileID: 455874}
   - component: {fileID: 3306544}
   - component: {fileID: 2388060}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_048
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1818,7 +1818,7 @@ GameObject:
   - component: {fileID: 450726}
   - component: {fileID: 3364198}
   - component: {fileID: 2394836}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1835,7 +1835,7 @@ GameObject:
   - component: {fileID: 449466}
   - component: {fileID: 3309646}
   - component: {fileID: 2325194}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1852,7 +1852,7 @@ GameObject:
   - component: {fileID: 441594}
   - component: {fileID: 3376602}
   - component: {fileID: 2388390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1873,7 +1873,7 @@ GameObject:
   - component: {fileID: 6493658}
   - component: {fileID: 11416420}
   - component: {fileID: 11477064}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1894,7 +1894,7 @@ GameObject:
   - component: {fileID: 6406064}
   - component: {fileID: 11426488}
   - component: {fileID: 11475766}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1911,7 +1911,7 @@ GameObject:
   - component: {fileID: 422064}
   - component: {fileID: 19829186}
   - component: {fileID: 19960544}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Distort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1932,7 +1932,7 @@ GameObject:
   - component: {fileID: 6447066}
   - component: {fileID: 11423752}
   - component: {fileID: 11439828}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1949,7 +1949,7 @@ GameObject:
   - component: {fileID: 429748}
   - component: {fileID: 3383168}
   - component: {fileID: 2308450}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_060
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1970,7 +1970,7 @@ GameObject:
   - component: {fileID: 6456658}
   - component: {fileID: 11440736}
   - component: {fileID: 11467220}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1991,7 +1991,7 @@ GameObject:
   - component: {fileID: 6446582}
   - component: {fileID: 11480824}
   - component: {fileID: 11400638}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2006,7 +2006,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 420390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EarlyEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2027,7 +2027,7 @@ GameObject:
   - component: {fileID: 6431904}
   - component: {fileID: 11431142}
   - component: {fileID: 11419312}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2046,7 +2046,7 @@ GameObject:
   - component: {fileID: 19940658}
   - component: {fileID: 11422186}
   - component: {fileID: 11465040}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2067,7 +2067,7 @@ GameObject:
   - component: {fileID: 6433818}
   - component: {fileID: 11452036}
   - component: {fileID: 11408012}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_042
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2084,7 +2084,7 @@ GameObject:
   - component: {fileID: 412002}
   - component: {fileID: 3310978}
   - component: {fileID: 2343962}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2101,7 +2101,7 @@ GameObject:
   - component: {fileID: 488678}
   - component: {fileID: 3396522}
   - component: {fileID: 2367694}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_072
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2118,7 +2118,7 @@ GameObject:
   - component: {fileID: 444580}
   - component: {fileID: 3383042}
   - component: {fileID: 2359554}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_058
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2135,7 +2135,7 @@ GameObject:
   - component: {fileID: 414952}
   - component: {fileID: 3364938}
   - component: {fileID: 2393894}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2152,7 +2152,7 @@ GameObject:
   - component: {fileID: 461750}
   - component: {fileID: 3388744}
   - component: {fileID: 2319952}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_046
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2173,7 +2173,7 @@ GameObject:
   - component: {fileID: 6416540}
   - component: {fileID: 11486460}
   - component: {fileID: 11422434}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2190,7 +2190,7 @@ GameObject:
   - component: {fileID: 420864}
   - component: {fileID: 3306878}
   - component: {fileID: 2306644}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_040
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2207,7 +2207,7 @@ GameObject:
   - component: {fileID: 416480}
   - component: {fileID: 3365390}
   - component: {fileID: 2325074}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_070
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2224,7 +2224,7 @@ GameObject:
   - component: {fileID: 410838}
   - component: {fileID: 8276248}
   - component: {fileID: 11400458}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2245,7 +2245,7 @@ GameObject:
   - component: {fileID: 6425418}
   - component: {fileID: 11461482}
   - component: {fileID: 11413636}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2262,7 +2262,7 @@ GameObject:
   - component: {fileID: 498174}
   - component: {fileID: 3330152}
   - component: {fileID: 2370584}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2283,7 +2283,7 @@ GameObject:
   - component: {fileID: 6492492}
   - component: {fileID: 11476876}
   - component: {fileID: 11447684}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2300,7 +2300,7 @@ GameObject:
   - component: {fileID: 481180}
   - component: {fileID: 3374498}
   - component: {fileID: 2319362}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_045
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2317,7 +2317,7 @@ GameObject:
   - component: {fileID: 426762}
   - component: {fileID: 3373682}
   - component: {fileID: 2387522}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_064
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2334,7 +2334,7 @@ GameObject:
   - component: {fileID: 423946}
   - component: {fileID: 8221646}
   - component: {fileID: 11455854}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2351,7 +2351,7 @@ GameObject:
   - component: {fileID: 434538}
   - component: {fileID: 3332178}
   - component: {fileID: 2349890}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2368,7 +2368,7 @@ GameObject:
   - component: {fileID: 469924}
   - component: {fileID: 3343652}
   - component: {fileID: 2369938}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_073
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2385,7 +2385,7 @@ GameObject:
   - component: {fileID: 448386}
   - component: {fileID: 3330504}
   - component: {fileID: 2358462}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2406,7 +2406,7 @@ GameObject:
   - component: {fileID: 6436160}
   - component: {fileID: 11486340}
   - component: {fileID: 11447132}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2427,7 +2427,7 @@ GameObject:
   - component: {fileID: 6440686}
   - component: {fileID: 11491668}
   - component: {fileID: 11400166}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2444,7 +2444,7 @@ GameObject:
   - component: {fileID: 461026}
   - component: {fileID: 3359844}
   - component: {fileID: 2343656}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2461,7 +2461,7 @@ GameObject:
   - component: {fileID: 444300}
   - component: {fileID: 3399264}
   - component: {fileID: 2347812}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2478,7 +2478,7 @@ GameObject:
   - component: {fileID: 461334}
   - component: {fileID: 3365550}
   - component: {fileID: 2325484}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_062
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2495,7 +2495,7 @@ GameObject:
   - component: {fileID: 478520}
   - component: {fileID: 3369950}
   - component: {fileID: 2315704}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2512,7 +2512,7 @@ GameObject:
   - component: {fileID: 444746}
   - component: {fileID: 3377138}
   - component: {fileID: 2371330}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_026
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2529,7 +2529,7 @@ GameObject:
   - component: {fileID: 419338}
   - component: {fileID: 3375028}
   - component: {fileID: 2391596}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2546,7 +2546,7 @@ GameObject:
   - component: {fileID: 428092}
   - component: {fileID: 3325332}
   - component: {fileID: 2352540}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock_frag_065
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12413,6 +12413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.8
   Shadows: 0
+  isLoop: 0
 --- !u!114 &11465670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13506,7 +13507,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: 0
+  randomSeed: -1441651295
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -16529,7 +16530,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 0
+  randomSeed: 1281341149
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -16685,7 +16686,7 @@ ParticleSystem:
         m_RotationOrder: 0
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -16726,7 +16727,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -16767,7 +16768,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -16808,7 +16809,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -16877,7 +16878,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 0
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 100
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -22647,7 +22648,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: 0
+  randomSeed: -562971651
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -22803,7 +22804,7 @@ ParticleSystem:
         m_RotationOrder: 0
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -22844,7 +22845,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -23007,7 +23008,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 10000
+    maxNumParticles: 1000
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -23238,8 +23239,8 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - time: 0
-      minCount: 15000
-      maxCount: 15000
+      minCount: 1500
+      maxCount: 1500
       cycleCount: 1
       repeatInterval: 0.01
   SizeModule:
@@ -25664,7 +25665,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 0
+  randomSeed: -526299008
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -25820,7 +25821,7 @@ ParticleSystem:
         m_RotationOrder: 0
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -25861,7 +25862,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -25902,7 +25903,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -25931,7 +25932,7 @@ ParticleSystem:
         m_RotationOrder: 0
     startRotationY:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -25988,7 +25989,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 0
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 300
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -28675,7 +28676,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -28726,7 +28727,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -28777,7 +28778,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -28828,7 +28829,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -28924,7 +28925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4640647340766140}
   - component: {fileID: 114553561857337530}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Example
   m_TagString: Untagged
   m_Icon: {fileID: 0}

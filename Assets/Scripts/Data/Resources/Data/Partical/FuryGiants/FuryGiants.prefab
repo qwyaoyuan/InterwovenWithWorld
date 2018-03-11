@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 489466}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 11456010}
   - component: {fileID: 11427698}
   - component: {fileID: 11428714}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 11462200}
   - component: {fileID: 11496138}
   - component: {fileID: 11465370}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 11476604}
   - component: {fileID: 11455858}
   - component: {fileID: 11454336}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 11476252}
   - component: {fileID: 11446380}
   - component: {fileID: 114737830199817042}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 11492384}
   - component: {fileID: 11474472}
   - component: {fileID: 11418032}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 403946}
   - component: {fileID: 8298230}
   - component: {fileID: 11488966}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 6422506}
   - component: {fileID: 11455384}
   - component: {fileID: 11426608}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 6488938}
   - component: {fileID: 11410258}
   - component: {fileID: 11475872}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 11492880}
   - component: {fileID: 11497998}
   - component: {fileID: 11411022}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 427346}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 6487482}
   - component: {fileID: 11418738}
   - component: {fileID: 11456218}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 6497258}
   - component: {fileID: 11433142}
   - component: {fileID: 11442598}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 6421186}
   - component: {fileID: 11412310}
   - component: {fileID: 11429216}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 6410702}
   - component: {fileID: 11425364}
   - component: {fileID: 11495820}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 432136}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 6493584}
   - component: {fileID: 11454648}
   - component: {fileID: 11443436}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,7 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 441896}
   - component: {fileID: 11433030}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 6421134}
   - component: {fileID: 11440618}
   - component: {fileID: 11452644}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 6440630}
   - component: {fileID: 11449062}
   - component: {fileID: 11459240}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +399,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 424748}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger0Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 404132}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GolemFadeInEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 447842}
   - component: {fileID: 8262670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 6484448}
   - component: {fileID: 11438728}
   - component: {fileID: 11424336}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 6464440}
   - component: {fileID: 11432458}
   - component: {fileID: 11451594}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 6443724}
   - component: {fileID: 11480140}
   - component: {fileID: 11426738}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 6496280}
   - component: {fileID: 11417296}
   - component: {fileID: 11473334}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,7 +531,7 @@ GameObject:
   - component: {fileID: 477860}
   - component: {fileID: 19845472}
   - component: {fileID: 19991064}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fog2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 462976}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +561,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 491094}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 6408300}
   - component: {fileID: 11458654}
   - component: {fileID: 11479614}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 6474380}
   - component: {fileID: 11437258}
   - component: {fileID: 11484204}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 11428120}
   - component: {fileID: 11418158}
   - component: {fileID: 11450094}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 6413490}
   - component: {fileID: 11454294}
   - component: {fileID: 11460132}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ GameObject:
   - component: {fileID: 421326}
   - component: {fileID: 19820270}
   - component: {fileID: 19969296}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +683,7 @@ GameObject:
   - component: {fileID: 11475430}
   - component: {fileID: 11475614}
   - component: {fileID: 11470166}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +698,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 473546}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -713,7 +713,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 486042}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger2Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -728,7 +728,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 415468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -743,7 +743,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 432036}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 6404914}
   - component: {fileID: 11470090}
   - component: {fileID: 11436564}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 6490988}
   - component: {fileID: 11472494}
   - component: {fileID: 11461058}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,7 +800,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 457762}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 6488854}
   - component: {fileID: 11442650}
   - component: {fileID: 11426052}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,7 +836,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 431594}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Toe0Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -851,7 +851,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 439808}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -872,7 +872,7 @@ GameObject:
   - component: {fileID: 6434692}
   - component: {fileID: 11477414}
   - component: {fileID: 11440734}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -893,7 +893,7 @@ GameObject:
   - component: {fileID: 6463662}
   - component: {fileID: 11448542}
   - component: {fileID: 11478286}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -908,7 +908,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 412296}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger3Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -923,7 +923,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 451408}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +944,7 @@ GameObject:
   - component: {fileID: 6431546}
   - component: {fileID: 11478130}
   - component: {fileID: 11455410}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +965,7 @@ GameObject:
   - component: {fileID: 6490416}
   - component: {fileID: 11458308}
   - component: {fileID: 11469468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 11475300}
   - component: {fileID: 11462150}
   - component: {fileID: 11417798}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1001,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 415118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1022,7 +1022,7 @@ GameObject:
   - component: {fileID: 11493300}
   - component: {fileID: 11417284}
   - component: {fileID: 11458994}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 6441902}
   - component: {fileID: 11408630}
   - component: {fileID: 11413582}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1064,7 +1064,7 @@ GameObject:
   - component: {fileID: 6449976}
   - component: {fileID: 11454292}
   - component: {fileID: 11484282}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1079,7 +1079,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 411070}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger1Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1100,7 +1100,7 @@ GameObject:
   - component: {fileID: 6495790}
   - component: {fileID: 11460528}
   - component: {fileID: 11446860}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1121,7 +1121,7 @@ GameObject:
   - component: {fileID: 11434222}
   - component: {fileID: 11481742}
   - component: {fileID: 11470142}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1142,7 @@ GameObject:
   - component: {fileID: 11499944}
   - component: {fileID: 11408224}
   - component: {fileID: 11425878}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1163,7 @@ GameObject:
   - component: {fileID: 11412986}
   - component: {fileID: 11469466}
   - component: {fileID: 11479050}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1184,7 +1184,7 @@ GameObject:
   - component: {fileID: 11448612}
   - component: {fileID: 11409444}
   - component: {fileID: 11418250}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1205,7 @@ GameObject:
   - component: {fileID: 11429682}
   - component: {fileID: 11415936}
   - component: {fileID: 11473302}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1220,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 478826}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger3Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1235,7 +1235,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 454188}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1256,7 +1256,7 @@ GameObject:
   - component: {fileID: 11442574}
   - component: {fileID: 11457234}
   - component: {fileID: 11444606}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1271,7 +1271,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 487250}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1292,7 +1292,7 @@ GameObject:
   - component: {fileID: 11494608}
   - component: {fileID: 11432662}
   - component: {fileID: 11411766}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1307,7 +1307,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 435678}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1328,7 +1328,7 @@ GameObject:
   - component: {fileID: 11449774}
   - component: {fileID: 11483992}
   - component: {fileID: 11458240}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1349,7 +1349,7 @@ GameObject:
   - component: {fileID: 11425030}
   - component: {fileID: 11490900}
   - component: {fileID: 11493796}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1364,7 +1364,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 436402}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Toe0Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1380,7 +1380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 460864}
   - component: {fileID: 8283872}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1395,7 +1395,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 456076}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1410,7 +1410,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 489160}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1425,7 +1425,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 497766}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Toe01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459500}
   - component: {fileID: 9506104}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1462,7 +1462,7 @@ GameObject:
   - component: {fileID: 6403394}
   - component: {fileID: 11489744}
   - component: {fileID: 11476192}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1477,7 +1477,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 461046}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Toe02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1493,7 +1493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 431108}
   - component: {fileID: 11469404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1514,7 +1514,7 @@ GameObject:
   - component: {fileID: 6470732}
   - component: {fileID: 11472102}
   - component: {fileID: 11448390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1535,7 +1535,7 @@ GameObject:
   - component: {fileID: 11471238}
   - component: {fileID: 11471148}
   - component: {fileID: 11432404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1550,7 +1550,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 496386}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1565,7 +1565,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 448272}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1581,7 +1581,7 @@ GameObject:
   m_Component:
   - component: {fileID: 487706}
   - component: {fileID: 8266306}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: MonsterOpen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1596,7 +1596,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 492578}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Toe01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1611,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 473952}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1628,7 +1628,7 @@ GameObject:
   - component: {fileID: 437466}
   - component: {fileID: 11951164}
   - component: {fileID: 11417004}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 6423548}
   - component: {fileID: 11453812}
   - component: {fileID: 11440344}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1670,7 +1670,7 @@ GameObject:
   - component: {fileID: 11435842}
   - component: {fileID: 11486368}
   - component: {fileID: 11404592}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 6490128}
   - component: {fileID: 11432328}
   - component: {fileID: 11494210}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1712,7 +1712,7 @@ GameObject:
   - component: {fileID: 6441388}
   - component: {fileID: 11476964}
   - component: {fileID: 11401396}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1733,7 +1733,7 @@ GameObject:
   - component: {fileID: 11457336}
   - component: {fileID: 11428518}
   - component: {fileID: 11462646}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1749,7 +1749,7 @@ GameObject:
   m_Component:
   - component: {fileID: 455172}
   - component: {fileID: 11447046}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1770,7 +1770,7 @@ GameObject:
   - component: {fileID: 11409998}
   - component: {fileID: 11463438}
   - component: {fileID: 11470402}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1791,7 +1791,7 @@ GameObject:
   - component: {fileID: 6481990}
   - component: {fileID: 11405694}
   - component: {fileID: 11419124}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1806,7 +1806,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 465390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Toe0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1827,7 +1827,7 @@ GameObject:
   - component: {fileID: 6445926}
   - component: {fileID: 11420224}
   - component: {fileID: 11457284}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,7 +1848,7 @@ GameObject:
   - component: {fileID: 6440226}
   - component: {fileID: 11489442}
   - component: {fileID: 11454420}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1869,7 +1869,7 @@ GameObject:
   - component: {fileID: 6430946}
   - component: {fileID: 11486914}
   - component: {fileID: 11418502}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1886,7 +1886,7 @@ GameObject:
   - component: {fileID: 494524}
   - component: {fileID: 8258884}
   - component: {fileID: 11467736}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1901,7 +1901,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 417446}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1922,7 +1922,7 @@ GameObject:
   - component: {fileID: 6448240}
   - component: {fileID: 11412664}
   - component: {fileID: 11475118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1937,7 +1937,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 442252}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1958,7 +1958,7 @@ GameObject:
   - component: {fileID: 11497210}
   - component: {fileID: 11434698}
   - component: {fileID: 11405092}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1975,7 +1975,7 @@ GameObject:
   - component: {fileID: 464310}
   - component: {fileID: 19806452}
   - component: {fileID: 19923922}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fog3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1996,7 +1996,7 @@ GameObject:
   - component: {fileID: 6424134}
   - component: {fileID: 11432604}
   - component: {fileID: 11435070}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2013,7 +2013,7 @@ GameObject:
   - component: {fileID: 482466}
   - component: {fileID: 8262684}
   - component: {fileID: 11416562}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2028,7 +2028,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 434836}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2043,7 +2043,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 414986}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2064,7 +2064,7 @@ GameObject:
   - component: {fileID: 11427980}
   - component: {fileID: 11490998}
   - component: {fileID: 11417542}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2079,7 +2079,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 407144}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2100,7 +2100,7 @@ GameObject:
   - component: {fileID: 6464768}
   - component: {fileID: 11465582}
   - component: {fileID: 11471700}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2117,7 +2117,7 @@ GameObject:
   - component: {fileID: 451614}
   - component: {fileID: 19838524}
   - component: {fileID: 19959932}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2132,7 +2132,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 490934}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 HeadNub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2148,7 +2148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 444334}
   - component: {fileID: 11419488}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2169,7 +2169,7 @@ GameObject:
   - component: {fileID: 6470192}
   - component: {fileID: 11465256}
   - component: {fileID: 11443118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2190,7 +2190,7 @@ GameObject:
   - component: {fileID: 6473450}
   - component: {fileID: 11464320}
   - component: {fileID: 11451736}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2205,7 +2205,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 423884}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Calf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2226,7 +2226,7 @@ GameObject:
   - component: {fileID: 6444822}
   - component: {fileID: 11450316}
   - component: {fileID: 11411644}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2241,7 +2241,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 408558}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2256,7 +2256,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 400940}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Toe02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2271,7 +2271,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 430366}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R UpperArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2292,7 +2292,7 @@ GameObject:
   - component: {fileID: 11484488}
   - component: {fileID: 11448824}
   - component: {fileID: 11470312}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2307,7 +2307,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 490828}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2328,7 +2328,7 @@ GameObject:
   - component: {fileID: 6421454}
   - component: {fileID: 11477852}
   - component: {fileID: 11438246}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2343,7 +2343,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 425978}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Pelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2361,7 +2361,7 @@ GameObject:
   - component: {fileID: 8219602}
   - component: {fileID: 11455182}
   - component: {fileID: 16625294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2382,7 +2382,7 @@ GameObject:
   - component: {fileID: 6458130}
   - component: {fileID: 11450132}
   - component: {fileID: 11406814}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2398,7 +2398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 492330}
   - component: {fileID: 114008031004208600}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FuryGiants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2419,7 +2419,7 @@ GameObject:
   - component: {fileID: 6413550}
   - component: {fileID: 11497854}
   - component: {fileID: 11448270}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2438,7 +2438,7 @@ GameObject:
   - component: {fileID: 11459170}
   - component: {fileID: 11400126}
   - component: {fileID: 11458140}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2453,7 +2453,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 462466}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2468,7 +2468,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 493322}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2483,7 +2483,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 449994}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2504,7 +2504,7 @@ GameObject:
   - component: {fileID: 6499792}
   - component: {fileID: 11440632}
   - component: {fileID: 11436294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2525,7 +2525,7 @@ GameObject:
   - component: {fileID: 6456434}
   - component: {fileID: 11446690}
   - component: {fileID: 11464880}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2546,7 +2546,7 @@ GameObject:
   - component: {fileID: 6481528}
   - component: {fileID: 11431364}
   - component: {fileID: 11469672}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2567,7 +2567,7 @@ GameObject:
   - component: {fileID: 6491582}
   - component: {fileID: 11459566}
   - component: {fileID: 11456702}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2582,7 +2582,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 414542}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2597,7 +2597,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 496304}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2618,7 +2618,7 @@ GameObject:
   - component: {fileID: 11425132}
   - component: {fileID: 11440762}
   - component: {fileID: 11466792}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2633,7 +2633,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 486362}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger1Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2648,7 +2648,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 404216}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2669,7 +2669,7 @@ GameObject:
   - component: {fileID: 6450638}
   - component: {fileID: 11450278}
   - component: {fileID: 11410508}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2686,7 +2686,7 @@ GameObject:
   - component: {fileID: 424810}
   - component: {fileID: 19805444}
   - component: {fileID: 19909940}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particle System (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2707,7 +2707,7 @@ GameObject:
   - component: {fileID: 6415154}
   - component: {fileID: 11406080}
   - component: {fileID: 11406816}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2722,7 +2722,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 491824}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Finger0Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2743,7 +2743,7 @@ GameObject:
   - component: {fileID: 6448906}
   - component: {fileID: 11497572}
   - component: {fileID: 11458116}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2761,7 +2761,7 @@ GameObject:
   - component: {fileID: 13702362}
   - component: {fileID: 11452706}
   - component: {fileID: 11483850}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2782,7 +2782,7 @@ GameObject:
   - component: {fileID: 11462114}
   - component: {fileID: 11427990}
   - component: {fileID: 11499892}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2803,7 +2803,7 @@ GameObject:
   - component: {fileID: 6424470}
   - component: {fileID: 11467094}
   - component: {fileID: 11448308}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2824,7 +2824,7 @@ GameObject:
   - component: {fileID: 6400548}
   - component: {fileID: 11441004}
   - component: {fileID: 11424676}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2839,7 +2839,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 414474}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 R Clavicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2854,7 +2854,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 496936}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Footsteps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2875,7 +2875,7 @@ GameObject:
   - component: {fileID: 6465452}
   - component: {fileID: 11428728}
   - component: {fileID: 11469648}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2890,7 +2890,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 450972}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Dummy01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 11402598}
   - component: {fileID: 11430520}
   - component: {fileID: 11434034}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2928,7 +2928,7 @@ GameObject:
   - component: {fileID: 403526}
   - component: {fileID: 10827816}
   - component: {fileID: 11451568}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2943,7 +2943,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 448294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2958,7 +2958,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 405390}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2979,7 +2979,7 @@ GameObject:
   - component: {fileID: 6490990}
   - component: {fileID: 11458148}
   - component: {fileID: 11400596}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2994,7 +2994,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 400162}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 L Finger2Nub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3015,7 +3015,7 @@ GameObject:
   - component: {fileID: 6450906}
   - component: {fileID: 11495774}
   - component: {fileID: 11438462}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3036,7 +3036,7 @@ GameObject:
   - component: {fileID: 11427448}
   - component: {fileID: 11492032}
   - component: {fileID: 11482440}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3053,7 +3053,7 @@ GameObject:
   - component: {fileID: 487902}
   - component: {fileID: 11989306}
   - component: {fileID: 11485010}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3074,7 +3074,7 @@ GameObject:
   - component: {fileID: 6405608}
   - component: {fileID: 11410726}
   - component: {fileID: 11496182}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3089,7 +3089,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 464948}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3104,7 +3104,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 485034}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3125,7 +3125,7 @@ GameObject:
   - component: {fileID: 6466692}
   - component: {fileID: 11471772}
   - component: {fileID: 11478278}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3146,7 +3146,7 @@ GameObject:
   - component: {fileID: 11429310}
   - component: {fileID: 11479826}
   - component: {fileID: 11457610}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3167,7 +3167,7 @@ GameObject:
   - component: {fileID: 6403410}
   - component: {fileID: 11417802}
   - component: {fileID: 11446052}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3182,7 +3182,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 405782}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Bip01 Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3199,7 +3199,7 @@ GameObject:
   - component: {fileID: 404664}
   - component: {fileID: 19818708}
   - component: {fileID: 19931406}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3220,7 +3220,7 @@ GameObject:
   - component: {fileID: 6406232}
   - component: {fileID: 11426106}
   - component: {fileID: 11430930}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3241,7 +3241,7 @@ GameObject:
   - component: {fileID: 11481690}
   - component: {fileID: 11408778}
   - component: {fileID: 11473082}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect28_rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4315,7 +4315,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 185156}
-  m_LocalRotation: {x: -0.7073101, y: -0.62260896, z: -0.17095907, w: 0.28782547}
+  m_LocalRotation: {x: -0.70731014, y: -0.622609, z: -0.17095909, w: 0.2878255}
   m_LocalPosition: {x: -0.2840004, y: -0.08000183, z: 1.14}
   m_LocalScale: {x: 1.4838078, y: 1.0725273, z: 0.55949926}
   m_Children: []
@@ -36823,7 +36823,7 @@ GameObject:
   - component: {fileID: 65810443259112524}
   - component: {fileID: 54731523945099022}
   - component: {fileID: 114370513752192526}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36841,7 +36841,7 @@ GameObject:
   - component: {fileID: 65740405228698396}
   - component: {fileID: 54968536312368210}
   - component: {fileID: 114992633933162660}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

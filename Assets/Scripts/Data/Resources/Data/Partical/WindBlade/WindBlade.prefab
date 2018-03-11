@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 469832}
   - component: {fileID: 19881960}
   - component: {fileID: 19929120}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Waves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 476716}
   - component: {fileID: 19818028}
   - component: {fileID: 19947004}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CollisionParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 114349812619793718}
   - component: {fileID: 114775649336186094}
   - component: {fileID: 114930594237354612}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 479698}
   - component: {fileID: 19817892}
   - component: {fileID: 19924670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CollisionParticles2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 19873760}
   - component: {fileID: 19908852}
   - component: {fileID: 11444308}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 444530}
   - component: {fileID: 8227946}
   - component: {fileID: 11405594}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 19831288}
   - component: {fileID: 19938456}
   - component: {fileID: 11450564}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 435344}
   - component: {fileID: 11415030}
   - component: {fileID: 114204775955417966}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 19800986}
   - component: {fileID: 19992224}
   - component: {fileID: 11447966}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fog
   m_TagString: Untagged
   m_Icon: {fileID: 0}

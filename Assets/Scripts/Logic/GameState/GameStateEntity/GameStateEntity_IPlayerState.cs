@@ -1590,7 +1590,7 @@ public partial class GameState : IPlayerState
         {
             playerLastPos = PlayerObj.transform.position;
             //转换为地图坐标 
-            if (mapDataInfo_PlayerState == null)
+            if (mapDataInfo_PlayerState == null || mapDataInfo_PlayerState.SceneName != iGameState.SceneName)
             {
                 MapData mapData_PlayState = DataCenter.Instance.GetMetaData<MapData>();
                 mapDataInfo_PlayerState = mapData_PlayState[iGameState.SceneName];

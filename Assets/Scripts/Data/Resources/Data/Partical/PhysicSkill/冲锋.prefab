@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 19837926}
   - component: {fileID: 19913562}
   - component: {fileID: 11428502}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 491752}
   - component: {fileID: 10864546}
   - component: {fileID: 11401760}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 425228}
   - component: {fileID: 11929864}
   - component: {fileID: 11460638}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 2354724}
   - component: {fileID: 11474534}
   - component: {fileID: 11425056}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: HemiSphere1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 2393180}
   - component: {fileID: 11461050}
   - component: {fileID: 11422548}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: HemiSphere3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 2395100}
   - component: {fileID: 11446680}
   - component: {fileID: 11403950}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: HemiSphere2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 426310}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: "\u51B2\u950B"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 428966}
   - component: {fileID: 8277034}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 19836576}
   - component: {fileID: 19974146}
   - component: {fileID: 11451766}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 434172}
   - component: {fileID: 11498014}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7334,7 +7334,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4723764439129122}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

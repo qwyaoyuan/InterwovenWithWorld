@@ -41,4 +41,8 @@ public class SetThunderstormParticalRange : MonoBehaviour, IParticalConduct
         mainModule.startSpeed = range;
     }
 
+    public void Open()
+    {
+      
+    }
 }

@@ -9,6 +9,11 @@ using UnityEngine;
 /// </summary>
 class SetParticalForward_GameObject : MonoBehaviour, IParticalConduct
 {
+    public void Open()
+    {
+     
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
 

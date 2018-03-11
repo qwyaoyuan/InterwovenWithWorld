@@ -12,6 +12,11 @@ class SetPartical_RFX4_TransformMotion : MonoBehaviour, IParticalConduct
     /// </summary>
     private EventHandler<RFX4_TransformMotion.RFX4_CollisionInfo> nowCallBack;
 
+    public void Open()
+    {
+     
+    }
+
     public void SetCollisionCallback(Func<CollisionHitCallbackStruct, bool> CallBack)
     {
         RFX4_TransformMotion rfx4_TransformMotion = GetComponent<RFX4_TransformMotion>();

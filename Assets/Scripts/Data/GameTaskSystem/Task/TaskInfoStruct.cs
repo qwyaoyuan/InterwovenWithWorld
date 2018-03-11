@@ -180,6 +180,11 @@ namespace TaskMap
         public object EventData;
 
         /// <summary>
+        /// 任务id
+        /// </summary>
+        public int TaskID;
+
+        /// <summary>
         /// 返回深拷贝
         /// </summary>
         /// <returns></returns>

@@ -101,4 +101,8 @@ public class MagicPulseCollision : MonoBehaviour, IParticalConduct
         }
     }
 
+    public void Open()
+    {
+        gameObject.SetActive(true);
+    }
 }

@@ -34,6 +34,10 @@ public interface IParticalConduct
     /// </summary>
     /// <param name="range"></param>
     void SetRange(float range);
+    /// <summary>
+    /// 打开显示
+    /// </summary>
+    void Open();
 }
 
 /// <summary>

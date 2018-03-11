@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459914}
   - component: {fileID: 114011497705063888}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FirePiercing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 4193583736278252}
   - component: {fileID: 82517119908823554}
   - component: {fileID: 114384007316586358}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 4548823365775216}
   - component: {fileID: 198131641008646254}
   - component: {fileID: 199469913107740728}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 4457673917546442}
   - component: {fileID: 198136062829543190}
   - component: {fileID: 199482752865419204}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FireTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4580773754894770}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 4475926505415492}
   - component: {fileID: 82113534916356430}
   - component: {fileID: 114290642274971512}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 4029604070914734}
   - component: {fileID: 114048021437476874}
   - component: {fileID: 114835813022557868}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 198098115401012800}
   - component: {fileID: 199398396154099772}
   - component: {fileID: 114316396465235350}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 198318628639410630}
   - component: {fileID: 199951454261266628}
   - component: {fileID: 114132836006963422}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4290051829739370}
   - component: {fileID: 82369960152469816}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,6 +611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 1
   Shadows: 0
+  isLoop: 0
 --- !u!114 &114290642274971512
 MonoBehaviour:
   m_ObjectHideFlags: 1

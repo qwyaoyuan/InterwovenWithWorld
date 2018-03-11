@@ -139,5 +139,10 @@ public class RoarOfEarthCollision : MonoBehaviour, IParticalConduct
             }
         }
     }
+
+    public void Open()
+    {
+        
+    }
 }
 

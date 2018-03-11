@@ -102,4 +102,9 @@ public class SoilBlockCollision : MonoBehaviour, IParticalConduct
         rb.isKinematic = false;
         rb.detectCollisions = true;
     }
+
+    public void Open()
+    {
+       
+    }
 }

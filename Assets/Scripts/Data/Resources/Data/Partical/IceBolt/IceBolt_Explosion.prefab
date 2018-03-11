@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 416914}
   - component: {fileID: 19887762}
   - component: {fileID: 19942944}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 19880396}
   - component: {fileID: 19928328}
   - component: {fileID: 11462870}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 469808}
   - component: {fileID: 8275692}
   - component: {fileID: 11468840}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 11474468}
   - component: {fileID: 11400904}
   - component: {fileID: 11468454}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 11478786}
   - component: {fileID: 11430838}
   - component: {fileID: 11401930}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 11415876}
   - component: {fileID: 11409180}
   - component: {fileID: 11420690}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 19882228}
   - component: {fileID: 19907544}
   - component: {fileID: 11406094}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 11459344}
   - component: {fileID: 11416296}
   - component: {fileID: 11474022}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 11404274}
   - component: {fileID: 11438498}
   - component: {fileID: 11430178}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 471308}
   - component: {fileID: 11485456}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 11402458}
   - component: {fileID: 11446860}
   - component: {fileID: 11441952}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 11465246}
   - component: {fileID: 11456568}
   - component: {fileID: 11482644}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 468856}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: IceBolt_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 11441948}
   - component: {fileID: 11483172}
   - component: {fileID: 11498362}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469744}
   - component: {fileID: 11442332}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Force
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 11449982}
   - component: {fileID: 11429778}
   - component: {fileID: 11491838}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 11490102}
   - component: {fileID: 11462714}
   - component: {fileID: 11432774}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 11478356}
   - component: {fileID: 11418908}
   - component: {fileID: 11439140}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_018
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 11485952}
   - component: {fileID: 11432028}
   - component: {fileID: 11469972}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 413738}
   - component: {fileID: 11482864}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 11446222}
   - component: {fileID: 11492104}
   - component: {fileID: 11473952}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 11493658}
   - component: {fileID: 11439972}
   - component: {fileID: 11406662}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 11475032}
   - component: {fileID: 11411556}
   - component: {fileID: 11414156}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 466122}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 11460940}
   - component: {fileID: 11422880}
   - component: {fileID: 11427520}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 444066}
   - component: {fileID: 10897916}
   - component: {fileID: 11457286}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 415398}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rock2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 442420}
   - component: {fileID: 11403940}
   - component: {fileID: 11980670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 19885000}
   - component: {fileID: 19912336}
   - component: {fileID: 11432672}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 11408880}
   - component: {fileID: 11483522}
   - component: {fileID: 11418242}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_019
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 452290}
   - component: {fileID: 8284038}
   - component: {fileID: 11443742}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 11412812}
   - component: {fileID: 11420056}
   - component: {fileID: 11403014}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +639,7 @@ GameObject:
   - component: {fileID: 8242408}
   - component: {fileID: 11495224}
   - component: {fileID: 16697358}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +661,7 @@ GameObject:
   - component: {fileID: 11471506}
   - component: {fileID: 11445602}
   - component: {fileID: 11400916}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +683,7 @@ GameObject:
   - component: {fileID: 11458122}
   - component: {fileID: 11449860}
   - component: {fileID: 11467008}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Model_frag_011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2977,6 +2977,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.5
   Shadows: 0
+  isLoop: 0
 --- !u!114 &11406662
 MonoBehaviour:
   m_ObjectHideFlags: 1

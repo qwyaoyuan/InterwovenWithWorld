@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 485940}
   - component: {fileID: 10888982}
   - component: {fileID: 11468462}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 410210}
   - component: {fileID: 19847484}
   - component: {fileID: 19944370}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 408864}
   - component: {fileID: 19813730}
   - component: {fileID: 19945410}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: lighrning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   m_Component:
   - component: {fileID: 476452}
   - component: {fileID: 114280959894546292}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Voltorb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 465124}
   - component: {fileID: 8244458}
   - component: {fileID: 11419476}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 433020}
   - component: {fileID: 19893748}
   - component: {fileID: 19978036}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: lighrning (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10206,7 +10206,7 @@ GameObject:
   - component: {fileID: 4654606305300632}
   - component: {fileID: 198150321560229310}
   - component: {fileID: 199947575756088512}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10223,7 +10223,7 @@ GameObject:
   - component: {fileID: 4336216971120562}
   - component: {fileID: 198692531763236924}
   - component: {fileID: 199524448977099118}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10240,7 +10240,7 @@ GameObject:
   - component: {fileID: 4656217761933266}
   - component: {fileID: 114602317934997762}
   - component: {fileID: 114098978913441748}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10257,7 +10257,7 @@ GameObject:
   - component: {fileID: 4098247031292820}
   - component: {fileID: 198436498086127104}
   - component: {fileID: 199180368370566586}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10274,7 +10274,7 @@ GameObject:
   - component: {fileID: 4147492798242762}
   - component: {fileID: 198356891781020352}
   - component: {fileID: 199450025627690870}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

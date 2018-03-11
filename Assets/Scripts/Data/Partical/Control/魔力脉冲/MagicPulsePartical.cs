@@ -31,13 +31,14 @@ public class MagicPulsePartical : ParticalControlEntry
         {
             transform.forward = Vector3.forward;
         }
-        SetRange(range);
+        SetRange(range * 15);
         SetLayerMask(layerMask);
         if (magicColor.a != 0)
             SetColor(magicColor);
         else
             SetColor(color);
         SetCollisionCallback(CollisionCallback);
+        Open();
     }
 }
 

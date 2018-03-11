@@ -183,6 +183,9 @@ public static class CalculateHurt
         {
             baseDamage *= 0.7f;
         }
+        //计算浮动之 
+        float hurtDrift = Random.Range(1f, 1.15f);
+        baseDamage *= hurtDrift;
         //附加或倍率等处理
         //.......
         to.HP -= baseDamage;

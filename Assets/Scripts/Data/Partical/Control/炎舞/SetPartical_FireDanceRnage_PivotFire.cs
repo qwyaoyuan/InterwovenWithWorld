@@ -51,4 +51,9 @@ public class SetPartical_FireDanceRnage_PivotFire : MonoBehaviour, IParticalCond
         emmissionModule_MinMaxCurve.constant = baseRateOverTime * range;
         emissionModule.rateOverTime = emmissionModule_MinMaxCurve;
     }
+
+    public void Open()
+    {
+       
+    }
 }

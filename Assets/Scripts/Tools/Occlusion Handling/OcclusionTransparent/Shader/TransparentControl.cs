@@ -22,6 +22,7 @@ public class TransparentControl : MonoBehaviour
 
     public Transform targetObject = null;   //目标对象  
     public float height = 3.0f;             //目标对象Y方向偏移  
+    //public float angle = 15;                //目标对象向两侧的偏移角度
     public float destTransparent = 0.2f;    //遮挡半透的最终半透强度，  
     public float fadeInTime = 1.0f;         //开始遮挡半透时渐变时间  
     public LayerMask transparentLayer;           //需要遮挡半透的层级  
@@ -66,7 +67,7 @@ public class TransparentControl : MonoBehaviour
         //视线方向为从自身（相机）指向目标位置  
         Vector3 targetPos = targetObject.position + new Vector3(0, height, 0);
         Vector3 viewDir = (targetPos - transform.position).normalized;
-        Vector3 oriPos = transform.position;
+        Vector3 oriPos = transform.position - viewDir * 10;//向后退一些距离
         float distance = Vector3.Distance(oriPos, targetPos);
         Ray ray = new Ray(oriPos, viewDir);
         rayHits = Physics.RaycastAll(ray, distance, transparentLayer);

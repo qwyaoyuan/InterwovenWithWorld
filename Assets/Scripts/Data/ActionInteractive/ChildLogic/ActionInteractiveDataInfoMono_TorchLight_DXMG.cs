@@ -45,12 +45,16 @@ public class ActionInteractiveDataInfoMono_TorchLight_DXMG : ActionInteractiveDa
                 switch (index)
                 {
                     case 1:
+                        torchIndex = 1;
                         break;
                     case 2:
+                        torchIndex = 2;
                         break;
                     case 3:
+                        torchIndex = 3;
                         break;
                     case 4:
+                        torchIndex = 4;
                         break;
                 }
             }

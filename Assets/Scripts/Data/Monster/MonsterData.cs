@@ -411,6 +411,12 @@ public class MonsterAIData_Trigger : MonsterAIDataStruct
     [FieldExplan("触发范围(触发中心按照区域中心计算)")]
     public float TriggerRange;
 
+    /// <summary>
+    /// 生成范围
+    /// </summary>
+    [FieldExplan("生成范围")]
+    public float CreateRange;
+
     protected override MonsterAIDataStruct CloneChild(MonsterAIDataStruct target)
     {
         MonsterAIData_Trigger monsterAIData_Trigger = null;

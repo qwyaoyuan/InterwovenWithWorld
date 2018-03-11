@@ -112,4 +112,9 @@ public class FuryGiantsCollision : MonoBehaviour, IParticalConduct
             }
         }
     }
+
+    public void Open()
+    {
+   
+    }
 }

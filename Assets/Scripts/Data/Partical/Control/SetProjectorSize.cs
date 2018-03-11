@@ -6,7 +6,8 @@ using UnityEngine;
 /// <summary>
 /// 设置Projector的大小
 /// </summary>
-public class SetProjectorSize : MonoBehaviour,IParticalConduct {
+public class SetProjectorSize : MonoBehaviour, IParticalConduct
+{
 
     /// <summary>
     /// 投射对象
@@ -35,7 +36,7 @@ public class SetProjectorSize : MonoBehaviour,IParticalConduct {
     public void SetColor(Color color)
     {
 
-       
+
     }
 
     public void SetForward(Vector3 forward)
@@ -52,7 +53,12 @@ public class SetProjectorSize : MonoBehaviour,IParticalConduct {
     {
         if (projector)
         {
-            projector.orthographicSize =baseSize* range ;
+            projector.orthographicSize = baseSize * range;
         }
+    }
+
+    public void Open()
+    {
+      
     }
 }

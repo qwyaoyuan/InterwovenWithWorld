@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 430798}
   - component: {fileID: 11468662}
   - component: {fileID: 114760305799624496}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 12008508}
   - component: {fileID: 11402054}
   - component: {fileID: 11417890}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GameObject (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 466746}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 495058}
   - component: {fileID: 8235290}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 432028}
   - component: {fileID: 8234706}
   - component: {fileID: 11449254}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 19870364}
   - component: {fileID: 19907924}
   - component: {fileID: 11420468}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 486086}
   - component: {fileID: 18219926}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472564}
   - component: {fileID: 11416384}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 10855636}
   - component: {fileID: 11411884}
   - component: {fileID: 114430792802495278}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 418258}
   - component: {fileID: 8281598}
   - component: {fileID: 11475670}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 10891876}
   - component: {fileID: 11466432}
   - component: {fileID: 114013055982409222}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 460766}
   - component: {fileID: 19826910}
   - component: {fileID: 19963750}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 11402692}
   - component: {fileID: 114692402780376622}
   - component: {fileID: 114936931340249426}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 405432}
   - component: {fileID: 10873932}
   - component: {fileID: 11446788}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 19879250}
   - component: {fileID: 19915170}
   - component: {fileID: 11402360}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 11424158}
   - component: {fileID: 11481832}
   - component: {fileID: 114204992922543210}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LazyLoad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 12076280}
   - component: {fileID: 11451800}
   - component: {fileID: 11493664}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GameObject (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 11407156}
   - component: {fileID: 114984117258478972}
   - component: {fileID: 114795289955710638}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Shot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 10886458}
   - component: {fileID: 11428146}
   - component: {fileID: 114167364757452738}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 460698}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 12038200}
   - component: {fileID: 11445040}
   - component: {fileID: 11498418}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GameObject (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 404414}
   - component: {fileID: 114444520556375062}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Undercurrent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 12016736}
   - component: {fileID: 11473862}
   - component: {fileID: 11443838}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12109,6 +12109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97adf70cae98b924893c775a13e95507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyNear: 0
   collisionObj: {fileID: 143550, guid: d53c5daed5d311648bce7b6008f6a12f, type: 2}
 --- !u!114 &114795289955710638
 MonoBehaviour:

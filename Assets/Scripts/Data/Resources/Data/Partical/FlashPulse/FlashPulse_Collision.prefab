@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 485276}
   - component: {fileID: 18231384}
   - component: {fileID: 11430516}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - component: {fileID: 449982}
   - component: {fileID: 11475232}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 483746}
   - component: {fileID: 11921862}
   - component: {fileID: 11464136}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 492282}
   - component: {fileID: 19861280}
   - component: {fileID: 19921112}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 488446}
   - component: {fileID: 8246490}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 404484}
   - component: {fileID: 11926776}
   - component: {fileID: 11412842}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 444928}
   - component: {fileID: 8202724}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 420188}
   - component: {fileID: 8204550}
   - component: {fileID: 11493150}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 483074}
   - component: {fileID: 114644539772828002}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FlashPulse_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 10852188}
   - component: {fileID: 11485488}
   - component: {fileID: 114975710141379092}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 451356}
   - component: {fileID: 19876932}
   - component: {fileID: 19996276}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: HeatDistortion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 8298252}
   - component: {fileID: 16682548}
   - component: {fileID: 11441290}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FadeOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 442836}
   - component: {fileID: 19814170}
   - component: {fileID: 19954694}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 477136}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -7,14 +7,9 @@ using UnityEngine;
 /// <summary>
 /// 召唤物身上的交互脚本
 /// </summary>
-class InteractiveAsCall : MonoBehaviour, IObjInteractive
+class InteractiveAsCall : InteractiveBaseMono, IObjInteractive
 {
-    public T GetEntity<T>() where T : IBaseState
-    {
-        throw new NotImplementedException();
-    }
-
-    public CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
+    public override CalculateHurt.Result GiveAttackHurtStruct(AttackHurtStruct attackHurtStruct)
     {
         throw new NotImplementedException();
     }

@@ -100,4 +100,9 @@ public class LightningImpactCollision : MonoBehaviour, IParticalConduct
     {
         this.range = range;
     }
+
+    public void Open()
+    {
+       
+    }
 }

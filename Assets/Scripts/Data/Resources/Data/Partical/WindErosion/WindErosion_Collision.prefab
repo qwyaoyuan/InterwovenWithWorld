@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 448154}
   - component: {fileID: 19852680}
   - component: {fileID: 19989554}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Distort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 19824258}
   - component: {fileID: 19913502}
   - component: {fileID: 11416360}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 480298}
   - component: {fileID: 11443704}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CamShake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409010}
   - component: {fileID: 18250494}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 406484}
   - component: {fileID: 114184556982627148}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindErosion_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 485600}
   - component: {fileID: 11925416}
   - component: {fileID: 11420858}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 19902912}
   - component: {fileID: 11421396}
   - component: {fileID: 11497200}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497760}
   - component: {fileID: 8209400}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452934}
   - component: {fileID: 18291868}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WindZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,6 +593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.5
   Shadows: 0
+  isLoop: 0
 --- !u!119 &11925416
 Projector:
   m_ObjectHideFlags: 1

@@ -1185,6 +1185,7 @@ GameObject:
   - component: {fileID: 114236541665328702}
   - component: {fileID: 114807893563948134}
   - component: {fileID: 114537568658753152}
+  - component: {fileID: 114751353050295366}
   m_Layer: 12
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5388,6 +5389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481ee9efdbbc93040975ba4057bb8cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _HurtFontOffset: 0
 --- !u!114 &114192735003287828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6072,6 +6074,24 @@ MonoBehaviour:
   playerCamera: {fileID: 20904413236455712}
   interludesCamera: {fileID: 20413218672018154}
   physicSkillInjuryDetection: {fileID: 114192735003287828}
+--- !u!114 &114751353050295366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1465338661851366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2af726fc5f32d4e93fec426f778d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 4411934359046882}
+  height: 1
+  destTransparent: 0.2
+  fadeInTime: 1
+  transparentLayer:
+    serializedVersion: 2
+    m_Bits: 4294935039
 --- !u!114 &114791824232909390
 MonoBehaviour:
   m_ObjectHideFlags: 1

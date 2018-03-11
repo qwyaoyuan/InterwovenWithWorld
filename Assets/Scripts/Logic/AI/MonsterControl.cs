@@ -20,6 +20,11 @@ public class MonsterControl : MonoBehaviour
     /// </summary>
     public MonsterDataInfo monsterDataInfo;
 
+    /// <summary>
+    /// 自身的属性
+    /// </summary>
+    public AttributeStateAdditional thisAttribute;
+
     Blackboard blackboard;
 
     /// <summary>
@@ -60,7 +65,7 @@ public class MonsterControl : MonoBehaviour
         if (blackboard != null)
         {
             if (monsterDataInfo.MonsterBaseAttribute != null)
-                blackboard.SetValue("HP", monsterDataInfo.MonsterBaseAttribute.HP);
+                blackboard.SetValue("HP", monsterDataInfo.MonsterBaseAttribute.MaxHP);
             switch (monsterDataInfo.AIType)
             {
                 case EnumMonsterAIType.Trigger:
@@ -71,11 +76,23 @@ public class MonsterControl : MonoBehaviour
                     //巡逻点
                     List<Vector3> goOnPatrolList = new List<Vector3>();
                     Vector3 result = Vector3.zero;
-                    for (int i = 0; i < 2; i++)
+                    int maxText = 0;
+                    for (int i = 0; i < 3; i++)
                     {
                         if (GetPointAtTerrainPosition(monsterDataInfo.Center + RandomVector3(monsterDataInfo.Range), out result))
+                        {
                             goOnPatrolList.Add(result);
+                        }
+                        else
+                        {
+                            if (maxText < 100)
+                            {
+                                i--;
+                                maxText++;
+                            }
+                        }
                     }
+                    blackboard.SetValue("StartPoint", transform.position);
                     blackboard.SetValue("GoOnPatrolPointList", goOnPatrolList);
                     break;
                 case EnumMonsterAIType.Boss:
@@ -104,7 +121,8 @@ public class MonsterControl : MonoBehaviour
         //注册监听
         if (monsterDataInfo != null && monsterDataInfo.MonsterBaseAttribute != null)
         {
-            monsterDataInfo.MonsterBaseAttribute.Registor<IAttributeState>(IAttribute_Changed);
+            thisAttribute = monsterDataInfo.MonsterBaseAttribute.Clone();
+            thisAttribute.Registor<IAttributeState>(IAttribute_Changed);
         }
     }
 
@@ -137,7 +155,7 @@ public class MonsterControl : MonoBehaviour
         //取消注册(其实也可以不用管)
         if (monsterDataInfo != null && monsterDataInfo.MonsterBaseAttribute != null)
         {
-            monsterDataInfo.MonsterBaseAttribute.UnRegistor<IAttributeState>(IAttribute_Changed);
+            thisAttribute.UnRegistor<IAttributeState>(IAttribute_Changed);
         }
         //通知杀死了某种怪物
         INowTaskState iNowTaskState = GameState.Instance.GetEntity<INowTaskState>();
@@ -241,7 +259,7 @@ public class MonsterControl : MonoBehaviour
     /// <returns></returns>
     public IAttributeState GetMonsterAttributeState()
     {
-        return monsterDataInfo.MonsterBaseAttribute.Clone();
+        return thisAttribute.Clone();
     }
 
     /// <summary>

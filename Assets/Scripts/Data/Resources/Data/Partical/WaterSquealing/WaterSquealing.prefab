@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 114243971243984488}
   - component: {fileID: 114928356556025194}
   - component: {fileID: 114653693103469794}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: WaterSquealing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 19860496}
   - component: {fileID: 19924424}
   - component: {fileID: 11429368}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core_Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 430076}
   - component: {fileID: 10813718}
   - component: {fileID: 11453992}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 19808882}
   - component: {fileID: 19943046}
   - component: {fileID: 11488782}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: StartFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 451466}
   - component: {fileID: 11403714}
   - component: {fileID: 114791112426713372}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 19887178}
   - component: {fileID: 19993140}
   - component: {fileID: 11428614}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Waves_Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 8298560}
   - component: {fileID: 11496444}
   - component: {fileID: 16673026}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 460954}
   - component: {fileID: 10887970}
   - component: {fileID: 11469388}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: StartLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10203,6 +10203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a4f650a6f009444d80e1a3e6b8166f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  magicColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114653693103469794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10227,6 +10228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97adf70cae98b924893c775a13e95507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyNear: 0
   collisionObj: {fileID: 173682, guid: 269266abdb4732c499df2b9e5ccf5aba, type: 2}
 --- !u!114 &114928356556025194
 MonoBehaviour:

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 19868686}
   - component: {fileID: 19949102}
   - component: {fileID: 11400698}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 463810}
   - component: {fileID: 10864382}
   - component: {fileID: 11478414}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 459034}
   - component: {fileID: 10817132}
   - component: {fileID: 11404012}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419456}
   - component: {fileID: 114059100440081978}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 19884392}
   - component: {fileID: 19987402}
   - component: {fileID: 11415488}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FireRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 405868}
   - component: {fileID: 8231754}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 489006}
   - component: {fileID: 10860096}
   - component: {fileID: 11445342}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 19892262}
   - component: {fileID: 19929924}
   - component: {fileID: 11493972}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesRingLoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 455068}
   - component: {fileID: 10845714}
   - component: {fileID: 11428004}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 484082}
   - component: {fileID: 3321114}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CollisionPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 465256}
   - component: {fileID: 10886804}
   - component: {fileID: 11489404}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 418934}
   - component: {fileID: 11457082}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469376}
   - component: {fileID: 114188873776750066}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BrightBlessings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 19849202}
   - component: {fileID: 19976954}
   - component: {fileID: 11423222}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesRingLoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 411458}
   - component: {fileID: 19844866}
   - component: {fileID: 19921524}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: DistortRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 11464178}
   - component: {fileID: 11461900}
   - component: {fileID: 11997900}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DecalRing_Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 402010}
   - component: {fileID: 9661238}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 19991368}
   - component: {fileID: 11449472}
   - component: {fileID: 11414038}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: LightParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 443978}
   - component: {fileID: 10815626}
   - component: {fileID: 11489536}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 499658}
   - component: {fileID: 8294730}
   - component: {fileID: 11408018}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 434930}
   - component: {fileID: 8235426}
   - component: {fileID: 11452238}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Idle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 19819792}
   - component: {fileID: 19906296}
   - component: {fileID: 11403984}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FireRing2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 466136}
   - component: {fileID: 11453490}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Rotator1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23824,7 +23824,7 @@ GameObject:
   - component: {fileID: 198665991791125372}
   - component: {fileID: 199642020415832286}
   - component: {fileID: 114696770580580272}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ParticlesRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23841,7 +23841,7 @@ GameObject:
   - component: {fileID: 4782789590452470}
   - component: {fileID: 108498805462421226}
   - component: {fileID: 114393564641472424}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

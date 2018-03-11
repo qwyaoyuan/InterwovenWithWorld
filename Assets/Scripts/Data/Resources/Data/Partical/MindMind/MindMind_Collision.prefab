@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 423090}
   - component: {fileID: 19867422}
   - component: {fileID: 19972342}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Skull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 11435032}
   - component: {fileID: 11965154}
   - component: {fileID: 11407902}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DecalBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 465542}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: MindMind_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 478524}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 456452}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Offset
   m_TagString: Untagged
   m_Icon: {fileID: -3114416830163030229, guid: 0000000000000000d000000000000000, type: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 441104}
   - component: {fileID: 19811282}
   - component: {fileID: 19922350}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Skull2_mul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 8270632}
   - component: {fileID: 11437802}
   - component: {fileID: 16675666}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PostEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 421532}
   - component: {fileID: 19831956}
   - component: {fileID: 19931456}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BloodExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 428816}
   - component: {fileID: 19815208}
   - component: {fileID: 19948084}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SubEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 446154}
   - component: {fileID: 19841358}
   - component: {fileID: 19924996}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Skull2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 483390}
   - component: {fileID: 8273156}
   - component: {fileID: 11445476}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 19801588}
   - component: {fileID: 19917772}
   - component: {fileID: 11459478}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Blood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 11411400}
   - component: {fileID: 11946974}
   - component: {fileID: 11458618}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DecalBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}

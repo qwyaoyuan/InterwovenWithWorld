@@ -1519,6 +1519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc8b022f037f5c46a9870ef5933eb36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _HurtFontOffset: 0
 --- !u!114 &114666885112970878
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 19865666}
   - component: {fileID: 19908710}
   - component: {fileID: 11458928}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Distortions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 439082}
   - component: {fileID: 19840522}
   - component: {fileID: 19926252}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 443824}
   - component: {fileID: 10801170}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 19846856}
   - component: {fileID: 19901110}
   - component: {fileID: 11455608}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ExplosionFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 437328}
   - component: {fileID: 8278080}
   - component: {fileID: 11491986}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 451432}
   - component: {fileID: 114110710233252514}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DarkBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 19856026}
   - component: {fileID: 19985344}
   - component: {fileID: 11453040}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 482582}
   - component: {fileID: 11468220}
   - component: {fileID: 114292133138483864}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
