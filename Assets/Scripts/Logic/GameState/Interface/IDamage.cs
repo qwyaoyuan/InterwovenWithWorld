@@ -33,5 +33,14 @@ public interface IDamage : IBaseState
     /// <param name="skillType">技能类型</param>
     /// <param name="weaponTypeByPlayerState">武器类型</param>
     void SetPhysicSkillAttack(IPlayerState iPlayerState, PhysicsSkillStateStruct physicsSkillStateStruct, EnumSkillType skillType, EnumWeaponTypeByPlayerState weaponTypeByPlayerState);
+
+    /// <summary>
+    /// 物理攻击命中,武器类型
+    /// </summary>
+    int WeaponPhysicHit { get; set; }
+    /// <summary>
+    /// 魔法攻击命中,二阶段类型
+    /// </summary>
+    int MagicTypeHit { get; set; }
 }
 

@@ -21,8 +21,14 @@ public class WindDragonRollPartical : ParticalControlEntry
     /// </summary>
     float lastCheckCollisionTime;
 
+    /// <summary>
+    /// 检测对象
+    /// </summary>
+    List<GameObject> tempObjs;
+
     private void Awake()
     {
+        tempObjs = new List<GameObject>();
         lastCheckCollisionTime = 0;
     }
 
@@ -53,6 +59,7 @@ public class WindDragonRollPartical : ParticalControlEntry
         lastCheckCollisionTime += Time.deltaTime;
         if (lastCheckCollisionTime > checkCollisionIntervalTime)
         {
+            tempObjs.Clear();
             lastCheckCollisionTime = 0;
         }
     }
@@ -69,6 +76,9 @@ public class WindDragonRollPartical : ParticalControlEntry
             int endLayer = layer | layerMask;
             if (endLayer == layerMask)
             {
+                if (tempObjs.Contains(other.gameObject))
+                    return;
+                tempObjs.Add(other.gameObject);
                 CallBack(new CollisionHitCallbackStruct() { hitPoint = other.transform.position, targetObj = other.transform.gameObject });
             }
         }

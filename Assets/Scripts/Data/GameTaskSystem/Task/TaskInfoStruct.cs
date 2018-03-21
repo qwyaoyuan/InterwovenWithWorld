@@ -69,6 +69,14 @@ namespace TaskMap
         /// </summary>
         public Dictionary<EnumGoodsType, int> AwardGoods { get; set; }
         /// <summary>
+        /// 奖励道具的最小品质
+        /// </summary>
+        public Dictionary<EnumGoodsType, EnumQualityType> AwardGoodsMinQualities { get; set; }
+        /// <summary>
+        /// 奖励道具的最大品质
+        /// </summary>
+        public Dictionary<EnumGoodsType, EnumQualityType> AwardGoodsMaxQualities { get; set; }
+        /// <summary>
         /// 奖励经验
         /// </summary>
         public int AwardExperience { get; set; }

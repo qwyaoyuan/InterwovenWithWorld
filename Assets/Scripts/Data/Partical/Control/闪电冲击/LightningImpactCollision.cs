@@ -47,8 +47,14 @@ public class LightningImpactCollision : MonoBehaviour, IParticalConduct
         rchs = Physics.CapsuleCastAll(transform.position, transform.position + transform.forward, 0.5f, transform.forward, range * 10);
         if (rchs != null && rchs.Length > 0 && CallBack != null)
         {
+            List<GameObject> objList = new List<GameObject>();
             foreach (RaycastHit rch in rchs)
             {
+                if (objList.Contains(rch.transform.gameObject))
+                {
+                    continue;
+                }
+                objList.Add(rch.transform.gameObject);
                 bool result = CallBack(new CollisionHitCallbackStruct() { targetObj = rch.transform.gameObject, hitPoint = rch.point });
                 if (result)
                 {

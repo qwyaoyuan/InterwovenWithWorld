@@ -6642,7 +6642,7 @@ Prefab:
     - target: {fileID: 114104522444428218, guid: 95cf9a179e151c34ea1c5f141e82e6bb,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 95cf9a179e151c34ea1c5f141e82e6bb, type: 2}
@@ -8469,6 +8469,34 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400004, guid: 5ecd95430a94398498809bbc1e526ac5, type: 2}
   m_PrefabInternal: {fileID: 723803882}
+--- !u!1 &725275986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 725275987}
+  m_Layer: 0
+  m_Name: PlayerInit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &725275987
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 725275986}
+  m_LocalRotation: {x: -0, y: -0.8939879, z: -0, w: 0.44809118}
+  m_LocalPosition: {x: 211.22998, y: 10.049988, z: 371.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: -126.757, z: 0}
 --- !u!1001 &727363952
 Prefab:
   m_ObjectHideFlags: 0
@@ -16535,6 +16563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1576449127}
   - component: {fileID: 1576449126}
+  - component: {fileID: 1576449128}
   m_Layer: 0
   m_Name: MainEntrance
   m_TagString: Untagged
@@ -16566,6 +16595,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1576449128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1576449125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58ba3a60330ddb4daabb066d38db8d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1578665787
 Prefab:
   m_ObjectHideFlags: 0

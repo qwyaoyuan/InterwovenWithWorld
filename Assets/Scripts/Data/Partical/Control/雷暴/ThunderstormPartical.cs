@@ -108,6 +108,7 @@ public class ThunderstormPartical : ParticalControlEntry
             int endLayer = layer | layerMask;
             if (endLayer == layerMask && !createTrailObjList.Contains(target))
             {
+
                 createTrailObjList.Add(other.gameObject);
                 //生成一个粒子
                 GameObject go = GameObject.Instantiate(tempTrailPrefab);

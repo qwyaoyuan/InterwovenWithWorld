@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RaycastDistance: 100
   Effects:
-  - {fileID: 109338, guid: c882138d4987a9544b7c53f14ed0ad9c, type: 2}
+  - {fileID: 109338, guid: 58aa5f0ef55ff6040aea9ec9c198560f, type: 2}
   Offset: 0
   TimeDelay: 0.4
   DestroyTime: 0
@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RaycastDistance: 100
   Effects:
-  - {fileID: 109338, guid: c882138d4987a9544b7c53f14ed0ad9c, type: 2}
+  - {fileID: 109338, guid: 58aa5f0ef55ff6040aea9ec9c198560f, type: 2}
   Offset: 0
   TimeDelay: 0.4
   DestroyTime: 0
@@ -1734,7 +1734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RaycastDistance: 100
   Effects:
-  - {fileID: 109338, guid: c882138d4987a9544b7c53f14ed0ad9c, type: 2}
+  - {fileID: 109338, guid: 58aa5f0ef55ff6040aea9ec9c198560f, type: 2}
   Offset: 0
   TimeDelay: 0.4
   DestroyTime: 0

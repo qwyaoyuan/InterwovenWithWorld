@@ -209,7 +209,7 @@ public class MoveManager : IInput
         if (string.Equals(fieldName, GameState.Instance.GetFieldName<IPlayerState, ForceMoveStruct>(temp => temp.ForceMoveStruct)))
         {
             CharacterController characterController = iPlayerState.PlayerObj.GetComponent<CharacterController>();
-            Vector3 self_forward = iPlayerState.PlayerObj.transform.forward * iPlayerState.ForceMoveStruct.MoveSpeed * Time.deltaTime;
+            Vector3 self_forward = (iPlayerState.PlayerObj.transform.forward * iPlayerState.ForceMoveStruct.MoveSpeed + Vector3.down) * Time.deltaTime;
             self_forward.y = 0;
             characterController.Move(self_forward);
         }

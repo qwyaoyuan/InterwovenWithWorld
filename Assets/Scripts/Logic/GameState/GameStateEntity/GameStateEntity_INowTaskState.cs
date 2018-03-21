@@ -602,15 +602,31 @@ public partial class GameState : INowTaskState
                 TaskMap.RunTimeTaskInfo runTimeTaskInfo = runTimeTaskInfos_Start.Where(temp => temp.ID == _OverTaskID).FirstOrDefault();
                 if (runTimeTaskInfo == null)
                     return;
+                IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+                PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+                GoodsMetaInfoMations goodsMetaInfoMations = DataCenter.Instance.GetMetaData<GoodsMetaInfoMations>();
                 //内部处理完成后的事项
                 //奖励物品
-
+                if (runTimeTaskInfo.TaskInfoStruct.AwardGoods != null && runTimeTaskInfo.TaskInfoStruct.AwardGoodsMinQualities != null && runTimeTaskInfo.TaskInfoStruct.AwardGoodsMaxQualities != null)
+                    foreach (KeyValuePair<EnumGoodsType, int> goodsKvp in runTimeTaskInfo.TaskInfoStruct.AwardGoods)
+                    {
+                        if(runTimeTaskInfo.TaskInfoStruct.AwardGoodsMinQualities.ContainsKey(goodsKvp.Key)&& runTimeTaskInfo.TaskInfoStruct.AwardGoodsMaxQualities.ContainsKey(goodsKvp.Key))
+                        {
+                            CreateGoodsTools.CreatePlayGoodsAddToPlayData(
+                                playerState,
+                                goodsMetaInfoMations,
+                                goodsKvp.Key,
+                                runTimeTaskInfo.TaskInfoStruct.AwardGoodsMinQualities[goodsKvp.Key],
+                                runTimeTaskInfo.TaskInfoStruct.AwardGoodsMaxQualities[goodsKvp.Key],
+                                goodsKvp.Value);
+                        }
+                    }          
                 //奖励经验
-
+                iPlayerState.Experience += runTimeTaskInfo.TaskInfoStruct.AwardExperience;
                 //奖励技能点
-
+                playerState.FreedomPoint += runTimeTaskInfo.TaskInfoStruct.AwardSkillPoint;
                 //奖励声望
-
+                playerState.Reputation += runTimeTaskInfo.TaskInfoStruct.AwardReputation;
                 //任务完成后的后续
                 RemoveTaskByIDAtDicAndList(_OverTaskID, true);//从数据中移除
                 runTimeTaskInfo.IsOver = true;

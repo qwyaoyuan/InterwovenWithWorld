@@ -359,7 +359,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: "\u4E2D\u592E\u738B\u56FD\u5730\u4E0B\u8FF7\u5BAB"
-  targetPostion: {x: -7.7, y: 0, z: 0}
+  targetPostion: {x: 0, y: 0, z: 0}
+  streetID: 10007
 --- !u!135 &135988692421423728
 SphereCollider:
   m_ObjectHideFlags: 1

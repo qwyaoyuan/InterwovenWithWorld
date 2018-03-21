@@ -149,7 +149,11 @@ public class UIHurtShowManager : MonoBehaviour
                         tempData.showPanel = rectTrans;
                         //设置文字
                         Text text = createObj.GetComponent<Text>();
-                        text.text = ((int)tempData.hurtFontStruct.Hurt).ToString();
+                        int hurt = (int)tempData.hurtFontStruct.Hurt;
+                        if (hurt > 0)
+                            text.text = hurt.ToString();
+                        else
+                            text.text = "Miss";
                         tempData.text = text;
                         //设置颜色
                         if (tempData.hurtFontStruct.IsCrit)

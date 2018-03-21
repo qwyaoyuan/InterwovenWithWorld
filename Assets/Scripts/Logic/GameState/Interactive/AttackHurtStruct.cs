@@ -145,9 +145,9 @@ public static class CalculateHurt
         {
             case EnumHurtType.Magic:
                 {
-                    float hurtRate = from.attributeState.MagicAttacking * from.MagicAttackFactor.IncreaseRatioInjuryFactor;//伤害倍率
-                    float defenceRate = 1 - 1 / (1 + to.MagicResistance * magicDefenseFactor.CoefficientRatioReducingDamageFactor);//减伤倍率
-                    float baseHurt = from.thisUsedMana * from.attributeState.MagicAttacking / 25;
+                    float hurtRate = 1 + from.attributeState.MagicAttacking * from.MagicAttackFactor.IncreaseRatioInjuryFactor;//伤害倍率
+                    float defenceRate = 1 / (1 + to.MagicResistance * magicDefenseFactor.CoefficientRatioReducingDamageFactor);//减伤倍率
+                    float baseHurt = from.thisUsedMana * from.attributeState.BaseMagicDamage / 25;
                     float otherHurt = (from.attributeState.MagicAttacking - to.MagicResistance) * 0.1f;
                     otherHurt = Mathf.Clamp(otherHurt, 0, float.MaxValue);
                     baseDamage = (baseHurt * defenceRate + otherHurt) * hurtRate;
@@ -170,7 +170,7 @@ public static class CalculateHurt
         }
         //计算暴击
         float isCrit = from.attributeState.CritRate;
-        if (isHitRate >= 1 && Random.Range(0f, 1f) < isCrit)//如果命中并且本次攻击随机到了暴击概率阶段
+        if (from.hurtType!= EnumHurtType.Magic && isHitRate >= 1 && Random.Range(0f, 1f) < isCrit)//如果命中并且本次攻击随机到了暴击概率阶段
         {
             calculateHurtResult.IsCrit = true;
             float critDamageRatio = from.attributeState.CritDamageRatio - to.CriticalDef;
@@ -178,7 +178,7 @@ public static class CalculateHurt
             baseDamage *= critDamageRatio;
         }
         //计算格挡
-        float isEquipBlock = to.EquipBlock;   
+        float isEquipBlock = to.EquipBlock;
         if (isHitRate >= 1 && Random.Range(0f, 1f) < isEquipBlock)//如果命中并且本次随机到了格挡概率阶段
         {
             baseDamage *= 0.7f;
@@ -203,7 +203,7 @@ public static class CalculateHurt
                 {
                     tempStatusLevelDataInfos.Add(tempStatusLevelDataInfo);
                 }
-            }         
+            }
             calculateHurtResult.statusDatas = tempStatusLevelDataInfos.ToArray();
         }
         else

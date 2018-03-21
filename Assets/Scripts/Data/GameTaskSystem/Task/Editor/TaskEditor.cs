@@ -921,6 +921,8 @@ namespace TaskMap
             SetEnumExplanDic(TaskProgressKeyValueList);
             TaskSpecialCheckKeyValueList = new List<KeyValuePair<Enums.EnumTaskSpecialCheck, string>>();
             SetEnumExplanDic(TaskSpecialCheckKeyValueList);
+            QualityTypeKeyValueList = new List<KeyValuePair<EnumQualityType, string>>();
+            FieldExplanAttribute.SetEnumExplanDic(QualityTypeKeyValueList);
             taskEventDataToTypeDic = new Dictionary<Enums.EnumTaskEventType, TargetTypeExplanAttribute.EnumTargetType>();
             TargetTypeExplanAttribute.SetEnumExplanDic(taskEventDataToTypeDic);
 
@@ -994,6 +996,10 @@ namespace TaskMap
         /// 特殊检测状态与该枚举描述键值对集合
         /// </summary>
         List<KeyValuePair<Enums.EnumTaskSpecialCheck, string>> TaskSpecialCheckKeyValueList;
+        /// <summary>
+        /// 物品品质与该枚举描述键值对的集合
+        /// </summary>
+        List<KeyValuePair<EnumQualityType, string>> QualityTypeKeyValueList;
         /// <summary>
         /// 任务事件类型对应附加数据类型的字典
         /// </summary>
@@ -1304,6 +1310,10 @@ namespace TaskMap
             EditorGUILayout.BeginHorizontal();
             if (nowSelectNode.Value.AwardGoods == null)
                 nowSelectNode.Value.AwardGoods = new Dictionary<EnumGoodsType, int>();
+            if (nowSelectNode.Value.AwardGoodsMinQualities == null)
+                nowSelectNode.Value.AwardGoodsMinQualities = new Dictionary<EnumGoodsType, EnumQualityType>();
+            if (nowSelectNode.Value.AwardGoodsMaxQualities == null)
+                nowSelectNode.Value.AwardGoodsMaxQualities = new Dictionary<EnumGoodsType, EnumQualityType>();
             EditorGUILayout.LabelField("奖励物品:");
             //找出一个可以添加的物品(任务奖励)
             KeyValuePair<EnumGoodsType, string>[] canAddGetGoodses = GoodsTypeKeyValueList.Where(temp => !nowSelectNode.Value.AwardGoods.ContainsKey(temp.Key)).ToArray();//计算出可以添加的类型
@@ -1321,27 +1331,56 @@ namespace TaskMap
                 if (GoodsTypeKeyValueList.Count(temp => temp.Key == tempAddGetGoodsType) > 0 && !nowSelectNode.Value.AwardGoods.ContainsKey(tempAddGetGoodsType))
                 {
                     nowSelectNode.Value.AwardGoods.Add(tempAddGetGoodsType, 0);
+                    nowSelectNode.Value.AwardGoodsMinQualities.Add(tempAddGetGoodsType, EnumQualityType.White);
+                    nowSelectNode.Value.AwardGoodsMaxQualities.Add(tempAddGetGoodsType, EnumQualityType.White);
                 }
             }
             EditorGUILayout.EndHorizontal();
             KeyValuePair<EnumGoodsType, int>[] awardGoodsArray = nowSelectNode.Value.AwardGoods.ToArray();
+            List<EnumQualityType> goodsQualityTypeValues = QualityTypeKeyValueList.Select(temp => temp.Key).ToList();
+            string[] goodsQualityTypeExplans = QualityTypeKeyValueList.Select(temp => temp.Value).ToArray();
             foreach (KeyValuePair<EnumGoodsType, int> awardGoods in awardGoodsArray)
             {
                 KeyValuePair<EnumGoodsType, string> goodsExplan = GoodsTypeKeyValueList.FirstOrDefault(temp => temp.Key == awardGoods.Key);
                 if (goodsExplan.Key == awardGoods.Key)
                 {
+                    if (!nowSelectNode.Value.AwardGoodsMinQualities.ContainsKey(awardGoods.Key))
+                        nowSelectNode.Value.AwardGoodsMinQualities.Add(awardGoods.Key, EnumQualityType.White);
+                    if (!nowSelectNode.Value.AwardGoodsMaxQualities.ContainsKey(awardGoods.Key))
+                        nowSelectNode.Value.AwardGoodsMaxQualities.Add(awardGoods.Key, EnumQualityType.White);
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("X", GUILayout.Width(20)))
                     {
                         if (EditorUtility.DisplayDialog("提示!", "是否移除该奖励物品", "是", "否"))
                         {
                             nowSelectNode.Value.AwardGoods.Remove(awardGoods.Key);
+                            nowSelectNode.Value.AwardGoodsMinQualities.Remove(awardGoods.Key);
+                            nowSelectNode.Value.AwardGoodsMaxQualities.Remove(awardGoods.Key);
                             continue;
                         }
                     }
-                    int goodsCount = EditorGUILayout.IntField(goodsExplan.Value, awardGoods.Value);
+                    //物品数量
+                    int goodsCount = EditorGUILayout.IntField(goodsExplan.Value, awardGoods.Value,GUILayout.Width(200));
                     if (nowSelectNode.Value.AwardGoods.ContainsKey(awardGoods.Key))
                         nowSelectNode.Value.AwardGoods[awardGoods.Key] = goodsCount;
+                    //物品最小品质
+                    EnumQualityType qualityMinType = nowSelectNode.Value.AwardGoodsMinQualities[awardGoods.Key];
+                    int minQualityIndex = goodsQualityTypeValues.IndexOf(qualityMinType);
+                    EditorGUILayout.LabelField("最小品质", GUILayout.Width(60));
+                    minQualityIndex = EditorGUILayout.Popup( minQualityIndex, goodsQualityTypeExplans, GUILayout.Width(150));
+                    if (minQualityIndex >= 0)
+                    {
+                        nowSelectNode.Value.AwardGoodsMinQualities[awardGoods.Key] = goodsQualityTypeValues[minQualityIndex];
+                    }
+                    //物品最大品质
+                    EnumQualityType qualityMaxType = nowSelectNode.Value.AwardGoodsMaxQualities[awardGoods.Key];
+                    int maxQualityIndex = goodsQualityTypeValues.IndexOf(qualityMaxType);
+                    EditorGUILayout.LabelField("最大品质", GUILayout.Width(60));
+                    maxQualityIndex = EditorGUILayout.Popup( maxQualityIndex, goodsQualityTypeExplans, GUILayout.Width(150));
+                    if (maxQualityIndex >= 0)
+                    {
+                        nowSelectNode.Value.AwardGoodsMaxQualities[awardGoods.Key] = goodsQualityTypeValues[maxQualityIndex];
+                    }
                     EditorGUILayout.EndHorizontal();
                 }
             }

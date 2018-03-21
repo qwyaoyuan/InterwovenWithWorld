@@ -141,6 +141,8 @@ public class UIEntrance : MonoBehaviour
     {
         entranceType = EnumEntranceType.Start;
 
+        playerCreateTrans = GameObject.Find("PlayerInit").transform;
+
         if (settingCanvasPrefab)
         {
             GameObject settingGameObject = Instantiate(settingCanvasPrefab);
@@ -591,14 +593,14 @@ public class UIEntrance : MonoBehaviour
             int key = (int)(EnumInputType.A | EnumInputType.LB);
             keyContactData.SetKeyContactStruct(key, new KeyContactStruct() { id = (int)EnumSkillType.KZS03, key = key, keyContactType = EnumKeyContactType.Skill, name = "战吼" });
             //添加装备
-            int playGoodsID = NowTimeToID.GetNowID(DataCenter.Instance.GetEntity<GameRunnedState>());
-            Goods goods = new Goods(EnumGoodsType.XJJ, "测试武器", 1, 10, "123");
-            goods.goodsAbilities.Add(new GoodsAbility() { AbilibityKind = EnumGoodsAbility.ASPD, Value = 10 });
-            goods.SpriteName = "1:1_226";
+            //int playGoodsID = NowTimeToID.GetNowID(DataCenter.Instance.GetEntity<GameRunnedState>());
+            //Goods goods = new Goods(EnumGoodsType.XJJ, "测试武器", 1, 10, "123");
+            //goods.goodsAbilities.Add(new GoodsAbility() { AbilibityKind = EnumGoodsAbility.ASPD, Value = 10 });
+            //goods.SpriteName = "1:1_226";
 
-            PlayGoods playGoods = new PlayGoods(playGoodsID, goods, GoodsLocation.Package);
-            playerState.PlayerAllGoods.Add(playGoods);
-            playerState.Sprice = 10000;
+            //PlayGoods playGoods = new PlayGoods(playGoodsID, goods, GoodsLocation.Package);
+            //playerState.PlayerAllGoods.Add(playGoods);
+            //playerState.Sprice = 10000;
             /*****测试代码结束*****/
 
             #endregion
@@ -839,32 +841,46 @@ public class UIEntrance : MonoBehaviour
 
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
         #region  测试代码开始
-        playerState.PlayerAllGoods.Clear();
-        //添加属性点
-        playerState.PropertyPoint = 10;
-        //添加一个弓
-        playerState.PlayerAllGoods.Add(new PlayGoods(100000, new Goods(EnumGoodsType.WGCSG, "王国长杉弓", 1, 100, "王国长杉弓"), GoodsLocation.Package)
-        {
-            leftRightArms =true,
-            QualityType = EnumQualityType.Blue,
-            Count =1
-        });
-        //添加一个剑
-        playerState.PlayerAllGoods.Add(new PlayGoods(100001, new Goods(EnumGoodsType.TJ, "铁剑", 1, 100, "铁剑"), GoodsLocation.Package)
-        {
-            leftRightArms = true,
-            QualityType = EnumQualityType.Blue,
-            Count = 1
-        });
-        //添加一个巨剑
-        playerState.PlayerAllGoods.Add(new PlayGoods(100002, new Goods(EnumGoodsType.YGDJ, "精钢大剑", 1, 100, "精钢大剑"), GoodsLocation.Wearing)
-        {
-            leftRightArms = true,
-            QualityType = EnumQualityType.Blue,
-            Count = 1
-        });
-        //测试代码结束
-        
+        //playerState.PlayerAllGoods.Clear();
+        //if (playerState.PlayerAllGoods.Count(temp => temp.ID == 10000) == 0)
+        //{
+        //    playerState.PlayerAllGoods.Add(new PlayGoods(10000, new Goods(EnumGoodsType.HFYJ, "恢复药剂", 1, 100, "恢复药剂")
+        //    {
+        //        goodsAbilities = new List<GoodsAbility>(new GoodsAbility[] { new GoodsAbility() { AbilibityKind = EnumGoodsAbility.HPRect_Rate, Level = 1, Value = 10 } })
+        //    }, GoodsLocation.Package)
+        //    {
+        //        QualityType = EnumQualityType.White,
+        //        Count = 10
+        //    });
+        //}
+        ////添加属性点
+        //playerState.PropertyPoint = 10;
+        ////添加一个弓
+        //playerState.PlayerAllGoods.Add(new PlayGoods(100000, new Goods(EnumGoodsType.WGCSG, "王国长杉弓", 1, 100, "王国长杉弓"), GoodsLocation.Package)
+        //{
+        //    leftRightArms = true,
+        //    QualityType = EnumQualityType.Blue,
+        //    Count = 1
+        //});
+        ////添加一个剑
+        //playerState.PlayerAllGoods.Add(new PlayGoods(100001, new Goods(EnumGoodsType.TJ, "铁剑", 1, 100, "铁剑")
+        //{
+        //    goodsAbilities = new List<GoodsAbility>(new GoodsAbility[] { new GoodsAbility() { AbilibityKind = EnumGoodsAbility.EquipATK, Level = 1, Value = 60 } })
+        //}, GoodsLocation.Package)
+        //{
+        //    leftRightArms = true,
+        //    QualityType = EnumQualityType.Blue,
+        //    Count = 1
+        //});
+        ////添加一个巨剑
+        //playerState.PlayerAllGoods.Add(new PlayGoods(100002, new Goods(EnumGoodsType.YGDJ, "精钢大剑", 1, 100, "精钢大剑"), GoodsLocation.Wearing)
+        //{
+        //    leftRightArms = true,
+        //    QualityType = EnumQualityType.Blue,
+        //    Count = 1
+        //});
+        ////测试代码结束
+
         #endregion
 
 
@@ -884,7 +900,6 @@ public class UIEntrance : MonoBehaviour
         isLoadedScene = true;
         IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
         iGameState.ChangedScene(playerState.Scene, playerState.Location, result => isLoadedScene = false);
-
     }
 
 

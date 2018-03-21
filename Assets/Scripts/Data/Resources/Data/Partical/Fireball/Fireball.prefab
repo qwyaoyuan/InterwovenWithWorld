@@ -876,7 +876,7 @@ MonoBehaviour:
   TimeDelay: 0
   CollidesWith:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294953982
   EffectsOnCollision:
   - {fileID: 167520, guid: 43f079decbd81b445ac777806f3c4586, type: 2}
   CollisionOffset: 0.2

@@ -24,6 +24,11 @@ public class TransportPointAction : MonoBehaviour
     bool canCheck = true;
 
     /// <summary>
+    /// 传送阵id
+    /// </summary>
+    public int streetID;
+
+    /// <summary>
     /// 检测进入的物体
     /// </summary>
     /// <param name="other"></param>
@@ -35,6 +40,9 @@ public class TransportPointAction : MonoBehaviour
             canCheck = false;
             IGameState iGameState = GameState.Instance.GetEntity<IGameState>();
             iGameState.ChangedScene(targetSceneName, targetPostion, temp => canCheck = true);
+            PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+            playerState.StreetID = streetID;
+            playerState.StreetScene = targetSceneName;
         }
     }
 }

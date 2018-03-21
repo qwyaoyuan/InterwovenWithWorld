@@ -40,6 +40,10 @@ public interface IAttributeState : IBaseState
     /// 基础物理伤害
     /// </summary>
     [FieldExplan("基础物理伤害")] float BasePhysicDamage { get; set; }
+    /// <summary>
+    /// 基础法术伤害
+    /// </summary>
+    [FieldExplan("基础法术伤害")] float BaseMagicDamage { get; set; }
     #endregion
 
     #region 常规属性

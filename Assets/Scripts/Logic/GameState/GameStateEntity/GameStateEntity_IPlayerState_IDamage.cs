@@ -41,11 +41,15 @@ public partial class GameState
         ParticalInitParamData particalInitParamData = default(ParticalInitParamData);
         ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
         PlayerState playerState = DataCenter.Instance.GetEntity<PlayerState>();
+        EnumSkillType[] skillTyps = skills.Where(temp => temp != null).Select(temp => temp.skillType).OrderBy(temp => (int)temp).ToArray();
         //耗魔量
         float holdingRate = iSkillState.SkillStartHoldingTime / GameState.BaseSkillStartHoldingTime;//计算蓄力程度
         float maxUseMana = nowIAttributeState.MaxUseMana;//当前的最大耗魔上限
         float baseUseMana = nowIAttributeState.MustUsedBaseMana;//基础耗魔值
         float thisUsedMana = baseUseMana + maxUseMana * holdingRate;//该技能的耗魔值
+        IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        if (iPlayerState.Mana < thisUsedMana)
+            thisUsedMana = iPlayerState.Mana;
         //技能附加的特效(特殊效果和debuff)
         StatusData statusData = DataCenter.Instance.GetMetaData<StatusData>();//保存特殊状态的数据
         Dictionary<StatusDataInfo.StatusLevelDataInfo, int> statusEffects = new Dictionary<StatusDataInfo.StatusLevelDataInfo, int>();//特殊效果对应该等级数据与对应等级字典
@@ -161,16 +165,16 @@ public partial class GameState
             {
                 case EnumSkillType.FS01://奥数弹
                     particalInitParamData.range = 20;//表示距离
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     break;
                 case EnumSkillType.FS02://奥数震荡
                     particalInitParamData.range = 1;//表示比例
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     particalInitParamData.position = playerObj.transform.position + playerObj.transform.forward * 2f;
                     break;
                 case EnumSkillType.FS03://魔力屏障
                     particalInitParamData.range = 1;//表示比例
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     break;
                 case EnumSkillType.FS04://魔力导向
                     //查找前方45度方位内距离自己最近的怪物
@@ -181,7 +185,7 @@ public partial class GameState
                     {
                         particalInitParamData.range = Vector3.Distance(selectTargetObj.transform.position, playerObj.transform.position);//表示距离
                         particalInitParamData.targetObjs = new GameObject[] { selectTargetObj };
-                        particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                        particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     }
                     else
                         particalInitParamData.range = 10;
@@ -199,7 +203,7 @@ public partial class GameState
                                 break;
                         }
                     }
-                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                    particalInitParamData.CollisionCallBack = temp => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     break;
             }
         }
@@ -227,7 +231,7 @@ public partial class GameState
                     temp_particalInitParamData.position = firstObj.transform.position + temp_particalInitParamData.forward;
                     temp_particalInitParamData.range = Vector3.Distance(firstObj.transform.position, secondObj.transform.position);
                     temp_particalInitParamData.targetObjs = new GameObject[] { secondObj };
-                    temp_particalInitParamData.CollisionCallBack = (temp) => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos);
+                    temp_particalInitParamData.CollisionCallBack = (temp) => CalculateCombineMagicHurt(nowIAttributeState, temp, thisUsedMana, statusLevelDataInfos, skillTyps);
                     resultList.Add(temp_particalInitParamData);
                 }
             }
@@ -239,12 +243,13 @@ public partial class GameState
     /// <summary>
     /// 计算魔法组合技能的伤害
     /// </summary>
-    /// <param name="iAttributeState">伤害计算时使用的属性</param>
+    /// <param name="_iAttributeState">伤害计算时使用的属性</param>
     /// <param name="collisionHitCallbackStruct">碰撞到的对象</param>
     /// <param name="thisUsedMana">本次技能的耗魔值</param>
     /// <param name="statusLevelDataInfos">本次技能附加的特殊效果数组</param>
+    /// <param name="skills">本次技能组合</param>
     /// <returns></returns>
-    private bool CalculateCombineMagicHurt(IAttributeState iAttributeState, CollisionHitCallbackStruct collisionHitCallbackStruct, float thisUsedMana, StatusDataInfo.StatusLevelDataInfo[] statusLevelDataInfos)
+    private bool CalculateCombineMagicHurt(IAttributeState _iAttributeState, CollisionHitCallbackStruct collisionHitCallbackStruct, float thisUsedMana, StatusDataInfo.StatusLevelDataInfo[] statusLevelDataInfos,EnumSkillType[] skills)
     {
         if (collisionHitCallbackStruct.targetObj == null)
             return false;
@@ -252,6 +257,103 @@ public partial class GameState
         if (interactiveAsMonster == null)
             return false;
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        IAttributeState iAttributeState = ((AttributeStateAdditional)_iAttributeState).Clone();
+        //根据技能设置平摊伤害
+        if (skills.Length >= 2)
+        {
+            switch (skills[1])
+            {
+                case EnumSkillType.YSX01://火元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 4;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 2.5f;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.YSX02://水元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 1.8f;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 0.85f;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.YSX03://土元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 1.4f;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 2.5f;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.YSX04://风元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 4;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 4;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.SM06://冰元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 1.2f;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 1.2f;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.SM07://雷元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 5.5f;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 6;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.DSM03://光元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 1;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 1;
+                            break;
+                    }
+                    break;
+                case EnumSkillType.DSM04://暗元素
+                    switch (skills[0])
+                    {
+                        case EnumSkillType.FS02:
+                            iAttributeState.BaseMagicDamage /= 1;
+                            break;
+                        case EnumSkillType.MFS05:
+                            iAttributeState.BaseMagicDamage /= 1;
+                            break;
+                    }
+                    break;
+            }
+
+        }
         AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
         {
             hurtTransferNum = 0,
@@ -269,6 +371,15 @@ public partial class GameState
         if (hurtResult.IsCrit || hurtResult.hurtRate > 0.2f)
         {
             iPlayerState.SetVibration(0.1f, 0.8f, 0.8f);//设置手柄震动
+        }
+        //设置声音
+        if (skills.Length >= 2)//说明有二阶段技能
+        {
+            MagicTypeHit = (int)skills[1];
+        }
+        else
+        {
+            MagicTypeHit = (int)EnumSkillType.MagicCombinedLevel2Start;
         }
         return true;
     }
@@ -349,7 +460,7 @@ public partial class GameState
     /// <param name="iAttribute">攻击时的状态数据</param>
     /// <param name="innerOrder">当前攻击的阶段</param>
     /// <param name="target">攻击的目标</param>
-    private bool CalculateNormalActionHurt(EnumWeaponTypeByPlayerState weaponTypeByPlayerState, IAttributeState iAttribute, int innerOrder, GameObject target)
+    private bool CalculateNormalActionHurt(EnumWeaponTypeByPlayerState weaponTypeByPlayerState, IAttributeState _iAttribute, int innerOrder, GameObject target)
     {
         if (target == null)
             return true;
@@ -357,6 +468,29 @@ public partial class GameState
         if (interactiveAsMonster == null)
             return true;
         IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
+        IAttributeState iAttribute = ((AttributeStateAdditional)_iAttribute).Clone();
+        switch (weaponTypeByPlayerState)
+        {
+            case EnumWeaponTypeByPlayerState.SingleHandedSword:
+                if (innerOrder == 3)
+                {
+                    iAttribute.PhysicsAttacking *= 1.2f;
+                }
+                break;
+            case EnumWeaponTypeByPlayerState.TwoHandedSword:
+                if (innerOrder == 3)
+                {
+                    iAttribute.PhysicsAttacking *=  0.7f;
+                }
+                break;
+            case EnumWeaponTypeByPlayerState.Arch:
+                if (innerOrder == 3)
+                {
+                    iAttribute.PhysicsAttacking *= 2f;
+                }
+                break;
+
+        }
         AttackHurtStruct attackHurtStruct = new AttackHurtStruct()
         {
             hurtTransferNum = 0,
@@ -382,6 +516,8 @@ public partial class GameState
         }
         //停止持续
         iAnimatorState.SkillSustainable = false;
+        //设置命中声音
+        WeaponPhysicHit = (int)weaponTypeByPlayerState;
         //判断武器类型
         switch (weaponTypeByPlayerState)//根据武器类型判断是否还需要下次检测
         {
@@ -486,6 +622,8 @@ public partial class GameState
                 runTaskStruct_Charge.StopTask();
                 break;
         }
+        //设置命中声音
+        WeaponPhysicHit = (int)weaponTypeByPlayerState;
         //判断技能类型,有些紧只需要判断一次
         switch (skillType)
         {
@@ -495,6 +633,34 @@ public partial class GameState
                 return false;
             default:
                 return true;
+        }
+    }
+
+    private int _WeaponPhysicHit;
+    /// <summary>
+    /// 物理攻击命中,武器类型
+    /// </summary>
+    public int WeaponPhysicHit
+    {
+        get { return _WeaponPhysicHit; }
+        set
+        {
+            _WeaponPhysicHit = value;
+            Call<IDamage, int>(temp => temp.WeaponPhysicHit);
+        }
+    }
+
+    private int _MagicTypeHit;
+    /// <summary>
+    /// 魔法攻击命中,二阶段类型
+    /// </summary>
+    public int MagicTypeHit
+    {
+        get { return _MagicTypeHit; }
+        set
+        {
+            _MagicTypeHit = value;
+            Call<IDamage, int>(temp => temp.MagicTypeHit);
         }
     }
 }

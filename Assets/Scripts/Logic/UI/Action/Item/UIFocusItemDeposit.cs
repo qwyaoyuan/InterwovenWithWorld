@@ -99,7 +99,7 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
         foreach (PlayGoods playGoods in playGoodsArray)
         {
             UIListItem uiListItem = uiDepostiList.NewItem();
-            uiListItem.childText.text = playGoods.GoodsInfo.GoodsName;
+            uiListItem.childText.text = playGoods.GoodsInfo.GoodsName + "   X" + playGoods.Count;
             uiListItem.value = playGoods;
         }
         uiDepostiList.UpdateUI();
@@ -396,7 +396,7 @@ public class UIFocusItemDeposit : UIFocus, IUIItemSelectGoods
             }
             else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Elixir))//如果是炼金药剂类则直接服用
             {
-                Debug.Log("物品栏吃药功能暂时未实现");
+                iPlayerStateRun.EatMedicine(playGoods.ID);
             }
             else if (GoodsStaticTools.IsChildGoodsNode(enumGoodsType, EnumGoodsType.Item))//如果是道具
             {

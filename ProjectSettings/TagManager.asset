@@ -23,8 +23,8 @@ TagManager:
   - Player
   - Summon
   - Partical
-  - 
-  - 
+  - CheckPlayerState
+  - MonsterFindPlayer
   - 
   - 
   - 

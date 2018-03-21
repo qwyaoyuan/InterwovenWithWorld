@@ -134,6 +134,12 @@ public interface IPlayerState : IBaseState,
     /// <param name="skillStructData">技能固有数据</param>
     /// <returns>技能当前等级的数据(如果没有加点或者出错则范围null)</returns>
     SkillAttributeStruct GetSkillAttributeStruct(EnumSkillType skillType, SkillStructData skillStructData);
+
+    /// <summary>
+    /// 吃药
+    /// </summary>
+    /// <param name="goodsID">物品ID</param>
+    void EatMedicine(int goodsID);
 }
 
 /// <summary>

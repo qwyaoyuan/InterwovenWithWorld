@@ -10,6 +10,11 @@ public class MonsterBaseLogic : MonoBehaviour
 {
 
     /// <summary>
+    /// 僵直几率
+    /// </summary>
+    public float dizzyRate = 1f;
+
+    /// <summary>
     /// 动画组件
     /// </summary>
     protected Animator animator;
@@ -59,6 +64,13 @@ public class MonsterBaseLogic : MonoBehaviour
         {
             playerAnimEnterLeaveState.AnimEnterLeaveHandle += PlayerAnimEnterLeaveState_AnimEnterLeaveHandle;
         }
+
+    }
+
+    protected virtual void Start()
+    {
+        MonsterControl monsterControl = GetComponent<MonsterControl>();
+        monsterControl.dizzyRate = dizzyRate;
     }
 
     /// <summary>

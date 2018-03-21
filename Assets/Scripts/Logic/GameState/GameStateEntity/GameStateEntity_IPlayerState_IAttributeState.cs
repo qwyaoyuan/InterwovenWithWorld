@@ -135,7 +135,7 @@ public partial class GameState
         if (iAttributeStateDic.ContainsKey(index))
             return false;
         IAttributeState iAttributeState = new AttributeStateAdditional();
-        
+
         iAttributeStateDic.Add(index, iAttributeState);
         //添加回调
         iAttributeState.Registor<IAttributeState>((target, fieldName) =>
@@ -208,7 +208,8 @@ public partial class GameState
         iAttributeState.Quick = skillAttributeStruct.AgileBonus;//敏捷加成
         iAttributeState.Power += skillAttributeStruct.LiftingForceRatio * baseAttributeState.Power / 100f;//力量百分比提升
         iAttributeState.Mental = skillAttributeStruct.RaiseSpiritRatio * baseAttributeState.Mental / 100f;//精神百分比提升
-        iAttributeState.MagicAttacking = skillAttributeStruct.DMG * baseAttributeState.MagicAttacking / 100f;//魔法攻击力
+        //iAttributeState.MagicAttacking = skillAttributeStruct.DMG * baseAttributeState.MagicAttacking / 100f;//魔法攻击力
+        iAttributeState.BaseMagicDamage = skillAttributeStruct.DMG;//基础法术伤害
         iAttributeState.PhysicsAttacking = skillAttributeStruct.PDMG * baseAttributeState.PhysicsAttacking / 100f;//物理攻击力
         iAttributeState.EffectAffine = skillAttributeStruct.ERST;//特效影响力
         iAttributeState.AttackRigidity = skillAttributeStruct.Catalepsy;//僵直
@@ -225,7 +226,7 @@ public partial class GameState
         iAttributeState.MagicResistance += skillAttributeStruct.MpDefence * baseAttributeState.MagicResistance / 100f;//百分比的魔法防御力
         iAttributeState.PhysicsAttacking += skillAttributeStruct.PhyAttack * baseAttributeState.PhysicsAttacking / 100f;//物理攻击力百分比加成
         iAttributeState.PhysicsResistance += skillAttributeStruct.PhyDefense * baseAttributeState.PhysicsResistance / 100f;//物理防御力百分比加成
-        iAttributeState.ManaRecovery += skillAttributeStruct.MpReload;//魔法回复速度
+        iAttributeState.ManaRecovery += baseAttributeState.ManaRecovery * skillAttributeStruct.MpReload / 100f;//魔法回复速度
         iAttributeState.LightFaith = skillAttributeStruct.Light;//光明信仰强度 
         iAttributeState.DarkFaith = skillAttributeStruct.Dark;//黑暗信仰强度 
         iAttributeState.LifeFaith = skillAttributeStruct.Life;//生物信仰强度 
@@ -278,7 +279,7 @@ public partial class GameState
     /// <param name="roleOfRaceInfoStruct">种族成长对象</param>
     public void SetRoleOfRaceAddition(RoleOfRaceInfoStruct roleOfRaceInfoStruct)
     {
-        IAttributeState iAttributeState=  GetAttribute(0);//获取自身的对象
+        IAttributeState iAttributeState = GetAttribute(0);//获取自身的对象
         if (iAttributeState != null)
             iAttributeState.SetRoleOfRaceAddition(roleOfRaceInfoStruct);
     }
@@ -394,6 +395,27 @@ public partial class GameState
         }
     }
 
+    /// <summary>
+    /// 基础法术伤害
+    /// </summary>
+    public float BaseMagicDamage
+    {
+        get
+        {
+            if (iAttributeStateDic == null)
+                return 0;
+            return iAttributeStateDic.Values.Select(temp => temp.BaseMagicDamage).Sum();
+        }
+        set
+        {
+            IAttributeState iAttributeBaseState = GetAttribute(0);
+            if (iAttributeBaseState != null)
+            {
+                iAttributeBaseState.BaseMagicDamage = value;
+            }
+        }
+    }
+
     #endregion
     #region 常规属性
     /// <summary>
@@ -457,7 +479,10 @@ public partial class GameState
             IAttributeState iAttributeBaseState = GetAttribute(0);
             if (iAttributeBaseState != null)
             {
-                iAttributeBaseState.Mana = value;
+                if (value >= 0)
+                    iAttributeBaseState.Mana = value;
+                else
+                    iAttributeBaseState.Mana = 0;
             }
         }
     }
@@ -1669,7 +1694,7 @@ public partial class GameState
         {
             if (iAttributeStateDic == null)
                 return 0;
-            return iAttributeStateDic.Values.Select(temp => temp.MustUsedBaseMana).Sum();
+            return iAttributeStateDic.Values.Select(temp => temp.CoolingTime).Sum();
         }
         set
         {

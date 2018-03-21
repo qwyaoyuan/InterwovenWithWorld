@@ -852,7 +852,13 @@ public enum EnumGoodsType
 
     #endregion
 
-
+    #region 我写的特殊物品
+    /// <summary>
+    /// 传讯魔法卷轴
+    /// </summary>
+    [FieldExplan("传讯魔法卷轴")]
+    CXMFJZ = 3410001,
+    #endregion
     #region 具体的类型(都放外面了)
     /// <summary>
     ///铁矿石
@@ -950,6 +956,36 @@ public enum EnumGoodsType
     [FieldExplan("坚韧毛皮")]
     JRMP = 1210002,
     /// <summary>
+    ///小型兽爪
+    /// </summary>
+    [FieldExplan("小型兽爪")]
+    XXSZ = 1211001,
+    /// <summary>
+    ///坚韧兽爪
+    /// </summary>
+    [FieldExplan("坚韧兽爪")]
+    JRSZ = 1211002,
+    /// <summary>
+    ///小型兽骨
+    /// </summary>
+    [FieldExplan("小型兽骨")]
+    XXSG = 1212001,
+    /// <summary>
+    ///坚硬兽骨
+    /// </summary>
+    [FieldExplan("坚硬兽骨")]
+    JYSG = 1212002,
+    /// <summary>
+    ///疗伤草
+    /// </summary>
+    [FieldExplan("疗伤草")]
+    LSC = 1310001,
+    /// <summary>
+    ///血红花
+    /// </summary>
+    [FieldExplan("血红花")]
+    XHH = 1310002,
+    /// <summary>
     ///竹木
     /// </summary>
     [FieldExplan("竹木")]
@@ -974,6 +1010,11 @@ public enum EnumGoodsType
     /// </summary>
     [FieldExplan("檀木")]
     TM = 1311005,
+    /// <summary>
+    ///酒浆果
+    /// </summary>
+    [FieldExplan("酒浆果")]
+    JJG = 1312002,
     /// <summary>
     ///铁剑
     /// </summary>
@@ -1035,10 +1076,10 @@ public enum EnumGoodsType
     [FieldExplan("龙纹大剑")]
     LWDJ = 2111006,
     /// <summary>
-    ///反曲竹弓
+    ///反曲猎弓
     /// </summary>
-    [FieldExplan("反曲竹弓")]
-    FQZG = 2112001,
+    [FieldExplan("反曲猎弓")]
+    FQLG = 2112001,
     /// <summary>
     ///王国长杉弓
     /// </summary>
@@ -1050,15 +1091,20 @@ public enum EnumGoodsType
     [FieldExplan("精钢弓")]
     JGG = 2112003,
     /// <summary>
+    ///钛钢弓
+    /// </summary>
+    [FieldExplan("钛钢弓")]
+    XGG = 2112004,
+    /// <summary>
     ///钢玉弓
     /// </summary>
     [FieldExplan("钢玉弓")]
-    GYG = 2112004,
+    GYG = 2112005,
     /// <summary>
     ///龙纹弓
     /// </summary>
     [FieldExplan("龙纹弓")]
-    LWG = 2112005,
+    LWG = 2112006,
     /// <summary>
     ///橡木盾
     /// </summary>
@@ -1070,10 +1116,10 @@ public enum EnumGoodsType
     [FieldExplan("覆铜桦木盾")]
     FTXMD = 2114002,
     /// <summary>
-    ///铁皮桦木盾
+    ///钛钢盾
     /// </summary>
-    [FieldExplan("铁皮桦木盾")]
-    TPXMD = 2114003,
+    [FieldExplan("钛钢盾")]
+    XGD = 2114003,
     /// <summary>
     ///钢玉盾
     /// </summary>
@@ -1085,10 +1131,10 @@ public enum EnumGoodsType
     [FieldExplan("龙纹精金盾")]
     LWJJD = 2114005,
     /// <summary>
-    ///龙纹秘银盾
+    ///龙纹盾
     /// </summary>
-    [FieldExplan("龙纹秘银盾")]
-    LWMYD = 2114006,
+    [FieldExplan("龙纹盾")]
+    LWD1 = 2114006,
     /// <summary>
     ///短钢剑
     /// </summary>
@@ -1110,25 +1156,445 @@ public enum EnumGoodsType
     [FieldExplan("龙纹短剑")]
     LWDJ1 = 2115004,
     /// <summary>
+    ///晨星匕首
+    /// </summary>
+    [FieldExplan("晨星匕首")]
+    CXXS = 2115005,
+    /// <summary>
+    ///逐光之影
+    /// </summary>
+    [FieldExplan("逐光之影")]
+    ZGZY = 2115006,
+    /// <summary>
+    ///侦察兵帽
+    /// </summary>
+    [FieldExplan("侦察兵帽")]
+    ZCBM = 2210001,
+    /// <summary>
+    ///精钢鳞甲盔
+    /// </summary>
+    [FieldExplan("精钢鳞甲盔")]
+    JGLJK = 2210002,
+    /// <summary>
+    ///王国制式盔
+    /// </summary>
+    [FieldExplan("王国制式盔")]
+    WGZSK = 2210003,
+    /// <summary>
+    ///钛金覆面盔
+    /// </summary>
+    [FieldExplan("钛金覆面盔")]
+    XJFMK = 2210004,
+    /// <summary>
+    ///钛钢链盔
+    /// </summary>
+    [FieldExplan("钛钢链盔")]
+    XGLK = 2210005,
+    /// <summary>
+    ///精金翼盔
+    /// </summary>
+    [FieldExplan("精金翼盔")]
+    JJYK = 2210006,
+    /// <summary>
+    ///龙角盔
+    /// </summary>
+    [FieldExplan("龙角盔")]
+    LJK = 2210007,
+    /// <summary>
+    ///智慧头环
+    /// </summary>
+    [FieldExplan("智慧头环")]
+    ZHTH = 2211001,
+    /// <summary>
+    ///智者之光
+    /// </summary>
+    [FieldExplan("智者之光")]
+    ZZZG = 2211002,
+    /// <summary>
+    ///占星头环
+    /// </summary>
+    [FieldExplan("占星头环")]
+    ZXTH = 2211003,
+    /// <summary>
+    ///王者守护
+    /// </summary>
+    [FieldExplan("王者守护")]
+    WZSH = 2211004,
+    /// <summary>
+    ///祭祀权冠
+    /// </summary>
+    [FieldExplan("祭祀权冠")]
+    JXQG = 2211005,
+    /// <summary>
+    ///星光之冠
+    /// </summary>
+    [FieldExplan("星光之冠")]
+    XGZG = 2211006,
+    /// <summary>
+    ///兽皮兜帽
+    /// </summary>
+    [FieldExplan("兽皮兜帽")]
+    SPDM = 2212001,
+    /// <summary>
+    ///猎手头巾
+    /// </summary>
+    [FieldExplan("猎手头巾")]
+    LSTJ = 2212002,
+    /// <summary>
+    ///隐匿头巾
+    /// </summary>
+    [FieldExplan("隐匿头巾")]
+    YNTJ = 2212003,
+    /// <summary>
+    ///蛛网兜帽
+    /// </summary>
+    [FieldExplan("蛛网兜帽")]
+    ZWDM = 2212004,
+    /// <summary>
+    ///残酷头巾
+    /// </summary>
+    [FieldExplan("残酷头巾")]
+    CKTJ = 2212005,
+    /// <summary>
+    ///刺客兜帽
+    /// </summary>
+    [FieldExplan("刺客兜帽")]
+    CKDM = 2212006,
+    /// <summary>
+    ///铁鳞甲
+    /// </summary>
+    [FieldExplan("铁鳞甲")]
+    TLJ = 2310001,
+    /// <summary>
+    ///王国板甲
+    /// </summary>
+    [FieldExplan("王国板甲")]
+    WGBJ = 2310002,
+    /// <summary>
+    ///精钢链甲
+    /// </summary>
+    [FieldExplan("精钢链甲")]
+    JGLJ = 2310003,
+    /// <summary>
+    ///钛金战甲
+    /// </summary>
+    [FieldExplan("钛金战甲")]
+    XJZJ = 2310004,
+    /// <summary>
+    ///钢玉战甲
+    /// </summary>
+    [FieldExplan("钢玉战甲")]
+    GYZJ = 2310005,
+    /// <summary>
+    ///精金战甲
+    /// </summary>
+    [FieldExplan("精金战甲")]
+    JJZJ = 2310006,
+    /// <summary>
+    ///龙纹甲
+    /// </summary>
+    [FieldExplan("龙纹甲")]
+    LWJ = 2310007,
+    /// <summary>
     ///衬钢锁子甲
     /// </summary>
     [FieldExplan("衬钢锁子甲")]
     CGSZJ = 2311001,
     /// <summary>
-    ///秘银锁子甲
+    ///精钢锁子甲
     /// </summary>
-    [FieldExplan("秘银锁子甲")]
-    MYSZJ = 2311002,
+    [FieldExplan("精钢锁子甲")]
+    JGSZJ = 2311002,
     /// <summary>
-    ///占星法袍
+    ///圣堂护胸甲
     /// </summary>
-    [FieldExplan("占星法袍")]
-    ZXFP = 2312001,
+    [FieldExplan("圣堂护胸甲")]
+    STHXJ = 2311003,
+    /// <summary>
+    ///逐光锁甲
+    /// </summary>
+    [FieldExplan("逐光锁甲")]
+    ZGSJ = 2311004,
+    /// <summary>
+    ///炎魔鳞铠
+    /// </summary>
+    [FieldExplan("炎魔鳞铠")]
+    YMLX = 2311005,
+    /// <summary>
+    ///星光秘银甲
+    /// </summary>
+    [FieldExplan("星光秘银甲")]
+    XGMYJ = 2311006,
+    /// <summary>
+    ///智慧法袍
+    /// </summary>
+    [FieldExplan("智慧法袍")]
+    ZHFP = 2312001,
     /// <summary>
     ///宫廷法袍
     /// </summary>
     [FieldExplan("宫廷法袍")]
     GTFP = 2312002,
+    /// <summary>
+    ///占星法袍
+    /// </summary>
+    [FieldExplan("占星法袍")]
+    ZXFP = 2312003,
+    /// <summary>
+    ///祭祀法袍
+    /// </summary>
+    [FieldExplan("祭祀法袍")]
+    JXFP = 2312004,
+    /// <summary>
+    ///炼狱法衣
+    /// </summary>
+    [FieldExplan("炼狱法衣")]
+    LYFY = 2312005,
+    /// <summary>
+    ///混沌长袍
+    /// </summary>
+    [FieldExplan("混沌长袍")]
+    HXCP = 2312006,
+    /// <summary>
+    ///防护靴
+    /// </summary>
+    [FieldExplan("防护靴")]
+    FHX = 2410001,
+    /// <summary>
+    ///王国锁链靴
+    /// </summary>
+    [FieldExplan("王国锁链靴")]
+    WGSLX = 2410002,
+    /// <summary>
+    ///王国重军靴
+    /// </summary>
+    [FieldExplan("王国重军靴")]
+    WGZJX = 2410003,
+    /// <summary>
+    ///圣堂护胫
+    /// </summary>
+    [FieldExplan("圣堂护胫")]
+    STHX = 2410004,
+    /// <summary>
+    ///钛钢护胫
+    /// </summary>
+    [FieldExplan("钛钢护胫")]
+    XGHX = 2410005,
+    /// <summary>
+    ///野兽护胫
+    /// </summary>
+    [FieldExplan("野兽护胫")]
+    YSHX = 2410006,
+    /// <summary>
+    ///巨龙之靴
+    /// </summary>
+    [FieldExplan("巨龙之靴")]
+    JLZX = 2410007,
+    /// <summary>
+    ///轻皮靴
+    /// </summary>
+    [FieldExplan("轻皮靴")]
+    QPX = 2411001,
+    /// <summary>
+    ///防滑靴
+    /// </summary>
+    [FieldExplan("防滑靴")]
+    FHX1 = 2411002,
+    /// <summary>
+    ///硬皮特种靴
+    /// </summary>
+    [FieldExplan("硬皮特种靴")]
+    YPTZX = 2411003,
+    /// <summary>
+    ///隔离靴
+    /// </summary>
+    [FieldExplan("隔离靴")]
+    GLX = 2411004,
+    /// <summary>
+    ///逐光之靴
+    /// </summary>
+    [FieldExplan("逐光之靴")]
+    ZGZX = 2411005,
+    /// <summary>
+    ///星光之靴
+    /// </summary>
+    [FieldExplan("星光之靴")]
+    XGZX = 2411006,
+    /// <summary>
+    ///奥术鞋
+    /// </summary>
+    [FieldExplan("奥术鞋")]
+    ASX = 2412001,
+    /// <summary>
+    ///急速靴
+    /// </summary>
+    [FieldExplan("急速靴")]
+    JSX = 2412002,
+    /// <summary>
+    ///蛛网靴
+    /// </summary>
+    [FieldExplan("蛛网靴")]
+    ZWX = 2412003,
+    /// <summary>
+    ///秘法鞋
+    /// </summary>
+    [FieldExplan("秘法鞋")]
+    MFX = 2412004,
+    /// <summary>
+    ///飞龙靴
+    /// </summary>
+    [FieldExplan("飞龙靴")]
+    FLX = 2412005,
+    /// <summary>
+    ///神行靴
+    /// </summary>
+    [FieldExplan("神行靴")]
+    SXX = 2412006,
+    /// <summary>
+    ///百合项链
+    /// </summary>
+    [FieldExplan("百合项链")]
+    BHXL = 2510001,
+    /// <summary>
+    ///晨星项链
+    /// </summary>
+    [FieldExplan("晨星项链")]
+    CXXL = 2510002,
+    /// <summary>
+    ///猎鹰项链
+    /// </summary>
+    [FieldExplan("猎鹰项链")]
+    LYXL = 2510003,
+    /// <summary>
+    ///蔷薇项链
+    /// </summary>
+    [FieldExplan("蔷薇项链")]
+    QXXL = 2510004,
+    /// <summary>
+    ///皎月项链
+    /// </summary>
+    [FieldExplan("皎月项链")]
+    XYXL = 2510005,
+    /// <summary>
+    ///独角兽项链
+    /// </summary>
+    [FieldExplan("独角兽项链")]
+    DJSXL = 2510006,
+    /// <summary>
+    ///隐匿之戒
+    /// </summary>
+    [FieldExplan("隐匿之戒")]
+    YNZJ = 2511001,
+    /// <summary>
+    ///吸血指环
+    /// </summary>
+    [FieldExplan("吸血指环")]
+    XXZH = 2511002,
+    /// <summary>
+    ///占星指环
+    /// </summary>
+    [FieldExplan("占星指环")]
+    ZXZH = 2511003,
+    /// <summary>
+    ///逐光指环
+    /// </summary>
+    [FieldExplan("逐光指环")]
+    ZGZH = 2511004,
+    /// <summary>
+    ///恶魔之戒
+    /// </summary>
+    [FieldExplan("恶魔之戒")]
+    EMZJ = 2511005,
+    /// <summary>
+    ///星光之戒
+    /// </summary>
+    [FieldExplan("星光之戒")]
+    XGZJ = 2511006,
+    /// <summary>
+    ///幸运护符
+    /// </summary>
+    [FieldExplan("幸运护符")]
+    XYHF = 2512001,
+    /// <summary>
+    ///庇佑护符
+    /// </summary>
+    [FieldExplan("庇佑护符")]
+    BYHF = 2512002,
+    /// <summary>
+    ///太阳神护符
+    /// </summary>
+    [FieldExplan("太阳神护符")]
+    TYSHF = 2512003,
+    /// <summary>
+    ///死神护符
+    /// </summary>
+    [FieldExplan("死神护符")]
+    SSHF = 2512004,
+    /// <summary>
+    ///生命护符
+    /// </summary>
+    [FieldExplan("生命护符")]
+    SMHF = 2512005,
+    /// <summary>
+    ///自然护符
+    /// </summary>
+    [FieldExplan("自然护符")]
+    ZRHF = 2512006,
+    /// <summary>
+    ///战神护符
+    /// </summary>
+    [FieldExplan("战神护符")]
+    ZSHF = 2512007,
+    /// <summary>
+    ///月神护符
+    /// </summary>
+    [FieldExplan("月神护符")]
+    YSHF = 2512008,
+    /// <summary>
+    ///王国骑士勋章
+    /// </summary>
+    [FieldExplan("王国骑士勋章")]
+    WGQSXZ = 2513001,
+    /// <summary>
+    ///祭司印记
+    /// </summary>
+    [FieldExplan("祭司印记")]
+    JSYJ = 2513002,
+    /// <summary>
+    ///不死克星勋章
+    /// </summary>
+    [FieldExplan("不死克星勋章")]
+    BSKXXZ = 2513003,
+    /// <summary>
+    ///净化者之证
+    /// </summary>
+    [FieldExplan("净化者之证")]
+    JHZZZ = 2513004,
+    /// <summary>
+    ///恶魔头骨勋章
+    /// </summary>
+    [FieldExplan("恶魔头骨勋章")]
+    EMTGXZ = 2513005,
+    /// <summary>
+    ///暗影勋章
+    /// </summary>
+    [FieldExplan("暗影勋章")]
+    AYXZ = 2513006,
+    /// <summary>
+    ///毒液炸弹
+    /// </summary>
+    [FieldExplan("毒液炸弹")]
+    DYZD = 3110001,
+    /// <summary>
+    ///圣光炸弹
+    /// </summary>
+    [FieldExplan("圣光炸弹")]
+    SGZD = 3110002,
+    /// <summary>
+    ///毒镖
+    /// </summary>
+    [FieldExplan("毒镖")]
+    DX = 3111001,
     /// <summary>
     ///大地魔偶
     /// </summary>
@@ -1150,20 +1616,55 @@ public enum EnumGoodsType
     [FieldExplan("藤蔓陷阱")]
     TMXX = 3310001,
     /// <summary>
-    /// 传讯魔法卷轴
+    ///果酒
     /// </summary>
-    [FieldExplan("传讯魔法卷轴")]
-    CXMFJZ = 3410001,
+    [FieldExplan("果酒")]
+    GJ = 4110001,
     /// <summary>
     ///个性者药剂
     /// </summary>
     [FieldExplan("个性者药剂")]
     GXZYJ = 4210001,
     /// <summary>
-    ///上古恶魔之书
+    ///恢复药剂
     /// </summary>
-    [FieldExplan("上古恶魔之书")]
-    SGEMZS = 5113001,
+    [FieldExplan("恢复药剂")]
+    HFYJ = 4210002,
+    /// <summary>
+    ///力量药剂
+    /// </summary>
+    [FieldExplan("力量药剂")]
+    LLYJ = 4310001,
+    /// <summary>
+    ///吸血药剂
+    /// </summary>
+    [FieldExplan("吸血药剂")]
+    XXYJ = 4410001,
+    /// <summary>
+    ///感知药剂
+    /// </summary>
+    [FieldExplan("感知药剂")]
+    GZYJ = 4510001,
+    /// <summary>
+    ///恶魔终焉
+    /// </summary>
+    [FieldExplan("恶魔终焉")]
+    EMZY = 5110001,
+    /// <summary>
+    ///情报魔法入门
+    /// </summary>
+    [FieldExplan("情报魔法入门")]
+    QBMFRM = 5111001,
+    /// <summary>
+    ///王国骑士委任状
+    /// </summary>
+    [FieldExplan("王国骑士委任状")]
+    WGQSWRZ = 5112001,
+    /// <summary>
+    ///远古恶魔之书
+    /// </summary>
+    [FieldExplan("远古恶魔之书")]
+    YGEMZS = 5113001,
     #endregion
 }
 

@@ -19,9 +19,9 @@ public partial class GameState : IGameState
         runtimeTaskData = DataCenter.Instance.GetEntity<TaskMap.RunTimeTaskData>();
         levelData = DataCenter.Instance.GetMetaData<LevelData>();
         //其他的加载初始化
+        Load_IGameState();
         Load_INowTaskState();
         Load_IPlayerState();
-        Load_IGameState();
         Load_IPlayerState_ISkillState();
         Load_INowTaskStateEvent();
         Load_IEntryState();

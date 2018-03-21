@@ -126,6 +126,7 @@ public class PhysicSkillInjuryDetection : MonoBehaviour
                             if (checkStruct.ParticalPrefab != null)
                             {
                                 GameObject partaicalObj = GameObject.Instantiate<GameObject>(checkStruct.ParticalPrefab);
+                                partaicalObj.transform.position = targetObj.transform.position + Vector3.up;
                                 Destroy(partaicalObj, 5);
                             }
                         }

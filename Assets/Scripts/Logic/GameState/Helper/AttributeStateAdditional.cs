@@ -10,6 +10,7 @@ using UnityEngine;
 /// 属性的单独实现
 /// 可以是附加属性,也可以是最后的计算结果
 /// </summary>
+[Serializable]
 public class AttributeStateAdditional : IAttributeState
 {
     /// <summary>
@@ -189,7 +190,7 @@ public class AttributeStateAdditional : IAttributeState
     /// <summary>
     /// 更新属性
     /// </summary>
-    private void UpdateAttribute()
+    public void UpdateAttribute()
     {
         if (roleOfRaceInfoStruct == null)
             return;
@@ -243,6 +244,22 @@ public class AttributeStateAdditional : IAttributeState
             _BasePhysicDamage = value;
             if (tempBasePhysicDamage != _BasePhysicDamage)
                 Call<IAttributeState, float>(temp => temp.BasePhysicDamage);
+        }
+    }
+
+    private float _BaseMagicDamage;
+    /// <summary>
+    /// 基础法术伤害
+    /// </summary>
+    public float BaseMagicDamage
+    {
+        get { return _BaseMagicDamage; }
+        set
+        {
+            float tempBaseMagicDamage = _BaseMagicDamage;
+            _BaseMagicDamage = value;
+            if (tempBaseMagicDamage != _BaseMagicDamage)
+                Call<IAttributeState, float>(temp => tempBaseMagicDamage);
         }
     }
 

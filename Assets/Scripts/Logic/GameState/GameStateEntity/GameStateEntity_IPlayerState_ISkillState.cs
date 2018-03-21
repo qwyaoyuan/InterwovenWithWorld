@@ -302,19 +302,21 @@ public partial class GameState
                     iPlayerAttributeState.RemoveAttribute(handle.Key);
                 }
             };
-            int mustUseMana = 0;
+            //int mustUseMana = 0;
             //设置技能属性
             foreach (KeyValuePair<int, EnumSkillType> handle in handleDic)
             {
                 IAttributeState tempAttributeState = iPlayerAttributeState.GetAttribute(handle.Key);
                 SkillAttributeStruct tempSkillAttributeState = iPlayerState.GetSkillAttributeStruct(handle.Value, skillStructData);
-                if (tempSkillAttributeState != null)
-                    mustUseMana += tempSkillAttributeState.MustUsedBaseMana;//基础的耗魔量
+                //if (tempSkillAttributeState != null)
+                //    mustUseMana += tempSkillAttributeState.MustUsedBaseMana;//基础的耗魔量
                 tempAttributeState.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);//设置种族成长对象
                 iPlayerAttributeState.SetIAttributeStateDataBySkillData(tempAttributeState, baseAttributeState, tempSkillAttributeState);
+                tempAttributeState.MustUsedBaseMana = 50;
             }
+            IAttributeState resultAttributeState = iPlayerAttributeState.GetResultAttribute();
             //判断技能耗魔量,如果基础耗魔量很大则取消
-            if (mustUseMana > iPlayerState.Mana)
+            if (resultAttributeState.MustUsedBaseMana > iPlayerState.Mana)
             {
                 ClearTempCombineSkillAttributeAction();
                 ClearTempCombineSkillAttributeAction = null;
@@ -338,8 +340,8 @@ public partial class GameState
     {
         IAnimatorState iAnimatorState = GameState.Instance.GetEntity<IAnimatorState>();
         if ((IsSkillStartHolding && iAnimatorState.IsMagicActionState)//此时正在进行魔法动作(咏唱)
-            //|| (!IsSkillStartHolding && iAnimatorState.IsPhycisActionState)//此时正在进行普通攻击
-           ||(!IsSkillStartHolding&& !iAnimatorState.IsMagicActionState && !iAnimatorState.IsPhycisActionState&& !iAnimatorState.IsSkillState && !iAnimatorState.RollAnimator) )
+                                                                      //|| (!IsSkillStartHolding && iAnimatorState.IsPhycisActionState)//此时正在进行普通攻击
+           || (!IsSkillStartHolding && !iAnimatorState.IsMagicActionState && !iAnimatorState.IsPhycisActionState && !iAnimatorState.IsSkillState && !iAnimatorState.RollAnimator))
         {
             if (ClearTempCombineSkillAttributeAction != null)
             {
@@ -375,17 +377,22 @@ public partial class GameState
             //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
             if (canRelease)
             {
-                //计算被技能整合后的属性
+                int skillCount = 0;
+                //计算被技能整合后的属性(在上面已经计算过了,这里不需要计算了)
                 foreach (SkillBaseStruct tempSkillBaseStruct in _CombineSkills)
                 {
                     if (tempSkillBaseStruct == null)
                         continue;
-                    SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct(tempSkillBaseStruct.skillType, skillStructData);
-                    AttributeStateAdditional skillAttributeStateAdditional = new AttributeStateAdditional();
-                    skillAttributeStateAdditional.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);
-                    iPlayerState.SetIAttributeStateDataBySkillData(skillAttributeStateAdditional, baseAttributeState, skillAttributeStruct);
-                    nowIAttributeState += skillAttributeStateAdditional;
+                    skillCount++;
+                    //SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct(tempSkillBaseStruct.skillType, skillStructData);
+                    //AttributeStateAdditional skillAttributeStateAdditional = new AttributeStateAdditional();
+                    //skillAttributeStateAdditional.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);
+                    //iPlayerState.SetIAttributeStateDataBySkillData(skillAttributeStateAdditional, baseAttributeState, skillAttributeStruct);
+                    //nowIAttributeState += skillAttributeStateAdditional;
                 }
+                //根据组合的数量计算最终法伤
+                if (skillCount > 0)
+                    nowIAttributeState.BaseMagicDamage /= skillCount;
 
                 //判断这个是攻击用途还是辅助用途
                 SkillBaseStruct combine_secondSkill = _CombineSkills.Where(temp => temp != null).FirstOrDefault(temp => temp.skillType > EnumSkillType.MagicCombinedLevel2Start && temp.skillType < EnumSkillType.MagicCombinedLevel2End);
@@ -533,7 +540,7 @@ public partial class GameState
             //技能冷却时间
             int thisSkillID = SkillCombineStaticTools.GetCombineSkillKey(_CombineSkills);
             float selfSkillCoolingTime = nowIAttributeState.CoolingTime;//魔法字节自带的冷却时间
-            float baseSkillCoolingTime = Mathf.Pow(2, _CombineSkills.Count(temp => temp != null));//根据阶段算出来的基础冷却时间
+            float baseSkillCoolingTime = Mathf.Pow(2, _CombineSkills.Count(temp => temp != null)) /2;//根据阶段算出来的基础冷却时间
             float thisSkillHodlingCoolintTime = BaseSkillStartHoldingTime * SkillStartHoldingTime;//根据最大蓄力时间和本次蓄力时间计算出的冷却时间
             float thisSkillCoolingTime = selfSkillCoolingTime + baseSkillCoolingTime + thisSkillHodlingCoolintTime;//整合后的冷却时间
             float exemptionSkillCoolintTime = nowIAttributeState.ExemptionChatingMana;//该技能减少冷却时间百分比
@@ -715,175 +722,178 @@ public partial class GameState
         //判断是否在技能动作
         //判断是否在被攻击中
         //判断是否是死亡状态
-        //如果是普通攻击中,则可以衔接技能,也可以接下一段攻击
         if (!IsSkillStartHolding && PublicCoolingTime <= 0 && thisSkillCoolingTime <= 0
             && !iAnimatorState.IsMagicActionState
             && !iAnimatorState.IsSkillState
             && !iAnimatorState.IsGetHitAnimator
-            && !iAnimatorState.IsDeathAnimator)
+            && !iAnimatorState.IsDeathAnimator
+            )
         {
             IPlayerState iPlayerState = GameState.Instance.GetEntity<IPlayerState>();
             SkillStructData skillStructData = DataCenter.Instance.GetMetaData<SkillStructData>();
             IAttributeState baseAttributeState = iPlayerState.GetAttribute(0);//基础数据状态
-            //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
-            //如果是光环技能则更改光环状态
-            switch (skillBaseStruct.skillType)
+            if (!iAnimatorState.IsPhycisActionState)
             {
-                case EnumSkillType.MS04://祝福光环
-                case EnumSkillType.MS05://后方支援
-                case EnumSkillType.ZHS04://信仰赋予
-                case EnumSkillType.DSM05://精神集中
-                case EnumSkillType.DSM06://体能突破
-                case EnumSkillType.JS05://神佑光环
-                case EnumSkillType.JH05://敬畏光环
-                    SpecialSkillStateStruct spcialSkillStateStruct = GetSpecialSkillStateStruct(skillBaseStruct.skillType);
-                    if (playerState.SkillPoint.ContainsKey(skillBaseStruct.skillType))
-                    {
-                        int level = playerState.SkillPoint[skillBaseStruct.skillType];
-                        spcialSkillStateStruct.SkillLevel = level;
-                        if (level == 0)
+                //处理技能伤害数据以及粒子(粒子上包含技能伤害判定的回调函数)
+                //如果是光环技能则更改光环状态
+                switch (skillBaseStruct.skillType)
+                {
+                    case EnumSkillType.MS04://祝福光环
+                    case EnumSkillType.MS05://后方支援
+                    case EnumSkillType.ZHS04://信仰赋予
+                    case EnumSkillType.DSM05://精神集中
+                    case EnumSkillType.DSM06://体能突破
+                    case EnumSkillType.JS05://神佑光环
+                    case EnumSkillType.JH05://敬畏光环
+                        SpecialSkillStateStruct spcialSkillStateStruct = GetSpecialSkillStateStruct(skillBaseStruct.skillType);
+                        if (playerState.SkillPoint.ContainsKey(skillBaseStruct.skillType))
                         {
-                            spcialSkillStateStruct.IsOpen = false;
-                        }
-                        else
-                        {
-                            spcialSkillStateStruct.IsOpen = !spcialSkillStateStruct.IsOpen;
-                        }
-                    }
-                    break;
-            }
-            //如果是特殊技能 
-            switch (skillBaseStruct.skillType)
-            {
-                case EnumSkillType.MFS02://魔偶操控
-                    //需要相关的召唤脚本
-                    break;
-                case EnumSkillType.ZHS05://魔力扰乱
-                    //需要相关的关系脚本
-                    break;
-                case EnumSkillType.DSM08://传送
-                    //需要摇杆方向数据用于传送地点计算,以及寻路组件用于判断该地点是否合法
-                    break;
-                case EnumSkillType.JS09://神秘信仰_降临
-                    //需要先完善召唤物模块
-                    break;
-                case EnumSkillType.JH09://神依
-                case EnumSkillType.ZS02://魔剑士
-                case EnumSkillType.GJS02://魔矢
-                case EnumSkillType.YX02://风行
-                case EnumSkillType.DZ03://暗杀术
-                    int specialSkillID = (int)skillBaseStruct.skillType;
-                    SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct((EnumSkillType)specialSkillID, skillStructData);
-                    //魔法值必须够用才行 
-                    if (baseAttributeState.Mana > skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-specialSkillID))
-                    {
-                        IAttributeState specialSkill_AttributeState = iPlayerState.GetAttribute(-specialSkillID);
-                        iPlayerState.SetIAttributeStateDataBySkillData(specialSkill_AttributeState, baseAttributeState, skillAttributeStruct);
-                        float specialSkill_StateTime = specialSkill_AttributeState.EffectAffine;//特效影响力表示的技能持续时间
-                        specialSkill_AttributeState.EffectAffine = 0;//将其归零(为了不影响别的模块)
-                        float mustUseMana = specialSkill_AttributeState.MustUsedBaseMana;//本技能的耗魔
-                        specialSkill_AttributeState.MustUsedBaseMana = 0;//将其归零(为了不影响别的模块)
-                        RunTaskStruct runTaskStruct = TaskTools.Instance.GetRunTaskStruct();//获取一个任务
-                        runTaskStruct.StartTask(specialSkill_StateTime,
-                            () => //用于移除该状态
+                            int level = playerState.SkillPoint[skillBaseStruct.skillType];
+                            spcialSkillStateStruct.SkillLevel = level;
+                            if (level == 0)
                             {
-                                iPlayerState.RemoveAttribute(specialSkillID);
+                                spcialSkillStateStruct.IsOpen = false;
                             }
-                            , 1, false);
+                            else
+                            {
+                                spcialSkillStateStruct.IsOpen = !spcialSkillStateStruct.IsOpen;
+                            }
+                        }
+                        break;
+                }
+                //如果是特殊技能 
+                switch (skillBaseStruct.skillType)
+                {
+                    case EnumSkillType.MFS02://魔偶操控
+                                             //需要相关的召唤脚本
+                        break;
+                    case EnumSkillType.ZHS05://魔力扰乱
+                                             //需要相关的关系脚本
+                        break;
+                    case EnumSkillType.DSM08://传送
+                                             //需要摇杆方向数据用于传送地点计算,以及寻路组件用于判断该地点是否合法
+                        break;
+                    case EnumSkillType.JS09://神秘信仰_降临
+                                            //需要先完善召唤物模块
+                        break;
+                    case EnumSkillType.JH09://神依
+                    case EnumSkillType.ZS02://魔剑士
+                    case EnumSkillType.GJS02://魔矢
+                    case EnumSkillType.YX02://风行
+                    case EnumSkillType.DZ03://暗杀术
+                        int specialSkillID = (int)skillBaseStruct.skillType;
+                        SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct((EnumSkillType)specialSkillID, skillStructData);
+                        //魔法值必须够用才行 
+                        if (baseAttributeState.Mana > skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-specialSkillID))
+                        {
+                            IAttributeState specialSkill_AttributeState = iPlayerState.GetAttribute(-specialSkillID);
+                            iPlayerState.SetIAttributeStateDataBySkillData(specialSkill_AttributeState, baseAttributeState, skillAttributeStruct);
+                            float specialSkill_StateTime = specialSkill_AttributeState.EffectAffine;//特效影响力表示的技能持续时间
+                            specialSkill_AttributeState.EffectAffine = 0;//将其归零(为了不影响别的模块)
+                            float mustUseMana = specialSkill_AttributeState.MustUsedBaseMana;//本技能的耗魔
+                            specialSkill_AttributeState.MustUsedBaseMana = 0;//将其归零(为了不影响别的模块)
+                            RunTaskStruct runTaskStruct = TaskTools.Instance.GetRunTaskStruct();//获取一个任务
+                            runTaskStruct.StartTask(specialSkill_StateTime,
+                                () => //用于移除该状态
+                                {
+                                    iPlayerState.RemoveAttribute(specialSkillID);
+                                }
+                                , 1, false);
+                            //设置冷却时间
+                            if (skillRuntimeCoolingTimeDic != null)
+                            {
+                                float specialSkillCoolingTime = specialSkill_AttributeState.CoolingTime;
+                                if (skillRuntimeCoolingTimeDic.ContainsKey(specialSkillID))
+                                    skillRuntimeCoolingTimeDic[specialSkillID] = specialSkillCoolingTime;
+                                else
+                                    skillRuntimeCoolingTimeDic.Add(specialSkillID, specialSkillCoolingTime);
+                            }
+                            //设置耗魔
+                            iPlayerState.Mana -= mustUseMana;
+                            //特殊技能的特有处理
+                            if (skillBaseStruct.skillType == EnumSkillType.DZ03)//如果是暗杀术,则必须清楚所有内置数据(因为暗杀术是特殊的处理,这里仅仅使用了他的buff状态以及时间)
+                            {
+                                specialSkill_AttributeState.Init();
+                            }
+                        }
+                        break;
+                }
+                //如果是物理攻击技能
+                if (skillBaseStruct.skillType > EnumSkillType.SpecialPhysicActionReleaseStart && skillBaseStruct.skillType < EnumSkillType.SpecialPhysicReleaseEnd)
+                {
+                    //统一的处理(构建当前状态对象)
+                    int physicSkillID = (int)skillBaseStruct.skillType;
+                    SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct((EnumSkillType)physicSkillID, skillStructData);
+                    //魔法值必须够用才行 
+                    if (baseAttributeState.Mana >= skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-physicSkillID))
+                    {
+                        //共有设置
+                        IAttributeState physic_AttributeState = iPlayerState.GetAttribute(-physicSkillID);
+                        physic_AttributeState.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);//设置种族成长属性
+                        iPlayerState.SetIAttributeStateDataBySkillData(physic_AttributeState, baseAttributeState, skillAttributeStruct);
+                        IAttributeState thisPhysicsAttributeState = iPlayerState.GetResultAttribute();
+                        iPlayerState.RemoveAttribute(-physicSkillID);
+                        //私有设置
+                        //判断武器是否复合
+                        EnumWeaponTypeByPlayerState weaponTypeByPlayerState = iPlayerState.WeaponTypeByPlayerState;//武器类型
+                        weaponTypeByPlayerState = weaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌
+                        switch (skillBaseStruct.skillType)
+                        {
+                            case EnumSkillType.WL01://重击
+                            case EnumSkillType.ZS03://冲锋
+                            case EnumSkillType.KZS03://战吼
+                                                     //这些不需要判断武器
+                                break;
+                            case EnumSkillType.GJS03://散射
+                            case EnumSkillType.SSS03://狙击术
+                                                     //判断是否是弓类武器
+                                if (weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Arch)
+                                    return false;
+                                break;
+                            case EnumSkillType.JAS03://燕返
+                                                     //判断是否是如下近战武器
+                                if (//weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Dagger&&
+                                    // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.LongRod&&
+                                    // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.ShortRod&&
+                                       weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword &&
+                                        weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
+                                {
+                                    return false;
+                                }
+                                break;
+                            default:
+                                return false;
+
+                        }
+                        //.....................//
+                        //共有设置
                         //设置冷却时间
                         if (skillRuntimeCoolingTimeDic != null)
                         {
-                            float specialSkillCoolingTime = specialSkill_AttributeState.CoolingTime;
-                            if (skillRuntimeCoolingTimeDic.ContainsKey(specialSkillID))
-                                skillRuntimeCoolingTimeDic[specialSkillID] = specialSkillCoolingTime;
+                            float physicSkillCoolingTime = physic_AttributeState.CoolingTime;
+                            if (skillRuntimeCoolingTimeDic.ContainsKey(physicSkillID))
+                                skillRuntimeCoolingTimeDic[physicSkillID] = physicSkillCoolingTime;
                             else
-                                skillRuntimeCoolingTimeDic.Add(specialSkillID, specialSkillCoolingTime);
+                                skillRuntimeCoolingTimeDic.Add(physicSkillID, physicSkillCoolingTime);
                         }
-                        //设置耗魔
-                        iPlayerState.Mana -= mustUseMana;
-                        //特殊技能的特有处理
-                        if (skillBaseStruct.skillType == EnumSkillType.DZ03)//如果是暗杀术,则必须清楚所有内置数据(因为暗杀术是特殊的处理,这里仅仅使用了他的buff状态以及时间)
+                        //设置耗魔量
+                        iPlayerState.Mana -= physic_AttributeState.MustUsedBaseMana;
+                        //构建当前物理技能的数据
+                        PhysicsSkillStateStruct physicsSkillStateStruct = new PhysicsSkillStateStruct()
                         {
-                            specialSkill_AttributeState.Init();
-                        }
+                            SkillType = skillBaseStruct.skillType,
+                            AttributeState = thisPhysicsAttributeState,
+                            StorageSchedule = 0//暂时没有蓄力进度
+                        };
+                        //设置技能动作
+                        iAnimatorState.PhysicAnimatorSkillType = skillBaseStruct.skillType;
+                        iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Skill;
+                        //设置持续
+                        iAnimatorState.SkillSustainable = true;
+                        //交给IDamge脚本处理伤害以及开关粒子
+                        IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
+                        iDamage.SetPhysicSkillAttack(iPlayerState, physicsSkillStateStruct, skillBaseStruct.skillType, weaponTypeByPlayerState);
                     }
-                    break;
-            }
-            //如果是物理攻击技能
-            if (skillBaseStruct.skillType > EnumSkillType.SpecialPhysicActionReleaseStart && skillBaseStruct.skillType < EnumSkillType.SpecialPhysicReleaseEnd)
-            {
-                //统一的处理(构建当前状态对象)
-                int physicSkillID = (int)skillBaseStruct.skillType;
-                SkillAttributeStruct skillAttributeStruct = iPlayerState.GetSkillAttributeStruct((EnumSkillType)physicSkillID, skillStructData);
-                //魔法值必须够用才行 
-                if (baseAttributeState.Mana >= skillAttributeStruct.MustUsedBaseMana && iPlayerState.CreateAttributeHandle(-physicSkillID))
-                {
-                    //共有设置
-                    IAttributeState physic_AttributeState = iPlayerState.GetAttribute(-physicSkillID);
-                    physic_AttributeState.SetRoleOfRaceAddition(iPlayerState.SelfRoleOfRaceInfoStruct);//设置种族成长属性
-                    iPlayerState.SetIAttributeStateDataBySkillData(physic_AttributeState, baseAttributeState, skillAttributeStruct);
-                    IAttributeState thisPhysicsAttributeState = iPlayerState.GetResultAttribute();
-                    iPlayerState.RemoveAttribute(-physicSkillID);
-                    //私有设置
-                    //判断武器是否复合
-                    EnumWeaponTypeByPlayerState weaponTypeByPlayerState = iPlayerState.WeaponTypeByPlayerState;//武器类型
-                    weaponTypeByPlayerState = weaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌
-                    switch (skillBaseStruct.skillType)
-                    {
-                        case EnumSkillType.WL01://重击
-                        case EnumSkillType.ZS03://冲锋
-                        case EnumSkillType.KZS03://战吼
-                            //这些不需要判断武器
-                            break;
-                        case EnumSkillType.GJS03://散射
-                        case EnumSkillType.SSS03://狙击术
-                            //判断是否是弓类武器
-                            if (weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Arch)
-                                return false;
-                            break;
-                        case EnumSkillType.JAS03://燕返
-                            //判断是否是如下近战武器
-                            if (//weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.Dagger&&
-                                // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.LongRod&&
-                                // weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.ShortRod&&
-                                   weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.SingleHandedSword &&
-                                    weaponTypeByPlayerState != EnumWeaponTypeByPlayerState.TwoHandedSword)
-                            {
-                                return false;
-                            }
-                            break;
-                        default:
-                            return false;
-
-                    }
-                    //.....................//
-                    //共有设置
-                    //设置冷却时间
-                    if (skillRuntimeCoolingTimeDic != null)
-                    {
-                        float physicSkillCoolingTime = physic_AttributeState.CoolingTime;
-                        if (skillRuntimeCoolingTimeDic.ContainsKey(physicSkillID))
-                            skillRuntimeCoolingTimeDic[physicSkillID] = physicSkillCoolingTime;
-                        else
-                            skillRuntimeCoolingTimeDic.Add(physicSkillID, physicSkillCoolingTime);
-                    }
-                    //设置耗魔量
-                    iPlayerState.Mana -= physic_AttributeState.MustUsedBaseMana;
-                    //构建当前物理技能的数据
-                    PhysicsSkillStateStruct physicsSkillStateStruct = new PhysicsSkillStateStruct()
-                    {
-                        SkillType = skillBaseStruct.skillType,
-                        AttributeState = thisPhysicsAttributeState,
-                        StorageSchedule = 0//暂时没有蓄力进度
-                    };
-                    //设置技能动作
-                    iAnimatorState.PhysicAnimatorSkillType = skillBaseStruct.skillType;
-                    iAnimatorState.PhysicAnimatorType = EnumPhysicAnimatorType.Skill;
-                    //设置持续
-                    iAnimatorState.SkillSustainable = true;
-                    //交给IDamge脚本处理伤害以及开关粒子
-                    IDamage iDamage = GameState.Instance.GetEntity<IDamage>();
-                    iDamage.SetPhysicSkillAttack(iPlayerState, physicsSkillStateStruct, skillBaseStruct.skillType, weaponTypeByPlayerState);
                 }
             }
             //如果是物理普通攻击 (必须等普通攻击的冷却归零) 如果当前状态是move或者攻击的指定段位

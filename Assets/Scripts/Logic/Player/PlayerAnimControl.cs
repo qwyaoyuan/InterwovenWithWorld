@@ -170,12 +170,12 @@ public class PlayerAnimControl : MonoBehaviour
                     iAnimatorState.IsSkillState = false;
                     iAnimatorState.IsMagicActionState = false;
                     iAnimatorState.IsGetHitAnimator = false;
-                    iAnimatorState.IsDeathAnimator = true;
+                    iAnimatorState.IsDeathAnimator = false;
                     playerAnimator.SetLayerWeight(1, 0f);
                 }
                 else if (clipTimeType == EnumAnimationClipTimeType.In)//进入死亡状态
                 {
-                    iAnimatorState.IsDeathAnimator = false;
+                    iAnimatorState.IsDeathAnimator = true;
                 }
                 break;
         }

@@ -71,11 +71,17 @@ public class MagicPulseCollision : MonoBehaviour, IParticalConduct
         {
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit[] rchs = Physics.RaycastAll(ray, range, layerMask);
+            List<GameObject> objsList = new List<GameObject>();
             if (rchs != null && rchs.Length > 0)
             {
                 rchs = rchs.OrderBy(temp => Vector3.Distance(temp.point, transform.position)).ToArray();
                 foreach (RaycastHit rch in rchs)
                 {
+                    if (objsList.Contains(rch.transform.gameObject))
+                    {
+                        continue;
+                    }
+                    objsList.Add(rch.transform.gameObject);
                     bool result = CallBack(new CollisionHitCallbackStruct() { targetObj = rch.transform.gameObject, hitPoint = rch.point });
                     if (result)
                     {

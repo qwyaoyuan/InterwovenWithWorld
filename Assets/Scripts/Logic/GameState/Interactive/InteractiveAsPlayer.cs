@@ -29,11 +29,16 @@ class InteractiveAsPlayer : InteractiveBaseMono, IObjInteractive
         CalculateHurt.Result calculateHurtResult = CalculateHurt.Calculate(attackHurtStruct, playerAttribute, physicDefenseFactor, magicDefenseFactor);
         if (calculateHurtResult.hurt >= 0)
         {
-            //终端咏唱
-            ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
-            iSkillState.GetHitToSkillState();
-            //手柄震动
-            iPlayerState.SetVibration(0.1f, 0.7f, 0.7f);
+            if (calculateHurtResult.hurt != 0)
+            {
+                //减血(因为这里是整合的属性,必须在外部将自身血量减去)
+                iPlayerState.HP -= calculateHurtResult.hurt;
+                //终端咏唱
+                ISkillState iSkillState = GameState.Instance.GetEntity<ISkillState>();
+                iSkillState.GetHitToSkillState();
+                //手柄震动
+                iPlayerState.SetVibration(0.1f, 0.7f, 0.7f);
+            }
             //显示伤害 
             base.ShowHurt(calculateHurtResult, iPlayerState.PlayerObj);
         }

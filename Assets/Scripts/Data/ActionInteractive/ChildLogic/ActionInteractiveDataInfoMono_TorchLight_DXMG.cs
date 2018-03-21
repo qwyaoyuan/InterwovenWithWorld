@@ -26,6 +26,7 @@ public class ActionInteractiveDataInfoMono_TorchLight_DXMG : ActionInteractiveDa
     protected override void InnerAwake()
     {
         base.InnerAwake();
+        targetObj = transform.GetChild(0).gameObject;
     }
 
     public override void LoadData(object obj, Action<object> SaveDataAction)

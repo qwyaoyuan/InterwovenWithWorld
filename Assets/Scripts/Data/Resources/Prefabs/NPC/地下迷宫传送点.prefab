@@ -294,7 +294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: "\u5267\u60C5\u68EE\u6797"
-  targetPostion: {x: 602.75, y: 69.8, z: 635.17}
+  targetPostion: {x: 870.68, y: 63.58, z: 439.45}
+  streetID: 10003
 --- !u!114 &114816160158646442
 MonoBehaviour:
   m_ObjectHideFlags: 1

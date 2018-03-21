@@ -43,7 +43,7 @@ public partial class GameState
         {
             EnumPhysicAnimatorType tempPhysicAnimatorType = _PhysicAnimatorType;
             _PhysicAnimatorType = value;
-            if (tempPhysicAnimatorType != _PhysicAnimatorType || _PhysicAnimatorType == EnumPhysicAnimatorType.Normal)
+            //if (tempPhysicAnimatorType != _PhysicAnimatorType || _PhysicAnimatorType == EnumPhysicAnimatorType.Normal)
                 Call<IAnimatorState, EnumPhysicAnimatorType>(temp => temp.PhysicAnimatorType);
         }
     }

@@ -17,6 +17,7 @@ public class StormPartical : ParticalControlEntry
     /// </summary>
     Func<CollisionHitCallbackStruct, bool> CallBack;
 
+    List<GameObject> objList;
 
     /// <summary>
     /// 刚体
@@ -25,6 +26,7 @@ public class StormPartical : ParticalControlEntry
 
     private void Awake()
     {
+        objList = new List<GameObject>();
         thisRigidbody = GetComponent<Rigidbody>();
         thisRigidbody.detectCollisions = false;
     }
@@ -72,12 +74,14 @@ public class StormPartical : ParticalControlEntry
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
+        if (objList.Contains(other.transform.gameObject))
+            return;
+        objList.Add(other.transform.gameObject);
         int layer = (int)Math.Pow(2, other.gameObject.layer);
         int endLayer = layer | layerMask;
         if (endLayer == layerMask)
         {
             CallBack(new CollisionHitCallbackStruct() { hitPoint = other.transform.position, targetObj = other.transform.gameObject });
         }
-        Debug.Log(other.gameObject);
     }
 }

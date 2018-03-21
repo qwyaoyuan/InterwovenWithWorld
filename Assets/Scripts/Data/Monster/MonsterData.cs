@@ -278,6 +278,17 @@ public class MonsterDataInfo
         RoleOfRaceInfoStruct roleOfRaceInfoStruct = roleOfRaceData[roleOfRace];
         if (roleOfRaceInfoStruct != null)
         {
+            //重置属性
+            IAttributeState tempAdditional = new AttributeStateAdditional();// MonsterBaseAttribute.Clone();//赋值出来一份用来计算种族成长
+            tempAdditional.SetRoleOfRaceAddition(roleOfRaceInfoStruct);
+            tempAdditional.Power = MonsterBaseAttribute.Power;
+            tempAdditional.Mental = MonsterBaseAttribute.Mental;
+            tempAdditional.Quick = MonsterBaseAttribute.Quick;
+            MonsterBaseAttribute = (AttributeStateAdditional)(MonsterBaseAttribute + tempAdditional);
+            MonsterBaseAttribute.Power /= 2;
+            MonsterBaseAttribute.Quick /= 2;
+            MonsterBaseAttribute.Mental /= 2;
+            //系数
             PhysicAttackFactor = new PhysicAttackFactor()
             {
                 IncreaseRatioInjuryFactor = roleOfRaceInfoStruct.physicAttackToDamageRateRatio,

@@ -12,6 +12,11 @@ using UnityEngine.AI;
 public class MonsterControl : MonoBehaviour
 {
     /// <summary>
+    /// 僵直几率
+    /// </summary>
+    public float dizzyRate = 1f;
+
+    /// <summary>
     /// 相同组的对象(包括自己)
     /// </summary>
     public List<GameObject> SameGroupObjList;
@@ -65,7 +70,11 @@ public class MonsterControl : MonoBehaviour
         if (blackboard != null)
         {
             if (monsterDataInfo.MonsterBaseAttribute != null)
+            {
                 blackboard.SetValue("HP", monsterDataInfo.MonsterBaseAttribute.MaxHP);
+                if (monsterDataInfo.MonsterBaseAttribute.MoveSpeed > 0.5f)
+                    blackboard.SetValue("Speed", monsterDataInfo.MonsterBaseAttribute.MoveSpeed);
+            }
             switch (monsterDataInfo.AIType)
             {
                 case EnumMonsterAIType.Trigger:
@@ -97,7 +106,6 @@ public class MonsterControl : MonoBehaviour
                     break;
                 case EnumMonsterAIType.Boss:
                     blackboard.SetValue("StartPoint", transform.position);
-                    //blackboard.SetValue("Target", iPlayerState.PlayerObj);
                     break;
             }
         }
@@ -107,13 +115,14 @@ public class MonsterControl : MonoBehaviour
         if (thisSphereCollider != null)
         {
             GameObject childCheckObj = new GameObject();
+            childCheckObj.layer = LayerMask.NameToLayer("MonsterFindPlayer");
             childCheckObj.transform.SetParent(transform);
             MonsterCheckPlayer monsterCheckPlayer = childCheckObj.AddComponent<MonsterCheckPlayer>();
             monsterCheckPlayer.TriggerEnter = _OnTriggerEnter;
             monsterCheckPlayer.TriggerExit = _OnTriggerExit;
             childCheckObj.transform.localPosition = Vector3.zero;
             SphereCollider childSphereCollider = childCheckObj.AddComponent<SphereCollider>();
-            childSphereCollider.radius = thisSphereCollider.radius;
+            childSphereCollider.radius = thisSphereCollider.radius * (1 + monsterDataInfo.MonsterBaseAttribute.View);
             thisSphereCollider.enabled = false;
             childSphereCollider.isTrigger = true;
         }
@@ -124,8 +133,15 @@ public class MonsterControl : MonoBehaviour
             thisAttribute = monsterDataInfo.MonsterBaseAttribute.Clone();
             thisAttribute.Registor<IAttributeState>(IAttribute_Changed);
         }
+
+        //监听玩家的血量
+        GameState.Instance.Registor<IPlayerAttributeState>(PlayerAttributeStateChanged);
     }
 
+    private void OnDestroy()
+    {
+        GameState.Instance.UnRegistor<IPlayerAttributeState>(PlayerAttributeStateChanged);
+    }
 
     /// <summary>
     /// 监听属性变化
@@ -151,6 +167,13 @@ public class MonsterControl : MonoBehaviour
     /// <returns></returns>
     IEnumerator DestoryThis()
     {
+        //关闭自身的碰撞体
+        Collider[] colliders = GetComponents<Collider>();
+        foreach (Collider collider in colliders)
+        {
+            if (collider != null)
+                GameObject.Destroy(collider);
+        }
         yield return null;
         //取消注册(其实也可以不用管)
         if (monsterDataInfo != null && monsterDataInfo.MonsterBaseAttribute != null)
@@ -170,12 +193,6 @@ public class MonsterControl : MonoBehaviour
         Rigidbody rigibody = GetComponent<Rigidbody>();
         if (rigibody != null)
             GameObject.Destroy(rigibody);
-        Collider[] colliders = GetComponents<Collider>();
-        foreach (Collider collider in colliders)
-        {
-            if (collider != null)
-                GameObject.Destroy(collider);
-        }
         if (monsterDataInfo != null)
             yield return new WaitForSeconds(monsterDataInfo.DeathAnimTime);
         else
@@ -233,6 +250,28 @@ public class MonsterControl : MonoBehaviour
         return false;
     }
 
+    private void PlayerAttributeStateChanged(IPlayerAttributeState iAttribute, string fieldName)
+    {
+        if (string.Equals(fieldName, GameState.GetFieldNameStatic<IPlayerAttributeState, float>(temp => temp.HP)))
+        {
+            if (iAttribute.HP <= 0)
+                InitTarget();
+        }
+    }
+
+    /// <summary>
+    /// 玩家死亡后初始化目标
+    /// </summary>
+    public void InitTarget()
+    {
+        blackboard.SetValue("TempTarget", null);
+        try
+        {
+            blackboard.SetValue("Target", null);
+        }
+        catch { }
+    }
+
     private void _OnTriggerEnter(Collider other)
     {
         string checkTag = blackboard.GetValue<string>("PlayerTag");
@@ -267,9 +306,11 @@ public class MonsterControl : MonoBehaviour
     /// </summary>
     public void GiveHit()
     {
-        //暂时为所有时刻都处于可以被攻击状态
-        if (blackboard != null)
-            blackboard.SetValue("GetHit", true);
+        float getHit = UnityEngine.Random.Range(0f, 1f);
+        if (getHit < dizzyRate)
+            //暂时为所有时刻都处于可以被攻击状态
+            if (blackboard != null)
+                blackboard.SetValue("GetHit", true);
     }
     #endregion
 }

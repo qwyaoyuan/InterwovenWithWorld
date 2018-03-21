@@ -92,7 +92,12 @@ public partial class GameState : IEntrance, IBaseState
                         T t = (T)iBaseState;
                         CallbackAction(t, fieldName);
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+#if UNITY_EDITOR
+                        Debug.Log(ex);
+#endif
+                    }
                 };
                 callBackList.Add(new KeyValuePair<object, Action<IBaseState, string>>(CallbackAction, tempAction));
             }

@@ -139,11 +139,13 @@ public abstract class UIShopExplan : MonoBehaviour
                         // 根据品质设置属性
                         if (qualityType != EnumQualityType.Red)//如果是唯一的则不用改变属性
                         {
+                            float minRate = ((int)qualityType) * 0.2f + 0.8f;
+                            float maxRate = minRate + 0.2f;
                             //将所有属性随机
                             addGoods.goodsAbilities.ForEach(temp =>
                             {
-                                float min = temp.Value * 0.8f;
-                                float max = temp.Value * 1.2f;
+                                float min = temp.Value * minRate;
+                                float max = temp.Value * maxRate;
                                 temp.Value = (int)UnityEngine.Random.Range(min, max);
                             });
                             //取出用于分割固定属性以及随机属性的条目

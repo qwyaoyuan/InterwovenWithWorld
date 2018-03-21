@@ -235,6 +235,11 @@ public class MonsterManagerEditor : EditorWindow
     /// </summary>
     int selectMonsterID;
 
+    /// <summary>
+    /// 复制出来的属性对象
+    /// </summary>
+    AttributeStateAdditional AttributeStateAdditional_Copy;
+
     void OnGUI()
     {
         if (monsterDataInfoCollections == null || monsterTypeToFieldNameDic == null || monsterAITypeToFieldNameDic == null)
@@ -376,6 +381,7 @@ public class MonsterManagerEditor : EditorWindow
                     monsterDataInfo.monsterPrefabName = monsterPrefabName;
             }
             //设置属性
+            EditorGUILayout.BeginHorizontal();
             if (monsterDataInfo.MonsterBaseAttribute == null)
                 monsterDataInfo.MonsterBaseAttribute = new AttributeStateAdditional();
             if (GUILayout.Button("设置属性"))
@@ -384,6 +390,15 @@ public class MonsterManagerEditor : EditorWindow
                 attributeStateAdditionalEditor.Show();
                 attributeStateAdditionalEditor.Target = monsterDataInfo.MonsterBaseAttribute;
             }
+            if (GUILayout.Button("复制", GUILayout.Width(35)))
+            {
+                AttributeStateAdditional_Copy = monsterDataInfo.MonsterBaseAttribute.Clone();
+            }
+            if (AttributeStateAdditional_Copy != null && GUILayout.Button("粘贴", GUILayout.Width(35)) && EditorUtility.DisplayDialog("请再次确认!", "是否覆盖当前数据?", "是", "否"))
+            {
+                monsterDataInfo.MonsterBaseAttribute = AttributeStateAdditional_Copy.Clone();
+            }
+            EditorGUILayout.EndHorizontal();
             //设置种族
             List<RoleOfRace> roleOfRaceValues = roleOfRaceToFieldNameDic.Select(temp => temp.Key).ToList();
             string[] roleOfRaceExplans = roleOfRaceToFieldNameDic.Select(temp => temp.Value).ToArray();

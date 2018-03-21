@@ -26,6 +26,12 @@ public partial class GameState : IPlayerState
     RunTaskStruct runTaskStruct_WaitDeath;
 
     /// <summary>
+    /// 用于处理血量以及魔法量的回复的任务对象
+    /// </summary>
+    RunTaskStruct runTaskStruct_Recovery;
+    
+
+    /// <summary>
     /// buff状态的属性数组
     /// </summary>
     Dictionary<string, PropertyInfo> buffStatePropertyDic;
@@ -48,6 +54,8 @@ public partial class GameState : IPlayerState
         GameState.Instance.Registor<IPlayerAttributeState>(IPlayerAttributeState_Changed);
         //手柄震动的携程对象
         runTaskStruct_Vibration = TaskTools.Instance.GetRunTaskStruct();
+        //生命以及魔力恢复的携程对象
+        runTaskStruct_Recovery = TaskTools.Instance.GetRunTaskStruct();
         //使用反射初始化buff状态的属性数组
         PropertyInfo[] buffStates = MyReflectionTools.GetPropertys<IBuffState, BuffState>();
         PropertyInfo[] debuffStates = MyReflectionTools.GetPropertys<IDebuffState, BuffState>();
@@ -66,6 +74,8 @@ public partial class GameState : IPlayerState
         MaxExperience = GameStateConstValues.GetExperienceAtLevel(_Level);
         //获取该种族的成长数据
         RoleOfRaceData roleOfRaceData = DataCenter.Instance.GetMetaData<RoleOfRaceData>();
+        if (playerState.RoleOfRaceRoute.Count == 0)
+            playerState.RoleOfRaceRoute.Add(RoleOfRace.Human);
         RoleOfRace nowRoleOfRace = playerState.RoleOfRaceRoute.Last();
         SelfRoleOfRaceInfoStruct = roleOfRaceData[nowRoleOfRace];
         //判断武器类型
@@ -79,7 +89,31 @@ public partial class GameState : IPlayerState
         GameState.Instance.Registor<IDebuffState>(IDebuffStateChanged_IPlayer);
         GameState.Instance.UnRegistor<ISpecialState>(ISpecialStateChanged_IPlayer);
         GameState.Instance.Registor<ISpecialState>(ISpecialStateChanged_IPlayer);
+        Debug.Log("基础属性"+LifeRecovery + " " + ManaRecovery + " " + Power + " " + Mental);
+        //开启恢复
+        runTaskStruct_Recovery.StartTask(1f, () => 
+        {
+            float nowHP = HP;
+            float maxHP = MaxHP;
+            if (nowHP > 0 && nowHP< maxHP)
+            {
+                float lifeRecovery = LifeRecovery;
+                float addedHP = lifeRecovery + nowHP;
+                addedHP = Mathf.Clamp(addedHP, 0, maxHP);
+                HP = addedHP;
+            }
+            float nowMP = Mana;
+            float maxMP = MaxMana;
+            if (nowMP < maxMP)
+            {
+                float mpRecovery = ManaRecovery;
+                float addedMP = mpRecovery + nowMP;
+                addedMP = Mathf.Clamp(addedMP, 0, maxMP);
+                Mana = addedMP;
+            }
+        }, 0, false);
     }
+
 
     /// <summary>
     /// 注册监听游戏对象发生变化
@@ -316,7 +350,7 @@ public partial class GameState : IPlayerState
         IAttributeState iAttributeState_Base = iPlayerAttributeState.GetAttribute(0);
         //检测武器状态,根据武器状态有些被动的效果会不同
         //首先与盾牌进行异或运算
-        EnumWeaponTypeByPlayerState weaponType_Right = WeaponTypeByPlayerState ^ EnumWeaponTypeByPlayerState.Shield;//去除盾牌                                                                                                                 
+        EnumWeaponTypeByPlayerState weaponType_Right = WeaponTypeByPlayerState | EnumWeaponTypeByPlayerState.Shield - EnumWeaponTypeByPlayerState.Shield;//去除盾牌                                                                                                                 
         int handle_JZQH = -(int)EnumSkillType.ZS04;//近战强化
         int handle_JZZJ = -(int)EnumSkillType.KZS02;//近战专精 
         int handle_YCQH = -(int)EnumSkillType.GJS04;//远程强化 
@@ -674,6 +708,7 @@ public partial class GameState : IPlayerState
         IAttributeState iAttributeState_Equip = iPlayerAttributeState.GetAttribute(1);
         if (iAttributeState_Equip != null)
         {
+            iAttributeState_Equip.Init();
             //获取穿戴中的装备
             PlayGoods[] playGoodses = playerState.PlayerAllGoods.Where(temp => temp.GoodsLocation == GoodsLocation.Wearing).ToArray();
             foreach (PlayGoods playGoods in playGoodses)
@@ -1573,6 +1608,42 @@ public partial class GameState : IPlayerState
     }
 
     #endregion
+
+    /// <summary>
+    /// 吃药
+    /// </summary>
+    /// <param name="goodsID">物品ID</param>
+    public void EatMedicine(int goodsID)
+    {
+        PlayGoods playGoods = playerState.PlayerAllGoods.Where(temp => temp.ID == goodsID).FirstOrDefault();
+        if (playGoods == null)
+            return;
+        RunTaskStruct runTaskStruct = TaskTools.Instance.GetRunTaskStruct();
+        int attributeID = CreateAttributeHandle();
+        IAttributeState iAttributeState = GetAttribute(attributeID);
+        IAttributeState baseAttributeState = GetAttribute(0);//基础属性 
+        foreach (GoodsAbility goodsAbility in playGoods.GoodsInfo.goodsAbilities)
+        {
+            switch (goodsAbility.AbilibityKind)
+            {
+                case EnumGoodsAbility.HPRect_Rate:
+                    iAttributeState.LifeRecovery = baseAttributeState.LifeRecovery * goodsAbility.Value;
+                    break;
+                case EnumGoodsAbility.MPRec_Rate:
+                    iAttributeState.ManaRecovery = baseAttributeState.ManaRecovery * goodsAbility.Value;
+                    break;
+            }
+        }
+        playGoods.Count -= 1;
+        if (playGoods.Count <= 0)
+            playerState.PlayerAllGoods.Remove(playGoods);
+        //开启任务,10秒后销毁
+        runTaskStruct.StartTask(10f, () => 
+        {
+            RemoveAttribute(attributeID);//移除属性
+            TaskTools.Instance.RemoveRunTaskStruct(runTaskStruct);//移除任务
+        }, 1, false);
+    }
 
     #region 玩家的行动路线
 

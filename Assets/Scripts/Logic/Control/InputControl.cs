@@ -48,6 +48,7 @@ public class InputControl : IEntrance
         inputList.Add(UIManager.Instance);
         inputList.Add(MoveManager.Instance);
         inputList.Add(InteractiveManager.Instance);
+        inputList.Add(GoodsItemManager.Instance);
         inputList.Add(SkillManager.Instance);
         inputList.Add(SelectTargetManager.Instance);
     }
